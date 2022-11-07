@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "757536424295",
+    "project_id": "animalapp-f4725",
+    "storage_bucket": "animalapp-f4725.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:757536424295:android:e34be0dfbf0e8e9d2f2fc2",
+        "android_client_info": {
+          "package_name": "it.uniba.dib.sms2223_2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "757536424295-4pnun6sva55ush565e6sbbor67gkpa58.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRuLvL3HQuTmBkcNm__z7Kdn66JIGCeXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "757536424295-4pnun6sva55ush565e6sbbor67gkpa58.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
