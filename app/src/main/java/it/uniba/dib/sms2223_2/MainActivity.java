@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.view.Menu;
 import android.widget.TableLayout;
 import androidx.appcompat.widget.Toolbar;
 
@@ -84,6 +85,18 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(main_action_bar);
 
 
+
+
+
+
+
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+       getMenuInflater().inflate(R.menu.menu_bar_main, menu);
+       return true;
 
 
 
