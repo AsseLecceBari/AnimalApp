@@ -85,10 +85,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(main_action_bar);
 
 
-
-
-
-
+        // fare un intent alla loginactivity quando schiacci su profilo
 
     }
 
