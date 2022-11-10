@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">AnimalApp</string>
+    <string name="myanimals">I Miei Animali</string>
+    <string name="adoptions">Adozioni</string>
+    <string name="reports">Segnalazioni</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
