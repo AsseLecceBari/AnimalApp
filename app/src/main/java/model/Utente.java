@@ -3,13 +3,13 @@ package model;
 import java.util.Map;
 
 public class Utente {
-    String email; //Stesso valore del documento
-    String telefono;
-    Map<String,String> indirizzo;
-    int ruolo;
+    private String email; //Stesso valore del documento
+    private  String telefono;
+    private Map<String,String> indirizzo;
+    private String ruolo;
 
 
-    public Utente(String email, String telefono, Map<String, String> indirizzo, int ruolo) {
+    public Utente(String email, String telefono, Map<String, String> indirizzo, String ruolo) {
         this.email = email;
         this.telefono = telefono;
         this.indirizzo = indirizzo;
@@ -32,7 +32,7 @@ public class Utente {
         return indirizzo;
     }
 
-    public int getRuolo() {
+    public String getRuolo() {
         return ruolo;
     }
 

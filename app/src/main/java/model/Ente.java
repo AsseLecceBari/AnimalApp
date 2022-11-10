@@ -6,7 +6,7 @@ public class Ente extends Utente{
     String partitaIva,Denominazione;
     boolean isPrivato;
 
-    public Ente(String email, String telefono, Map<String, String> indirizzo, int ruolo, String partitaIva, String denominazione, boolean isPrivato) {
+    public Ente(String email, String telefono, Map<String, String> indirizzo, String ruolo, String partitaIva, String denominazione, boolean isPrivato) {
         super(email, telefono, indirizzo, ruolo);
         this.partitaIva = partitaIva;
         Denominazione = denominazione;

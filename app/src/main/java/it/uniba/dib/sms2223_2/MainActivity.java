@@ -87,12 +87,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
 
-
+        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
 
 
         // fare un intent alla loginactivity quando schiacci su profilo
+
 
     }
 
