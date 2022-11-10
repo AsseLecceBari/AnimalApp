@@ -8,7 +8,9 @@
 
         app:showAsAction="ifRoom"/>
     <item
+
         android:icon="@drawable/uomocerchiato"
         android:title="@string/profilo"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        android:onClick="mostraProfilo"/>
 </menu>
