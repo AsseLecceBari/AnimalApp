@@ -2,19 +2,19 @@
 
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context="fragments.adoptions_fragment">
-<androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_action_bar"
-    android:layout_width="match_parent"
 
-    android:layout_height="?attr/actionBarSize"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/main_action_bar"
+        android:layout_width="match_parent"
 
-   />
+        android:layout_height="?attr/actionBarSize"
+
+        />
 
 
 

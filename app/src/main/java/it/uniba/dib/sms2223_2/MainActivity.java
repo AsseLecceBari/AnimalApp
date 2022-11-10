@@ -5,16 +5,22 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TableLayout;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.Objects;
+
 import adapter.VPAdapter;
+import fragments.profilo_utente_fragment;
+import fragments.reports_fragment;
 
 public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -22,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     VPAdapter vpAdapter;
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
+    private View main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,12 +94,11 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
 
-        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
 
 
-        // fare un intent alla loginactivity quando schiacci su profilo
 
 
     }
@@ -112,8 +118,19 @@ public class MainActivity extends AppCompatActivity {
         auth= FirebaseAuth.getInstance();
 
 
+
+
+
+
+
         if(auth.getCurrentUser()!=null){
-                
+
+
+
+            getSupportFragmentManager().beginTransaction().replace(R.id.linear, new profilo_utente_fragment()).commit();
+
+
+
 
 
         }
