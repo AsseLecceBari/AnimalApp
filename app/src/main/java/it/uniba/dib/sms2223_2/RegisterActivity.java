@@ -26,6 +26,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     TextInputEditText etRegEmail;
     TextInputEditText etRegPassword;
+    TextInputEditText etRegConfPass;
     TextView tvLoginHere;
     Button btnRegister;
 
@@ -39,6 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         etRegEmail = findViewById(R.id.etRegEmail);
         etRegPassword = findViewById(R.id.etRegPass);
+        etRegConfPass=findViewById(R.id.etRegConfPass);
         tvLoginHere = findViewById(R.id.tvLoginHere);
         btnRegister = findViewById(R.id.btnRegister);
 
@@ -57,6 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void createUser(){
         String email = etRegEmail.getText().toString();
         String password = etRegPassword.getText().toString();
+        String confPassword= etRegConfPass.getText().toString();
         String telefono="";
         Map<String,String> indirizzo = new HashMap<>();
         int ruolo=0;
@@ -64,9 +67,17 @@ public class RegisterActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(email)){
             etRegEmail.setError("*Email obbligatoria");
             etRegEmail.requestFocus();
-        }else if (TextUtils.isEmpty(password)){
+        }else if (TextUtils.isEmpty(password)) {
             etRegPassword.setError("*Password obbligatoria");
             etRegPassword.requestFocus();
+        }
+        else if (TextUtils.isEmpty(confPassword)){
+            etRegConfPass.setError("*Password obbligatoria");
+            etRegConfPass.requestFocus();
+        }
+        else if(!confPassword.equals(password)){
+            etRegConfPass.setError("Le password non combaciano");
+            etRegConfPass.requestFocus();
         }else{
            create(email,password);
         }
