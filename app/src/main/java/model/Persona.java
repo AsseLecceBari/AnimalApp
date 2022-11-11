@@ -7,7 +7,7 @@ public class Persona extends Utente{
     String nome,cognome;
     Date dataDiNascita;
 
-    public Persona(String email, String telefono, Map<String, String> indirizzo, int ruolo, String nome, String cognome, Date dataDiNascita) {
+    public Persona(String email, String telefono, Map<String, String> indirizzo, String ruolo, String nome, String cognome, Date dataDiNascita) {
         super(email, telefono, indirizzo, ruolo);
         this.nome = nome;
         this.cognome = cognome;

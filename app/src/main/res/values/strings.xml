@@ -7,4 +7,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="scansione_qrcode">Scansione QRCODE</string>
     <string name="profilo">Profilo</string>
+    <string name="logout">logout</string>
+    <string name="logoutSuccess">Logout effettuato con successo</string>
 </resources>
