@@ -9,4 +9,13 @@
     <string name="profilo">Profilo</string>
     <string name="logout">logout</string>
     <string name="logoutSuccess">Logout effettuato con successo</string>
+
+    <string-array name="staticivili">
+        <item>Divorziato/a</item>
+        <item>Separato/a</item>
+        <item>Coniugato/a</item>
+        <item>Celibe/Nubile</item>
+    </string-array>
+
+
 </resources>

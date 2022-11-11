@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,14 @@ public class RegisterActivity extends AppCompatActivity {
     TextInputEditText etRegEmail;
     TextInputEditText etRegPassword;
     TextInputEditText etRegConfPass;
+    TextInputEditText etRegTelefono;
+    TextInputEditText etRegIndirizzo;
+    Spinner etRegRuolo;
+    TextInputEditText etRegNumEFNOVI;
+    TextInputEditText etRegPartitaIva;
+    TextInputEditText etRegDenominazione;
+    TextInputEditText etRegIsPrivato;
+    TextInputEditText etRegCodiceFiscaleAssociazione;
     TextView tvLoginHere;
     Button btnRegister;
 
@@ -41,6 +50,15 @@ public class RegisterActivity extends AppCompatActivity {
         etRegEmail = findViewById(R.id.etRegEmail);
         etRegPassword = findViewById(R.id.etRegPass);
         etRegConfPass=findViewById(R.id.etRegConfPass);
+        etRegTelefono = findViewById(R.id.etRegTelefono);
+        etRegIndirizzo = findViewById(R.id.etRegIndirizzo);
+        etRegRuolo=findViewById(R.id.etRegRuolo);
+        etRegNumEFNOVI = findViewById(R.id.etRegNumEFNOVI);
+        etRegPartitaIva = findViewById(R.id.etRegPartitaIva);
+        etRegDenominazione=findViewById(R.id.etRegDenominazione);
+        etRegIsPrivato = findViewById(R.id.etRegIsPrivato);
+        etRegCodiceFiscaleAssociazione = findViewById(R.id.etRegCodiceFiscaleAssociazione);
+
         tvLoginHere = findViewById(R.id.tvLoginHere);
         btnRegister = findViewById(R.id.btnRegister);
 
