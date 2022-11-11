@@ -15,12 +15,11 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import adapter.VPAdapter;
+import fragments.main_fragment;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
-    private TabLayout tabLayout;
-    private ViewPager2 viewPager2;
-    VPAdapter vpAdapter;
+
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
 
@@ -29,36 +28,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        tabLayout= findViewById(R.id.tabLayout);
-        viewPager2=findViewById(R.id.viewPager);
-        vpAdapter= new VPAdapter(this);
-        viewPager2.setAdapter(vpAdapter);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager2.setCurrentItem(tab.getPosition());
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
-        viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-            @Override
-            public void onPageSelected(int position) {
-                super.onPageSelected(position);
-                tabLayout.getTabAt(position).select();
-            }
-        });
 
 
     }
@@ -91,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
+
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.frame, new main_fragment()).commit();
 
 
         // fare un intent alla loginactivity quando schiacci su profilo
