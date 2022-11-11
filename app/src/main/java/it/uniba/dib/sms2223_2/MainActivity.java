@@ -15,6 +15,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import adapter.VPAdapter;
+import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
     private TabLayout tabLayout;
@@ -87,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
 
-        startActivity(new Intent(getApplicationContext(),LoginActivity.class));
+
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
 
@@ -113,8 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         if(auth.getCurrentUser()!=null){
-                
 
+            startActivity(new Intent(getApplicationContext(), ProfiloUtenteActivity.class));
 
         }
         else{
