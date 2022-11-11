@@ -120,7 +120,7 @@
                 android:id="@+id/etRegRuolo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:entries="@array/staticivili"/>
+                android:entries="@array/Ruolo"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
