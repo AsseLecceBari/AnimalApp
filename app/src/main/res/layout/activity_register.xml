@@ -93,7 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Telefono"
-                android:inputType="textPassword"/>
+                android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -107,7 +107,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Indirizzo"
-                android:inputType="textPassword"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -125,10 +125,10 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/numEFNInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
 
@@ -137,12 +137,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Numero EFNOVI"
-                android:inputType="textPassword"/>
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/piVAInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
 
@@ -151,12 +152,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Partita Iva"
-                android:inputType="textPassword"/>
+                android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/denomInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
 
@@ -164,13 +166,13 @@
                 android:id="@+id/etRegDenominazione"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Denominazione "
-                android:inputType="textPassword"/>
+                android:hint="Denominazione " />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/isPrivatoInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
 
@@ -178,13 +180,13 @@
                 android:id="@+id/etRegIsPrivato"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Sei un Privato? "
-                android:inputType="textPassword"/>
+                android:hint="Sei un Privato? " />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
+            android:id="@+id/codFiscAssInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
 
@@ -192,8 +194,7 @@
                 android:id="@+id/etRegCodiceFiscaleAssociazione"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Codice Fiscale Associazione"
-                android:inputType="textPassword"/>
+                android:hint="Codice Fiscale Associazione" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
