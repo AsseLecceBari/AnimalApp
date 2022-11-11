@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.Objects;
 
 import adapter.VPAdapter;
+import fragments.main_fragment;
 import fragments.profilo_utente_fragment;
 import fragments.reports_fragment;
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-        tabLayout= findViewById(R.id.tabLayout);
+     /*   tabLayout= findViewById(R.id.tabLayout);
         viewPager2=findViewById(R.id.viewPager);
         vpAdapter= new VPAdapter(this);
         viewPager2.setAdapter(vpAdapter);
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 tabLayout.getTabAt(position).select();
             }
-        });
+        });*/
 
 
     }
@@ -95,8 +96,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frame, new main_fragment())
+                .commit();
+
 
 
 
@@ -123,11 +131,15 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
         if(auth.getCurrentUser()!=null){
 
 
 
-            getSupportFragmentManager().beginTransaction().replace(R.id.linear, new profilo_utente_fragment()).commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.frame, new profilo_utente_fragment())
+                    .commit();
 
 
 
