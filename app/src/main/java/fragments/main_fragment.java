@@ -24,8 +24,8 @@ public class main_fragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-    VPAdapter vpAdapter;
-    static FragmentActivity  activity;
+            VPAdapter vpAdapter;
+     FragmentActivity  activity;
     private int posizione = 0;
 
     @Override
@@ -50,6 +50,7 @@ public class main_fragment extends Fragment {
             vpAdapter= new VPAdapter(activity);
             viewPager2.setAdapter(vpAdapter);
         }
+
         tabLayout.getTabAt(posizione).select();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

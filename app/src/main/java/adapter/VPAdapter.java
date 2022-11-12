@@ -23,6 +23,8 @@ public class VPAdapter extends FragmentStateAdapter {
         fragmentArrayList.add(new reports_fragment());
     }
 
+
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {
