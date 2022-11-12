@@ -20,8 +20,12 @@
         android:orientation="vertical">
 
 
-
-
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fragmentContainerView"
+            android:name="fragments.main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout="@layout/fragment_main_fragment"/>
     </FrameLayout>
 
 

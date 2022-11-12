@@ -1,5 +1,6 @@
 package it.uniba.dib.sms2223_2;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TabHost;
 import android.widget.TableLayout;
 import androidx.appcompat.widget.Toolbar;
 
@@ -27,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
-
     }
 
     @Override
@@ -61,11 +60,6 @@ public class MainActivity extends AppCompatActivity {
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
 
-
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.frame, new main_fragment()).commit();
-
-
         // fare un intent alla loginactivity quando schiacci su profilo
 
 
@@ -80,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
     public void mostraProfilo(MenuItem item) {
 
