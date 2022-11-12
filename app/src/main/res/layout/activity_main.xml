@@ -10,7 +10,6 @@
     tools:context=".MainActivity"
     android:id="@+id/linear">
 
-
     <include layout="@layout/main_action_bar" />
 
     <FrameLayout

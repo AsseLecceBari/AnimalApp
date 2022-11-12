@@ -27,17 +27,13 @@ public class main_fragment extends Fragment {
     static FragmentActivity  activity;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_main_fragment, container, false);
     }
-
 
     @Override
     public void onResume() {
         super.onResume();
-
 
         tabLayout= getView().findViewById(R.id.tabLayout);
         viewPager2=getView().findViewById(R.id.viewPager);
@@ -58,12 +54,10 @@ public class main_fragment extends Fragment {
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 

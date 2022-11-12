@@ -19,6 +19,7 @@ import it.uniba.dib.sms2223_2.R;
 public class ProfiloUtenteActivity extends AppCompatActivity {
     Toolbar main_action_bar;
     FirebaseAuth auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +30,8 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Profilo");
         setSupportActionBar(main_action_bar);
@@ -38,7 +41,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bar_profile, menu);
         return true;
-
     }
 
     public void logout(MenuItem item) {

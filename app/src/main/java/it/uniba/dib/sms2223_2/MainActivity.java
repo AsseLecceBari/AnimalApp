@@ -32,69 +32,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
 
-
-
+        // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
-
-        // fare un intent alla loginactivity quando schiacci su profilo
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
        return true;
-
-
-
     }
 
-
-
     public void mostraProfilo(MenuItem item) {
-
         auth= FirebaseAuth.getInstance();
 
-
+        // Parte l'activity mostraProfilo solo se si è loggati
         if(auth.getCurrentUser()!=null){
-
             startActivity(new Intent(getApplicationContext(), ProfiloUtenteActivity.class));
-
         }
         else{
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
-
-
-
-
-
-
     }
+
 }
