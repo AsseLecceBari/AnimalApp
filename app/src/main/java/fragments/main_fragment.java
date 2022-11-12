@@ -24,7 +24,7 @@ public class main_fragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     VPAdapter vpAdapter;
-
+    static FragmentActivity  activity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,13 +38,17 @@ public class main_fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-        FragmentActivity activity  = getActivity();
-
 
         tabLayout= getView().findViewById(R.id.tabLayout);
         viewPager2=getView().findViewById(R.id.viewPager);
-        vpAdapter= new VPAdapter(activity);
-        viewPager2.setAdapter(vpAdapter);
+
+        if(activity==null){
+            activity  = getActivity();
+            vpAdapter= new VPAdapter(activity);
+            viewPager2.setAdapter(vpAdapter);
+        }
+
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
