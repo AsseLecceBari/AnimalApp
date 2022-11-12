@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,9 +26,15 @@ public class main_fragment extends Fragment {
     private ViewPager2 viewPager2;
     VPAdapter vpAdapter;
     static FragmentActivity  activity;
+    private int posizione = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        if (savedInstanceState != null){
+            posizione = savedInstanceState.getInt("posizione"); //test
+        }
+
         return inflater.inflate(R.layout.fragment_main_fragment, container, false);
     }
 
@@ -38,18 +45,18 @@ public class main_fragment extends Fragment {
         tabLayout= getView().findViewById(R.id.tabLayout);
         viewPager2=getView().findViewById(R.id.viewPager);
 
-        if(activity==null){
+        if(activity == null){
             activity  = getActivity();
             vpAdapter= new VPAdapter(activity);
             viewPager2.setAdapter(vpAdapter);
         }
-
-
+        tabLayout.getTabAt(posizione).select();
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
+                posizione = tab.getPosition();  //test
             }
 
             @Override
@@ -70,5 +77,11 @@ public class main_fragment extends Fragment {
         });
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
 
+        outState.putInt("posizione", posizione);  //test
+        Log.d("test", String.valueOf(posizione)); //test
+    }
 }
