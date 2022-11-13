@@ -6,10 +6,10 @@ import java.util.Date;
 
 public class Animale {
     String nome,genere,specie,emailProprietario;
-    Date dataDiNascita;
-    Bitmap fotoProfilo;  //Verificare che si usi Bitmap
-    int idAnimale; //Stesso id del documento
-    boolean isAssistito;
+    String dataDiNascita;
+    String fotoProfilo;  //Verificare che si usi Bitmap
+    String idAnimale; //Stesso id del documento
+    Boolean isAssistito;
 
     public String getNome() {
         return nome;
@@ -27,24 +27,24 @@ public class Animale {
         return emailProprietario;
     }
 
-    public Date getDataDiNascita() {
+    public String getDataDiNascita() {
         return dataDiNascita;
     }
 
-    public Bitmap getFotoProfilo() {
+    public String getFotoProfilo() {
         return fotoProfilo;
     }
 
-    public int getIdAnimale() {
+    public String getIdAnimale() {
         return idAnimale;
     }
 
-    public boolean isAssistito() {
+    public Boolean getIsAssistito() {
         return isAssistito;
     }
 
 
-    public Animale(String nome, String genere, String specie, String emailProprietario, Date dataDiNascita, Bitmap fotoProfilo, int idAnimale, boolean isAssistito) {
+    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito) {
         this.nome = nome;
         this.genere = genere;
         this.specie = specie;

@@ -3,13 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fragments.myanimals_fragment">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleMyAnimals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="i miei animali"
-        android:gravity="center"
-        android:textSize="30dp"/>
+        tools:listitem="@layout/recycle_view_animals"
+        />
+
+    <!-- TODO: Update blank fragment layout -->
+
 
 </FrameLayout>
