@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
@@ -40,7 +41,6 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout numEFNInputLayout;
     private TextInputLayout piVAInputLayout;
     private TextInputLayout denomInputLayout;
-    private TextInputLayout isPrivatoInputLayout;
     private TextInputLayout codFiscAssInputLayout;
     private TextInputLayout dataLayout;
     private TextInputLayout nomeLayout;
@@ -55,12 +55,12 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText etRegNumEFNOVI;
     private TextInputEditText etRegPartitaIva;
     private TextInputEditText etRegDenominazione;
-    private TextInputEditText etRegIsPrivato;
     private TextInputEditText etRegCodiceFiscaleAssociazione;
     private TextInputEditText data;
     private TextInputEditText nome;
     private TextInputEditText cognome;
     private Spinner etRegRuolo;
+    private MaterialCheckBox etRegIsPrivato;
 
     private TextView tvLoginHere;
     private Button btnRegister;
@@ -95,7 +95,6 @@ public class RegisterActivity extends AppCompatActivity {
         numEFNInputLayout = findViewById(R.id.numEFNInputLayout);
         piVAInputLayout = findViewById(R.id.piVAInputLayout);
         denomInputLayout = findViewById(R.id.denomInputLayout);
-        isPrivatoInputLayout = findViewById(R.id.isPrivatoInputLayout);
         codFiscAssInputLayout = findViewById(R.id.codFiscAssInputLayout);
         nomeLayout = findViewById(R.id.nomeLayout);
         cognomeLayout = findViewById(R.id.cognomeLayout);
@@ -127,48 +126,44 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
-                    case 0: // propietario
+                    case 0:
+                        ruolo = "proprietario";
                         numEFNInputLayout.setVisibility(View.GONE);
                         piVAInputLayout.setVisibility(View.GONE);
                         denomInputLayout.setVisibility(View.GONE);
-                        isPrivatoInputLayout.setVisibility(View.GONE);
+                        etRegIsPrivato.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         mostraNomeCognomeNascita();
-
-                        ruolo = "proprietario";
                         break;
 
-                    case 1: // veterinario
+                    case 1:
+                        ruolo = "veterinario";
                         numEFNInputLayout.setVisibility(View.VISIBLE);
                         piVAInputLayout.setVisibility(View.VISIBLE);
                         denomInputLayout.setVisibility(View.GONE);
-                        isPrivatoInputLayout.setVisibility(View.GONE);
+                        etRegIsPrivato.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         mostraNomeCognomeNascita();
-
-                        ruolo = "veterinario";
                         break;
 
-                    case 2: // associazione
+                    case 2:
+                        ruolo = "associazione";
                         numEFNInputLayout.setVisibility(View.GONE);
                         piVAInputLayout.setVisibility(View.GONE);
                         denomInputLayout.setVisibility(View.VISIBLE);
-                        isPrivatoInputLayout.setVisibility(View.GONE);
+                        etRegIsPrivato.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.VISIBLE);
                         nascondiNomeCognomeNascita();
-
-                        ruolo = "associazione";
                         break;
 
-                    case 3: // ente
+                    case 3:
+                        ruolo = "ente";
                         numEFNInputLayout.setVisibility(View.GONE);
                         piVAInputLayout.setVisibility(View.VISIBLE);
                         denomInputLayout.setVisibility(View.VISIBLE);
-                        isPrivatoInputLayout.setVisibility(View.VISIBLE );
+                        etRegIsPrivato.setVisibility(View.VISIBLE );
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         nascondiNomeCognomeNascita();
-
-                        ruolo = "ente";
                         break;
                 }
             }
@@ -182,7 +177,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRegNumEFNOVI = findViewById(R.id.etRegNumEFNOVI);
         etRegPartitaIva = findViewById(R.id.etRegPartitaIva);
         etRegDenominazione=findViewById(R.id.etRegDenominazione);
-        etRegIsPrivato = findViewById(R.id.etRegIsPrivato);
+        etRegIsPrivato = findViewById(R.id.isPrivato);
         etRegCodiceFiscaleAssociazione = findViewById(R.id.etRegCodiceFiscaleAssociazione);
         tvLoginHere = findViewById(R.id.tvLoginHere);
         btnRegister = findViewById(R.id.btnRegister);
@@ -236,93 +231,170 @@ public class RegisterActivity extends AppCompatActivity {
         Map<String,String> indirizzoMap = new HashMap<>();
         indirizzoMap.put("via", indirizzo);
 
+        int flag = 0;
         // Controllo se gli input sono corretti
         if (TextUtils.isEmpty(email)){
-            etRegEmail.setError("*Email obbligatoria");
-            etRegEmail.requestFocus();
-            return;
-        }else if (TextUtils.isEmpty(password)) {
-            etRegPassword.setError("*Password obbligatoria");
-            etRegPassword.requestFocus();
-            return;
+            etRegEmail.setError(getString(R.string.emailRequired));
+            flag = 1;
         }
-        else if (TextUtils.isEmpty(confPassword)){
-            etRegConfPass.setError("*Password obbligatoria");
-            etRegConfPass.requestFocus();
-            return;
+        if (TextUtils.isEmpty(password)) {
+            etRegPassword.setError(getString(R.string.passwordRequired));
+            flag = 1;
         }
-        else if(!confPassword.equals(password)){
-            etRegConfPass.setError("Le password non combaciano");
-            etRegConfPass.requestFocus();
-            return;
+        if(!confPassword.equals(password) || TextUtils.isEmpty(password)){
+            etRegConfPass.setError(getString(R.string.passwordRepeatRequired));
+            flag = 1;
+        }
+        if(TextUtils.isEmpty(telefono)){
+            etRegTelefono.setError(getString(R.string.teleponeRequired));
+            flag = 1;
+        }
+        if(TextUtils.isEmpty(indirizzo)){
+            etRegIndirizzo.setError(getString(R.string.addressRequired));
+            flag = 1;
         }
 
         switch (ruolo){
+            // Controlli
             case "proprietario":
+                if(TextUtils.isEmpty(nome.getText().toString())){
+                    nome.setError(getString(R.string.nameRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(cognome.getText().toString())){
+                    cognome.setError(getString(R.string.surnameRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(data.getText().toString())){
+                    data.setError(getString(R.string.dateBornRequired));
+                    flag = 1;
+                }
+
+                // se un controllo non è andato esco dal metodo
+                if(flag == 1)
+                    return;
+
+                // Creazione account
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
                             Persona p =new Persona(email,telefono, indirizzoMap, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
                             db.collection("utenti").document(email+"").set(p);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
-                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
                 break;
 
             case "veterinario":
-                // TODO: fare controlli sui campi efnovi e partitaIva
+                // controlli
+                if(TextUtils.isEmpty(nome.getText().toString())){
+                    nome.setError(getString(R.string.nameRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(cognome.getText().toString())){
+                    cognome.setError(getString(R.string.surnameRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(data.getText().toString())){
+                    data.setError(getString(R.string.dateBornRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(efnovi)){
+                    etRegNumEFNOVI.setError(getString(R.string.efnoviRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(partitaIva)){
+                    etRegPartitaIva.setError(getString(R.string.partitaIvaRequired));
+                    flag = 1;
+                }
+
+                // se un controllo non è andato esco dal metodo
+                if(flag == 1)
+                    return;
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
                             Veterinario v =new Veterinario(email, telefono, indirizzoMap, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
                             db.collection("utenti").document(email+"").set(v);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
-                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
                 break;
 
             case "associazione":
-                // TODO: fare controlli sui campi cf e denominazione
+                // controlli
+                if(TextUtils.isEmpty(denominazione)){
+                    etRegDenominazione.setError(getString(R.string.denominazioneRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(codiceFiscaleAssociazione)){
+                    etRegCodiceFiscaleAssociazione.setError(getString(R.string.cfRequired));
+                    flag = 1;
+                }
+
+                // se un controllo non è andato esco dal metodo
+                if(flag == 1)
+                    return;
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
                             Associazione a =new Associazione(email, telefono, indirizzoMap, ruolo, codiceFiscaleAssociazione, denominazione);
                             db.collection("utenti").document(email+"").set(a);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
-                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
                 break;
 
             case "ente":
-                // TODO: fare controlli sui campi
+                // controlli
+                if(TextUtils.isEmpty(denominazione)){
+                    etRegDenominazione.setError(getString(R.string.denominazioneRequired));
+                    flag = 1;
+                }
+
+                if(TextUtils.isEmpty(partitaIva)){
+                    etRegPartitaIva.setError(getString(R.string.partitaIvaRequired));
+                    flag = 1;
+                }
+
+                // se un controllo non è andato esco dal metodo
+                if(flag == 1)
+                    return;
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
-                            Ente e =new Ente(email, telefono, indirizzoMap, ruolo, partitaIva, denominazione, true);
+                            Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
+                            Ente e =new Ente(email, telefono, indirizzoMap, ruolo, partitaIva, denominazione, etRegIsPrivato.isChecked());
                             db.collection("utenti").document(email+"").set(e);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
-                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
