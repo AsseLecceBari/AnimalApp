@@ -9,6 +9,7 @@
     <string name="profilo">Profilo</string>
     <string name="logout">logout</string>
     <string name="logoutSuccess">Logout effettuato con successo</string>
+    <string name="selectUserType">Selezionare il ruolo utente</string>
 
     <string-array name="Ruolo">
         <item>Proprietario</item>

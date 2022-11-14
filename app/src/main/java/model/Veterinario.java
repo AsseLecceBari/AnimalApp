@@ -6,7 +6,7 @@ import java.util.Map;
 public class Veterinario extends Persona{
     String numEFNOVI,partitaIva;
 
-    public Veterinario(String email, String telefono, Map<String, String> indirizzo, String ruolo, String nome, String cognome, Date dataDiNascita, String numEFNOVI, String partitaIva) {
+    public Veterinario(String email, String telefono, Map<String, String> indirizzo, String ruolo, String nome, String cognome, String dataDiNascita, String numEFNOVI, String partitaIva) {
         super(email, telefono, indirizzo, ruolo, nome, cognome, dataDiNascita);
         this.numEFNOVI = numEFNOVI;
         this.partitaIva = partitaIva;
