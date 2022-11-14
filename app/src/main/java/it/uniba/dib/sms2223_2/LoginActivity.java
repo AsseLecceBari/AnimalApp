@@ -50,20 +50,20 @@ public class LoginActivity extends AppCompatActivity {
         String password = etLoginPassword.getText().toString();
 
         if (TextUtils.isEmpty(email)){
-            etLoginEmail.setError("*Email obbligatoria");
+            etLoginEmail.setError(getString(R.string.emailRequired));
             etLoginEmail.requestFocus();
         }else if (TextUtils.isEmpty(password)){
-            etLoginPassword.setError("*Password obbligatoria");
+            etLoginPassword.setError(getString(R.string.passwordRequired));
             etLoginPassword.requestFocus();
         }else{
             mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()){
-                        Toast.makeText(LoginActivity.this, "User logged in successfully", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.userLogged), Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                     }else{
-                        Toast.makeText(LoginActivity.this, "Log in Error: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, getString(R.string.loginError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }
             });
