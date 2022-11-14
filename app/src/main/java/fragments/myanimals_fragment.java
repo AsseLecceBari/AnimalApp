@@ -1,42 +1,31 @@
 package fragments;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.CountDownTimer;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.android.gms.tasks.Tasks;
-
 
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import adapter.AnimalAdapter;
 import it.uniba.dib.sms2223_2.R;
@@ -46,6 +35,8 @@ public class myanimals_fragment extends Fragment {
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private FirebaseAuth auth;
     private FirebaseFirestore db;
+    FloatingActionButton addAnimale;
+
 
     private enum LayoutManagerType {
 
@@ -75,7 +66,16 @@ public class myanimals_fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
-
+        addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
+        if(auth.getCurrentUser()==null){
+            addAnimale.setVisibility(View.GONE);
+        }
+        addAnimale.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).addToBackStack(null).commit();
+            }
+        });
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);

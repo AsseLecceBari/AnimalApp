@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import adapter.VPAdapter;
@@ -28,6 +29,7 @@ public class main_fragment extends Fragment {
             VPAdapter vpAdapter;
             FragmentActivity  activity;
     private int posizione = 0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,14 +45,19 @@ public class main_fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+
         tabLayout= getView().findViewById(R.id.tabLayout);
         viewPager2=getView().findViewById(R.id.viewPager);
-
-        if(activity == null){
+        //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
+        try {
             activity  = getActivity();
             vpAdapter= new VPAdapter(activity);
             viewPager2.setAdapter(vpAdapter);
+        }catch (Exception e){
+            return;
         }
+
+
 
         tabLayout.getTabAt(posizione).select();
 
