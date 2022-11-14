@@ -44,25 +44,8 @@ public class MainActivity extends AppCompatActivity {
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
-        tabLayout= findViewById(R.id.tabLayout);
-        //Salviamo la posizione del tab selezionato
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                posizione=tab.getPosition();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
 
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
     }
 
     @Override
@@ -92,15 +75,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //Qunado clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
-        switch (posizione) {
-            case (0):
-                super.onBackPressed();
-                break;
-            default:
-                tabLayout.getTabAt(0).select();
-                posizione=0;
-                break;
+        main_fragment main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        if(main_fragment!=null){
+            tabLayout= findViewById(R.id.tabLayout);
+            posizione=main_fragment.getPosition();
+            switch (posizione) {
+                case (0):
+                    super.onBackPressed();
+                    break;
+                default:
+                    tabLayout.getTabAt(0).select();
+                    posizione=0;
+                    break;
+            }
         }
+        //Qunado clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
     }
 }
