@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -50,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText etRegConfPass;
     private TextInputEditText etRegTelefono;
     private TextInputEditText etRegIndirizzo;
-    private Spinner etRegRuolo;
+
     private TextInputEditText etRegNumEFNOVI;
     private TextInputEditText etRegPartitaIva;
     private TextInputEditText etRegDenominazione;
@@ -59,6 +60,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText data;
     private TextInputEditText nome;
     private TextInputEditText cognome;
+    private Spinner etRegRuolo;
 
     private TextView tvLoginHere;
     private Button btnRegister;
@@ -136,7 +138,7 @@ public class RegisterActivity extends AppCompatActivity {
                         ruolo = "proprietario";
                         break;
 
-                    case 1: // veterinaio
+                    case 1: // veterinario
                         numEFNInputLayout.setVisibility(View.VISIBLE);
                         piVAInputLayout.setVisibility(View.VISIBLE);
                         denomInputLayout.setVisibility(View.GONE);
@@ -144,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         mostraNomeCognomeNascita();
 
-                        ruolo = "veterinaio";
+                        ruolo = "veterinario";
                         break;
 
                     case 2: // associazione
