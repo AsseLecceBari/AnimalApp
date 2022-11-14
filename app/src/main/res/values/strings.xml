@@ -41,6 +41,8 @@
     <string name="registrati">Registrati</string>
     <string name="gi_registrato">Già registrato?</string>
     <string name="effettua_il_login">Effettua il Login</string>
+    <string name="userLogged">Utente loggato!</string>
+    <string name="loginError">\"Errore nel Login: \"</string>
 
     <string-array name="Ruolo">
         <item>Proprietario</item>
