@@ -24,7 +24,8 @@
             android:name="fragments.main_fragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout="@layout/fragment_main_fragment"/>
+            android:layout="@layout/fragment_main_fragment"
+            tools:layout="@layout/fragment_main_fragment" />
     </FrameLayout>
 
 

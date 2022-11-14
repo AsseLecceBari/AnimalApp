@@ -1,4 +1,6 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    android:id="@+id/myAnimalsFragment"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,10 +9,5 @@
         android:id="@+id/recycleMyAnimals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:listitem="@layout/recycle_view_animals"
-        />
-
-    <!-- TODO: Update blank fragment layout -->
-
-
+        tools:listitem="@layout/recycle_view_animals"/>
 </FrameLayout>
