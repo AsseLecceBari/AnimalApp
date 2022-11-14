@@ -29,7 +29,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import model.Associazione;
+import model.Ente;
+import model.Persona;
 import model.Utente;
+import model.Veterinario;
 
 public class RegisterActivity extends AppCompatActivity {
     private TextInputLayout numEFNInputLayout;
@@ -59,12 +63,13 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView tvLoginHere;
     private Button btnRegister;
 
-
     private DatePickerDialog picker;
     private Calendar cldr;
 
     private FirebaseAuth mAuth;
     private FirebaseFirestore db;
+
+    private String ruolo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +132,8 @@ public class RegisterActivity extends AppCompatActivity {
                         isPrivatoInputLayout.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         mostraNomeCognomeNascita();
+
+                        ruolo = "proprietario";
                         break;
 
                     case 1: // veterinaio
@@ -136,6 +143,8 @@ public class RegisterActivity extends AppCompatActivity {
                         isPrivatoInputLayout.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         mostraNomeCognomeNascita();
+
+                        ruolo = "veterinaio";
                         break;
 
                     case 2: // associazione
@@ -145,6 +154,8 @@ public class RegisterActivity extends AppCompatActivity {
                         isPrivatoInputLayout.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.VISIBLE);
                         nascondiNomeCognomeNascita();
+
+                        ruolo = "associazione";
                         break;
 
                     case 3: // ente
@@ -154,6 +165,8 @@ public class RegisterActivity extends AppCompatActivity {
                         isPrivatoInputLayout.setVisibility(View.VISIBLE );
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         nascondiNomeCognomeNascita();
+
+                        ruolo = "ente";
                         break;
                 }
             }
@@ -197,52 +210,122 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createUser(){
-        String email = etRegEmail.getText().toString();
-        String password = etRegPassword.getText().toString();
-        String confPassword= etRegConfPass.getText().toString();
-        String telefono="";
-        Map<String,String> indirizzo = new HashMap<>();
-        int ruolo=0;
+        String email;
+        String password;
+        String confPassword;
+        String telefono;
+        String indirizzo;
+        String efnovi;
+        String partitaIva;
+        String codiceFiscaleAssociazione, denominazione;
 
+        email = etRegEmail.getText().toString();
+        password = etRegPassword.getText().toString();
+        confPassword= etRegConfPass.getText().toString();
+        telefono= etRegTelefono.getText().toString();
+        indirizzo = etRegIndirizzo.getText().toString();
+
+        efnovi = etRegNumEFNOVI.getText().toString();
+        partitaIva = etRegPartitaIva.getText().toString();
+
+        codiceFiscaleAssociazione = etRegCodiceFiscaleAssociazione.getText().toString();
+        denominazione = etRegDenominazione.getText().toString();
+
+        Map<String,String> indirizzoMap = new HashMap<>();
+        indirizzoMap.put("via", indirizzo);
+
+        // Controllo se gli input sono corretti
         if (TextUtils.isEmpty(email)){
             etRegEmail.setError("*Email obbligatoria");
             etRegEmail.requestFocus();
+            return;
         }else if (TextUtils.isEmpty(password)) {
             etRegPassword.setError("*Password obbligatoria");
             etRegPassword.requestFocus();
+            return;
         }
         else if (TextUtils.isEmpty(confPassword)){
             etRegConfPass.setError("*Password obbligatoria");
             etRegConfPass.requestFocus();
+            return;
         }
         else if(!confPassword.equals(password)){
             etRegConfPass.setError("Le password non combaciano");
             etRegConfPass.requestFocus();
-        }else{
-           create(email,password);
+            return;
+        }
 
+        switch (ruolo){
+            case "proprietario":
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
+                            Persona p =new Persona(email,telefono, indirizzoMap, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
+                            db.collection("utenti").document(email+"").set(p);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        }else{
+                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+
+            case "veterinario":
+                // TODO: fare controlli sui campi efnovi e partitaIva
+
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
+                            Veterinario v =new Veterinario(email, telefono, indirizzoMap, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
+                            db.collection("utenti").document(email+"").set(v);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        }else{
+                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+
+            case "associazione":
+                // TODO: fare controlli sui campi cf e denominazione
+
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
+                            Associazione a =new Associazione(email, telefono, indirizzoMap, ruolo, codiceFiscaleAssociazione, denominazione);
+                            db.collection("utenti").document(email+"").set(a);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        }else{
+                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+
+            case "ente":
+                // TODO: fare controlli sui campi
+
+                mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
+                            Ente e =new Ente(email, telefono, indirizzoMap, ruolo, partitaIva, denominazione, true);
+                            db.collection("utenti").document(email+"").set(e);
+                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        }else{
+                            Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
         }
     }
-    private void  create(String email,String password){
-        String telefono="2131";
-        Map<String,String> indirizzo = new HashMap<>();
-        indirizzo.put("via","g.verdi");
-        String ruolo="";
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Toast.makeText(RegisterActivity.this, "Utente registrato", Toast.LENGTH_SHORT).show();
-                    Utente u =new Utente(email+"",telefono+"",indirizzo,ruolo);
-                    db.collection("utenti").document(email+"").set(u);
-                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                }else{
-                    Toast.makeText(RegisterActivity.this, "Errore di registrazione: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-
-    }
-
 
 }
