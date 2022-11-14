@@ -20,10 +20,6 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet;
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private  TextView nomeAnimale;
         private  TextView genereAnimale;

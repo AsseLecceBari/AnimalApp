@@ -26,7 +26,7 @@ public class main_fragment extends Fragment {
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
             VPAdapter vpAdapter;
-     FragmentActivity  activity;
+            FragmentActivity  activity;
     private int posizione = 0;
 
     @Override
@@ -85,5 +85,8 @@ public class main_fragment extends Fragment {
 
         outState.putInt("posizione", posizione);  //test
         Log.d("test", String.valueOf(posizione)); //test
+    }
+    public int getPosition(){
+        return posizione;
     }
 }
