@@ -268,7 +268,8 @@
                 android:text="@string/effettua_il_login"
                 android:textColor="@color/teal_700"
                 android:textStyle="bold"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:background="?attr/selectableItemBackground"/>
 
         </LinearLayout>
     </LinearLayout>

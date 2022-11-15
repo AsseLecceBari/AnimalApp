@@ -253,9 +253,15 @@ public class RegisterActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(telefono)){
             etRegTelefono.setError(getString(R.string.teleponeRequired));
             flag = 1;
+        }else if(telefono.length()<11){
+            etRegTelefono.setError(getString(R.string.minimum11cifre));
+            flag = 1;
         }
         if(TextUtils.isEmpty(indirizzo)){
             etRegIndirizzo.setError(getString(R.string.addressRequired));
+            flag = 1;
+        }else if(indirizzoNonConforme(indirizzo)){
+            etRegIndirizzo.setError("Il formato deve rispettare: via xxxx, n");
             flag = 1;
         }
         if(TextUtils.isEmpty(citta)){
@@ -269,8 +275,10 @@ public class RegisterActivity extends AppCompatActivity {
                 flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 // Creazione account
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -300,11 +308,16 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(partitaIva)){
                     etRegPartitaIva.setError(getString(R.string.partitaIvaRequired));
                     flag = 1;
+                }else if(partitaIva.length()<11){
+                    etRegPartitaIva.setError("Partita Iva deve essere lunga almeno 11 numeri");
+                    flag = 1;
                 }
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -331,11 +344,16 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(codiceFiscaleAssociazione)){
                     etRegCodiceFiscaleAssociazione.setError(getString(R.string.cfRequired));
                     flag = 1;
+                }else if(codiceFiscaleAssociazione.length()<11){
+                    etRegCodiceFiscaleAssociazione.setError(getString(R.string.mincf));
+                    flag = 1;
                 }
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -362,11 +380,16 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(partitaIva)){
                     etRegPartitaIva.setError(getString(R.string.partitaIvaRequired));
                     flag = 1;
+                }else if(partitaIva.length()<11){
+                    etRegPartitaIva.setError("Partita Iva deve essere lunga almeno 11 numeri");
+                    flag = 1;
                 }
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -385,6 +408,18 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    private boolean indirizzoNonConforme(String indirizzo) {
+        char last = indirizzo.charAt(indirizzo.length() - 1);
+        if (indirizzo.charAt(indirizzo.length() - 2) == ' ' || indirizzo.charAt(indirizzo.length() - 3) == ' ' || indirizzo.charAt(indirizzo.length() - 4) == ' '){
+            if ((last >= '0') && (last <= '9')) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    // Restituisce 1 se cè un errore
     private int nomeCognomeNascitaRequired(String name, String surname, String dataNascita) {
         int flag = 0;
         if(TextUtils.isEmpty(name)){
@@ -403,5 +438,4 @@ public class RegisterActivity extends AppCompatActivity {
         }
         return flag;
     }
-
 }
