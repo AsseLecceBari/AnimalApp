@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -57,13 +58,13 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
 
         public ViewHolder(View view) {
             super(view);
-            //Prendo i riferimenti ai widget
+            //Prendo i riferimenti al layout di ogni singola riga
             nomeAnimale = (TextView) view.findViewById(R.id.nomeAnimaleView);
-            genereAnimale=(TextView) view.findViewById(R.id.genereAnimaleView);
+           genereAnimale=(TextView) view.findViewById(R.id.genereAnimaleView);
             specieAnimale= (TextView) view.findViewById(R.id.specieAnimaleView);
             dataNascitaAnimale= (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
             codiceAnimale= (TextView) view.findViewById(R.id.codiceAnimaleView);
-            imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
+            //imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
         }
 
 
@@ -82,13 +83,15 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         return new ViewHolder(v);
     }
 
-    @Override
+
+
+     @Override
     public void onBindViewHolder(@NonNull AnimalAdapter.ViewHolder holder, int position) {
         //Vengono inseriti i dati degli animali
         holder.getNomeAnimale().setText(localDataSet.get(position).getNome());
         holder.getSpecieAnimale().setText(localDataSet.get(position).getSpecie());
-        holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
-        holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
+       holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
+       holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
         holder.getCodiceAnimale().setText(localDataSet.get(position).getIdAnimale());
     }
 
@@ -96,4 +99,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
     public int getItemCount() {
         return localDataSet.size();
     }
+
+
+
 }
