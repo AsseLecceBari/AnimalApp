@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,7 +32,6 @@ import java.util.Map;
 import model.Associazione;
 import model.Ente;
 import model.Persona;
-import model.Utente;
 import model.Veterinario;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -215,33 +212,37 @@ public class RegisterActivity extends AppCompatActivity {
         String efnovi;
         String partitaIva;
         String codiceFiscaleAssociazione, denominazione;
+        String name, surname, dataNascita;
 
         email = etRegEmail.getText().toString();
         password = etRegPassword.getText().toString();
         confPassword= etRegConfPass.getText().toString();
         telefono= etRegTelefono.getText().toString();
         indirizzo = etRegIndirizzo.getText().toString();
-
+        name = nome.getText().toString();
+        surname = cognome.getText().toString();
+        dataNascita = data.getText().toString();
         efnovi = etRegNumEFNOVI.getText().toString();
         partitaIva = etRegPartitaIva.getText().toString();
-
         codiceFiscaleAssociazione = etRegCodiceFiscaleAssociazione.getText().toString();
         denominazione = etRegDenominazione.getText().toString();
 
         Map<String,String> indirizzoMap = new HashMap<>();
         indirizzoMap.put("via", indirizzo);
 
-        int flag = 0;
         // Controllo se gli input sono corretti
+        int flag = 0;
+            // Generali
         if (TextUtils.isEmpty(email)){
             etRegEmail.setError(getString(R.string.emailRequired));
             flag = 1;
         }
         if (TextUtils.isEmpty(password)) {
             etRegPassword.setError(getString(R.string.passwordRequired));
+            etRegConfPass.setError(getString(R.string.passwordRequired));
             flag = 1;
         }
-        if(!confPassword.equals(password) || TextUtils.isEmpty(password)){
+        if(!confPassword.equals(password)){
             etRegConfPass.setError(getString(R.string.passwordRepeatRequired));
             flag = 1;
         }
@@ -257,20 +258,7 @@ public class RegisterActivity extends AppCompatActivity {
         switch (ruolo){
             // Controlli
             case "proprietario":
-                if(TextUtils.isEmpty(nome.getText().toString())){
-                    nome.setError(getString(R.string.nameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(cognome.getText().toString())){
-                    cognome.setError(getString(R.string.surnameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(data.getText().toString())){
-                    data.setError(getString(R.string.dateBornRequired));
-                    flag = 1;
-                }
+                flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
 
                 // se un controllo non è andato esco dal metodo
                 if(flag == 1)
@@ -294,20 +282,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             case "veterinario":
                 // controlli
-                if(TextUtils.isEmpty(nome.getText().toString())){
-                    nome.setError(getString(R.string.nameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(cognome.getText().toString())){
-                    cognome.setError(getString(R.string.surnameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(data.getText().toString())){
-                    data.setError(getString(R.string.dateBornRequired));
-                    flag = 1;
-                }
+                flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
 
                 if(TextUtils.isEmpty(efnovi)){
                     etRegNumEFNOVI.setError(getString(R.string.efnoviRequired));
@@ -400,6 +375,25 @@ public class RegisterActivity extends AppCompatActivity {
                 });
                 break;
         }
+    }
+
+    private int nomeCognomeNascitaRequired(String name, String surname, String dataNascita) {
+        int flag = 0;
+        if(TextUtils.isEmpty(name)){
+            nome.setError(getString(R.string.nameRequired));
+            flag = 1;
+        }
+
+        if(TextUtils.isEmpty(surname)){
+            cognome.setError(getString(R.string.surnameRequired));
+            flag = 1;
+        }
+
+        if(TextUtils.isEmpty(dataNascita)){
+            data.setError(getString(R.string.dateBornRequired));
+            flag = 1;
+        }
+        return flag;
     }
 
 }

@@ -45,7 +45,7 @@
     <string name="loginError">\"Errore nel Login: \"</string>
 
     <string-array name="Ruolo">
-        <item>Proprietario</item>
+        <item>Proprietario / Assistente animale</item>
         <item>Veterinario</item>
         <item>Associazione</item>
         <item>Ente</item>
