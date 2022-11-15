@@ -73,7 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="Login"/>
+            android:text="@string/login"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -85,7 +85,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Non ancora registrato?"
+                android:text="@string/non_ancora_registrato"
                 android:textSize="16sp"/>
 
             <TextView
@@ -93,7 +93,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:text="Registrati!"
+                android:text="@string/registrati"
                 android:textColor="@color/teal_700"
                 android:textStyle="bold"
                 android:textSize="20sp"/>

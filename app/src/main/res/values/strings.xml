@@ -43,6 +43,8 @@
     <string name="effettua_il_login">Effettua il Login</string>
     <string name="userLogged">Utente loggato!</string>
     <string name="loginError">\"Errore nel Login: \"</string>
+    <string name="login">Login</string>
+    <string name="non_ancora_registrato">Non ancora registrato?</string>
 
     <string-array name="Ruolo">
         <item>Proprietario</item>
