@@ -48,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText etRegConfPass;
     private TextInputEditText etRegTelefono;
     private TextInputEditText etRegIndirizzo;
-
+    private TextInputEditText etRegCitta;
     private TextInputEditText etRegNumEFNOVI;
     private TextInputEditText etRegPartitaIva;
     private TextInputEditText etRegDenominazione;
@@ -83,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRegConfPass = findViewById(R.id.etRegConfPass);
         etRegTelefono = findViewById(R.id.etRegTelefono);
         etRegIndirizzo = findViewById(R.id.etRegIndirizzo);
+        etRegCitta = findViewById(R.id.etRegCitta);
         etRegRuolo = findViewById(R.id.etRegRuolo);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
@@ -209,6 +210,7 @@ public class RegisterActivity extends AppCompatActivity {
         String confPassword;
         String telefono;
         String indirizzo;
+        String citta;
         String efnovi;
         String partitaIva;
         String codiceFiscaleAssociazione, denominazione;
@@ -219,6 +221,7 @@ public class RegisterActivity extends AppCompatActivity {
         confPassword= etRegConfPass.getText().toString();
         telefono= etRegTelefono.getText().toString();
         indirizzo = etRegIndirizzo.getText().toString();
+        citta = etRegCitta.getText().toString();
         name = nome.getText().toString();
         surname = cognome.getText().toString();
         dataNascita = data.getText().toString();
@@ -228,7 +231,8 @@ public class RegisterActivity extends AppCompatActivity {
         denominazione = etRegDenominazione.getText().toString();
 
         Map<String,String> indirizzoMap = new HashMap<>();
-        indirizzoMap.put("via", indirizzo);
+        indirizzoMap.put("viaCivico", indirizzo);
+        indirizzoMap.put("citta", citta);
 
         // Controllo se gli input sono corretti
         int flag = 0;
@@ -252,6 +256,10 @@ public class RegisterActivity extends AppCompatActivity {
         }
         if(TextUtils.isEmpty(indirizzo)){
             etRegIndirizzo.setError(getString(R.string.addressRequired));
+            flag = 1;
+        }
+        if(TextUtils.isEmpty(citta)){
+            etRegCitta.setError("Citta' obbligatoria");
             flag = 1;
         }
 
