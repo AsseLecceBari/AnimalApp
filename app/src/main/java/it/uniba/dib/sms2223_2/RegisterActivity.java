@@ -8,8 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -34,7 +32,6 @@ import java.util.Map;
 import model.Associazione;
 import model.Ente;
 import model.Persona;
-import model.Utente;
 import model.Veterinario;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -51,7 +48,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText etRegConfPass;
     private TextInputEditText etRegTelefono;
     private TextInputEditText etRegIndirizzo;
-
+    private TextInputEditText etRegCitta;
     private TextInputEditText etRegNumEFNOVI;
     private TextInputEditText etRegPartitaIva;
     private TextInputEditText etRegDenominazione;
@@ -86,6 +83,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRegConfPass = findViewById(R.id.etRegConfPass);
         etRegTelefono = findViewById(R.id.etRegTelefono);
         etRegIndirizzo = findViewById(R.id.etRegIndirizzo);
+        etRegCitta = findViewById(R.id.etRegCitta);
         etRegRuolo = findViewById(R.id.etRegRuolo);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
@@ -212,69 +210,75 @@ public class RegisterActivity extends AppCompatActivity {
         String confPassword;
         String telefono;
         String indirizzo;
+        String citta;
         String efnovi;
         String partitaIva;
         String codiceFiscaleAssociazione, denominazione;
+        String name, surname, dataNascita;
 
         email = etRegEmail.getText().toString();
         password = etRegPassword.getText().toString();
         confPassword= etRegConfPass.getText().toString();
         telefono= etRegTelefono.getText().toString();
         indirizzo = etRegIndirizzo.getText().toString();
-
+        citta = etRegCitta.getText().toString();
+        name = nome.getText().toString();
+        surname = cognome.getText().toString();
+        dataNascita = data.getText().toString();
         efnovi = etRegNumEFNOVI.getText().toString();
         partitaIva = etRegPartitaIva.getText().toString();
-
         codiceFiscaleAssociazione = etRegCodiceFiscaleAssociazione.getText().toString();
         denominazione = etRegDenominazione.getText().toString();
 
         Map<String,String> indirizzoMap = new HashMap<>();
-        indirizzoMap.put("via", indirizzo);
+        indirizzoMap.put("viaCivico", indirizzo);
+        indirizzoMap.put("citta", citta);
 
-        int flag = 0;
         // Controllo se gli input sono corretti
+        int flag = 0;
+            // Generali
         if (TextUtils.isEmpty(email)){
             etRegEmail.setError(getString(R.string.emailRequired));
             flag = 1;
         }
         if (TextUtils.isEmpty(password)) {
             etRegPassword.setError(getString(R.string.passwordRequired));
+            etRegConfPass.setError(getString(R.string.passwordRequired));
             flag = 1;
         }
-        if(!confPassword.equals(password) || TextUtils.isEmpty(password)){
+        if(!confPassword.equals(password)){
             etRegConfPass.setError(getString(R.string.passwordRepeatRequired));
             flag = 1;
         }
         if(TextUtils.isEmpty(telefono)){
             etRegTelefono.setError(getString(R.string.teleponeRequired));
             flag = 1;
+        }else if(telefono.length()<11){
+            etRegTelefono.setError(getString(R.string.minimum11cifre));
+            flag = 1;
         }
         if(TextUtils.isEmpty(indirizzo)){
             etRegIndirizzo.setError(getString(R.string.addressRequired));
+            flag = 1;
+        }else if(indirizzoNonConforme(indirizzo)){
+            etRegIndirizzo.setError("Il formato deve rispettare: via xxxx, n");
+            flag = 1;
+        }
+        if(TextUtils.isEmpty(citta)){
+            etRegCitta.setError("Citta' obbligatoria");
             flag = 1;
         }
 
         switch (ruolo){
             // Controlli
             case "proprietario":
-                if(TextUtils.isEmpty(nome.getText().toString())){
-                    nome.setError(getString(R.string.nameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(cognome.getText().toString())){
-                    cognome.setError(getString(R.string.surnameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(data.getText().toString())){
-                    data.setError(getString(R.string.dateBornRequired));
-                    flag = 1;
-                }
+                flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 // Creazione account
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -294,20 +298,7 @@ public class RegisterActivity extends AppCompatActivity {
 
             case "veterinario":
                 // controlli
-                if(TextUtils.isEmpty(nome.getText().toString())){
-                    nome.setError(getString(R.string.nameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(cognome.getText().toString())){
-                    cognome.setError(getString(R.string.surnameRequired));
-                    flag = 1;
-                }
-
-                if(TextUtils.isEmpty(data.getText().toString())){
-                    data.setError(getString(R.string.dateBornRequired));
-                    flag = 1;
-                }
+                flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
 
                 if(TextUtils.isEmpty(efnovi)){
                     etRegNumEFNOVI.setError(getString(R.string.efnoviRequired));
@@ -317,11 +308,16 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(partitaIva)){
                     etRegPartitaIva.setError(getString(R.string.partitaIvaRequired));
                     flag = 1;
+                }else if(partitaIva.length()<11){
+                    etRegPartitaIva.setError("Partita Iva deve essere lunga almeno 11 numeri");
+                    flag = 1;
                 }
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -348,11 +344,16 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(codiceFiscaleAssociazione)){
                     etRegCodiceFiscaleAssociazione.setError(getString(R.string.cfRequired));
                     flag = 1;
+                }else if(codiceFiscaleAssociazione.length()<11){
+                    etRegCodiceFiscaleAssociazione.setError(getString(R.string.mincf));
+                    flag = 1;
                 }
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -379,11 +380,16 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(partitaIva)){
                     etRegPartitaIva.setError(getString(R.string.partitaIvaRequired));
                     flag = 1;
+                }else if(partitaIva.length()<11){
+                    etRegPartitaIva.setError("Partita Iva deve essere lunga almeno 11 numeri");
+                    flag = 1;
                 }
 
                 // se un controllo non è andato esco dal metodo
-                if(flag == 1)
+                if(flag == 1){
+                    Toast.makeText(RegisterActivity.this, getString(R.string.completaIcampi), Toast.LENGTH_SHORT).show();
                     return;
+                }
 
                 mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -402,4 +408,34 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
+    private boolean indirizzoNonConforme(String indirizzo) {
+        char last = indirizzo.charAt(indirizzo.length() - 1);
+        if (indirizzo.charAt(indirizzo.length() - 2) == ' ' || indirizzo.charAt(indirizzo.length() - 3) == ' ' || indirizzo.charAt(indirizzo.length() - 4) == ' '){
+            if ((last >= '0') && (last <= '9')) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    // Restituisce 1 se cè un errore
+    private int nomeCognomeNascitaRequired(String name, String surname, String dataNascita) {
+        int flag = 0;
+        if(TextUtils.isEmpty(name)){
+            nome.setError(getString(R.string.nameRequired));
+            flag = 1;
+        }
+
+        if(TextUtils.isEmpty(surname)){
+            cognome.setError(getString(R.string.surnameRequired));
+            flag = 1;
+        }
+
+        if(TextUtils.isEmpty(dataNascita)){
+            data.setError(getString(R.string.dateBornRequired));
+            flag = 1;
+        }
+        return flag;
+    }
 }
