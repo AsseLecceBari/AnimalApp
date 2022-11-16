@@ -122,38 +122,15 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         storageRef.child(localDataSet.get(position).getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-
-
                 Glide.with(holder.itemView.getContext())
                         .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imageAnimal);
             }
         });
-
-
-
-
-
     }
 
     @Override
     public int getItemCount() {
         return localDataSet.size();
-    }
-    private Bitmap getImageBitmap(String url) {
-        Bitmap bm = null;
-        try {
-            URL aURL = new URL(url);
-            URLConnection conn = aURL.openConnection();
-            conn.connect();
-            InputStream is = conn.getInputStream();
-            BufferedInputStream bis = new BufferedInputStream(is);
-            bm = BitmapFactory.decodeStream(bis);
-            bis.close();
-            is.close();
-        } catch (IOException e) {
-            Log.e("Img", "Error getting bitmap", e);
-        }
-        return bm;
     }
 }

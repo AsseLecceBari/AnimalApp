@@ -1,7 +1,12 @@
 package fragments;
 
+
+
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,6 +14,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
@@ -27,6 +33,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.local.BundleCache;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnPausedListener;
 import com.google.firebase.storage.OnProgressListener;
@@ -35,6 +42,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.InetAddress;
+import java.net.URL;
 import java.util.Calendar;
 
 import it.uniba.dib.sms2223_2.MainActivity;
@@ -54,7 +65,7 @@ public class aggiungiAnimaleFragment extends Fragment {
     private Button selectImgButton;
     private Button registraAnimaleBtn;
     private ImageView imgAnimaleReg;
-    private final int PICK_IMAGE_REQUEST = 22;
+
     private Uri file;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -127,29 +138,52 @@ public class aggiungiAnimaleFragment extends Fragment {
                 String specie=etRegSpecieAnimale.getText().toString();
                 String emailProprietario=auth.getCurrentUser().getEmail();
                 String dataDiNascita=data.getText().toString();
-                String fotoProfilo="images/"+file.getLastPathSegment();  //Verificare che si usi Bitmap
+                String fotoProfilo="images/"+file.getLastPathSegment();
                 String idAnimale="203886"; //Stesso id del documento
                 Boolean isAssistito=false;
-                uploadImage();
+
                 Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
                 db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+                            uploadImage();
+
                             startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+
                         }else{
                             Toast.makeText(rootView.getContext(), getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
-            }
+                //TODO Qui bisogna aggiungere il contro se la connessione è presente
+                if(!isInternetAvailable()){
+                    startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
+                }
 
         });
+
 
         return rootView;
     }
 
+    private boolean isNetworkConnected() {
+        ConnectivityManager cm = (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
+        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
+    }
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com");
+            //You can replace it with your name
+            return !ipAddr.equals("");
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
 
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),

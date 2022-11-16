@@ -45,7 +45,7 @@ public class myanimals_fragment extends Fragment {
     private TextView tvLogin;
     private TextView tvRegistrati;
     FloatingActionButton addAnimale;
-
+    private Animale a;
 
     private enum LayoutManagerType {
 
@@ -63,6 +63,10 @@ public class myanimals_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
 
 
        //Prendo i dati degli animali dal database
@@ -166,10 +170,8 @@ public class myanimals_fragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-
                             //Salvare animale in un array con elementi oggetto animale
                             mDataset.add(document.toObject(Animale.class));
-
                             Log.e("animale", document.getId() + " => " + document.getData());
                             //Passo i dati presi dal database all'adapter
                             mAdapter = new AnimalAdapter(mDataset);
