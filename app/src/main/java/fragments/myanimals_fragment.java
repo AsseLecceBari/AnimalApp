@@ -11,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,6 +74,16 @@ public class myanimals_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        int SDK_INT = android.os.Build.VERSION.SDK_INT;
+        if (SDK_INT > 8)
+        {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
+                    .permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+            //your codes here
+
+        }
 
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         tvLogin=rootView.findViewById(R.id.tvLoginMyAnimals);
@@ -158,7 +169,6 @@ public class myanimals_fragment extends Fragment {
 
                             //Salvare animale in un array con elementi oggetto animale
                             mDataset.add(document.toObject(Animale.class));
-
 
                             Log.e("animale", document.getId() + " => " + document.getData());
                             //Passo i dati presi dal database all'adapter

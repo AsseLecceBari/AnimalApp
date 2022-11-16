@@ -45,6 +45,7 @@
     <string name="loginError">\"Errore nel Login: \"</string>
     <string name="login">Login</string>
     <string name="non_ancora_registrato">Non ancora registrato?</string>
+    <string name="registra_animale">Registra animale</string>
 
     <string-array name="Ruolo">
         <item>Proprietario</item>
