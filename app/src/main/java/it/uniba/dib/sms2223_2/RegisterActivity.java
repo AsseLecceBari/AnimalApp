@@ -412,11 +412,8 @@ public class RegisterActivity extends AppCompatActivity {
         if(indirizzo.length()<4){
             return true;
         }
-        char last = indirizzo.charAt(indirizzo.length() - 1);
-        if (indirizzo.charAt(indirizzo.length() - 2) == ' ' || indirizzo.charAt(indirizzo.length() - 3) == ' ' || indirizzo.charAt(indirizzo.length() - 4) == ' '){
-            if ((last >= '0') && (last <= '9')) {
-                return false;
-            }
+        if(indirizzo.contains(" ") || indirizzo.contains(",")){
+            return false;
         }
         return true;
     }
