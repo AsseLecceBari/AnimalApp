@@ -28,6 +28,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -47,10 +48,12 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.URL;
 import java.util.Calendar;
+import java.util.Random;
 
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import it.uniba.dib.sms2223_2.RegisterActivity;
+import it.uniba.dib.sms2223_2.ServiceUploadImage;
 import model.Animale;
 import model.Persona;
 
@@ -139,28 +142,22 @@ public class aggiungiAnimaleFragment extends Fragment {
                 String emailProprietario=auth.getCurrentUser().getEmail();
                 String dataDiNascita=data.getText().toString();
                 String fotoProfilo="images/"+file.getLastPathSegment();
-                String idAnimale="203886"; //Stesso id del documento
+                Random r= new Random();
+                String idAnimale=r.nextInt()+""; ; //Stesso id del documento
                 Boolean isAssistito=false;
 
+
+                // si va sotto solo se si superano i controlli dell'input
+                Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
+                getActivity().startService(intent);
+
                 Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
-                db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
+                db.collection("animali").document(idAnimale).set(a).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            uploadImage();
-
-                            startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-
-                        }else{
-                            Toast.makeText(rootView.getContext(), getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                    public void onSuccess(Void unused) {
                     }
-
                 });
-                //TODO Qui bisogna aggiungere il contro se la connessione è presente
-                if(!isInternetAvailable()){
-                    startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                    }
+                   // startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
 
         });
@@ -196,24 +193,4 @@ public class aggiungiAnimaleFragment extends Fragment {
                     }
                 }
             });
-
-    public void uploadImage() {
-        storage= FirebaseStorage.getInstance();
-        storageRef=storage.getReference();
-// Create the file metadata
-        StorageMetadata metadata = new StorageMetadata.Builder()
-                .setContentType("image/jpeg")
-                .build();
-// Upload file and metadata to the path 'images/mountains.jpg'
-        UploadTask uploadTask = storageRef.child("images/"+file.getLastPathSegment()).putFile(file, metadata);
-// Listen for state changes, errors, and completion of the upload.
-        uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                double progress = (100.0 * snapshot.getBytesTransferred()) / snapshot.getTotalByteCount();
-                Log.d("Tag", "Upload is " + progress + "% done");
-            }
-        });
-
-    }
 }

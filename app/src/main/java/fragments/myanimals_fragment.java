@@ -173,12 +173,12 @@ public class myanimals_fragment extends Fragment {
                             //Salvare animale in un array con elementi oggetto animale
                             mDataset.add(document.toObject(Animale.class));
                             Log.e("animale", document.getId() + " => " + document.getData());
-                            //Passo i dati presi dal database all'adapter
-                            mAdapter = new AnimalAdapter(mDataset);
-                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                            mRecyclerView.setAdapter(mAdapter);
-                            //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
                         }
+                        //Passo i dati presi dal database all'adapter
+                        mAdapter = new AnimalAdapter(mDataset);
+                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                        mRecyclerView.setAdapter(mAdapter);
+                        //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
                     } else {
                         Log.d("ERROR", "Error getting documents: ", task.getException());
                     }

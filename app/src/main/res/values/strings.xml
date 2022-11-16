@@ -46,6 +46,7 @@
     <string name="login">Login</string>
     <string name="non_ancora_registrato">Non ancora registrato?</string>
     <string name="registra_animale">Registra animale</string>
+    <string name="animaleAggiunto">Animale Aggiunto</string>
 
     <string-array name="Ruolo">
         <item>Proprietario</item>
