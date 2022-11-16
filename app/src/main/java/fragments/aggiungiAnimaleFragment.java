@@ -148,29 +148,29 @@ public class aggiungiAnimaleFragment extends Fragment {
 
 
                 // si va sotto solo se si superano i controlli dell'input
-                Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
-                getActivity().startService(intent);
-
-                Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
-                db.collection("animali").document(idAnimale).set(a).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                    }
-                });
-                   // startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                if(isInternetAvailable()){
+                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
+                    db.collection("animali").document(idAnimale).set(a).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            if(uploadImage()){
+                                Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
+                                getActivity().startService(intent);
+                            }
+                        }
+                    });
+                }else{
+                    Toast.makeText(getContext(), "Internet non dispondibile!", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
+            }
 
         });
 
 
         return rootView;
     }
-
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
+    
     public boolean isInternetAvailable() {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
@@ -193,4 +193,17 @@ public class aggiungiAnimaleFragment extends Fragment {
                     }
                 }
             });
+
+
+    public boolean uploadImage() {
+        storage= FirebaseStorage.getInstance();
+        storageRef=storage.getReference();
+        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpeg").build();
+        try{
+            storageRef.child("images/"+file.getLastPathSegment()).putFile(file, metadata);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
 }
