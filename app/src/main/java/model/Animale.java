@@ -2,9 +2,10 @@ package model;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Animale {
+public class Animale{
     String nome,genere,specie,emailProprietario;
     String dataDiNascita;
     String fotoProfilo;  //Verificare che si usi Bitmap
