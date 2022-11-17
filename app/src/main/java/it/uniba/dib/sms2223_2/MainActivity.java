@@ -47,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
-
-
     }
 
     @Override
