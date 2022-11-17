@@ -272,7 +272,12 @@ public class RegisterActivity extends AppCompatActivity {
         switch (ruolo){
             // Controlli
             case "proprietario":
-                flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
+                if(flag == 1){
+                    nomeCognomeNascitaRequired(name, surname, dataNascita);
+                }else{
+                    flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
+                }
+
 
                 // se un controllo non è andato esco dal metodo
                 if(flag == 1){
@@ -298,8 +303,11 @@ public class RegisterActivity extends AppCompatActivity {
 
             case "veterinario":
                 // controlli
-                flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
-
+                if(flag == 1){
+                    nomeCognomeNascitaRequired(name, surname, dataNascita);
+                }else{
+                    flag = nomeCognomeNascitaRequired(name, surname, dataNascita);
+                }
                 if(TextUtils.isEmpty(efnovi)){
                     etRegNumEFNOVI.setError(getString(R.string.efnoviRequired));
                     flag = 1;
