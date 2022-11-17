@@ -47,11 +47,6 @@ public class adoptions_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Prendo i dati degli animali dal database
-
-
-
     }
 
     @Override
@@ -84,10 +79,6 @@ public class adoptions_fragment extends Fragment {
     }
 
 
-
-
-
-
     /**
      * Generates Strings for RecyclerView's adapter. This data would usually come
      * from a local content provider or remote server.
@@ -110,49 +101,19 @@ public class adoptions_fragment extends Fragment {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
-
-                       // QuerySnapshot document = task.getResult();
-                        //document.toObjects(Animale.class);
-
-
-
-
                         for (QueryDocumentSnapshot document1: task.getResult()) {
-                            Log.d("ciao", document1.getId());
+                            animali.whereEqualTo("idAnimale",document1.getId()).get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    QuerySnapshot document= task.getResult();
+                                                    mDataset= (ArrayList<Animale>) (document.toObjects(Animale.class));
+                                                    mAdapter = new AdozioniAdapter(mDataset);
+                                                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                    mRecyclerView.setAdapter(mAdapter);
 
-                            animali.whereEqualTo(document1.getId(),animali.getId());
-                            animali.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                @Override
-                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if (task.isSuccessful()) {
-                                        QuerySnapshot document= task.getResult();
-                                        mDataset= (ArrayList<Animale>) (document.toObjects(Animale.class));
-                                        mAdapter = new AdozioniAdapter(mDataset);
-                                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                         mRecyclerView.setAdapter(mAdapter);
-
-
-
-                                    }
-
-                                }
-
-
-
-
-                            });
-
-
-
-
-
-
-
-
-
-
-
-
+                                                }
+                                            });
 
 
                             //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
