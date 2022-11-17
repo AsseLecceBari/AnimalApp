@@ -4,12 +4,11 @@
     android:layout_height="match_parent"
     tools:context="fragments.reports_fragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleReport"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="report"
-        android:gravity="center"
-        android:textSize="30dp"/>
+        tools:listitem="@layout/recycle_view_reports"/>
 
 </FrameLayout>

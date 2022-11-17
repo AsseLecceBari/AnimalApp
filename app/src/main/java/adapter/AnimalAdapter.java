@@ -43,6 +43,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet;
 
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private  TextView nomeAnimale;
         private  TextView genereAnimale;
@@ -93,10 +94,13 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
 
     }
 
+
 //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public AnimalAdapter(ArrayList<Animale>  dataSet) {
+
         localDataSet = dataSet;
     }
+
     @NonNull
     @Override
     public AnimalAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -104,6 +108,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
                 .inflate(R.layout.recycle_view_animals, parent, false);
 
         return new ViewHolder(v);
+
     }
 
     @Override
