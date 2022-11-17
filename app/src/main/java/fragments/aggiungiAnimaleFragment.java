@@ -1,7 +1,5 @@
 package fragments;
 
-
-
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -23,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,6 +40,7 @@ import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Random;
 
+import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -56,28 +56,34 @@ public class aggiungiAnimaleFragment extends Fragment {
     private Button selectImgButton;
     private Button registraAnimaleBtn;
     private ImageView imgAnimaleReg;
-
     private Uri file;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private StorageReference storageRef;
 
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    file=uri;
+                    if(file!=null){
+                        imgAnimaleReg.setImageURI(file);
+                    }
+                }
+            });
 
     public aggiungiAnimaleFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_animale, container, false);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
@@ -90,17 +96,14 @@ public class aggiungiAnimaleFragment extends Fragment {
 
             }
         });
-
         etRegNomeAnimale=rootView.findViewById(R.id.etRegNomeAnimale);
         etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
         etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
         registraAnimaleBtn=rootView.findViewById(R.id.registraAnimaleBtn);
-
-
-
         dataLayout = rootView.findViewById(R.id.dataNascitaAnimaleIL);
         data=rootView.findViewById(R.id.dataNascitaAnimaleText);
         cldr = Calendar.getInstance();
+
         // Al click nel campo Nascita si apre il date picker
         data.setInputType(InputType.TYPE_NULL);
         data.setFocusable(false);
@@ -121,10 +124,10 @@ public class aggiungiAnimaleFragment extends Fragment {
                 picker.show();
             }
         });
+
         registraAnimaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String nome= etRegNomeAnimale.getText().toString();
                 String genere=etRegGenereAnimale.getText().toString();
                 String specie=etRegSpecieAnimale.getText().toString();
@@ -135,11 +138,11 @@ public class aggiungiAnimaleFragment extends Fragment {
                 String idAnimale=r.nextInt()+""; ; //Stesso id del documento
                 Boolean isAssistito=false;
 
-
                 // si va sotto solo se si superano i controlli dell'input
                 registraAnimaleBtn.setVisibility(View.INVISIBLE);
-               // Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
-                //getActivity().startService(intent);
+                Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_SHORT).show();
+                // Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
+                // getActivity().startService(intent);
 
                 Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
                 db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -150,8 +153,6 @@ public class aggiungiAnimaleFragment extends Fragment {
                 uploadImage();
                    // startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
-
-
         });
 
 
@@ -179,11 +180,13 @@ public class aggiungiAnimaleFragment extends Fragment {
         }catch (Exception e){
         }
     }
+
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
+
     public boolean isInternetAvailable() {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
@@ -195,15 +198,4 @@ public class aggiungiAnimaleFragment extends Fragment {
         }
     }
 
-
-    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri uri) {
-                   file=uri;
-                    if(file!=null){
-                        imgAnimaleReg.setImageURI(file);
-                    }
-                }
-            });
 }
