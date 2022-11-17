@@ -253,7 +253,7 @@ public class RegisterActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(telefono)){
             etRegTelefono.setError(getString(R.string.teleponeRequired));
             flag = 1;
-        }else if(telefono.length()<11){
+        }else if(telefono.length()<10){
             etRegTelefono.setError(getString(R.string.minimum11cifre));
             flag = 1;
         }

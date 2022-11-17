@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import adapter.AnimalAdapter;
 import it.uniba.dib.sms2223_2.LoginActivity;
+import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
@@ -62,16 +63,8 @@ public class myanimals_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
-
-
        //Prendo i dati degli animali dal database
         initDataset();
-
-
     }
 
     @Override
@@ -125,6 +118,25 @@ public class myanimals_fragment extends Fragment {
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
 
+
+        //Inizializzo l'ascoltatore al click dell'item
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
+                        //Ottengo l'oggetto dalla lista in posizione "position"
+                        Animale a = mDataset.get(position);
+                        //Inserisco l'oggetto nel bundle
+                        i.putExtra("animale", a);
+
+                        startActivity(i);
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                        // TODO: menu rapido
+                    }
+                })
+        );
         return rootView;
     }
 
