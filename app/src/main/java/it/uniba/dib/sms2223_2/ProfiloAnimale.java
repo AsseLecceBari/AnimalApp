@@ -3,17 +3,17 @@ package it.uniba.dib.sms2223_2;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.annotation.SuppressLint;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-import fragments.main_fragment;
+import adapter.VPAdapterAnimale;
+import fragments.anagrafica;
 import model.Animale;
 import profiloUtente.ProfiloUtenteActivity;
 
@@ -32,6 +32,13 @@ public class ProfiloAnimale extends AppCompatActivity {
 
         // Ottengo l'animale da visualizzare
         a = (Animale) getIntent().getSerializableExtra("animale");
+
+
+        // TODO: non funziona -------------------------------------
+        anagrafica anagrafica = (anagrafica) getSupportFragmentManager().findFragmentById(R.id.anagraficaLayout);
+        if(anagrafica!=null)
+            anagrafica.setAnimale(a);
+        // --------------------------------------------------------
     }
 
     @Override
@@ -59,12 +66,6 @@ public class ProfiloAnimale extends AppCompatActivity {
         else{
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-
     }
 
     @Override

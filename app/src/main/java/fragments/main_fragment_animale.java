@@ -25,7 +25,6 @@ public class main_fragment_animale extends Fragment {
     FragmentActivity activity;
     private int posizione = 0;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -87,4 +86,5 @@ public class main_fragment_animale extends Fragment {
     public int getPosition(){
         return posizione;
     }
+
 }
