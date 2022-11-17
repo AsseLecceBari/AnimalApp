@@ -48,7 +48,6 @@ public class myanimals_fragment extends Fragment {
     private Animale a;
 
     private enum LayoutManagerType {
-
         LINEAR_LAYOUT_MANAGER
     }
 

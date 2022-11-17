@@ -29,7 +29,7 @@
     <string name="password">Password</string>
     <string name="conferma_password">Conferma Password</string>
     <string name="telefono">Telefono</string>
-    <string name="indirizzo">Indirizzo</string>
+    <string name="indirizzo">Strada, Civico</string>
     <string name="numero_efnovi">Numero EFNOVI</string>
     <string name="partita_iva">Partita Iva</string>
     <string name="denominazione">Denominazione</string>
@@ -43,13 +43,22 @@
     <string name="effettua_il_login">Effettua il Login</string>
     <string name="userLogged">Utente loggato!</string>
     <string name="loginError">\"Errore nel Login: \"</string>
-    <string name="login">Login</string>
-    <string name="non_ancora_registrato">Non ancora registrato?</string>
+
+
     <string name="registra_animale">Registra animale</string>
     <string name="animaleAggiunto">Animale Aggiunto</string>
 
+    <string name="citta">Città</string>
+    <string name="minimum11cifre">Numero di telefono deve avere almeno 11 cifre</string>
+    <string name="completaIcampi">Completa bene i campi segnalati in rosso!</string>
+    <string name="mincf">Codice fiscale deve essere minimo di 11 caratteri</string>
+    <string name="registratiAffermazione">Registrati!</string>
+    <string name="non_ancora_registrato">Non ancora registrato?</string>
+    <string name="login">Login</string>
+
+
     <string-array name="Ruolo">
-        <item>Proprietario</item>
+        <item>Proprietario / Assistente animale</item>
         <item>Veterinario</item>
         <item>Associazione</item>
         <item>Ente</item>
