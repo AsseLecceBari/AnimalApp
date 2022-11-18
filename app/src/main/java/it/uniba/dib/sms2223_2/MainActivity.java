@@ -11,12 +11,15 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.navigation.NavigationBarMenu;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -31,10 +34,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     int posizione;
     TabLayout tabLayout;
+    View barra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
     }
 
@@ -87,17 +92,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+
+
     }
 
 
     @Override
     public void onBackPressed() {
+
+
         //Qunado clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
         switch (posizione) {
             case (0):
                 super.onBackPressed();
                 break;
             default:
+
                 tabLayout.getTabAt(0).select();
                 posizione=0;
                 break;

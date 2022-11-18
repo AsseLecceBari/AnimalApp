@@ -1,6 +1,7 @@
 package adapter;
 
-import android.util.Log;
+
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,18 +12,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
-//Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
-public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder>{
+public class AggiungiAnimaleAdapter extends RecyclerView.Adapter<adapter.AggiungiAnimaleAdapter.ViewHolder>{
+
+
+
+
+    //Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
+
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private  TextView nomeAnimale;
+        private TextView nomeAnimale;
         private  TextView genereAnimale;
         private  TextView specieAnimale;
         private  TextView dataNascitaAnimale;
@@ -60,40 +65,40 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
             super(view);
             //Prendo i riferimenti al layout di ogni singola riga
             nomeAnimale = (TextView) view.findViewById(R.id.nomeAnimaleView);
-           genereAnimale=(TextView) view.findViewById(R.id.genereAnimaleView);
+            genereAnimale=(TextView) view.findViewById(R.id.genereAnimaleView);
             specieAnimale= (TextView) view.findViewById(R.id.specieAnimaleView);
             dataNascitaAnimale= (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
             codiceAnimale= (TextView) view.findViewById(R.id.codiceAnimaleView);
-            //imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
+            imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
         }
 
 
     }
 
-//Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
-    public AnimalAdapter(ArrayList<Animale>  dataSet) {
+    //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
+    public AggiungiAnimaleAdapter(ArrayList<Animale>  dataSet) {
         localDataSet = dataSet;
     }
     @NonNull
     @Override
-    public AnimalAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_view_animals, parent, false);
+                .inflate(R.layout.recycle_view_aggiungiadozione, parent, false);
 
-        return new ViewHolder(v);
+        return new adapter.AggiungiAnimaleAdapter.ViewHolder(v);
     }
 
-
-
-     @Override
-    public void onBindViewHolder(@NonNull AnimalAdapter.ViewHolder holder, int position) {
-        //Vengono inseriti i dati degli animali
+    @Override
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getNomeAnimale().setText(localDataSet.get(position).getNome());
       //  holder.getSpecieAnimale().setText(localDataSet.get(position).getSpecie());
-     //  holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
-       //holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
+        //  holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
+        // holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
         holder.getCodiceAnimale().setText(localDataSet.get(position).getIdAnimale());
+        //holder.getImageAnimal().setImageBitmap(localDataSet.get(position).getFotoProfilo());
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -103,3 +108,5 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
 
 
 }
+
+

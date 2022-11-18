@@ -32,9 +32,13 @@ public class main_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
+
         if (savedInstanceState != null){
             posizione = savedInstanceState.getInt("posizione"); //test
         }
+
+
 
         return inflater.inflate(R.layout.fragment_main_fragment, container, false);
     }

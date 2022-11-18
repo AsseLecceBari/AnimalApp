@@ -1,6 +1,7 @@
 package fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,8 +57,17 @@ public class adoptions_fragment extends Fragment {
 
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        View aggiungiAdozione = getView().findViewById(R.id.aggiungiAdozione);
+        aggiungiAdozione.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_adozione_fragment()).commit();
+            }
+        });
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -102,6 +113,7 @@ public class adoptions_fragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document1: task.getResult()) {
+                            Log.d("ciao", document1.getId());
                             animali.whereEqualTo("idAnimale",document1.getId()).get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -133,5 +145,11 @@ public class adoptions_fragment extends Fragment {
 
 
 
+
+
+
+
     }
+
+
 }

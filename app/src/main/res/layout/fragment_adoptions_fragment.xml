@@ -37,15 +37,15 @@
             tools:listitem="@layout/recycle_view_adozioni"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingActionButton4"
+            android:id="@+id/aggiungiAdozione"
             android:layout_width="69dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
             android:clickable="true"
             android:src="@android:drawable/ic_input_add"
-            tools:ignore="SpeakableTextPresentCheck"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="15dp"/>
+            tools:ignore="SpeakableTextPresentCheck" />
     </FrameLayout>
 
 </LinearLayout>
