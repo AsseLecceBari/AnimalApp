@@ -11,7 +11,7 @@ public class Animale implements Serializable{
     String fotoProfilo;  //Verificare che si usi Bitmap
     String idAnimale; //Stesso id del documento
     Boolean isAssistito;
-    Boolean adozione = false;
+
 
     public String getNome() {
         return nome;
