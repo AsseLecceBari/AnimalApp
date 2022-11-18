@@ -48,7 +48,7 @@ public class Animale implements Serializable{
 
 
 
-    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito, Boolean adozione) {
+    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito) {
         this.nome = nome;
         this.genere = genere;
         this.specie = specie;

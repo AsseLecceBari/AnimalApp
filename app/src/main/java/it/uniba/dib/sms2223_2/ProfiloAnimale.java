@@ -82,7 +82,7 @@ public class ProfiloAnimale extends AppCompatActivity {
         }
         if(main_fragment_animale!=null){
             tabLayout= findViewById(R.id.tabLayout);
-            posizione=main_fragment_animale.getPosition();
+            //posizione=main_fragment_animale.getPosition();
             switch (posizione) {
                 case (0):
                     super.onBackPressed();

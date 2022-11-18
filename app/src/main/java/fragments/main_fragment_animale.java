@@ -83,7 +83,9 @@ public class main_fragment_animale extends Fragment {
 
         outState.putInt("posizione", posizione);
     }
+
     public int getPosition(){
+
         return posizione;
     }
 

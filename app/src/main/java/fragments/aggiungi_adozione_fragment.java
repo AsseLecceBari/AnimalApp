@@ -96,7 +96,7 @@ public class aggiungi_adozione_fragment extends Fragment {
         super.onDestroy();
 
         if(main_action_bar.getMenu()!=null) {
-            main_action_bar.getMenu().removeGroup(R.id.menu_immagine_profilo);
+           // main_action_bar.getMenu().removeGroup(R.id.menu_immagine_profilo);
             main_action_bar.inflateMenu(R.menu.menu_bar_main);
             main_action_bar.setTitle("AnimalApp");
         }

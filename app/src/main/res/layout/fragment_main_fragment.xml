@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="fragments.main_fragment"
     android:orientation="vertical"
-    android:id="@+id/mainfragment">
+    >
 
 
     <com.google.android.material.tabs.TabLayout

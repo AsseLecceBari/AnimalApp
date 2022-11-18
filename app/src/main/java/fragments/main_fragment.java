@@ -110,4 +110,7 @@ public class main_fragment extends Fragment {
         Log.d("ciao", String.valueOf(posizione)); //test
     }
 
+    public int getPosition() {
+        return posizione;
+    }
 }
