@@ -10,7 +10,7 @@ public class Adozione {
 
     public Adozione(){}
 
-    public Adozione(String idAnimale, String emailProprietario) {
+    public Adozione(String idAnimale) {
         this.idAnimale = idAnimale;
     }
 

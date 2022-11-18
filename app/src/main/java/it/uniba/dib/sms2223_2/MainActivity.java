@@ -40,34 +40,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_main);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Imposto l'actionBar di questa activity
-        main_action_bar=findViewById(R.id.main_action_bar);
+        main_action_bar = findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
-        tabLayout= findViewById(R.id.tabLayout);
-        //Salviamo la posizione del tab selezionato
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                posizione=tab.getPosition();
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
+        main_fragment main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.mainfragment);
 
 
-            }
+            // Imposto l'actionBar di questa activity
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
+            tabLayout = findViewById(R.id.tabLayout);
+            //Salviamo la posizione del tab selezionato
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    posizione = tab.getPosition();
+                }
 
-            }
-        });
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+
     }
 
     @Override
@@ -100,17 +107,30 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
+        main_fragment main_fragment = null;
+        try {
+            main_fragment = (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        } catch (Exception e) {
+            super.onBackPressed();
+            return;
 
-        //Qunado clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
-        switch (posizione) {
-            case (0):
-                super.onBackPressed();
-                break;
-            default:
+        }
 
-                tabLayout.getTabAt(0).select();
-                posizione=0;
-                break;
+        if (main_fragment != null) {
+
+
+            //Qunado clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
+            switch (posizione) {
+                case (0):
+                    super.onBackPressed();
+                    break;
+                default:
+                    // super.onBackPressed();
+
+                    tabLayout.getTabAt(0).select();
+                   // posizione = 0;
+                    break;
+            }
         }
     }
 }

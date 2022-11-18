@@ -29,6 +29,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import adapter.AdozioniAdapter;
@@ -39,6 +40,7 @@ import model.Animale;
 
 
 public class adoptions_fragment extends Fragment {
+
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -64,7 +66,7 @@ public class adoptions_fragment extends Fragment {
         aggiungiAdozione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_adozione_fragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_adozione_fragment()).addToBackStack(null).commit();
             }
         });
     }
@@ -113,18 +115,25 @@ public class adoptions_fragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document1: task.getResult()) {
-                            Log.d("ciao", document1.getId());
+
                             animali.whereEqualTo("idAnimale",document1.getId()).get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    QuerySnapshot document= task.getResult();
-                                                    mDataset= (ArrayList<Animale>) (document.toObjects(Animale.class));
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document: task.getResult()) {
+                                                   // QuerySnapshot document = task.getResult();
+
+
+                                                    mDataset.add(document.toObject(Animale.class));
+                                                   // Log.d("ciao", String.valueOf(mDataset.size()));
                                                     mAdapter = new AdozioniAdapter(mDataset);
                                                     // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                                     mRecyclerView.setAdapter(mAdapter);
-
                                                 }
+
+                                            }
+                                        }
                                             });
 
 
@@ -137,19 +146,8 @@ public class adoptions_fragment extends Fragment {
             });
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
     }
+
 
 
 }

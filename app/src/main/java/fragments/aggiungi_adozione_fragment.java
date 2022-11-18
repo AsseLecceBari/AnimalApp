@@ -30,6 +30,10 @@ import org.checkerframework.common.subtyping.qual.Bottom;
 
 import java.util.ArrayList;
 
+import java.util.Iterator;
+import java.util.Objects;
+
+import adapter.AdozioniAdapter;
 import adapter.AggiungiAnimaleAdapter;
 import adapter.AnimalAdapter;
 import class_general.RecyclerItemClickListener;
@@ -50,6 +54,8 @@ public class aggiungi_adozione_fragment extends Fragment {
     private Checkable checkbox;
     private final ArrayList <String> idAnimali = new ArrayList<>();
     private View botton;
+    private ArrayList<Adozione> animaliAdozione =  new ArrayList<>();
+    private  int contatore=0;
 
     androidx.appcompat.widget.Toolbar main_action_bar;
 
@@ -90,7 +96,7 @@ public class aggiungi_adozione_fragment extends Fragment {
         super.onDestroy();
 
         if(main_action_bar.getMenu()!=null) {
-            main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.getMenu().removeGroup(R.id.menu_immagine_profilo);
             main_action_bar.inflateMenu(R.menu.menu_bar_main);
             main_action_bar.setTitle("AnimalApp");
         }
@@ -109,23 +115,21 @@ public class aggiungi_adozione_fragment extends Fragment {
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
 
-                       // Log.d("ciao", String.valueOf(view.getId()));
                         checkbox= view.findViewById(R.id.checkBoxadozioni);
-
                         if(!checkbox.isChecked()){
-                            idAnimali.add(new String(String.valueOf(view.getId())));
-                           // Log.d("ciao", String.valueOf(mRecyclerView.getId()));
-                            Log.d("ciao", String.valueOf(position));
-
+                            idAnimali.add(new String(mDataset.get(position).getIdAnimale()));
                             checkbox.setChecked(true);
-
                         }
-                        else
-
+                        else if(checkbox.isChecked()) {
                             checkbox.setChecked(false);
+                            //se abbiamo gia aggiunto l'animale nell'array lo elimina
+                            for (int a = 0; a < idAnimali.size(); a++) {
+                                if (Objects.equals(idAnimali.get(a), mDataset.get(position).getIdAnimale())){
+                                    idAnimali.remove(a);
 
-
-
+                                }
+                            }
+                        }
 
 
                     }
@@ -139,7 +143,18 @@ public class aggiungi_adozione_fragment extends Fragment {
         botton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //   Log.d("ciao", mRecyclerView.getId());
+                for (int a = 0; a < idAnimali.size(); a++) {
+                  //  Log.d("ciao", idAnimali.get(a));
+                    Adozione adozione = new Adozione(idAnimali.get(a));
+                    db.collection("adozioni").document(idAnimali.get(a)).set(adozione);
+
+                }
+
+                idAnimali.clear();//elimino tutti gli animali selezionati
+              //  Log.d("ciao", String.valueOf(idAnimali.size()));
+
+
+
             }
         });
 
@@ -157,6 +172,7 @@ public class aggiungi_adozione_fragment extends Fragment {
         auth= FirebaseAuth.getInstance();
        ;
         CollectionReference animali=db.collection("animali");
+        CollectionReference adozioni=db.collection("adozioni");
 
 
         if(auth.getCurrentUser()!=null) {
@@ -164,32 +180,56 @@ public class aggiungi_adozione_fragment extends Fragment {
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
-                            //Salvare animale in un array con elementi oggetto animale
-                            mDataset.add(document.toObject(Animale.class));
+                            adozioni.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){
+
+                                        for (QueryDocumentSnapshot document1 : task.getResult()) {
+                                            if(document.getId().equals(document1.getId())){
+                                                contatore += 1;//faccio query per verificare se l'animale è gia in adozione
 
 
-                            Log.e("animale", document.getId() + " => " + document.getData());
-                            //Passo i dati presi dal database all'adapter
-                            mAdapter = new AggiungiAnimaleAdapter(mDataset);
-                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                            mRecyclerView.setAdapter(mAdapter);
-                            //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                                            }
+                                        }
+                                        if(contatore==0){
+                                            mDataset.add(document.toObject(Animale.class));
+                                            Log.d("ciao", String.valueOf(mDataset.size()));
+                                            mAdapter = new AggiungiAnimaleAdapter(mDataset);
+                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                            mRecyclerView.setAdapter(mAdapter);
+                                        }
+
+
+
+
+                                    }
+                                }
+                            });
+
+
+
+
                         }
-                    } else {
+                    }else {
                         Log.d("ciao", "Error getting documents: ", task.getException());
                     }
                 }
             });
         }
-
-
-
-
-
     }
+
+
+
+
+
+
+
 
 
 

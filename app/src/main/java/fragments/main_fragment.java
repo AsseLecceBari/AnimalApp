@@ -50,19 +50,31 @@ public class main_fragment extends Fragment {
         tabLayout= getView().findViewById(R.id.tabLayout);
         viewPager2=getView().findViewById(R.id.viewPager);
 
-        if(activity == null){
-            activity  = getActivity();
-            vpAdapter= new VPAdapter(activity);
-            viewPager2.setAdapter(vpAdapter);
-        }
+         try {
+             activity  = getActivity();
+             vpAdapter= new VPAdapter(activity);
+             viewPager2.setAdapter(vpAdapter);
+         } catch (Exception e){
+             //tabLayout.getTabAt(posizione).select();
+             return;
+         }
+
+        // Log.d("ciao", String.valueOf(tabLayout.getTabAt(posizione).select());
+
+
+
 
         tabLayout.getTabAt(posizione).select();
+
+       // Log.d("ciao", String.valueOf(posizione));
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
-                posizione = tab.getPosition();  //test
+                posizione = tab.getPosition();
+                Log.d("ciao", String.valueOf(posizione));//test
             }
 
             @Override
@@ -86,11 +98,8 @@ public class main_fragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putInt("posizione", posizione);  //test
-        Log.d("test", String.valueOf(posizione)); //test
+        Log.d("ciao", String.valueOf(posizione)); //test
     }
-    public int getPosition(){
-        return posizione;
-    }
+
 }
