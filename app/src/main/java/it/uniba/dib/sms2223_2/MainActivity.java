@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
        return true;
     }
 
+
+
     public void mostraProfilo(MenuItem item) {
         auth= FirebaseAuth.getInstance();
 
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         super.onStop();
+
 
     }
 
@@ -97,4 +100,5 @@ public class MainActivity extends AppCompatActivity {
         }
         //Qunado clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
     }
+
 }

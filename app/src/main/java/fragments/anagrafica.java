@@ -16,7 +16,7 @@ public class anagrafica extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
-
+        animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         nome = rootView.findViewById(R.id.nome);
         genere = rootView.findViewById(R.id.genere);
         specie = rootView.findViewById(R.id.specie);

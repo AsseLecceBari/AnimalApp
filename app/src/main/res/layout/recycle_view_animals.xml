@@ -9,25 +9,41 @@
 
 
     <androidx.cardview.widget.CardView
+
         android:id="@+id/cardAnimal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="10dp"
+
+        app:cardCornerRadius="15dp"
+
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        >
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@drawable/backgroud_card">
 
             <ImageView
                 android:id="@+id/imageAnimal"
                 android:layout_width="120dp"
                 android:layout_height="124dp"
+                android:layout_marginStart="16dp"
+
+                android:drawingCacheQuality="auto"
+                android:rotation="-4"
+                android:rotationX="-4"
+                android:rotationY="13"
+                app:circularflow_angles="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
@@ -35,8 +51,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginStart="104dp"
-                android:layout_marginTop="7dp"
+                android:layout_marginStart="112dp"
+                android:layout_marginTop="4dp"
                 android:text="TextView"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -45,23 +61,24 @@
                 android:id="@+id/genereAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="104dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="112dp"
+                android:layout_marginTop="10dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal"
                 app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
-                app:layout_constraintVertical_bias="0.013" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/specieAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="112dp"
+                android:layout_marginTop="11dp"
                 android:layout_marginEnd="88dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.92"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal"
                 app:layout_constraintTop_toBottomOf="@+id/genereAnimaleView" />
 
@@ -69,13 +86,13 @@
                 android:id="@+id/dateNascitaAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="104dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginStart="112dp"
+                android:layout_marginTop="10dp"
                 android:text="TextView"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal"
                 app:layout_constraintTop_toBottomOf="@+id/specieAnimaleView"
-                app:layout_constraintVertical_bias="0.1" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/codiceAnimaleView"
@@ -95,8 +112,10 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="56dp"
+                android:fontFamily="sans-serif-black"
                 android:text="Nome"
                 app:layout_constraintEnd_toStartOf="@+id/nomeAnimaleView"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -105,7 +124,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="12dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif-black"
                 android:text="Genere"
                 app:layout_constraintBottom_toTopOf="@+id/specieAnimalField"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
@@ -115,7 +135,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginBottom="13dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="sans-serif-black"
                 android:text="Specie"
                 app:layout_constraintBottom_toTopOf="@+id/dateNascitaAnimalField"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
@@ -125,6 +146,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginBottom="12dp"
+                android:fontFamily="sans-serif-black"
                 android:text="Data di Nascita"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal" />

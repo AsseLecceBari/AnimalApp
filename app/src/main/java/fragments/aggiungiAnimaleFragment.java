@@ -11,11 +11,16 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -24,7 +29,6 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -40,7 +44,6 @@ import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Random;
 
-import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -56,6 +59,7 @@ public class aggiungiAnimaleFragment extends Fragment {
     private Button selectImgButton;
     private Button registraAnimaleBtn;
     private ImageView imgAnimaleReg;
+    private Toolbar main_action_bar;
     private Uri file;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -81,10 +85,18 @@ public class aggiungiAnimaleFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_animale, container, false);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Aggiungi Animale");
+        if(main_action_bar.getMenu()!=null) {
+                main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+        }
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         selectImgButton = rootView.findViewById(R.id.selectImgButton);
@@ -133,24 +145,53 @@ public class aggiungiAnimaleFragment extends Fragment {
                 String specie=etRegSpecieAnimale.getText().toString();
                 String emailProprietario=auth.getCurrentUser().getEmail();
                 String dataDiNascita=data.getText().toString();
-                String fotoProfilo="images/"+file.getLastPathSegment();
+                String fotoProfilo=null;
+                if (file!=null){
+                    fotoProfilo="images/"+file.getLastPathSegment();
+                }
+
                 Random r= new Random();
                 String idAnimale=r.nextInt()+""; ; //Stesso id del documento
                 Boolean isAssistito=false;
 
-                // si va sotto solo se si superano i controlli dell'input
-                registraAnimaleBtn.setVisibility(View.INVISIBLE);
-                Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_SHORT).show();
-                // Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
-                // getActivity().startService(intent);
+                // Controllo se gli input sono corretti
+                int flag = 0;
+                // Generali
+                if (TextUtils.isEmpty(nome)){
+                    etRegNomeAnimale.setError(getString(R.string.nameRequired));
+                    flag = 1;
+                }
+                if (TextUtils.isEmpty(genere)) {
+                    etRegGenereAnimale.setError(getString(R.string.genereRequired));
+                    flag = 1;
+                }
+                if(TextUtils.isEmpty(specie)){
+                    etRegSpecieAnimale.setError(getString(R.string.specieRequired));
+                    flag = 1;
+                }
+                if(TextUtils.isEmpty(fotoProfilo)){
+                    Toast.makeText(getContext(),"Inserire una immagine del profilo",Toast.LENGTH_LONG).show();
+                    flag = 1;
+                }if (TextUtils.isEmpty(dataDiNascita)){
+                    data.setError(getString(R.string.dateBornRequired));
+                    flag=1;
+                }
+                else{
+                    registraAnimaleBtn.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_SHORT).show();
+                    // Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
+                    // getActivity().startService(intent);
 
-                Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
-                db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                    }
-                });
-                uploadImage();
+                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
+                    db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                        }
+                    });
+                    uploadImage();
+                }
+                // si va sotto solo se si superano i controlli dell'input
+
                    // startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
                 }
         });
@@ -198,4 +239,13 @@ public class aggiungiAnimaleFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.aggiungiAnimaleGroup);
+            main_action_bar.inflateMenu(R.menu.menu_bar_main);
+            main_action_bar.setTitle("AnimalApp");
+        }
+    }
 }

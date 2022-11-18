@@ -194,6 +194,7 @@ public class myanimals_fragment extends Fragment {
                         Log.d("ERROR", "Error getting documents: ", task.getException());
                     }
                 }
+
             });
         }
 
