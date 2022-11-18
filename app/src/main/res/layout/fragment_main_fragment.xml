@@ -1,11 +1,13 @@
 <LinearLayout
     android:id="@+id/mainFrag"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fragments.main_fragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:id="@+id/mainfragment">
 
 
     <com.google.android.material.tabs.TabLayout
@@ -29,6 +31,11 @@
             android:text="@string/reports" />
     </com.google.android.material.tabs.TabLayout>
 
+
+    <androidx.constraintlayout.widget.Barrier
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:barrierDirection="top" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"

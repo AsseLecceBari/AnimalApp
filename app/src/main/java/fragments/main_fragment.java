@@ -34,9 +34,13 @@ public class main_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+
+
         if (savedInstanceState != null){
             posizione = savedInstanceState.getInt("posizione"); //test
         }
+
+
 
         return inflater.inflate(R.layout.fragment_main_fragment, container, false);
     }
@@ -48,6 +52,15 @@ public class main_fragment extends Fragment {
 
         tabLayout= getView().findViewById(R.id.tabLayout);
         viewPager2=getView().findViewById(R.id.viewPager);
+
+
+         
+
+        // Log.d("ciao", String.valueOf(tabLayout.getTabAt(posizione).select());
+
+
+
+
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
         try {
             activity  = getActivity();
@@ -61,11 +74,15 @@ public class main_fragment extends Fragment {
 
         tabLayout.getTabAt(posizione).select();
 
+       // Log.d("ciao", String.valueOf(posizione));
+
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
-                posizione = tab.getPosition();  //test
+                posizione = tab.getPosition();
+                Log.d("ciao", String.valueOf(posizione));//test
             }
 
             @Override
@@ -89,11 +106,8 @@ public class main_fragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putInt("posizione", posizione);  //test
-        Log.d("test", String.valueOf(posizione)); //test
+        Log.d("ciao", String.valueOf(posizione)); //test
     }
-    public int getPosition(){
-        return posizione;
-    }
+
 }

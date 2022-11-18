@@ -40,7 +40,7 @@ import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
 
 public class myanimals_fragment extends Fragment {
-    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
+    private static final String KEY_LAYOUT_MANAGER = "layoutManager"; //lay
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private TextView tvLogin;
@@ -152,8 +152,6 @@ public class myanimals_fragment extends Fragment {
 
         mLayoutManager = new LinearLayoutManager(getActivity());
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
-
-
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.scrollToPosition(scrollPosition);
     }
@@ -191,7 +189,7 @@ public class myanimals_fragment extends Fragment {
                         mRecyclerView.setAdapter(mAdapter);
                         //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
                     } else {
-                        Log.d("ERROR", "Error getting documents: ", task.getException());
+                        Log.d("ciao", "Error getting documents: ", task.getException());
                     }
                 }
 

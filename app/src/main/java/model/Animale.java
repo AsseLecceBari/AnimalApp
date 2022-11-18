@@ -11,6 +11,7 @@ public class Animale implements Serializable{
     String fotoProfilo;  //Verificare che si usi Bitmap
     String idAnimale; //Stesso id del documento
     Boolean isAssistito;
+    Boolean adozione = false;
 
     public String getNome() {
         return nome;
@@ -45,7 +46,9 @@ public class Animale implements Serializable{
     }
 
 
-    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito) {
+
+
+    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito, Boolean adozione) {
         this.nome = nome;
         this.genere = genere;
         this.specie = specie;
@@ -54,6 +57,7 @@ public class Animale implements Serializable{
         this.fotoProfilo = fotoProfilo;
         this.idAnimale = idAnimale;
         this.isAssistito = isAssistito;
+
     }
     public Animale(){}
 
