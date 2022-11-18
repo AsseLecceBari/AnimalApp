@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
             main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         }catch (Exception e){
             super.onBackPressed();
-
+            return;
         }
 
         if(main_fragment!=null){
