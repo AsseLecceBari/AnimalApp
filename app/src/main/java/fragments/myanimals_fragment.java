@@ -63,7 +63,7 @@ public class myanimals_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       //Prendo i dati degli animali dal database
+       //Prendo i dati degli animali dal database e gli metto nel dataset
         initDataset();
     }
 

@@ -77,8 +77,8 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public AnimalAdapter(ArrayList<Animale> dataSet){
         localDataSet = dataSet;
-
     }
+
     @NonNull
     @Override
     public AnimalAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
