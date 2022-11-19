@@ -198,7 +198,6 @@ public class aggiungiAnimaleFragment extends Fragment {
             }
         });
 
-
         return rootView;
     }
 

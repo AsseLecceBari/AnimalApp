@@ -61,7 +61,9 @@
     <string name="download_dati">download dati</string>
     <string name="genereRequired">Genere obbligatorio</string>
     <string name="specieRequired">Specie obbligatoria</string>
-    <string name="nonSonoIlPropiet">NON sono il proprietario, assisto l\'animale</string>
+    <string name="nonSonoIlPropiet">NON sono il proprietario, voglio assistere l\'animale</string>
+    <string name="eassistito">L\'animale è assistito</string>
+    <string name="noneassistito">L\'animale ha una proprietà</string>
 
 
     <string-array name="Ruolo">

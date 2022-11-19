@@ -19,7 +19,7 @@ import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
 public class anagrafica extends Fragment {
-    private TextView nome, genere, specie, nascita;
+    private TextView nome, genere, specie, nascita, assistito;
     private Animale animale;
 
     private ImageView imgAnimaleReg;
@@ -34,12 +34,20 @@ public class anagrafica extends Fragment {
         genere = rootView.findViewById(R.id.genere);
         specie = rootView.findViewById(R.id.specie);
         nascita = rootView.findViewById(R.id.nascita);
+        assistito = rootView.findViewById(R.id.assistito);
 
         if(animale!= null){
             nome.setText(animale.getNome());
             genere.setText(animale.getGenere());
             specie.setText(animale.getSpecie());
             nascita.setText(animale.getDataDiNascita());
+
+            if(animale.getIsAssistito()){
+                assistito.setText(R.string.eassistito);
+            }else{
+                assistito.setText(R.string.noneassistito);
+            }
+
 
             // setto l'immagine dell'animale
             FirebaseStorage storage;
