@@ -26,8 +26,8 @@ public class main_fragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-            VPAdapter vpAdapter;
-            FragmentActivity  activity;
+    private VPAdapter vpAdapter;
+    private FragmentActivity  activity;
     private int posizione = 0;
 
 

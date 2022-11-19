@@ -170,7 +170,7 @@ public class aggiungi_adozione_fragment extends Fragment {
 
         db= FirebaseFirestore.getInstance();
         auth= FirebaseAuth.getInstance();
-       ;
+
         CollectionReference animali=db.collection("animali");
         CollectionReference adozioni=db.collection("adozioni");
 
