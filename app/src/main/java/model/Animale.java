@@ -61,9 +61,7 @@ public class Animale implements Serializable{
     }
     public Animale(){}
 
-
-
-
-
-
+    public void setFotoProfilo(String fotoProfilo) {
+        this.fotoProfilo = fotoProfilo;
+    }
 }
