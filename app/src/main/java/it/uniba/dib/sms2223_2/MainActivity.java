@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     int posizione;
     TabLayout tabLayout;
 
-    View barra;
-
     private main_fragment main_fragment;
 
 

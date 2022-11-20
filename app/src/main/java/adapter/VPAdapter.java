@@ -16,15 +16,12 @@ import fragments.reports_fragment;
 public class VPAdapter extends FragmentStateAdapter {
     private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
-    public VPAdapter(@NonNull FragmentActivity fragmentActivity) {
-        super(fragmentActivity);
+    public VPAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+        super(fragmentManager, lifecycle);
         fragmentArrayList.add(new myanimals_fragment());
         fragmentArrayList.add(new adoptions_fragment());
         fragmentArrayList.add(new reports_fragment());
     }
-
-
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {
