@@ -60,12 +60,14 @@ public class myanimals_fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
        //Prendo i dati degli animali dal database
-        initDataset();
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        mDataset.clear();
+        initDataset();
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         tvLogin=rootView.findViewById(R.id.tvLoginMyAnimals);
         tvRegistrati=rootView.findViewById(R.id.tvRegisterHereMyAnimals);
@@ -86,7 +88,7 @@ public class myanimals_fragment extends Fragment {
         addAnimale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).addToBackStack(null).commit();
             }
         });
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
@@ -137,8 +139,10 @@ public class myanimals_fragment extends Fragment {
                             mDataset.add(document.toObject(Animale.class));
                             Log.e("animale", document.getId() + " => " + document.getData());
                         }
+
                         //Passo i dati presi dal database all'adapter
                         mAdapter = new AnimalAdapter(mDataset);
+
                         // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                         mRecyclerView.setAdapter(mAdapter);
                         //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET

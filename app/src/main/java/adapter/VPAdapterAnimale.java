@@ -24,10 +24,6 @@ public class VPAdapterAnimale extends FragmentStateAdapter {
         fragmentArrayList.add(new spese());
         fragmentArrayList.add(new librettoSanitario());
     }
-
-
-
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {
