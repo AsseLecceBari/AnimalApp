@@ -55,6 +55,15 @@
     <string name="registratiAffermazione">Registrati!</string>
     <string name="non_ancora_registrato">Non ancora registrato?</string>
     <string name="login">Login</string>
+    <string name="anagrafica">Anagrafica</string>
+    <string name="spese">Spese</string>
+    <string name="libretto_sanitario">Libretto sanitario</string>
+    <string name="download_dati">download dati</string>
+    <string name="genereRequired">Genere obbligatorio</string>
+    <string name="specieRequired">Specie obbligatoria</string>
+    <string name="nonSonoIlPropiet">NON sono il proprietario, voglio assistere l\'animale</string>
+    <string name="eassistito">L\'animale è assistito</string>
+    <string name="noneassistito">L\'animale ha una proprietà</string>
 
 
     <string-array name="Ruolo">

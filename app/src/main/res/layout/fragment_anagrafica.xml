@@ -1,0 +1,97 @@
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/anagraficaLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="fragments.anagrafica">
+    >
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/anagraficaLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        tools:context="fragments.anagrafica">
+
+        <ImageView
+            android:id="@+id/imgAnimaleReg"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            tools:src="@tools:sample/avatars" />
+
+        <Button
+            android:id="@+id/selectImgButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cambia immagine"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/nome"
+            android:id="@+id/nome"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Genere"
+            android:id="@+id/genere"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Specie"
+            android:id="@+id/specie"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nascita"
+            android:id="@+id/nascita"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Assistito"
+            android:id="@+id/assistito"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/aggiungiAnimaliBtn"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_marginEnd="15dp"
+    android:layout_marginBottom="15dp"
+    android:clickable="true"
+    android:src="@android:drawable/btn_dialog"
+    tools:ignore="SpeakableTextPresentCheck"
+    android:onClick="modificaAnimale"/>
+
+</FrameLayout>

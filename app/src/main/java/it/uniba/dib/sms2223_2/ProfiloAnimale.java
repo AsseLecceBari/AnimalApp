@@ -1,58 +1,50 @@
 package it.uniba.dib.sms2223_2;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager2.widget.ViewPager2;
+import androidx.appcompat.widget.Toolbar;
 
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TabHost;
-import android.widget.TableLayout;
 import android.widget.Toast;
 
-import androidx.appcompat.widget.Toolbar;
-
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.navigation.NavigationBarMenu;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-import adapter.VPAdapter;
-import fragments.main_fragment;
-import fragments.myanimals_fragment;
+import adapter.VPAdapterAnimale;
+import fragments.anagrafica;
+import model.Animale;
 import profiloUtente.ProfiloUtenteActivity;
 
-public class MainActivity extends AppCompatActivity {
-
+public class ProfiloAnimale extends AppCompatActivity {
+    private Animale a;
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
-    int posizione;
-    TabLayout tabLayout;
-
-    private main_fragment main_fragment;
-    public String idSegnalazione;
-
-    public String getIdSegnalazione() {
-        return idSegnalazione;
-    }
-
-    public void setIdSegnalazione(String idSegnalazione) {
-        this.idSegnalazione = idSegnalazione;
-    }
-
+    private TabLayout tabLayout;
+    private fragments.main_fragment main_fragment_animale;
+    private int posizione;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profilo_animale);
+
+/*        // Ottengo l'animale da visualizzare
+        a = (Animale) getIntent().getSerializableExtra("animale");
 
 
-        setContentView(R.layout.activity_main);
+        // TODO: non funziona -------------------------------------
+        anagrafica anagrafica = (anagrafica) getSupportFragmentManager().findFragmentById(R.id.anagraficaLayout);
+        if(anagrafica!=null)
+           anagrafica.setAnimale(a);
+        Log.e("anagrafica",anagrafica+"");
+        // --------------------------------------------------------
+
+ */
     }
 
     @Override
@@ -61,13 +53,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Profilo Animale");
         setSupportActionBar(main_action_bar);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-       getMenuInflater().inflate(R.menu.menu_bar_main, menu);
-       return true;
+        getMenuInflater().inflate(R.menu.menu_bar_profilo_animale, menu);
+        return true;
     }
 
     public void mostraProfilo(MenuItem item) {
@@ -85,15 +78,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         try {
-            main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+            main_fragment_animale= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         }catch (Exception e){
             super.onBackPressed();
-            return;
         }
-
-        if(main_fragment!=null){
+        if(main_fragment_animale!=null){
             tabLayout= findViewById(R.id.tabLayout);
-            posizione=main_fragment.getPosition();
+            //posizione=main_fragment_animale.getPosition();
             switch (posizione) {
                 case (0):
                     super.onBackPressed();
@@ -104,7 +95,10 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-        // Quando clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
     }
 
+    public void modificaAnimale(View view) {
+        Toast.makeText(this, "qui si apre il fragment modificare", Toast.LENGTH_SHORT).show();
+        // Apertura del fragment per modificare l'animale
+    }
 }

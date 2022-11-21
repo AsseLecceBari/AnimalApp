@@ -1,5 +1,4 @@
 package adapter;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -10,17 +9,20 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 
 import fragments.adoptions_fragment;
+import fragments.anagrafica;
+import fragments.librettoSanitario;
 import fragments.myanimals_fragment;
 import fragments.reports_fragment;
+import fragments.spese;
 
-public class VPAdapter extends FragmentStateAdapter {
+public class VPAdapterAnimale extends FragmentStateAdapter {
     private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
-    public VPAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public VPAdapterAnimale(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
-        fragmentArrayList.add(new myanimals_fragment());
-        fragmentArrayList.add(new adoptions_fragment());
-        fragmentArrayList.add(new reports_fragment());
+        fragmentArrayList.add(new anagrafica());
+        fragmentArrayList.add(new spese());
+        fragmentArrayList.add(new librettoSanitario());
     }
     @NonNull
     @Override

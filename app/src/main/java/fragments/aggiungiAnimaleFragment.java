@@ -1,10 +1,11 @@
 package fragments;
-
-
-
+import android.annotation.SuppressLint;
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,20 +14,28 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,29 +65,78 @@ public class aggiungiAnimaleFragment extends Fragment {
     private Button selectImgButton;
     private Button registraAnimaleBtn;
     private ImageView imgAnimaleReg;
-
+    private Toolbar main_action_bar;
     private Uri file;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    private MaterialCheckBox isAssistito;
 
+    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
+            new ActivityResultCallback<Uri>() {
+                @Override
+                public void onActivityResult(Uri uri) {
+                    file=uri;
+                    if(file!=null){
+                        imgAnimaleReg.setImageURI(file);
+                    }
+                }
+            });
+
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                } else {
+                    // Explain to the user that the feature is unavailable because the
+                    // feature requires a permission that the user has denied. At the
+                    // same time, respect the user's decision. Don't link to system
+                    // settings in an effort to convince the user to change their
+                    // decision.
+                }
+            });
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
+                alertDialogBuilder.setPositiveButton("Ho capito",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+                            }
+                        });
+
+        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+
+    }
 
     public aggiungiAnimaleFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_animale, container, false);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Aggiungi Animale");
+        if(main_action_bar.getMenu()!=null) {
+                main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+        }
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         selectImgButton = rootView.findViewById(R.id.selectImgButton);
@@ -86,21 +144,29 @@ public class aggiungiAnimaleFragment extends Fragment {
         selectImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mGetContent.launch("image/*");
-
+                if (ContextCompat.checkSelfPermission(
+                        getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    mGetContent.launch("image/*");
+                } else if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                   showAlertDialog();
+                } else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
+                }
             }
         });
-
         etRegNomeAnimale=rootView.findViewById(R.id.etRegNomeAnimale);
         etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
         etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
         registraAnimaleBtn=rootView.findViewById(R.id.registraAnimaleBtn);
-
-
-
         dataLayout = rootView.findViewById(R.id.dataNascitaAnimaleIL);
         data=rootView.findViewById(R.id.dataNascitaAnimaleText);
+        isAssistito = rootView.findViewById(R.id.isAssistito);
+
         cldr = Calendar.getInstance();
+
         // Al click nel campo Nascita si apre il date picker
         data.setInputType(InputType.TYPE_NULL);
         data.setFocusable(false);
@@ -121,39 +187,64 @@ public class aggiungiAnimaleFragment extends Fragment {
                 picker.show();
             }
         });
+
         registraAnimaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 String nome= etRegNomeAnimale.getText().toString();
                 String genere=etRegGenereAnimale.getText().toString();
                 String specie=etRegSpecieAnimale.getText().toString();
                 String emailProprietario=auth.getCurrentUser().getEmail();
                 String dataDiNascita=data.getText().toString();
-                String fotoProfilo="images/"+file.getLastPathSegment();
-                Random r= new Random();
-                String idAnimale=r.nextInt()+""; ; //Stesso id del documento
-                Boolean isAssistito=false;
-
-
-                // si va sotto solo se si superano i controlli dell'input
-                registraAnimaleBtn.setVisibility(View.INVISIBLE);
-               // Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
-                //getActivity().startService(intent);
-
-                Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
-                db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                    }
-                });
-                uploadImage();
-                   // startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                String fotoProfilo=null;
+                if (file!=null){
+                    fotoProfilo="images/"+file.getLastPathSegment();
                 }
 
+                Random r= new Random();
+                String idAnimale=r.nextInt()+""; ; //Stesso id del documento
+                Boolean assistito= isAssistito.isChecked();
 
+                // Controllo se gli input sono corretti
+                int flag = 0;
+                // Generali
+                if (TextUtils.isEmpty(nome)){
+                    etRegNomeAnimale.setError(getString(R.string.nameRequired));
+                    flag = 1;
+                }
+                if (TextUtils.isEmpty(genere)) {
+                    etRegGenereAnimale.setError(getString(R.string.genereRequired));
+                    flag = 1;
+                }
+                if(TextUtils.isEmpty(specie)){
+                    etRegSpecieAnimale.setError(getString(R.string.specieRequired));
+                    flag = 1;
+                }
+                if(TextUtils.isEmpty(fotoProfilo)){
+                    Toast.makeText(getContext(),"Inserire una immagine del profilo",Toast.LENGTH_LONG).show();
+                    flag = 1;
+                }
+                if (TextUtils.isEmpty(dataDiNascita)){
+                    data.setError(getString(R.string.dateBornRequired));
+                    flag=1;
+                }
+
+                // se tutto va bene registro
+                if(flag == 1) {
+                    return;
+                }else{
+                    registraAnimaleBtn.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();
+                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito);
+                    db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                        }
+                    });
+                    uploadImage();
+                }
+            }
         });
-
 
         return rootView;
     }
@@ -179,11 +270,13 @@ public class aggiungiAnimaleFragment extends Fragment {
         }catch (Exception e){
         }
     }
+
     private boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
 
         return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
     }
+
     public boolean isInternetAvailable() {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
@@ -195,15 +288,13 @@ public class aggiungiAnimaleFragment extends Fragment {
         }
     }
 
-
-    ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
-            new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri uri) {
-                   file=uri;
-                    if(file!=null){
-                        imgAnimaleReg.setImageURI(file);
-                    }
-                }
-            });
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.aggiungiAnimaleGroup);
+            main_action_bar.inflateMenu(R.menu.menu_bar_main);
+            main_action_bar.setTitle("AnimalApp");
+        }
+    }
 }
