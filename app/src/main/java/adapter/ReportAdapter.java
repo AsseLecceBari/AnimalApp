@@ -3,6 +3,7 @@ package adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,8 +21,13 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView DescrizioneReport;
+        private TextView TipoReport;
 
         private ImageView imageReport;
+
+        public TextView getTipoReport() {
+            return TipoReport;
+        }
 
 
 
@@ -43,6 +49,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             super(view);
             //Prendo i riferimenti ai widget
             DescrizioneReport = (TextView) view.findViewById(R.id.DescrizioneReport);
+            TipoReport= (TextView) view.findViewById(R.id.TipoReport);
+
 
             imageReport=(ImageView) view.findViewById(R.id.imageReport);
         }
@@ -72,6 +80,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public void onBindViewHolder(@NonNull adapter.ReportAdapter.ViewHolder holder, int position) {
         //Vengono inseriti i dati degli animali
         holder.getDescrizioneReport().setText(localDataSet.get(position).getDescrizione());
+        holder.getTipoReport().setText(localDataSet.get(position).getTipo());
         //holder.getSpecieAnimale().setText(localDataSet.get(position).getSpecie());
         //  holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
         // holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
