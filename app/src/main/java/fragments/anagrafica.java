@@ -109,8 +109,7 @@ public class anagrafica extends Fragment {
                             db.collection("animali").document(animale.getIdAnimale()).set(animale).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
-                                    Toast.makeText(getContext(), "Aggiornata!", Toast.LENGTH_SHORT).show();
-                                }
+                                    }
                             });
                             uploadImage();
                             imgAnimaleReg.setImageURI(file);

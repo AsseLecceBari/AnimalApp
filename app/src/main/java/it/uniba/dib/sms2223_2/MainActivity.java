@@ -50,11 +50,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
-
     }
 
     @Override
@@ -62,8 +60,6 @@ public class MainActivity extends AppCompatActivity {
        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
        return true;
     }
-
-
 
     public void mostraProfilo(MenuItem item) {
         auth= FirebaseAuth.getInstance();
@@ -78,16 +74,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-
-
-    }
-
-
-    @Override
     public void onBackPressed() {
-
         try {
             main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         }catch (Exception e){
@@ -108,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-        //Qunado clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
+        // Quando clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
     }
 
 }
