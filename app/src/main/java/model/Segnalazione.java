@@ -4,31 +4,36 @@ import java.io.Serializable;
 import java.util.Map;
 
 public class Segnalazione implements Serializable {
+
+    /**
+     * 1-smarrimento
+     * 2-animale in pericolo
+     * 3-zona pericolosa
+     * 4-animale pericoloso
+     * 5-news positive
+     * 6-raccolta fondi
+     */
+    
     String tipo;
     String idAnimale;
     String idSegnalazione;
     String descrizione;
     Map<String,String> coordinateGps;
+    String data, urlFoto, link;
 
-
-
-    public Segnalazione(String idSegnalazione, String tipo, String idAnimale, String descrizione, Map<String, String> coordinateGps) {
+    public Segnalazione(String tipo, String idAnimale, String idSegnalazione, String descrizione, Map<String, String> coordinateGps, String data, String urlFoto, String link) {
         this.tipo = tipo;
         this.idAnimale = idAnimale;
         this.idSegnalazione = idSegnalazione;
         this.descrizione = descrizione;
         this.coordinateGps = coordinateGps;
+        this.data = data;
+        this.urlFoto = urlFoto;
+        this.link = link;
     }
+
     public Segnalazione() {
-
     }
-    public Segnalazione( String descrizione) {
-
-        this.descrizione = descrizione;
-
-    }
-
-
 
     public String getTipo() {
         return tipo;
@@ -50,4 +55,15 @@ public class Segnalazione implements Serializable {
         return idSegnalazione;
     }
 
+    public String getData() {
+        return data;
+    }
+
+    public String getUrlFoto() {
+        return urlFoto;
+    }
+
+    public String getLink() {
+        return link;
+    }
 }

@@ -88,7 +88,7 @@ public class reports_fragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
 
                         Segnalazione s = mDataset.get(position);
-                        getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
                         //id=s.getIdSegnalazione()
 
 
