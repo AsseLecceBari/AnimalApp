@@ -26,8 +26,8 @@ public class main_fragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-            VPAdapter vpAdapter;
-            FragmentActivity  activity;
+    private VPAdapter vpAdapter;
+    private FragmentActivity  activity;
     private int posizione = 0;
 
 
@@ -58,20 +58,14 @@ public class main_fragment extends Fragment {
 
         // Log.d("ciao", String.valueOf(tabLayout.getTabAt(posizione).select());
 
-
-
-
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
         try {
             activity  = getActivity();
-            vpAdapter= new VPAdapter(activity);
+            vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
             viewPager2.setAdapter(vpAdapter);
         }catch (Exception e){
             return;
         }
-
-
-
         tabLayout.getTabAt(posizione).select();
 
        // Log.d("ciao", String.valueOf(posizione));

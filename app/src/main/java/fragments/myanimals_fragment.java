@@ -41,7 +41,7 @@ import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
 
 public class myanimals_fragment extends Fragment {
-    private static final String KEY_LAYOUT_MANAGER = "layoutManager"; //lay
+
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private TextView tvLogin;
@@ -49,39 +49,24 @@ public class myanimals_fragment extends Fragment {
     FloatingActionButton addAnimale;
     private Animale a;
 
-    private enum LayoutManagerType {
-        LINEAR_LAYOUT_MANAGER
-    }
 
-    protected LayoutManagerType mCurrentLayoutManagerType;
 
 
     protected RecyclerView mRecyclerView;
     protected AnimalAdapter mAdapter;
-    protected RecyclerView.LayoutManager mLayoutManager;
+
     protected ArrayList<Animale> mDataset= new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       //Prendo i dati degli animali dal database e gli metto nel dataset
-        initDataset();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8)
-        {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            //your codes here
-
-        }
-
+        mDataset.clear();
+        initDataset();
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         tvLogin=rootView.findViewById(R.id.tvLoginMyAnimals);
         tvRegistrati=rootView.findViewById(R.id.tvRegisterHereMyAnimals);
@@ -102,23 +87,13 @@ public class myanimals_fragment extends Fragment {
         addAnimale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).addToBackStack(null).commit();
             }
         });
-
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
-
         //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
-        if (savedInstanceState != null) {
-            // Restore saved layout manager type.
-            mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
-                    .getSerializable(KEY_LAYOUT_MANAGER);
-        }
-        setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //Inizializzo l'ascoltatore al click dell'item
         mRecyclerView.addOnItemTouchListener(
@@ -129,7 +104,6 @@ public class myanimals_fragment extends Fragment {
                         Animale a = mDataset.get(position);
                         //Inserisco l'oggetto nel bundle
                         i.putExtra("animale", a);
-
                         startActivity(i);
                     }
 
@@ -142,32 +116,12 @@ public class myanimals_fragment extends Fragment {
     }
 
 
-    public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
-        int scrollPosition = 0;
-
-        // If a layout manager has already been set, get current scroll position.
-        if (mRecyclerView.getLayoutManager() != null) {
-            scrollPosition = ((LinearLayoutManager) mRecyclerView.getLayoutManager())
-                    .findFirstCompletelyVisibleItemPosition();
-        }
-
-        mLayoutManager = new LinearLayoutManager(getActivity());
-        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.scrollToPosition(scrollPosition);
-    }
 
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
-        // Save currently selected layout manager.
-        savedInstanceState.putSerializable(KEY_LAYOUT_MANAGER, mCurrentLayoutManagerType);
         super.onSaveInstanceState(savedInstanceState);
     }
 
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come
-     * from a local content provider or remote server.
-     */
     private void initDataset() {
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         db=FirebaseFirestore.getInstance();
@@ -184,8 +138,10 @@ public class myanimals_fragment extends Fragment {
                             mDataset.add(document.toObject(Animale.class));
                             Log.e("animale", document.getId() + " => " + document.getData());
                         }
+
                         //Passo i dati presi dal database all'adapter
                         mAdapter = new AnimalAdapter(mDataset);
+
                         // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                         mRecyclerView.setAdapter(mAdapter);
                         //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET

@@ -45,7 +45,7 @@ public class main_fragment_animale extends Fragment {
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
         try {
             activity  = getActivity();
-            vpAdapter= new VPAdapterAnimale(activity);
+            vpAdapter= new VPAdapterAnimale(getChildFragmentManager(),getLifecycle());
             viewPager2.setAdapter(vpAdapter);
         }catch (Exception e){
             return;
