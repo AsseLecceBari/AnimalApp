@@ -2,14 +2,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="fragments.reports_fragment">
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycleReport"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="report"
-        android:gravity="center"
-        android:textSize="30dp"/>
+        android:layout_marginTop="50dp"
+        tools:listitem="@layout/recycle_view_reports" />
 
 </FrameLayout>

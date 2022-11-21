@@ -36,6 +36,15 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
 
     private main_fragment main_fragment;
+    public String idSegnalazione;
+
+    public String getIdSegnalazione() {
+        return idSegnalazione;
+    }
+
+    public void setIdSegnalazione(String idSegnalazione) {
+        this.idSegnalazione = idSegnalazione;
+    }
 
 
     @Override
