@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -95,4 +97,8 @@ public class ProfiloAnimale extends AppCompatActivity {
         }
     }
 
+    public void modificaAnimale(View view) {
+        Toast.makeText(this, "qui si apre il fragment modificare", Toast.LENGTH_SHORT).show();
+        // Apertura del fragment per modificare l'animale
+    }
 }

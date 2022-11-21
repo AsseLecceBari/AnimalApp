@@ -1,5 +1,5 @@
 package fragments;
-
+import android.annotation.SuppressLint;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
@@ -35,6 +35,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,6 +71,7 @@ public class aggiungiAnimaleFragment extends Fragment {
     private FirebaseFirestore db;
     private FirebaseStorage storage;
     private StorageReference storageRef;
+    private MaterialCheckBox isAssistito;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -124,8 +126,7 @@ public class aggiungiAnimaleFragment extends Fragment {
         super.onCreate(savedInstanceState);
     }
 
-
-
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -154,8 +155,6 @@ public class aggiungiAnimaleFragment extends Fragment {
                     // The registered ActivityResultCallback gets the result of this request.
                     requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE);
                 }
-
-
             }
         });
         etRegNomeAnimale=rootView.findViewById(R.id.etRegNomeAnimale);
@@ -164,6 +163,8 @@ public class aggiungiAnimaleFragment extends Fragment {
         registraAnimaleBtn=rootView.findViewById(R.id.registraAnimaleBtn);
         dataLayout = rootView.findViewById(R.id.dataNascitaAnimaleIL);
         data=rootView.findViewById(R.id.dataNascitaAnimaleText);
+        isAssistito = rootView.findViewById(R.id.isAssistito);
+
         cldr = Calendar.getInstance();
 
         // Al click nel campo Nascita si apre il date picker
@@ -202,7 +203,7 @@ public class aggiungiAnimaleFragment extends Fragment {
 
                 Random r= new Random();
                 String idAnimale=r.nextInt()+""; ; //Stesso id del documento
-                Boolean isAssistito=false;
+                Boolean assistito= isAssistito.isChecked();
 
                 // Controllo se gli input sono corretti
                 int flag = 0;
@@ -222,17 +223,19 @@ public class aggiungiAnimaleFragment extends Fragment {
                 if(TextUtils.isEmpty(fotoProfilo)){
                     Toast.makeText(getContext(),"Inserire una immagine del profilo",Toast.LENGTH_LONG).show();
                     flag = 1;
-                }if (TextUtils.isEmpty(dataDiNascita)){
+                }
+                if (TextUtils.isEmpty(dataDiNascita)){
                     data.setError(getString(R.string.dateBornRequired));
                     flag=1;
                 }
-                else{
-                    registraAnimaleBtn.setVisibility(View.INVISIBLE);
-                    Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_SHORT).show();
-                    // Intent intent = new Intent(rootView.getContext(), ServiceUploadImage.class).putExtra("file",file.toString());
-                    // getActivity().startService(intent);
 
-                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, isAssistito);
+                // se tutto va bene registro
+                if(flag == 1) {
+                    return;
+                }else{
+                    registraAnimaleBtn.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();
+                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito);
                     db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -240,12 +243,8 @@ public class aggiungiAnimaleFragment extends Fragment {
                     });
                     uploadImage();
                 }
-                // si va sotto solo se si superano i controlli dell'input
-
-                   // startActivity(new Intent(rootView.getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                }
+            }
         });
-
 
         return rootView;
     }
