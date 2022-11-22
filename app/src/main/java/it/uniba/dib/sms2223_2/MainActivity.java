@@ -32,33 +32,19 @@ public class MainActivity extends AppCompatActivity {
 
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
-    int posizione;
-    TabLayout tabLayout;
-
+    private int posizione;
+    private TabLayout tabLayout;
     private main_fragment main_fragment;
-    public String idSegnalazione;
-
-    public String getIdSegnalazione() {
-        return idSegnalazione;
-    }
-
-    public void setIdSegnalazione(String idSegnalazione) {
-        this.idSegnalazione = idSegnalazione;
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
         setContentView(R.layout.activity_main);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         setSupportActionBar(main_action_bar);
@@ -76,8 +62,7 @@ public class MainActivity extends AppCompatActivity {
         // Parte l'activity mostraProfilo solo se si è loggati
         if(auth.getCurrentUser()!=null){
             startActivity(new Intent(getApplicationContext(), ProfiloUtenteActivity.class));
-        }
-        else{
+        }else{
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
     }
@@ -91,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        // Quando clicchiamo back se posizione = 0 usciamo dall'applicazione, se no torniamo in i miei animali
         if(main_fragment!=null){
             tabLayout= findViewById(R.id.tabLayout);
             posizione=main_fragment.getPosition();
@@ -104,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
-        // Quando clicchiamo back se posizione = 0 usciamo dall'applicazione,se no torniamo in i miei animali
     }
 
 }

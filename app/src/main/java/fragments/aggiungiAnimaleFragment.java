@@ -95,6 +95,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                     // decision.
                 }
             });
+
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
@@ -109,13 +110,11 @@ public class aggiungiAnimaleFragment extends Fragment {
         alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
             }
         });
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-
     }
 
     public aggiungiAnimaleFragment() {
@@ -157,6 +156,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                 }
             }
         });
+
         etRegNomeAnimale=rootView.findViewById(R.id.etRegNomeAnimale);
         etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
         etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
@@ -271,18 +271,10 @@ public class aggiungiAnimaleFragment extends Fragment {
         }
     }
 
-    private boolean isNetworkConnected() {
-        ConnectivityManager cm = (ConnectivityManager) getActivity().getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null && cm.getActiveNetworkInfo().isConnected();
-    }
-
     public boolean isInternetAvailable() {
         try {
             InetAddress ipAddr = InetAddress.getByName("google.com");
-            //You can replace it with your name
             return !ipAddr.equals("");
-
         } catch (Exception e) {
             return false;
         }

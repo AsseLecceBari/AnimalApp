@@ -426,7 +426,6 @@ public class RegisterActivity extends AppCompatActivity {
         return true;
     }
 
-
     // Restituisce 1 se cè un errore
     private int nomeCognomeNascitaRequired(String name, String surname, String dataNascita) {
         int flag = 0;

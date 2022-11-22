@@ -17,8 +17,8 @@ import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 
 public class ProfiloUtenteActivity extends AppCompatActivity {
-    Toolbar main_action_bar;
-    FirebaseAuth auth;
+    private Toolbar main_action_bar;
+    private FirebaseAuth auth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +48,5 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), R.string.logoutSuccess, Toast.LENGTH_SHORT).show();
         startActivity(new Intent(getApplicationContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
     }
-
 
 }

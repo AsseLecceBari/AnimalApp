@@ -3,7 +3,7 @@ package model;
 import java.util.Map;
 
 public class Associazione extends Utente{
-    String codiceFiscaleAssociazione, denominazione;
+    private String codiceFiscaleAssociazione, denominazione;
 
     public Associazione(String email, String telefono, Map<String, String> indirizzo, String ruolo, String codiceFiscaleAssociazione, String denominazione) {
         super(email, telefono, indirizzo, ruolo);
@@ -12,7 +12,6 @@ public class Associazione extends Utente{
     }
 
     public Associazione() {
-
     }
 
     public String getCodiceFiscaleAssociazione() {
