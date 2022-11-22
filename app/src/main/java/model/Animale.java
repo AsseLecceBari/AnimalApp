@@ -6,12 +6,11 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Animale implements Serializable{
-    String nome,genere,specie,emailProprietario;
-    String dataDiNascita;
-    String fotoProfilo;  //Verificare che si usi Bitmap
-    String idAnimale; //Stesso id del documento
-    Boolean isAssistito;
-
+    private String nome,genere,specie,emailProprietario;
+    private String dataDiNascita;
+    private String fotoProfilo;  //Verificare che si usi Bitmap
+    private String idAnimale; //Stesso id del documento
+    private Boolean isAssistito;
 
     public String getNome() {
         return nome;
@@ -45,9 +44,6 @@ public class Animale implements Serializable{
         return isAssistito;
     }
 
-
-
-
     public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito) {
         this.nome = nome;
         this.genere = genere;
@@ -57,8 +53,8 @@ public class Animale implements Serializable{
         this.fotoProfilo = fotoProfilo;
         this.idAnimale = idAnimale;
         this.isAssistito = isAssistito;
-
     }
+
     public Animale(){}
 
     public void setFotoProfilo(String fotoProfilo) {

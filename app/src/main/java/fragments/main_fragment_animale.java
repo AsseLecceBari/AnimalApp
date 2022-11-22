@@ -27,11 +27,8 @@ public class main_fragment_animale extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        if (savedInstanceState != null){
-            posizione = savedInstanceState.getInt("posizione"); //test
-        }
-
+        if (savedInstanceState != null)
+            posizione = savedInstanceState.getInt("posizione");
         return inflater.inflate(R.layout.fragment_main_animale, container, false);
     }
 
@@ -56,7 +53,7 @@ public class main_fragment_animale extends Fragment {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
-                posizione = tab.getPosition();  //test
+                posizione = tab.getPosition();
             }
 
             @Override
@@ -80,12 +77,10 @@ public class main_fragment_animale extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-
         outState.putInt("posizione", posizione);
     }
 
     public int getPosition(){
-
         return posizione;
     }
 

@@ -3,11 +3,6 @@ package model;
 public class Adozione {
     private String idAnimale;
 
-
-
-
-
-
     public Adozione(){}
 
     public Adozione(String idAnimale) {
@@ -17,8 +12,6 @@ public class Adozione {
     public String getIdAnimale() {
         return idAnimale;
     }
-
-
 
     public void setIdAnimale(String idAnimale) {
         this.idAnimale = idAnimale;

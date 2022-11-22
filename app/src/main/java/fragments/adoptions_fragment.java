@@ -41,23 +41,11 @@ import model.Animale;
 
 public class adoptions_fragment extends Fragment {
 
-
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
     protected AdozioniAdapter mAdapter;
     protected ArrayList<Animale> mDataset= new ArrayList<>();
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-    }
 
     @Override
     public void onResume() {
@@ -73,29 +61,17 @@ public class adoptions_fragment extends Fragment {
 
     @SuppressLint("MissingInflatedId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         initDataset();
-
         View rootView = inflater.inflate(R.layout.fragment_adoptions_fragment, container, false);
-
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleadoption);
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(),2));
 
-        //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
-
-       // mRecyclerView.setAdapter(new AnimalAdapter(mDataset));
-
         return rootView;
     }
 
-
-    /**
-     * Generates Strings for RecyclerView's adapter. This data would usually come
-     * from a local content provider or remote server.
-     */
     private void initDataset() {
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         db=FirebaseFirestore.getInstance();
@@ -103,19 +79,12 @@ public class adoptions_fragment extends Fragment {
         CollectionReference adozioniRef=db.collection("adozioni");
         CollectionReference animali=db.collection("animali");
 
-
-
         if(auth.getCurrentUser()!=null) {
-
-
-
-
          adozioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document1: task.getResult()) {
-
                             animali.whereEqualTo("idAnimale",document1.getId()).get()
                                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -134,20 +103,13 @@ public class adoptions_fragment extends Fragment {
 
                                             }
                                         }
-                                            });
-
-
+                                    });
                             //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
                         }
-                    } else {
-                        Log.d("ciao", "Error getting documents: ", task.getException());
                     }
                 }
             });
         }
-
     }
-
-
 
 }

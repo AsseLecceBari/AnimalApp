@@ -32,25 +32,11 @@ public class ProfiloAnimale extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profilo_animale);
-
-/*        // Ottengo l'animale da visualizzare
-        a = (Animale) getIntent().getSerializableExtra("animale");
-
-
-        // TODO: non funziona -------------------------------------
-        anagrafica anagrafica = (anagrafica) getSupportFragmentManager().findFragmentById(R.id.anagraficaLayout);
-        if(anagrafica!=null)
-           anagrafica.setAnimale(a);
-        Log.e("anagrafica",anagrafica+"");
-        // --------------------------------------------------------
-
- */
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Profilo Animale");

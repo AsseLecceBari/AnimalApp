@@ -3,8 +3,8 @@ package model;
 import java.util.Map;
 
 public class Ente extends Utente{
-    String partitaIva,Denominazione;
-    boolean isPrivato;
+    private String partitaIva,Denominazione;
+    private boolean isPrivato;
 
     public Ente(String email, String telefono, Map<String, String> indirizzo, String ruolo, String partitaIva, String denominazione, boolean isPrivato) {
         super(email, telefono, indirizzo, ruolo);
