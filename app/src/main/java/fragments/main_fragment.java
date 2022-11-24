@@ -1,5 +1,4 @@
 package fragments;
-
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -21,7 +20,6 @@ import com.google.android.material.tabs.TabLayout;
 import adapter.VPAdapter;
 import it.uniba.dib.sms2223_2.R;
 
-
 public class main_fragment extends Fragment {
 
     private TabLayout tabLayout;
@@ -30,18 +28,10 @@ public class main_fragment extends Fragment {
     private FragmentActivity  activity;
     private int posizione = 0;
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-
-
-        if (savedInstanceState != null){
-            posizione = savedInstanceState.getInt("posizione"); //test
-        }
-
-
-
+        if (savedInstanceState != null)
+            posizione = savedInstanceState.getInt("posizione");
         return inflater.inflate(R.layout.fragment_main_fragment, container, false);
     }
 
@@ -49,14 +39,8 @@ public class main_fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
-
         tabLayout= getView().findViewById(R.id.tabLayout);
         viewPager2=getView().findViewById(R.id.viewPager);
-
-
-         
-
-        // Log.d("ciao", String.valueOf(tabLayout.getTabAt(posizione).select());
 
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
         try {
@@ -67,9 +51,6 @@ public class main_fragment extends Fragment {
             return;
         }
         tabLayout.getTabAt(posizione).select();
-
-       // Log.d("ciao", String.valueOf(posizione));
-
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -100,8 +81,8 @@ public class main_fragment extends Fragment {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("posizione", posizione);  //test
-        Log.d("ciao", String.valueOf(posizione)); //test
+        // Salvo in che tab mi trovo quando esco
+        outState.putInt("posizione", posizione);
     }
 
     public int getPosition() {

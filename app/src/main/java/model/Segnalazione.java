@@ -12,13 +12,13 @@ public class Segnalazione implements Serializable {
      * 4-news positive
      * 5-raccolta fondi
      */
-
-    String tipo;
-    String idAnimale;
-    String idSegnalazione;
-    String descrizione;
-    Map<String,String> coordinateGps;
-    String data, urlFoto, link;
+    
+    private String tipo;
+    private String idAnimale;
+    private String idSegnalazione;
+    private String descrizione;
+    private Map<String,String> coordinateGps;
+    private String data, urlFoto, link;
 
     public Segnalazione(String tipo, String idAnimale, String idSegnalazione, String descrizione, Map<String, String> coordinateGps, String data, String urlFoto, String link) {
         this.tipo = tipo;

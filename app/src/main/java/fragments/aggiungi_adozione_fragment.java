@@ -42,7 +42,6 @@ import model.Adozione;
 import model.Animale;
 import model.Veterinario;
 
-
 public class aggiungi_adozione_fragment extends Fragment {
 
     private FirebaseAuth auth;
@@ -56,36 +55,27 @@ public class aggiungi_adozione_fragment extends Fragment {
     private View botton;
     private ArrayList<Adozione> animaliAdozione =  new ArrayList<>();
     private  int contatore=0;
-
-    androidx.appcompat.widget.Toolbar main_action_bar;
-
-
+    private androidx.appcompat.widget.Toolbar main_action_bar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         InitData();
-
     }
 
     @SuppressLint("MissingInflatedId")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-
-        View rootView =inflater.inflate(R.layout.fragment_aggiungi_adozione_fragment, container, false);
-         main_action_bar = getActivity().findViewById(R.id.main_action_bar);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_aggiungi_adozione_fragment, container, false);
+        main_action_bar = getActivity().findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Seleziona Animali");
-       if(main_action_bar.getMenu()!=null) {
+        if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
         }
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleaggiungiAdozione);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
 
         return rootView;
     }
@@ -96,14 +86,9 @@ public class aggiungi_adozione_fragment extends Fragment {
         super.onDestroy();
 
         if(main_action_bar.getMenu()!=null) {
-           // main_action_bar.getMenu().removeGroup(R.id.menu_immagine_profilo);
             main_action_bar.inflateMenu(R.menu.menu_bar_main);
             main_action_bar.setTitle("AnimalApp");
         }
-
-
-
-
     }
 
 
@@ -130,50 +115,34 @@ public class aggiungi_adozione_fragment extends Fragment {
                                 }
                             }
                         }
-
-
                     }
-
                     @Override public void onLongItemClick(View view, int position) {
                         // TODO: menu rapido
                     }
                 })
         );
+
         botton= getView().findViewById(R.id.Btnaggiungiadozioni);
         botton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 for (int a = 0; a < idAnimali.size(); a++) {
-                  //  Log.d("ciao", idAnimali.get(a));
                     Adozione adozione = new Adozione(idAnimali.get(a));
                     db.collection("adozioni").document(idAnimali.get(a)).set(adozione);
 
                 }
-
                 idAnimali.clear();//elimino tutti gli animali selezionati
-              //  Log.d("ciao", String.valueOf(idAnimali.size()));
-
-
-
             }
         });
-
-
-
-
     }
 
 
     public void InitData() {
-
-
-
         db= FirebaseFirestore.getInstance();
         auth= FirebaseAuth.getInstance();
 
         CollectionReference animali=db.collection("animali");
         CollectionReference adozioni=db.collection("adozioni");
-
 
         if(auth.getCurrentUser()!=null) {
             Query query = animali.whereEqualTo("emailProprietario", auth.getCurrentUser().getEmail());
@@ -204,33 +173,14 @@ public class aggiungi_adozione_fragment extends Fragment {
                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                             mRecyclerView.setAdapter(mAdapter);
                                         }
-
-
-
-
                                     }
                                 }
                             });
-
-
-
-
                         }
-                    }else {
-                        Log.d("ciao", "Error getting documents: ", task.getException());
                     }
                 }
             });
         }
     }
-
-
-
-
-
-
-
-
-
 
 }

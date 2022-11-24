@@ -8,7 +8,6 @@ public class Utente {
     private Map<String,String> indirizzo;
     private String ruolo;
 
-
     public Utente(String email, String telefono, Map<String, String> indirizzo, String ruolo) {
         this.email = email;
         this.telefono = telefono;
@@ -17,7 +16,6 @@ public class Utente {
     }
 
     public Utente() {
-
     }
 
     public String getEmail() {

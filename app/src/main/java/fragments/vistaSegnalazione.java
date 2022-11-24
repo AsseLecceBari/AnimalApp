@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,7 +41,7 @@ public class vistaSegnalazione extends Fragment {
     //private String id;
     private static final String ARG_PARAM1 = "obj";
     private Segnalazione s;
-    SupportMapFragment map;
+    //SupportMapFragment map;
 
 
     @Override

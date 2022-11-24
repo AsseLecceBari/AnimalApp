@@ -18,12 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivity extends AppCompatActivity {
 
-    TextInputEditText etLoginEmail;
-    TextInputEditText etLoginPassword;
-    TextView tvRegisterHere;
-    Button btnLogin;
-
-    FirebaseAuth mAuth;
+    private TextInputEditText etLoginEmail;
+    private TextInputEditText etLoginPassword;
+    private TextView tvRegisterHere;
+    private Button btnLogin;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(view -> {
             loginUser();
         });
+
         tvRegisterHere.setOnClickListener(view ->{
             startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });

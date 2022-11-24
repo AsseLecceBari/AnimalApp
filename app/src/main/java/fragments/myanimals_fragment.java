@@ -50,10 +50,6 @@ public class myanimals_fragment extends Fragment {
     FloatingActionButton addAnimale;
     private Animale a;
 
-
-
-
-
     protected RecyclerView mRecyclerView;
     protected AnimalAdapter mAdapter;
 
@@ -118,8 +114,6 @@ public class myanimals_fragment extends Fragment {
         return rootView;
     }
 
-
-
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
@@ -148,20 +142,11 @@ public class myanimals_fragment extends Fragment {
                         // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                         mRecyclerView.setAdapter(mAdapter);
                         //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                    } else {
-                        Log.d("ciao", "Error getting documents: ", task.getException());
                     }
                 }
-
             });
         }
-
-
-
     }
-
-
-
 
 }
 
