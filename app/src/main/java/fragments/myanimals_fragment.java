@@ -39,6 +39,7 @@ import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
+import model.Segnalazione;
 
 public class myanimals_fragment extends Fragment {
 
@@ -52,6 +53,7 @@ public class myanimals_fragment extends Fragment {
 
 
 
+
     protected RecyclerView mRecyclerView;
     protected AnimalAdapter mAdapter;
 
@@ -60,6 +62,7 @@ public class myanimals_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
@@ -156,5 +159,9 @@ public class myanimals_fragment extends Fragment {
 
 
     }
+
+
+
+
 }
 
