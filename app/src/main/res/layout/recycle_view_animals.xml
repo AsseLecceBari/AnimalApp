@@ -32,11 +32,13 @@
             android:background="@drawable/backgroud_card"
            >
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageAnimal"
                 android:layout_width="120dp"
                 android:layout_height="124dp"
                 android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
 
                 android:drawingCacheQuality="auto"
                 app:circularflow_angles="10dp"
