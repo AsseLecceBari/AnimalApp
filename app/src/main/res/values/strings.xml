@@ -64,6 +64,7 @@
     <string name="nonSonoIlPropiet">NON sono il proprietario, voglio assistere l\'animale</string>
     <string name="eassistito">L\'animale è assistito</string>
     <string name="noneassistito">L\'animale ha una proprietà</string>
+    <string name="animaleSpinnerSegnalazione">Animale</string>
 
 
     <string-array name="Ruolo">

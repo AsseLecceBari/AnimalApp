@@ -20,20 +20,20 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     private ArrayList<Segnalazione> localDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView DescrizioneReport;
-        private TextView TipoReport;
+        private TextView dataReport;
+        private TextView tipoReport;
 
         private ImageView imageReport;
 
         public TextView getTipoReport() {
-            return TipoReport;
+            return tipoReport;
         }
 
 
 
-        public TextView getDescrizioneReport() {
+        public TextView getDataReport() {
 
-            return DescrizioneReport;
+            return dataReport;
         }
 
 
@@ -48,8 +48,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         public ViewHolder(View view) {
             super(view);
             //Prendo i riferimenti ai widget
-            DescrizioneReport = (TextView) view.findViewById(R.id.DescrizioneReport);
-            TipoReport= (TextView) view.findViewById(R.id.TipoReport);
+            dataReport = (TextView) view.findViewById(R.id.dataPub);
+            tipoReport= (TextView) view.findViewById(R.id.tipoReport);
 
 
             imageReport=(ImageView) view.findViewById(R.id.imageReport);
@@ -79,13 +79,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull adapter.ReportAdapter.ViewHolder holder, int position) {
         //Vengono inseriti i dati degli animali
-        holder.getDescrizioneReport().setText(localDataSet.get(position).getDescrizione());
+        holder.getDataReport().setText(localDataSet.get(position).getData());
         holder.getTipoReport().setText(localDataSet.get(position).getTipo());
-        //holder.getSpecieAnimale().setText(localDataSet.get(position).getSpecie());
-        //  holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
-        // holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
-        //holder.getCodiceAnimale().setText(localDataSet.get(position).getIdAnimale());
-        // holder.getImageAnimal().setImageBitmap(localDataSet.get(position).getFotoProfilo());
+
     }
 
     @Override

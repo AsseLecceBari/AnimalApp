@@ -1,42 +1,73 @@
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="fragments.vistaSegnalazione">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/segnalazioneLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="fragments.vistaSegnalazione">
+
+
+        <LinearLayout
+            android:id="@+id/segnalazioneLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            tools:context="fragments.vistaSegnalazione">
+
+            <ImageView
+                android:id="@+id/ImmagineReport"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                tools:src="@drawable/ic_launcher_foreground" />
 
 
 
-    <ImageView
-        android:id="@+id/ImmagineReport"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Tipo"
+                android:id="@+id/TipoReportVista"
+                android:layout_marginTop="12dp"
+                android:textSize="28dp">
+            </com.google.android.material.textview.MaterialTextView>
 
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" />
-
-    <TextView
-        android:id="@+id/TipoReportVista"
-        android:layout_width="372dp"
-        android:layout_height="96dp"
-        android:text="Tipo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ImmagineReport" />
-    <TextView
-        android:id="@+id/DescrizioneVistaReport"
-        android:layout_width="372dp"
-        android:layout_height="96dp"
-        android:layout_marginTop="15dp"
-        android:text="Descrizione"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/TipoReportVista" />
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descrizione"
+                android:id="@+id/DescrizioneVistaReport"
+                android:layout_marginTop="12dp"
+                android:textSize="28dp">
+            </com.google.android.material.textview.MaterialTextView>
 
 
+            <com.google.android.gms.maps.MapView
+                android:id="@+id/mapView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonVistaSegnalazione"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:clickable="true"
+            android:src="@android:drawable/btn_dialog"
+            tools:ignore="SpeakableTextPresentCheck"
+           />
+
+    </FrameLayout>
+
+
+
+

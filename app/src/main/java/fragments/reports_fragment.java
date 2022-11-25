@@ -54,7 +54,7 @@ public class reports_fragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         //Prendo i dati degli animali dal database
-        initDataset();
+
 
 
     }
@@ -67,13 +67,23 @@ public class reports_fragment extends Fragment {
 
     }
 
-
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        View aggiungiSegnalazione = getView().findViewById(R.id.aggiungiSegnalazione);
+        aggiungiSegnalazione.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+        mDataset.clear();
+        initDataset();
         View rootView = inflater.inflate(R.layout.fragment_reports_fragment, container, false);
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
@@ -89,21 +99,6 @@ public class reports_fragment extends Fragment {
 
                         Segnalazione s = mDataset.get(position);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
-                        //id=s.getIdSegnalazione()
-
-
-
-                        //Ottengo l'oggetto dalla lista in posizione "position"
-
-                        //Inserisco l'oggetto nel bundle
-
-
-
-
-                       //id=mDataset.get(position).getIdSegnalazione();
-
-
-
 
 
                     }
@@ -115,7 +110,7 @@ public class reports_fragment extends Fragment {
         );
 
 
-        //main1.setIdSegnalazione(id);
+
 
 
         // Inflate the layout for this fragment

@@ -36,7 +36,7 @@ public class vistaSegnalazione extends Fragment {
     protected ArrayList<Segnalazione> mDataset = new ArrayList<>();
     private TextView descrizioneReport;
     private TextView tipoReport;
-    private Segnalazione seg;
+
     //MainActivity main1 = (MainActivity)getActivity() ;
     //private String id;
     private static final String ARG_PARAM1 = "obj";
