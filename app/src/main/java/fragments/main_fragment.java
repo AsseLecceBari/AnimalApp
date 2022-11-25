@@ -51,6 +51,7 @@ public class main_fragment extends Fragment {
             return;
         }
         tabLayout.getTabAt(posizione).select();
+        viewPager2.setCurrentItem(posizione);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

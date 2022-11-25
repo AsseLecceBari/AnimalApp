@@ -87,12 +87,10 @@ public class aggiungiAnimaleFragment extends Fragment {
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
+                    mGetContent.launch("image/*");
                 } else {
-                    // Explain to the user that the feature is unavailable because the
-                    // feature requires a permission that the user has denied. At the
-                    // same time, respect the user's decision. Don't link to system
-                    // settings in an effort to convince the user to change their
-                    // decision.
+                    //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
+
                 }
             });
 

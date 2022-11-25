@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity {
                 picker.show();
             }
         });
-
+        
         // Rendo visibili alcuni campi in base al ruolo
         etRegRuolo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

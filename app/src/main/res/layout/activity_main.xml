@@ -8,7 +8,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity"
-    android:id="@+id/linear">
+    android:id="@+id/linear"
+    android:background="@drawable/background_main"
+    >
+
 
     <include layout="@layout/main_action_bar" />
 
@@ -16,7 +19,8 @@
         android:id="@+id/frame"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        >
 
 
         <androidx.fragment.app.FragmentContainerView

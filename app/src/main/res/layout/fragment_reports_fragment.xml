@@ -31,5 +31,33 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabReport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_input_add"
+        android:visibility="invisible" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab1"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="90dp"
+        android:layout_marginBottom="16dp"
+        android:src="@android:drawable/btn_dialog"
+        android:visibility="invisible"/>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/fab2"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="90dp"
+        android:layout_marginEnd="16dp"
+        android:src="@android:drawable/ic_lock_power_off"
+        android:visibility="invisible"/>
 
 </FrameLayout>

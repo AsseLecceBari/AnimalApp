@@ -8,7 +8,9 @@
     android:padding="16dp">
 
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
+
+
 
         android:id="@+id/cardAnimal"
         android:layout_width="match_parent"
@@ -27,7 +29,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/backgroud_card">
+            android:background="@drawable/backgroud_card"
+           >
 
             <ImageView
                 android:id="@+id/imageAnimal"
@@ -36,9 +39,6 @@
                 android:layout_marginStart="16dp"
 
                 android:drawingCacheQuality="auto"
-                android:rotation="-4"
-                android:rotationX="-4"
-                android:rotationY="13"
                 app:circularflow_angles="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -100,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:text="TextView"
+                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -153,6 +154,6 @@
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,14 +60,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
     ImageButton smarrimento,animaleFerito,pericolo,news,raccoltaFondi,ritrovamento;
 
 
-
-
-
-
-
-
-
-
+    public aggiungi_segnalazione_fragment(){}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
