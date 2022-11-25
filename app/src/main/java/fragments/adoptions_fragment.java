@@ -2,6 +2,7 @@ package fragments;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -34,9 +35,13 @@ import java.util.ArrayList;
 
 import adapter.AdozioniAdapter;
 import adapter.AnimalAdapter;
+import class_general.RecyclerItemClickListener;
+import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
+import it.uniba.dib.sms2223_2.VistaAdozioneActivity;
 import model.Adozione;
 import model.Animale;
+import model.Segnalazione;
 
 
 public class adoptions_fragment extends Fragment {
@@ -56,7 +61,31 @@ public class adoptions_fragment extends Fragment {
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_adozione_fragment()).addToBackStack(null).commit();
             }
+
         });
+
+
+        mRecyclerView.addOnItemTouchListener(
+                new class_general.RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+
+
+                        Animale animale = mDataset.get(position);
+                       // Log.d("ciao", animale.getIdAnimale());
+
+                      Intent intent = new Intent(getContext(), ProfiloAnimale.class);
+                        intent.putExtra("animale", animale);
+                        startActivity(intent);
+
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+                })
+        );
     }
 
     @SuppressLint("MissingInflatedId")

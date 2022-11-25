@@ -1,6 +1,8 @@
 package model;
 
-public class Adozione {
+import java.io.Serializable;
+
+public class Adozione  implements Serializable {
     private String idAnimale;
 
     public Adozione(){}

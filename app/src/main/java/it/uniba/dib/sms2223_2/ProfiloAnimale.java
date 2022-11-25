@@ -21,7 +21,7 @@ import model.Animale;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class ProfiloAnimale extends AppCompatActivity {
-    private Animale a;
+    private Animale animale;
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
     private TabLayout tabLayout;
@@ -31,6 +31,7 @@ public class ProfiloAnimale extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        animale= (Animale) getIntent().getSerializableExtra("animale");
         setContentView(R.layout.activity_profilo_animale);
     }
 
@@ -39,7 +40,7 @@ public class ProfiloAnimale extends AppCompatActivity {
         super.onResume();
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle("Profilo Animale");
+        main_action_bar.setTitle(animale.getNome());
         setSupportActionBar(main_action_bar);
     }
 

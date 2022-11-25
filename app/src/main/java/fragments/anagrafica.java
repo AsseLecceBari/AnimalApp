@@ -55,6 +55,12 @@ public class anagrafica extends Fragment {
     private Button selectImgButton;
 
 
+
+
+
+
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
         db=FirebaseFirestore.getInstance();
@@ -125,10 +131,34 @@ public class anagrafica extends Fragment {
             }
         });
 
+
+      /*  if(!proprietario)
+        {   bottoneMar.setVisibility(View.INVISIBLE);
+            inviaemail.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+         //   bottoneMar.setVisibility(View.VISIBLE);
+           // inviaemail.setVisibility(View.INVISIBLE);
+
+        }*/
+
+
+
+
+
+
+
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
 
+
+
+    }
 
     public void setAnimale(Animale a){
         animale = a;

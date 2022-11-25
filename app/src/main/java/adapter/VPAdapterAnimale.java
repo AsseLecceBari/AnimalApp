@@ -1,4 +1,6 @@
 package adapter;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -18,11 +20,22 @@ import fragments.spese;
 public class VPAdapterAnimale extends FragmentStateAdapter {
     private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
-    public VPAdapterAnimale(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    public VPAdapterAnimale(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, @NonNull boolean proprietario) {
         super(fragmentManager, lifecycle);
-        fragmentArrayList.add(new anagrafica());
-        fragmentArrayList.add(new spese());
-        fragmentArrayList.add(new librettoSanitario());
+
+        if(!proprietario) {
+
+            Log.d("ciao","sono dentro");
+
+        }
+        else{
+            Log.d("ciao","sono dentroi");
+
+            fragmentArrayList.add(new anagrafica());
+            fragmentArrayList.add(new spese());
+            fragmentArrayList.add(new librettoSanitario());
+
+        }
     }
     @NonNull
     @Override

@@ -1,14 +1,14 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/anagraficaLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fragments.anagrafica">
-    >
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    <LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/anagraficaLayout1"
         android:layout_width="match_parent"
@@ -83,15 +83,30 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/aggiungiAnimaliBtn"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_gravity="bottom|end"
-    android:layout_marginEnd="15dp"
-    android:layout_marginBottom="15dp"
-    android:clickable="true"
-    android:src="@android:drawable/btn_dialog"
-    tools:ignore="SpeakableTextPresentCheck"
-    android:onClick="modificaAnimale"/>
+        android:id="@+id/aggiungiAnimaliBtn2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:onClick="modificaAnimale"
+        android:src="@android:drawable/btn_dialog"
+        tools:ignore="SpeakableTextPresentCheck"
+        />
+
+
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/inviaEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:clickable="true"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@android:drawable/sym_action_email"
+        tools:ignore="SpeakableTextPresentCheck"
+         />
 
 </FrameLayout>
