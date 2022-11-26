@@ -144,6 +144,16 @@ public class aggiungi_segnalazione_fragment extends Fragment {
             @Override
             public void onClick(View view) {
 
+                /*
+                1- l'utente inserisce la posizione o si fa localizzare automaticamente
+                2- si apre la lista degli animali segnalati smarriti nel raggio di n metri
+                3- si sceglie l'animale dalla lista oppure in fondo schiacci il pulsante per creare una segnalazione in bacheca con animale non identificato
+
+                todo: quando si segna uno smarrimento in una determinata area si notifica ai residenti della zona iscritti l'accaduto
+                 */
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new ritrovamento()).addToBackStack(null).commit();
+
             }
         });
 
