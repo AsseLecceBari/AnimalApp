@@ -1,4 +1,4 @@
-package fragments;
+package fragments_adozioni;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -37,6 +37,7 @@ import adapter.AdozioniAdapter;
 import adapter.AggiungiAnimaleAdapter;
 import adapter.AnimalAdapter;
 import class_general.RecyclerItemClickListener;
+import fragments.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
@@ -53,6 +54,7 @@ public class aggiungi_adozione_fragment extends Fragment {
     private Checkable checkbox;
     private final ArrayList <String> idAnimali = new ArrayList<>();
     private View botton;
+    private View card;
     private ArrayList<Adozione> animaliAdozione =  new ArrayList<>();
     private  int contatore=0;
     private androidx.appcompat.widget.Toolbar main_action_bar;
@@ -60,7 +62,7 @@ public class aggiungi_adozione_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        InitData();
+
     }
 
     @SuppressLint("MissingInflatedId")
@@ -68,14 +70,22 @@ public class aggiungi_adozione_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_adozione_fragment, container, false);
         main_action_bar = getActivity().findViewById(R.id.main_action_bar);
+
+
         main_action_bar.setTitle("Seleziona Animali");
+
+
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
         }
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+        card= rootView.findViewById(R.id.cardAnimal);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleaggiungiAdozione);
+
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mDataset.clear();
+        InitData();
 
         return rootView;
     }
@@ -95,6 +105,13 @@ public class aggiungi_adozione_fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).addToBackStack(null).commit();
+            }
+        });
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
@@ -181,6 +198,11 @@ public class aggiungi_adozione_fragment extends Fragment {
                 }
             });
         }
+
     }
 
+    public void RegistraNuovoAnimale(View view) {
+
+
+    }
 }

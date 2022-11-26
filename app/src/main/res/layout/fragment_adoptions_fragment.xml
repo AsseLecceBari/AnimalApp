@@ -3,8 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.adoptions_fragment"
+    tools:context="fragments_adozioni.adoptions_fragment"
     android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/paginalogin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="invisible">
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Accedi per inserire i tuoi animali nella bacheca addozioni"
+            android:textSize="20dp"
+            android:gravity="center"
+            android:layout_marginTop="200dp"/>
+
+        <Button
+            android:id="@+id/buttonAccesso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="100dp"
+            android:layout_marginLeft="150dp"
+            android:layout_marginTop="30dp"
+            android:gravity="center"
+            android:text="Accedi" />
+    </LinearLayout>
 
     <FrameLayout
         android:layout_width="match_parent"

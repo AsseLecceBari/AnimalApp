@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="fragments.adoptions_fragment">
+    tools:context="fragments_adozioni.adoptions_fragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/main_action_bar"

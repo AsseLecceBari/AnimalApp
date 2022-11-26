@@ -1,7 +1,6 @@
-package fragments;
+package fragments_adozioni;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -9,39 +8,32 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.Toolbar;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.io.Serializable;
+import org.checkerframework.common.subtyping.qual.Bottom;
+
 import java.util.ArrayList;
 
 import adapter.AdozioniAdapter;
-import adapter.AnimalAdapter;
 import class_general.RecyclerItemClickListener;
+import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
-import it.uniba.dib.sms2223_2.VistaAdozioneActivity;
-import model.Adozione;
 import model.Animale;
-import model.Segnalazione;
 
 
 public class adoptions_fragment extends Fragment {
@@ -51,6 +43,15 @@ public class adoptions_fragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected AdozioniAdapter mAdapter;
     protected ArrayList<Animale> mDataset= new ArrayList<>();
+    private LinearLayout paginalogin;
+    private View btnaccesso;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+    }
 
     @Override
     public void onResume() {
@@ -59,10 +60,12 @@ public class adoptions_fragment extends Fragment {
         aggiungiAdozione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_adozione_fragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new aggiungi_adozione_fragment()).addToBackStack(null).commit();
             }
-
         });
+
+
+
 
 
         mRecyclerView.addOnItemTouchListener(
@@ -87,12 +90,18 @@ public class adoptions_fragment extends Fragment {
                 })
         );
     }
+    
 
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        initDataset();
+
         View rootView = inflater.inflate(R.layout.fragment_adoptions_fragment, container, false);
+        mDataset.clear();
+        initDataset();
+       paginalogin= rootView.findViewById(R.id.paginalogin);
+       btnaccesso=rootView.findViewById(R.id.btnLogin);
+
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleadoption);
@@ -108,7 +117,7 @@ public class adoptions_fragment extends Fragment {
         CollectionReference adozioniRef=db.collection("adozioni");
         CollectionReference animali=db.collection("animali");
 
-        if(auth.getCurrentUser()!=null) {
+        //if(auth.getCurrentUser()!=null) {
          adozioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -138,7 +147,7 @@ public class adoptions_fragment extends Fragment {
                     }
                 }
             });
-        }
+       // }
     }
 
 }

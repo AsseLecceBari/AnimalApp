@@ -8,10 +8,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
 
-import fragments.adoptions_fragment;
+import fragments_adozioni.adoptions_fragment;
 import fragments.myanimals_fragment;
 import fragments.reports_fragment;
-import it.uniba.dib.sms2223_2.VistaAdozioneActivity;
 
 public class VPAdapter extends FragmentStateAdapter {
     private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
