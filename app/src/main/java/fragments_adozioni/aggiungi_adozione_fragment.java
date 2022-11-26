@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Checkable;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -38,7 +39,9 @@ import adapter.AggiungiAnimaleAdapter;
 import adapter.AnimalAdapter;
 import class_general.RecyclerItemClickListener;
 import fragments.aggiungiAnimaleFragment;
+import fragments.main_fragment;
 import it.uniba.dib.sms2223_2.R;
+import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Adozione;
 import model.Animale;
 import model.Veterinario;
@@ -106,6 +109,7 @@ public class aggiungi_adozione_fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,18 +143,7 @@ public class aggiungi_adozione_fragment extends Fragment {
                 })
         );
 
-        botton= getView().findViewById(R.id.Btnaggiungiadozioni);
-        botton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (int a = 0; a < idAnimali.size(); a++) {
-                    Adozione adozione = new Adozione(idAnimali.get(a));
-                    db.collection("adozioni").document(idAnimali.get(a)).set(adozione);
-
-                }
-                idAnimali.clear();//elimino tutti gli animali selezionati
-            }
-        });
+     aggiungiAnimaliSelezionati();
     }
 
 
@@ -210,8 +203,39 @@ public class aggiungi_adozione_fragment extends Fragment {
 
     }
 
-    public void RegistraNuovoAnimale(View view) {
+    public void aggiungiAnimaliSelezionati() {
+        botton= getView().findViewById(R.id.Btnaggiungiadozioni);
+        botton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+
+                if(idAnimali.size()>0) {//controllo se ha selezionato almeno un animale
+                    for (int a = 0; a < idAnimali.size(); a++) {
+                        Adozione adozione = new Adozione(idAnimali.get(a));
+                        db.collection("adozioni").document(idAnimali.get(a)).set(adozione);
+
+                    }
+
+                    if(idAnimali.size()>1) {
+                        Toast.makeText(getActivity(), R.string.AnimaliAggiungiInBachecaAdozioni, Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(), R.string.AnimaleAggiuntoInBachecaAdozioni, Toast.LENGTH_LONG).show();
+
+                    }
+                    getActivity().onBackPressed();
+
+                }
+                else{
+                    Toast.makeText(getActivity(), R.string.SelezioneVuota, Toast.LENGTH_SHORT).show();
+                }
+
+
+                idAnimali.clear();//elimino tutti gli animali selezionati
+            }
+        });
 
     }
 }
