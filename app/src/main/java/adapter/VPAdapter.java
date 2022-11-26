@@ -9,7 +9,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 
 import fragments_adozioni.adoptions_fragment;
-import fragments.myanimals_fragment;
+import fragments_mieiAnimali.myanimals_fragment;
 import fragments_segnalazioni.reports_fragment;
 
 public class VPAdapter extends FragmentStateAdapter {

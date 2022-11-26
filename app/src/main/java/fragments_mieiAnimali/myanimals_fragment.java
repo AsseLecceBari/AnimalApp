@@ -1,25 +1,17 @@
-package fragments;
+package fragments_mieiAnimali;
 
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -35,19 +27,16 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import adapter.AnimalAdapter;
-import it.uniba.dib.sms2223_2.LoginActivity;
+import fragments.RecyclerItemClickListener;
+import fragments.nonSeiRegistrato_fragment;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
-import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
-import model.Segnalazione;
 
 public class myanimals_fragment extends Fragment {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    private TextView tvLogin;
-    private TextView tvRegistrati;
     FloatingActionButton addAnimale;
     private Animale a;
 
@@ -68,21 +57,10 @@ public class myanimals_fragment extends Fragment {
         mDataset.clear();
         initDataset();
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
-        tvLogin=rootView.findViewById(R.id.tvLoginMyAnimals);
-        tvRegistrati=rootView.findViewById(R.id.tvRegisterHereMyAnimals);
         addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
         auth=FirebaseAuth.getInstance();
         if(auth.getCurrentUser()==null){
-                addAnimale.setVisibility(View.GONE);
-                tvLogin.setOnClickListener(view ->{
-                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
-            });
-            tvRegistrati.setOnClickListener(view ->{
-                startActivity(new Intent(getActivity().getApplicationContext(), RegisterActivity.class));
-            });
-        }else {
-            ConstraintLayout cl= rootView.findViewById(R.id.noLoggedLayoutMyAnimals);
-            cl.setVisibility(View.INVISIBLE);
+              getChildFragmentManager().beginTransaction().replace(R.id.myAnimalsFragment, new nonSeiRegistrato_fragment()).commit();
         }
         addAnimale.setOnClickListener(new View.OnClickListener() {
             @Override
