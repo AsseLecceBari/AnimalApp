@@ -17,10 +17,10 @@ public class Segnalazione implements Serializable {
     private String idAnimale;
     private String idSegnalazione;
     private String descrizione;
-    private Map<String,String> coordinateGps;
+    private String coordinateGps;
     private String data, urlFoto, link;
 
-    public Segnalazione(String tipo, String idAnimale, String idSegnalazione, String descrizione, Map<String, String> coordinateGps, String data, String urlFoto, String link) {
+    public Segnalazione(String tipo, String idAnimale, String idSegnalazione, String descrizione, String coordinateGps, String data, String urlFoto, String link) {
         this.tipo = tipo;
         this.idAnimale = idAnimale;//solo a smarrimento
         this.idSegnalazione = idSegnalazione;
@@ -46,7 +46,7 @@ public class Segnalazione implements Serializable {
         return descrizione;
     }
 
-    public Map<String, String> getCoordinateGps() {
+    public String getCoordinateGps() {
         return coordinateGps;
     }
 
