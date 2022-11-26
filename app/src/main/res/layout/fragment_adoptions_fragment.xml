@@ -6,6 +6,27 @@
     tools:context="fragments_adozioni.adoptions_fragment"
     android:orientation="vertical">
 
+    <FrameLayout
+        android:id="@+id/layoutaprifiltri"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btnaprifiltri"
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:visibility="visible"
+
+            android:src="@drawable/filtri"
+            tools:ignore="SpeakableTextPresentCheck"
+
+            />
+
+    </FrameLayout>
+
     <LinearLayout
         android:id="@+id/paginalogin"
         android:layout_width="match_parent"
@@ -31,29 +52,93 @@
             android:layout_marginTop="30dp"
             android:gravity="center"
             android:text="Accedi" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutfiltri"
+
+        android:layout_width="match_parent"
+        android:layout_height="181dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="74dp"
+                android:orientation="horizontal">
+
+                <CheckBox
+                    android:id="@+id/checkBoxImieiannunci"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I miei annunci" />
+
+                <CheckBox
+                    android:id="@+id/checkBox2annunciesterni"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="18dp"
+                    android:text="Annunci di altri proprietari"
+                    />
+
+                <CheckBox
+                    android:id="@+id/checkBox3annunciGenerale"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:layout_marginLeft="18dp"
+                    android:layout_marginRight="2dp"
+                    android:text="Tutti" />
+
+            </LinearLayout>
+
+            <SeekBar
+                android:id="@+id/seekBar2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+
+                android:progress="30" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/chiudifiltri"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:clickable="true"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            tools:ignore="SpeakableTextPresentCheck" />
+
     </LinearLayout>
 
     <FrameLayout
+        android:id="@+id/layoutPreferiti"
         android:layout_width="match_parent"
-        android:layout_height="20dp">
+        android:layout_height="match_parent"
+        android:visibility="gone">
 
-        <ImageView
-            android:id="@+id/imageView5"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleadoptionPreferiti"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:backgroundTint="#000000"
-            android:src="@drawable/search_96701" />
+            android:layout_height="match_parent"
+            tools:listitem="@layout/recycle_view_adozioni" >
 
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/filtri" />
-
+        </androidx.recyclerview.widget.RecyclerView>
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/listaAnimali"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -61,11 +146,13 @@
             android:id="@+id/recycleadoption"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            tools:listitem="@layout/recycle_view_adozioni" />
+            tools:listitem="@layout/recycle_view_adozioni" >
+
+        </androidx.recyclerview.widget.RecyclerView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/aggiungiAdozione"
-            android:layout_width="69dp"
+            android:layout_width="68dp"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginEnd="15dp"
@@ -73,6 +160,7 @@
             android:clickable="true"
             android:src="@android:drawable/ic_input_add"
             tools:ignore="SpeakableTextPresentCheck" />
+
     </FrameLayout>
 
 </LinearLayout>
