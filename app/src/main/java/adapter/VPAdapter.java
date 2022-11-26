@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 import fragments_adozioni.adoptions_fragment;
 import fragments.myanimals_fragment;
-import fragments.reports_fragment;
+import fragments_segnalazioni.reports_fragment;
 
 public class VPAdapter extends FragmentStateAdapter {
     private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();

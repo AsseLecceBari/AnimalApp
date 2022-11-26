@@ -4,7 +4,7 @@
         android:id="@+id/segnalazioneLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="fragments.vistaSegnalazione">
+        tools:context="fragments_segnalazioni.vistaSegnalazione">
 
 
         <LinearLayout
@@ -15,7 +15,7 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="24dp"
-            tools:context="fragments.vistaSegnalazione">
+            tools:context="fragments_segnalazioni.vistaSegnalazione">
 
             <ImageView
                 android:id="@+id/ImmagineReport"

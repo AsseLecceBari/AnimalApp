@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments.aggiungi_segnalazione_fragment"
+    tools:context="fragments_segnalazioni.aggiungi_segnalazione_fragment"
     android:id="@+id/frameTipi">
 
 

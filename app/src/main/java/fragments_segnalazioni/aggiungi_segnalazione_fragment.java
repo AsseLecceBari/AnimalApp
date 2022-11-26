@@ -1,4 +1,4 @@
-package fragments;
+package fragments_segnalazioni;
 
 import android.Manifest;
 import android.content.DialogInterface;

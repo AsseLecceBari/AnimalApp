@@ -1,4 +1,4 @@
-package fragments;
+package fragments_segnalazioni;
 
 import android.os.Bundle;
 
