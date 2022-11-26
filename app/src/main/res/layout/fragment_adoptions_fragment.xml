@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="181dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <LinearLayout
 
@@ -86,8 +86,7 @@
                     android:layout_height="wrap_content"
 
                     android:layout_marginLeft="18dp"
-                    android:text="Annunci di altri proprietari"
-                    />
+                    android:text="Annunci non miei" />
 
                 <CheckBox
                     android:id="@+id/checkBox3annunciGenerale"

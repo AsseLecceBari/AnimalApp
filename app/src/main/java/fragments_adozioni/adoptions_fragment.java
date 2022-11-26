@@ -33,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.checkerframework.common.subtyping.qual.Bottom;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import adapter.AdozioniAdapter;
 import class_general.RecyclerItemClickListener;
@@ -112,7 +113,7 @@ public class adoptions_fragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_adoptions_fragment, container, false);
         mDataset.clear();
-        initDataset();
+        initDataAnnunciEsterni();
         paginalogin = rootView.findViewById(R.id.paginalogin);
         btnaccesso = rootView.findViewById(R.id.btnLogin);
         chbimieiAnnunci = rootView.findViewById(R.id.checkBoxImieiannunci);
@@ -173,6 +174,53 @@ public class adoptions_fragment extends Fragment {
     }
 
 
+    public void initDataAnnunciEsterni(){
+        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+        db = FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        CollectionReference adozioniRef = db.collection("adozioni");
+        CollectionReference animali = db.collection("animali");
+
+        //if(auth.getCurrentUser()!=null) {
+        adozioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document1 : task.getResult()) {
+                        animali.whereEqualTo("idAnimale", document1.getId()).get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                // QuerySnapshot document = task.getResult();
+
+                                                Animale prova= document.toObject(Animale.class);
+                                                Log.d("ciao3", prova.getEmailProprietario());
+
+                                                if(!Objects.equals(auth.getCurrentUser().getEmail(), prova.getEmailProprietario())) {
+
+
+                                                    mDataset.add(document.toObject(Animale.class));
+                                                    // Log.d("ciao", String.valueOf(mDataset.size()));
+                                                    mAdapter = new AdozioniAdapter(mDataset);
+                                                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                    mRecyclerView.setAdapter(mAdapter);
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                });
+                        //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                    }
+                }
+            }
+        });
+        // }
+    }
+
+
     public void filtri() {
         chbannunciesterni.setChecked(true);
         btnopenFiltri.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +255,7 @@ public class adoptions_fragment extends Fragment {
                 }
                 else{
                     mDataset.clear();
-                    initDataset();
+                    initDataAnnunciEsterni();
                 }
             }
         });
