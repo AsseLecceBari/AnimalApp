@@ -175,13 +175,20 @@ public class aggiungi_adozione_fragment extends Fragment {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()){
+                                        contatore=0;
 
                                         for (QueryDocumentSnapshot document1 : task.getResult()) {
-                                            if(document.getId().equals(document1.getId())){
-                                                contatore += 1;//faccio query per verificare se l'animale è gia in adozione
+
+
+
+
+                                            if (document.getId().equals(document1.getId())) {
+                                                contatore += 1;
+                                                Log.d("ciao1",document1.getId());//faccio query per verificare se l'animale è gia in adozione
 
 
                                             }
+
                                         }
                                         if(contatore==0){
                                             mDataset.add(document.toObject(Animale.class));
@@ -190,6 +197,8 @@ public class aggiungi_adozione_fragment extends Fragment {
                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                             mRecyclerView.setAdapter(mAdapter);
                                         }
+
+
                                     }
                                 }
                             });
