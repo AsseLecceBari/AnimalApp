@@ -44,6 +44,7 @@ public class ritrovamento extends Fragment {
         indirizzo = rootView.findViewById(R.id.etRegIndirizzo);
         gps = rootView.findViewById(R.id.gps);
         mostra = rootView.findViewById(R.id.cerca);
+        mRecyclerView=rootView.findViewById(R.id.recyclerViewRitrovamento);
 
         // imposto i listener
         gps.setOnClickListener(new View.OnClickListener() {
@@ -78,8 +79,6 @@ public class ritrovamento extends Fragment {
         db= FirebaseFirestore.getInstance();
         auth= FirebaseAuth.getInstance();
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
-
-
         if(auth.getCurrentUser()!=null){
             segnalazioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
