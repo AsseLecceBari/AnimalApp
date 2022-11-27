@@ -61,6 +61,8 @@ public class reports_fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        //questo è il floating button
         View aggiungiSegnalazione = getView().findViewById(R.id.aggiungiSegnalazione);
         aggiungiSegnalazione.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,11 +128,11 @@ public class reports_fragment extends Fragment {
                         //Salvare animale in un array con elementi oggetto animale
                         mDataset.add(document.toObject(Segnalazione.class));
                         //Passo i dati presi dal database all'adapter
-                        mAdapter = new ReportAdapter(mDataset);
-                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                        mRecyclerView.setAdapter(mAdapter);
 
                     }
+                    mAdapter = new ReportAdapter(mDataset);
+                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                    mRecyclerView.setAdapter(mAdapter);
 
 
 

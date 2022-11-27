@@ -103,7 +103,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-               // getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new myanimals_fragment().newInstance("smarrimento")).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new choiceAnimals_fragment()).addToBackStack(null).commit();
 
 
 

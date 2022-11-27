@@ -1,35 +1,110 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="fragments_segnalazioni.smarrimento_fragments">
-
-    <!-- TODO: Update blank fragment layout -->
-    <LinearLayout
+<FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        tools:context="fragments_segnalazioni.smarrimento_fragments">
 
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
-            android:src="@android:drawable/sym_def_app_icon"
-            android:layout_gravity="center|top"/>
+    <LinearLayout
+        android:id="@+id/smarrimentoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:gravity="top|center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        >
 
-        <TextView
-            android:id="@+id/textView"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgAnimaleSmarrito"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            tools:src="@tools:sample/avatars" />
+
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:hint="@string/nome"
+            android:id="@+id/nomeAnimaleSmarrito"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
 
-        <TextView
-            android:id="@+id/textView2"
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:hint="Genere"
+            android:id="@+id/genereAnimaleSmarrito"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Specie"
+            android:id="@+id/specieANimaleSmarrito"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nascita"
+            android:id="@+id/nascitaAnimaleSmarrito"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:id="@+id/descrizioneTextLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/descrizioneEditText"
+                android:hint="Descrizione" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:id="@+id/indirizzoTextLayout">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Indirizzo Ultimo Avvistamento"
+
+                    android:id="@+id/indirizzoEditText"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
     </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/confermaSmarrimento"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@android:drawable/checkbox_on_background"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        />
+
 
 </FrameLayout>
