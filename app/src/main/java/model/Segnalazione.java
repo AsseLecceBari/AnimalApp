@@ -32,6 +32,15 @@ public class Segnalazione implements Serializable {
         this.link = link;
     }
 
+    public Segnalazione(String tipo, String idSegnalazione, String descrizione, String coordinateGps, String data, String urlFoto) {
+        this.tipo = tipo;
+        this.idSegnalazione = idSegnalazione;
+        this.descrizione = descrizione;
+        this.coordinateGps = coordinateGps;
+        this.data = data;
+        this.urlFoto = urlFoto;
+    }
+
     public Segnalazione() {
     }
 

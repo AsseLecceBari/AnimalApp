@@ -177,7 +177,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRegDenominazione=findViewById(R.id.etRegDenominazione);
         etRegIsPrivato = findViewById(R.id.isPrivato);
         etRegCodiceFiscaleAssociazione = findViewById(R.id.etRegCodiceFiscaleAssociazione);
-        tvLoginHere = findViewById(R.id.tvLoginHere);
+        tvLoginHere = findViewById(R.id.vaiSmarrimento);
         btnRegister = findViewById(R.id.btnRegister);
 
         mAuth = FirebaseAuth.getInstance();

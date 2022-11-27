@@ -29,7 +29,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/tvLoginHere"
+                android:id="@+id/vaiSmarrimento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
@@ -40,33 +40,24 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+
         <ImageView
             android:id="@+id/imgAnimaleReg"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            tools:src="@tools:sample/avatars"
+            android:layout_marginTop="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_marginTop="15dp"/>
+            android:visibility="gone"
+            tools:src="@tools:sample/avatars" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
 
             <Button
-                android:id="@+id/scattaFoto"
+                android:id="@+id/upImgRitrovamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Scatta una foto"
-                android:layout_marginRight="2dp"/>
+                android:text="Carica immagine animale"
+              />
 
-            <Button
-                android:id="@+id/selectImgButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Galleria"
-                android:layout_marginLeft="2dp"/>
-        </LinearLayout>
 
 
 

@@ -80,7 +80,6 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
 
         smarrimento=rootView.findViewById(R.id.smarrimento);
-
         animaleFerito=rootView.findViewById(R.id.animaleFerito);
         pericolo=rootView.findViewById(R.id.pericolo);
         news=rootView.findViewById(R.id.news);
