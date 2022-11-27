@@ -1,5 +1,6 @@
 package adapter;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,12 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -82,6 +89,19 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         holder.getDataReport().setText(localDataSet.get(position).getData());
         holder.getTipoReport().setText(localDataSet.get(position).getTipo());
 
+        FirebaseStorage storage;
+        StorageReference storageRef;
+        storage= FirebaseStorage.getInstance();
+        storageRef=storage.getReference();
+
+        storageRef.child(localDataSet.get(position).getUrlFoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(holder.itemView.getContext())
+                        .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.imageReport);
+            }
+        });
     }
 
     @Override
