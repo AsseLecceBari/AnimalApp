@@ -11,6 +11,7 @@ public class Segnalazione implements Serializable {
      * 3-zona pericolosa/animale pericoloso
      * 4-news positive
      * 5-raccolta fondi
+     * 6-ritrovamento
      */
     
     private String tipo;
