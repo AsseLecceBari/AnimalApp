@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 import adapter.AnimalAdapter;
 import fragments.RecyclerItemClickListener;
-import fragments.aggiungiAnimaleFragment;
+
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;

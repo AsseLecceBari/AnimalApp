@@ -1,5 +1,6 @@
 package fragments_segnalazioni;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,10 +8,16 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -27,6 +34,13 @@ public class vistaSegnalazione extends Fragment {
     protected ArrayList<Segnalazione> mDataset = new ArrayList<>();
     private TextView descrizioneReport;
     private TextView tipoReport;
+    private ImageView immagineSegnalazione;
+    private TextView dataVistaReport;
+
+    private Uri file;
+
+    private FirebaseStorage storage;
+    private StorageReference storageRef;
 
     //MainActivity main1 = (MainActivity)getActivity() ;
     //private String id;
@@ -59,7 +73,24 @@ public class vistaSegnalazione extends Fragment {
         descrizioneReport.setText(s.getDescrizione());
         tipoReport.setText(s.getTipo());
 
+        dataVistaReport=rootView.findViewById(R.id.dataVistaReport);
+        dataVistaReport.setText(s.getData());
 
+        immagineSegnalazione=rootView.findViewById(R.id.ImmagineReport);
+
+        //setto immagine
+        // setto l'immagine dell'animale
+        storage= FirebaseStorage.getInstance();
+        storageRef=storage.getReference();
+
+        storageRef.child(s.getUrlFoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(immagineSegnalazione.getContext())
+                        .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(immagineSegnalazione);
+            }
+        });
 
 
         return rootView;
