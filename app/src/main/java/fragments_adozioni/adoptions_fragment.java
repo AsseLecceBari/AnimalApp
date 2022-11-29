@@ -223,10 +223,12 @@ public class adoptions_fragment extends Fragment {
 
     public void filtri() {
         chbannunciesterni.setChecked(true);
-        btnopenFiltri.setOnClickListener(new View.OnClickListener() {
+        layoutopenfiltri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 layoutfiltri.setVisibility(View.VISIBLE);
+               // layoutopenfiltri.setVisibility(View.GONE);
+                //btnopenFiltri.setVisibility(View.GONE);
                 layoutopenfiltri.setVisibility(View.GONE);
 
                 //bottonechiudifiltri.setVisibility(View.VISIBLE);
@@ -238,6 +240,7 @@ public class adoptions_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 layoutfiltri.setVisibility(View.GONE);
+               // btnopenFiltri.setVisibility(View.VISIBLE);
 
                 layoutopenfiltri.setVisibility(View.VISIBLE);
             }
