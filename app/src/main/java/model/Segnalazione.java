@@ -11,6 +11,7 @@ public class Segnalazione implements Serializable {
      * 3-zona pericolosa/animale pericoloso
      * 4-news positive
      * 5-raccolta fondi
+     * 6-ritrovamento
      */
     
     private String tipo;
@@ -29,6 +30,15 @@ public class Segnalazione implements Serializable {
         this.data = data;//la prende dal timestamp
         this.urlFoto = urlFoto;
         this.link = link;
+    }
+
+    public Segnalazione(String tipo, String idSegnalazione, String descrizione, String coordinateGps, String data, String urlFoto) {
+        this.tipo = tipo;
+        this.idSegnalazione = idSegnalazione;
+        this.descrizione = descrizione;
+        this.coordinateGps = coordinateGps;
+        this.data = data;
+        this.urlFoto = urlFoto;
     }
 
     public Segnalazione() {
