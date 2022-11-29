@@ -1,29 +1,18 @@
-package fragments;
+package fragments_segnalazioni;
 
-import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RadioButton;
-import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,30 +20,33 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-
 import java.util.ArrayList;
 
 import adapter.AnimalAdapter;
-import it.uniba.dib.sms2223_2.LoginActivity;
+import fragments.RecyclerItemClickListener;
+import fragments_mieiAnimali.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
-import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
-import model.Segnalazione;
 
-public class myanimals_fragment extends Fragment {
+public class choiceAnimals_fragment extends Fragment {
+
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    private TextView tvLogin;
-    private TextView tvRegistrati;
-    FloatingActionButton addAnimale;
+
     private Animale a;
 
     protected RecyclerView mRecyclerView;
     protected AnimalAdapter mAdapter;
 
     protected ArrayList<Animale> mDataset= new ArrayList<>();
+
+    public choiceAnimals_fragment() {
+        // Required empty public constructor
+    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,46 +57,33 @@ public class myanimals_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         mDataset.clear();
         initDataset();
-        View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
-        tvLogin=rootView.findViewById(R.id.tvLoginMyAnimals);
-        tvRegistrati=rootView.findViewById(R.id.tvRegisterHereMyAnimals);
-        addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
+        View rootView = inflater.inflate(R.layout.fragment_choice_animals_fragment, container, false);
+
+
+        //da implementare la parte dei non loggati con il fragment creata da enrico
         auth=FirebaseAuth.getInstance();
-        if(auth.getCurrentUser()==null){
-                addAnimale.setVisibility(View.GONE);
-                tvLogin.setOnClickListener(view ->{
-                startActivity(new Intent(getActivity().getApplicationContext(), LoginActivity.class));
-            });
-            tvRegistrati.setOnClickListener(view ->{
-                startActivity(new Intent(getActivity().getApplicationContext(), RegisterActivity.class));
-            });
-        }else {
-            ConstraintLayout cl= rootView.findViewById(R.id.noLoggedLayoutMyAnimals);
-            cl.setVisibility(View.INVISIBLE);
-        }
-        addAnimale.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
-            }
-        });
+
+
+
+
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleChoiceAnimals);
         //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //Inizializzo l'ascoltatore al click dell'item
+
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
-                        Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
-                        //Ottengo l'oggetto dalla lista in posizione "position"
-                        Animale a = mDataset.get(position);
-                        //Inserisco l'oggetto nel bundle
-                        i.putExtra("animale", a);
-                        startActivity(i);
+
+                        a = mDataset.get(position);
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new smarrimento_fragments().newInstance(a)).addToBackStack(null).commit();
+
+
+
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -112,13 +91,21 @@ public class myanimals_fragment extends Fragment {
                     }
                 })
         );
+
+
+
+
+
         return rootView;
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-    }
+
+
+
+
+
+
+
 
     private void initDataset() {
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
@@ -149,5 +136,6 @@ public class myanimals_fragment extends Fragment {
         }
     }
 
-}
 
+
+}

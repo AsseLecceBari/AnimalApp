@@ -15,7 +15,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="24dp"
-        tools:context="fragments.aggiungiAnimaleFragment">
+        tools:context="fragments_mieiAnimali.aggiungiAnimaleFragment">
 
         <ImageView
             android:id="@+id/imgAnimaleReg"

@@ -1,4 +1,4 @@
-package fragments;
+package fragments_mieiAnimali;
 import android.annotation.SuppressLint;
 import android.Manifest;
 import android.app.DatePickerDialog;
@@ -229,7 +229,7 @@ public class aggiungiAnimaleFragment extends Fragment {
 
                 // se tutto va bene registro
                 if(flag == 1) {
-                    return;
+
                 }else{
                     registraAnimaleBtn.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();

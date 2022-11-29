@@ -28,6 +28,8 @@ public class main_fragment extends Fragment {
     private FragmentActivity  activity;
     private int posizione = 0;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null)
@@ -58,7 +60,6 @@ public class main_fragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
                 posizione = tab.getPosition();
-                Log.d("ciao", String.valueOf(posizione));//test
             }
 
             @Override

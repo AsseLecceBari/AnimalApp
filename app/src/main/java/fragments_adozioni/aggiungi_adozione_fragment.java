@@ -1,12 +1,10 @@
 package fragments_adozioni;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Checkable;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,22 +25,17 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.checkerframework.common.subtyping.qual.Bottom;
-
 import java.util.ArrayList;
 
-import java.util.Iterator;
 import java.util.Objects;
 
-import adapter.AdozioniAdapter;
 import adapter.AggiungiAnimaleAdapter;
-import adapter.AnimalAdapter;
 import class_general.RecyclerItemClickListener;
-import fragments.aggiungiAnimaleFragment;
+import fragments_mieiAnimali.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
-import model.Veterinario;
+import fragments.main_fragment;
 
 public class aggiungi_adozione_fragment extends Fragment {
 
@@ -106,6 +100,7 @@ public class aggiungi_adozione_fragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+
         card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -139,18 +134,7 @@ public class aggiungi_adozione_fragment extends Fragment {
                 })
         );
 
-        botton= getView().findViewById(R.id.Btnaggiungiadozioni);
-        botton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                for (int a = 0; a < idAnimali.size(); a++) {
-                    Adozione adozione = new Adozione(idAnimali.get(a));
-                    db.collection("adozioni").document(idAnimali.get(a)).set(adozione);
-
-                }
-                idAnimali.clear();//elimino tutti gli animali selezionati
-            }
-        });
+     aggiungiAnimaliSelezionati();
     }
 
 
@@ -210,8 +194,39 @@ public class aggiungi_adozione_fragment extends Fragment {
 
     }
 
-    public void RegistraNuovoAnimale(View view) {
+    public void aggiungiAnimaliSelezionati() {
+        botton= getView().findViewById(R.id.Btnaggiungiadozioni);
+        botton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+
+                if(idAnimali.size()>0) {//controllo se ha selezionato almeno un animale
+                    for (int a = 0; a < idAnimali.size(); a++) {
+                        Adozione adozione = new Adozione(idAnimali.get(a));
+                        db.collection("adozioni").document(idAnimali.get(a)).set(adozione);
+
+                    }
+
+                    if(idAnimali.size()>1) {
+                        Toast.makeText(getActivity(), R.string.AnimaliAggiungiInBachecaAdozioni, Toast.LENGTH_LONG).show();
+                    }
+                    else
+                    {
+                        Toast.makeText(getActivity(), R.string.AnimaleAggiuntoInBachecaAdozioni, Toast.LENGTH_LONG).show();
+
+                    }
+                    getActivity().onBackPressed();
+
+                }
+                else{
+                    Toast.makeText(getActivity(), R.string.SelezioneVuota, Toast.LENGTH_SHORT).show();
+                }
+
+
+                idAnimali.clear();//elimino tutti gli animali selezionati
+            }
+        });
 
     }
 }

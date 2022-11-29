@@ -41,7 +41,6 @@ public class vistaSegnalazione extends Fragment {
         if (getArguments() != null) {
             s= (Segnalazione) getArguments().getSerializable(ARG_PARAM1);
         }
-        //initDataset(" ");
 
     }
 

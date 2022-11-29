@@ -83,6 +83,9 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="proprietario">Proprietario</string>
+    <string name="SelezioneVuota">Selezionare animale da inserire</string>
+    <string name="AnimaliAggiungiInBachecaAdozioni">Animali aggiunti nella bacheca adozioni</string>
+    <string name="AnimaleAggiuntoInBachecaAdozioni">Animale aggiunto nella bacheca adozioni</string>
 
 
 </resources>
