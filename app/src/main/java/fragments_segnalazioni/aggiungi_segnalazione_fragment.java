@@ -80,7 +80,6 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
 
         smarrimento=rootView.findViewById(R.id.smarrimento);
-
         animaleFerito=rootView.findViewById(R.id.animaleFerito);
         pericolo=rootView.findViewById(R.id.pericolo);
         news=rootView.findViewById(R.id.news);
@@ -98,7 +97,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
 
 
-
+        //todo: quando si segna uno smarrimento in una determinata area si notifica ai residenti della zona iscritti l'accaduto
         smarrimento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -143,6 +142,13 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         ritrovamento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                /*
+                L'utente entra nella schermata compilativa del ritrovamento; in alto ci sarà un avviso con un link rapido che suggerisce di andara prima a dare un occhiata agli smarrimenti in quella zona
+
+                 */
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new ritrovamento()).addToBackStack(null).commit();
 
             }
         });
