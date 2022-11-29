@@ -42,12 +42,7 @@ public class main_fragment_animale extends Fragment {
             posizione = savedInstanceState.getInt("posizione");
 
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
-       View root=inflater.inflate(R.layout.fragment_main_animale, container, false);
-
-
-
-
-      
+        View root=inflater.inflate(R.layout.fragment_main_animale, container, false);
         return root;
     }
 
@@ -55,8 +50,6 @@ public class main_fragment_animale extends Fragment {
     public void onResume() {
         super.onResume();
         caricamentoTab();
-
-
     }
 
     @Override
@@ -75,7 +68,6 @@ public class main_fragment_animale extends Fragment {
             Log.d("ciao",auth.getCurrentUser().getEmail());
             Log.d("ciao", animale.getEmailProprietario());
             return  true;
-
         }
         else
             return false;
@@ -94,20 +86,12 @@ public class main_fragment_animale extends Fragment {
                 tabLayout= getView().findViewById(R.id.tabLayout);
                 tabLayout.setVisibility(View.GONE);
                 tabLayout= getView().findViewById(R.id.tabLayout2);
-
-
-
-                Log.d("ciao", "true");
-
             }
             else {
                 vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(), true);
                 tabLayout= getView().findViewById(R.id.tabLayout2);
                 tabLayout.setVisibility(View.GONE);
                 tabLayout = getView().findViewById(R.id.tabLayout);
-
-
-
             }
             viewPager2.setAdapter(vpAdapter);
 
