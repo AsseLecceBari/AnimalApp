@@ -10,12 +10,16 @@ import android.widget.ArrayAdapter;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import adapter.VPAdapter;
 import fragments.main_fragment;
+import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.myanimals_fragment;
+import fragments_segnalazioni.reports_fragment;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,6 +52,12 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
 
         }
+        ViewPager2 viewPager2= main_fragment.getViewPager2();
+        viewPager2.getCurrentItem();
+        VPAdapter adapter= (VPAdapter) viewPager2.getAdapter();
+
+
+
        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
        MenuItem searchItem= menu.findItem(R.id.action_search);
         SearchView searchView= (SearchView) searchItem.getActionView();
@@ -60,10 +70,29 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+              try {
+                  myanimals_fragment myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                  myanimals_fragment.filter(newText);
+              }catch (Exception e){
+
+              } try {
+                    adoptions_fragment adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    adoptions_fragment.filter(newText);
+                }catch (Exception e){
+
+                }
+                try {
+                    reports_fragment reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                  reports_fragment.filter(newText);
+                }catch (Exception e){
+
+                }
 
                 return false;
             }
         });
+
+
        return true;
     }
 

@@ -13,6 +13,10 @@ import fragments_mieiAnimali.myanimals_fragment;
 import fragments_segnalazioni.reports_fragment;
 
 public class VPAdapter extends FragmentStateAdapter {
+    public ArrayList<Fragment> getFragmentArrayList() {
+        return fragmentArrayList;
+    }
+
     private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
     public VPAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {

@@ -23,6 +23,11 @@ import it.uniba.dib.sms2223_2.R;
 public class main_fragment extends Fragment {
 
     private TabLayout tabLayout;
+
+    public ViewPager2 getViewPager2() {
+        return viewPager2;
+    }
+
     private ViewPager2 viewPager2;
     private VPAdapter vpAdapter;
     private FragmentActivity  activity;

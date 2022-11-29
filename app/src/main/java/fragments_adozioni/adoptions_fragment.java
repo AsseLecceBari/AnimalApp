@@ -264,4 +264,27 @@ public class adoptions_fragment extends Fragment {
         });
 
     }
+    public void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<Animale> filteredlist = new ArrayList<Animale>();
+
+        // running a for loop to compare elements.
+        for (Animale item : mDataset) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getNome().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            mAdapter.filterList(filteredlist);
+        }
+    }
 }
