@@ -5,7 +5,16 @@
 
 
 
+
     <group android:id="@+id/groupItemMain">
+        <item
+            android:id="@+id/action_search"
+            android:title="Search"
+            android:icon="@drawable/search_96701"
+            app:showAsAction="ifRoom|collapseActionView"
+            app:actionViewClass="androidx.appcompat.widget.SearchView"
+            />
+        <!--
         <item
             android:icon="@drawable/qrcode"
             android:title="@string/scansione_qrcode"
@@ -18,6 +27,7 @@
             android:title="@string/profilo"
             app:showAsAction="ifRoom"
             android:onClick="mostraProfilo"/>
-
+-->
     </group>
+
 </menu>
