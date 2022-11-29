@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -42,6 +43,11 @@ public class myanimals_fragment extends Fragment {
 
     protected RecyclerView mRecyclerView;
     protected AnimalAdapter mAdapter;
+
+
+    public ArrayList<Animale> getmDataset() {
+        return mDataset;
+    }
 
     protected ArrayList<Animale> mDataset= new ArrayList<>();
 
@@ -126,6 +132,34 @@ public class myanimals_fragment extends Fragment {
             });
         }
     }
+    /*
+
+    private void filter(String text) {
+        // creating a new array list to filter our data.
+        ArrayList<Animale> filteredlist = new ArrayList<Animale>();
+
+        // running a for loop to compare elements.
+        for (Animale item : mDataset) {
+            // checking if the entered string matched with any item of our recycler view.
+            if (item.getCourseName().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+            Toast.makeText(this, "No Data Found..", Toast.LENGTH_SHORT).show();
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            mAdapter.filterList(filteredlist);
+        }
+    }
+
+*/
+
 
 }
 

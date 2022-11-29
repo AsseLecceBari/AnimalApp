@@ -6,13 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import fragments.main_fragment;
+import fragments_mieiAnimali.myanimals_fragment;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
     private int posizione;
     private TabLayout tabLayout;
     private main_fragment main_fragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,27 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        try {
+            main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        }catch (Exception e){
+
+        }
        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
+       MenuItem searchItem= menu.findItem(R.id.action_search);
+        SearchView searchView= (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+             return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+
+                return false;
+            }
+        });
        return true;
     }
 

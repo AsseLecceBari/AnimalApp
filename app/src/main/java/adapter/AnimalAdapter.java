@@ -37,6 +37,8 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
 
 
 
+
+
         public TextView getGenereAnimale() {
             return genereAnimale;
         }
@@ -74,7 +76,15 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         }
 
     }
-
+    // method for filtering our recyclerview items.
+    public void filterList(ArrayList<Animale> filterlist) {
+        // below line is to add our filtered
+        // list in our course array list.
+        localDataSet = filterlist;
+        // below line is to notify our adapter
+        // as change in recycler view data.
+        notifyDataSetChanged();
+    }
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public AnimalAdapter(ArrayList<Animale> dataSet){
