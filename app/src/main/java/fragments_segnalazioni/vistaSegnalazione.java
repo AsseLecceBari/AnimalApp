@@ -42,11 +42,12 @@ public class vistaSegnalazione extends Fragment {
     private FirebaseStorage storage;
     private StorageReference storageRef;
 
-    //MainActivity main1 = (MainActivity)getActivity() ;
-    //private String id;
+
     private static final String ARG_PARAM1 = "obj";
     private Segnalazione s;
-    //SupportMapFragment map;
+
+
+
 
 
     @Override
