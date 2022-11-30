@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -52,14 +53,15 @@ public class adoptions_fragment extends Fragment {
     protected ArrayList<Animale> mDataset = new ArrayList<>();
     private LinearLayout paginalogin;
     private View btnaccesso;
-    private CheckBox chbimieiAnnunci;
-    private CheckBox chbannunciesterni;
-    private CheckBox chbannuncigenerale;
+    private RadioButton chbimieiAnnunci;
+    private RadioButton chbannunciesterni;
+    private RadioButton chbannuncigenerale;
     private View layoutfiltri;
     private View layoutopenfiltri;
     private View btnopenFiltri;
     private View bottonechiudifiltri;
     private View layoutPreferiti;
+    private int tipoannunci=2;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,9 +113,24 @@ public class adoptions_fragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
+        if(savedInstanceState!= null)
+        {
+           tipoannunci= savedInstanceState.getInt("tipoannunci");
+        }
+
         View rootView = inflater.inflate(R.layout.fragment_adoptions_fragment, container, false);
         mDataset.clear();
-        initDataAnnunciEsterni();
+        auth = FirebaseAuth.getInstance();
+
+        if(auth.getCurrentUser()!= null) {
+
+            initDataAnnunci(tipoannunci);
+        }
+        else{
+            tipoannunci=3;
+        }
+
+
         paginalogin = rootView.findViewById(R.id.paginalogin);
         btnaccesso = rootView.findViewById(R.id.btnLogin);
         chbimieiAnnunci = rootView.findViewById(R.id.checkBoxImieiannunci);
@@ -133,7 +150,10 @@ public class adoptions_fragment extends Fragment {
         return rootView;
     }
 
-    private void initDataset() {
+
+
+
+    public void initDataAnnunci(int tip){
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -151,64 +171,39 @@ public class adoptions_fragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
+
                                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                                // QuerySnapshot document = task.getResult();
+                                                Animale t;
+                                                switch (tip) {
+                                                    case 1:
+                                                         t = document.toObject(Animale.class);
+                                                        if (Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
+                                                            mDataset.add(document.toObject(Animale.class));
+                                                             Log.d("ciao4", t.getNome());
+                                                            mAdapter = new AdozioniAdapter(mDataset);
+                                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                            mRecyclerView.setAdapter(mAdapter);
+                                                        } return;
+                                                    case 2:
 
-
-                                                mDataset.add(document.toObject(Animale.class));
-                                                // Log.d("ciao", String.valueOf(mDataset.size()));
-                                                mAdapter = new AdozioniAdapter(mDataset);
-                                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                mRecyclerView.setAdapter(mAdapter);
-                                            }
-
-                                        }
-                                    }
-                                });
-                        //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                    }
-                }
-            }
-        });
-        // }
-    }
-
-
-    public void initDataAnnunciEsterni(){
-        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
-        db = FirebaseFirestore.getInstance();
-        auth = FirebaseAuth.getInstance();
-        CollectionReference adozioniRef = db.collection("adozioni");
-        CollectionReference animali = db.collection("animali");
-
-        //if(auth.getCurrentUser()!=null) {
-        adozioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document1 : task.getResult()) {
-                        animali.whereEqualTo("idAnimale", document1.getId()).get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                // QuerySnapshot document = task.getResult();
-
-                                                Animale prova= document.toObject(Animale.class);
-                                                Log.d("ciao3", prova.getEmailProprietario());
-
-                                                if(!Objects.equals(auth.getCurrentUser().getEmail(), prova.getEmailProprietario())) {
-
-
-                                                    mDataset.add(document.toObject(Animale.class));
-                                                    // Log.d("ciao", String.valueOf(mDataset.size()));
-                                                    mAdapter = new AdozioniAdapter(mDataset);
-                                                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                    mRecyclerView.setAdapter(mAdapter);
+                                                         t = document.toObject(Animale.class);
+                                                        Log.d("ciao4", t.getNome());
+                                                        if (!Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
+                                                            mDataset.add(document.toObject(Animale.class));
+                                                            // Log.d("ciao", String.valueOf(mDataset.size()));
+                                                            mAdapter = new AdozioniAdapter(mDataset);
+                                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                            mRecyclerView.setAdapter(mAdapter);
+                                                        }   return;
+                                                    case 3:
+                                                            mDataset.add(document.toObject(Animale.class));
+                                                            // Log.d("ciao", String.valueOf(mDataset.size()));
+                                                            mAdapter = new AdozioniAdapter(mDataset);
+                                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                            mRecyclerView.setAdapter(mAdapter);
+                                                           return;
                                                 }
                                             }
-
                                         }
                                     }
                                 });
@@ -229,7 +224,24 @@ public class adoptions_fragment extends Fragment {
                 layoutfiltri.setVisibility(View.VISIBLE);
                // layoutopenfiltri.setVisibility(View.GONE);
                 //btnopenFiltri.setVisibility(View.GONE);
-                layoutopenfiltri.setVisibility(View.GONE);
+               // layoutopenfiltri.setVisibility(View.GONE);
+               // btnopenFiltri.setVisibility(View.GONE);
+                bottonechiudifiltri.setVisibility(View.VISIBLE);
+
+                //bottonechiudifiltri.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        btnopenFiltri.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutfiltri.setVisibility(View.VISIBLE);
+                // layoutopenfiltri.setVisibility(View.GONE);
+                //btnopenFiltri.setVisibility(View.GONE);
+                // layoutopenfiltri.setVisibility(View.GONE);
+                btnopenFiltri.setVisibility(View.GONE);
+                bottonechiudifiltri.setVisibility(View.VISIBLE);
 
                 //bottonechiudifiltri.setVisibility(View.VISIBLE);
 
@@ -241,13 +253,15 @@ public class adoptions_fragment extends Fragment {
             public void onClick(View view) {
                 layoutfiltri.setVisibility(View.GONE);
                // btnopenFiltri.setVisibility(View.VISIBLE);
+                bottonechiudifiltri.setVisibility(View.GONE);
+                btnopenFiltri.setVisibility(View.VISIBLE);
 
-                layoutopenfiltri.setVisibility(View.VISIBLE);
+                //layoutopenfiltri.setVisibility(View.VISIBLE);
             }
         });
 
 
-        chbannunciesterni.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       /* chbannunciesterni.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 
             @Override
@@ -257,12 +271,59 @@ public class adoptions_fragment extends Fragment {
 
                 }
                 else{
+                    chbimieiAnnunci.setChecked(false);
+                    chbannuncigenerale.setChecked(false);
+                    tipoannunci=2;
                     mDataset.clear();
-                    initDataAnnunciEsterni();
+                    initDataAnnunci(tipoannunci);
                 }
             }
         });
 
+        chbimieiAnnunci.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    mRecyclerView.setAdapter(null);
+
+                }
+                else{
+                    tipoannunci=1;
+                    chbannunciesterni.setChecked(false);
+                    chbannuncigenerale.setChecked(false);
+                    mDataset.clear();
+                    initDataAnnunci(tipoannunci);
+                }
+            }
+        });
+        chbannuncigenerale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(!b){
+                    mRecyclerView.setAdapter(null);
+
+                }
+                else{
+                    chbannunciesterni.setChecked(false);
+                    chbimieiAnnunci.setChecked(false);
+                    tipoannunci=3;
+                    mDataset.clear();
+                    initDataAnnunci(tipoannunci);
+                }
+            }
+        });*/
+
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putInt("tipoannunci",tipoannunci);
     }
     public void filter(String text) {
         // creating a new array list to filter our data.
