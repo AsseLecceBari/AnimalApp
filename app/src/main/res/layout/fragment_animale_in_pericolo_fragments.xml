@@ -1,0 +1,74 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+
+    <LinearLayout
+
+        android:id="@+id/animaleFeritoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        tools:context="fragments_segnalazioni.animale_in_pericolo_fragments">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgAnimaleInPericolo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            tools:src="@tools:sample/avatars"
+
+            />
+
+        <Button
+            android:id="@+id/scattaFotoButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Scatta Foto" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescrizioneAnimaleFerito"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descrizione" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <fragment
+            android:id="@+id/autoCompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
+
+
+
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/confermaAnimaleFerito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:src="@android:drawable/checkbox_on_background"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp" />
+
+
+
+
+
+
+</FrameLayout>

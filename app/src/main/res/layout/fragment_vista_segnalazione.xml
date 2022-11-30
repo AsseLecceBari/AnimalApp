@@ -9,6 +9,7 @@
         >
 
 <ScrollView
+    android:id="@+id/scrollViewVista"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
@@ -140,7 +141,7 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:text="Mappa"
+                android:text="Ultimo avvistamento"
                 android:textColor="#FFFFFF" />
 
             <View
@@ -162,6 +163,7 @@
             android:id="@+id/mapView"
             android:layout_width="wrap_content"
             android:layout_height="300dp"
+            android:layout_marginTop="25dp"
             />
 
         <RelativeLayout

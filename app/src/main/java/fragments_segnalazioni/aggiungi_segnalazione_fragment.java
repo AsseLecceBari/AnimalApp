@@ -112,6 +112,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         animaleFerito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new animale_in_pericolo_fragments()).addToBackStack(null).commit();
 
             }
         });

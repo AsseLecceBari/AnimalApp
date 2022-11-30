@@ -18,25 +18,28 @@ public class Segnalazione implements Serializable {
     private String idAnimale;
     private String idSegnalazione;
     private String descrizione;
-    private String coordinateGps;
+
+    double latitudine,longitudine;
     private String data, urlFoto, link;
 
-    public Segnalazione(String tipo, String idAnimale, String idSegnalazione, String descrizione, String coordinateGps, String data, String urlFoto, String link) {
+    public Segnalazione(String tipo, String idAnimale, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto, String link) {
         this.tipo = tipo;
         this.idAnimale = idAnimale;//solo a smarrimento
         this.idSegnalazione = idSegnalazione;
         this.descrizione = descrizione;
-        this.coordinateGps = coordinateGps;
+        this.latitudine=latitudine;
+        this.longitudine=longitudine;
         this.data = data;//la prende dal timestamp
         this.urlFoto = urlFoto;
         this.link = link;
     }
 
-    public Segnalazione(String tipo, String idSegnalazione, String descrizione, String coordinateGps, String data, String urlFoto) {
+    public Segnalazione(String tipo, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto) {
         this.tipo = tipo;
         this.idSegnalazione = idSegnalazione;
         this.descrizione = descrizione;
-        this.coordinateGps = coordinateGps;
+        this.latitudine=latitudine;
+        this.longitudine=longitudine;
         this.data = data;
         this.urlFoto = urlFoto;
     }
@@ -56,8 +59,12 @@ public class Segnalazione implements Serializable {
         return descrizione;
     }
 
-    public String getCoordinateGps() {
-        return coordinateGps;
+    public double getLatitudine() {
+        return latitudine;
+    }
+
+    public double getLongitudine() {
+        return longitudine;
     }
 
     public String getIdSegnalazione() {

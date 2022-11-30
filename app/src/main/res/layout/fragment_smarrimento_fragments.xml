@@ -77,34 +77,31 @@
                 android:hint="Descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:id="@+id/indirizzoTextLayout">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Indirizzo Ultimo Avvistamento"
+        <fragment
+            android:id="@+id/autoCompleteFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            />
 
-                    android:id="@+id/indirizzoEditText"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
 
 
     </LinearLayout>
+
+
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/confermaSmarrimento"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:clickable="true"
         android:src="@android:drawable/checkbox_on_background"
-        android:layout_gravity="bottom|end"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        />
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
 
 
 </FrameLayout>

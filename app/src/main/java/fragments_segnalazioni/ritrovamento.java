@@ -69,7 +69,8 @@ public class ritrovamento extends Fragment {
                         "ritrovamento",
                         r.nextInt()+"",
                         descrizione.getText().toString()+"",
-                        indirizzo.getText().toString(),
+                        0.0,
+                        0.0,
                         "27/11/22",
                         " "
 
