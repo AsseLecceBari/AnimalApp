@@ -17,7 +17,8 @@
 
             android:icon="@drawable/uomocerchiato"
             android:title="@string/profilo"
-            android:onClick="mostraProfilo"/>
+            android:onClick="mostraProfilo"
+            app:showAsAction="ifRoom"/>
         <item
             android:icon="@drawable/qrcode"
             android:title="@string/scansione_qrcode"

@@ -46,9 +46,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.UUID;
 
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
@@ -83,6 +85,11 @@ public class aggiungiAnimaleFragment extends Fragment {
                     }
                 }
             });
+
+
+
+
+
 
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
