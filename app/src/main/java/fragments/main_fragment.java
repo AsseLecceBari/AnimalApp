@@ -51,9 +51,9 @@ public class main_fragment extends Fragment {
 
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
 
-            activity  = getActivity();
-            vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
-            viewPager2.setAdapter(vpAdapter);
+        activity  = getActivity();
+        vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
+        viewPager2.setAdapter(vpAdapter);
 
         tabLayout.getTabAt(posizione).select();
         viewPager2.setCurrentItem(posizione);

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import androidx.appcompat.widget.SearchView;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
+        main_action_bar.setNavigationIcon(null);
         setSupportActionBar(main_action_bar);
     }
 
@@ -53,12 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
         ViewPager2 viewPager2= main_fragment.getViewPager2();
-        viewPager2.getCurrentItem();
         VPAdapter adapter= (VPAdapter) viewPager2.getAdapter();
 
 
 
        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
+
        MenuItem searchItem= menu.findItem(R.id.action_search);
         SearchView searchView= (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
@@ -75,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
                   myanimals_fragment.filter(newText);
               }catch (Exception e){
 
-              } try {
+              }
+              try {
                     adoptions_fragment adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     adoptions_fragment.filter(newText);
                 }catch (Exception e){
