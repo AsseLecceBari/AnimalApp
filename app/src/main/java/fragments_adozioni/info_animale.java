@@ -7,6 +7,7 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -19,26 +20,39 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import it.uniba.dib.sms2223_2.R;
+import model.Adozione;
 import model.Animale;
+import model.Preferenze;
 
 public class info_animale extends Fragment {
     private Animale animale;
+    private Adozione adozione;
     private ImageView immagineAnimale ;
     private TextView descrizioneAnimale;
     private TextView dettagliAnimale;
     private View btnaggiungiPreferiti;
     private SharedPreferences share;
     private FirebaseAuth auth;
+    private FirebaseFirestore firebaseStore;
+    private Preferenze preferenze;
 
    private static final String mypreference = "animalipreferiti";
 
@@ -52,6 +66,7 @@ public class info_animale extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
+        adozione=(Adozione) getActivity().getIntent().getSerializableExtra("adozione");
 
     }
 
@@ -74,6 +89,8 @@ public class info_animale extends Fragment {
     public void onResume() {
         super.onResume();
        caricaInfoAnimale();
+       initDataAnnunci();
+
        aggiungiPreferiti();
 
 
@@ -109,58 +126,108 @@ public class info_animale extends Fragment {
         btnaggiungiPreferiti.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                auth=FirebaseAuth.getInstance();
 
-                auth= FirebaseAuth.getInstance();
-                share=getActivity().getSharedPreferences(mypreference,
-                        Context.MODE_PRIVATE);
-                SharedPreferences.Editor edit= share.edit();
-                String preferenza  = animale.getIdAnimale();
-                if(share.contains("preferiti")) {
+                if(preferenze!= null) {
 
-                    set.add(String.valueOf(share.getStringSet("preferiti", null)));
+                        int ultimaposiz= preferenze.getAdozioni().size();
 
+                        if( preferenze.getAdozioni().get(ultimaposiz-1)== null) {
+
+                            preferenze.getAdozioni().remove(ultimaposiz - 1);
+
+                        }
+
+                            preferenze.getAdozioni().add(adozione.getIdAdozione());
+
+
+
+                    writeData(preferenze);
                 }
-                else {
-                    set.add(preferenza);
+                else
+                {
+                    ArrayList <String> adozionipreferite= new ArrayList<>();
+                    adozionipreferite.add(adozione.getIdAdozione());
+                    ArrayList <String> segnalazioni= new ArrayList<>();
+                  segnalazioni.add(null);
+
+                    preferenze= new Preferenze(auth.getCurrentUser().getEmail(),adozionipreferite,segnalazioni);
+                    writeData(preferenze);
                 }
 
-                  edit.putStringSet("preferiti",set);
-                  edit.apply();
-
-                  if(set!= null)
-                  {
-                      String c= String.valueOf(set);
-                      String a = String.valueOf(set);
-                      String v= new String();
-
-
-                      // usando un semplice ciclo for
-                      for (int i = 0; i < c.length(); i++) {
-                          for (int o = i; o < a.length(); o++) {
-
-                              if (c.charAt(i) != ']') {
-
-                               a= String.valueOf((c.charAt(i)));
-
-                              }
-                          }
-                        // Log.d("ciao7",a);
-
-
-                          // System.out.print(s.charAt(i));
-                      }
-                      Log.d("ciao7",a);
-
-                  }
 
 
 
-                Toast.makeText(getActivity(), R.string.AggiuntoListaPreferiti, Toast.LENGTH_LONG).show();
+
+
+
+
 
 
             }
         });
     }
+
+
+
+    public void initDataAnnunci() {
+        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+        firebaseStore = FirebaseFirestore.getInstance();
+
+        auth= FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
+        CollectionReference preferenzeRef = firebaseStore.collection("preferenze");
+        //CollectionReference animali = firebaseStore.collection("animali");
+
+        Query query= preferenzeRef.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail());
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        preferenze=document.toObject(Preferenze.class);
+
+                    }
+
+                }
+            }
+        });
+
+    }
+
+
+    public void writeData(Preferenze preferenze) {
+
+        firebaseStore = FirebaseFirestore.getInstance();
+        auth= FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
+        CollectionReference preferenzeRef = firebaseStore.collection("preferenze");
+        //CollectionReference animali = firebaseStore.collection("animali");
+
+
+        firebaseStore.collection("preferenze").document(auth.getCurrentUser().getEmail()).set(preferenze).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+
+                    Toast.makeText(getActivity(), R.string.AggiuntoListaPreferiti, Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+
+
+
+
+
+    }
+
+
+
+
+
 
 
 

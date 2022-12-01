@@ -72,6 +72,7 @@ public class adoptions_fragment extends Fragment {
     private View layoutPreferiti;
     private int tipoannunci=2;
     private View barrachilometri;
+    private ArrayList <Adozione> adozione= new ArrayList<>();
 
     public static final String mypreference =  "animalipreferiti";
     public static final String Name = "nameKey";
@@ -110,10 +111,12 @@ public class adoptions_fragment extends Fragment {
 
 
                         Animale animale = mDataset.get(position);
+                        Adozione ad= adozione.get(position);
                         // Log.d("ciao", animale.getIdAnimale());
 
                         Intent intent = new Intent(getContext(), ProfiloAnimale.class);
                         intent.putExtra("animale", animale);
+                        intent.putExtra("adozione",ad );
                         startActivity(intent);
 
                     }
@@ -186,6 +189,11 @@ public class adoptions_fragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document1 : task.getResult()) {
+
+                        adozione.add(document1.toObject(Adozione.class));
+
+
+
 
                         Adozione temporanea= document1.toObject(Adozione.class);
 
