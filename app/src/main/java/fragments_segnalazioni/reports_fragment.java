@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +41,7 @@ public class reports_fragment extends Fragment {
     //MainActivity main1 = (MainActivity)getActivity() ;
 
     private String id;
+    private SeekBar seekBarReport;
 
 
     @Override
@@ -92,8 +95,22 @@ public class reports_fragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
 
                         Segnalazione s = mDataset.get(position);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
+                        switch (s.getTipo()) {
+                            case "smarrimento":
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
 
+                            case "animaleFerito":
+                                //da cambiare con vistaAnimaleFerito
+                                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
+
+                            case "ritrovamento":
+                                //da cambiare con vistaRitrovamento
+                                // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
+
+
+                            default:
+
+                        }
 
                     }
 

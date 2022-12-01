@@ -3,6 +3,7 @@ package fragments_segnalazioni;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +37,13 @@ public class ritrovamento extends Fragment {
     private TextView vaiSmarrimento;
     private Segnalazione s;
     private FirebaseFirestore db;
+    private FirebaseAuth auth;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        auth= FirebaseAuth.getInstance();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,11 +73,12 @@ public class ritrovamento extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO fare i controlli sui campi
-                s= new Segnalazione(
+                s= new Segnalazione(auth.getCurrentUser().getEmail(),
                         "ritrovamento",
                         r.nextInt()+"",
                         descrizione.getText().toString()+"",
-                        indirizzo.getText().toString(),
+                        0.0,
+                        0.0,
                         "27/11/22",
                         " "
 

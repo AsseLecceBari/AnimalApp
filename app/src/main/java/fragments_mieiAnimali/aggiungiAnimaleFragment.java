@@ -82,6 +82,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                     file=uri;
                     if(file!=null){
                         imgAnimaleReg.setImageURI(file);
+
                     }
                 }
             });

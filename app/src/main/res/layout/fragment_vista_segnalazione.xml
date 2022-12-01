@@ -8,199 +8,217 @@
         tools:context="fragments_segnalazioni.vistaSegnalazione"
         >
 
-        <ScrollView
+<ScrollView
+    android:id="@+id/scrollViewVista"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/segnalazioneLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:gravity="top|center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        tools:context="fragments_segnalazioni.vistaSegnalazione">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ImmagineReport"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            tools:src="@drawable/ic_launcher_foreground" />
+
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="25dp">
 
-            <LinearLayout
-                android:id="@+id/segnalazioneLayout1"
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="25dp"
-                android:gravity="top|center"
-                android:orientation="vertical"
-                android:padding="24dp"
-                tools:context="fragments_segnalazioni.vistaSegnalazione">
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@id/tvText"
+                android:background="@color/white"
+                />
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/ImmagineReport"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    tools:src="@drawable/ic_launcher_foreground" />
+            <TextView
+                android:id="@+id/tvText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Tipo Segnalazione"
+                android:textColor="#FFFFFF" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@id/tvText"
+                android:background="@color/white"
+                />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="25dp">
+        </RelativeLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_toLeftOf="@id/tvText"
-                        android:background="@color/white" />
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Tipo"
+            android:id="@+id/TipoReportVista"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
 
-                    <TextView
-                        android:id="@+id/tvText"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Tipo Segnalazione"
-                        android:textColor="#FFFFFF" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="25dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp"
-                        android:layout_toRightOf="@id/tvText"
-                        android:background="@color/white" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@id/tvText2"
+                android:background="@color/white" />
 
-                </RelativeLayout>
+            <TextView
+                android:id="@+id/tvText2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Descrizione"
+                android:textColor="#FFFFFF" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/TipoReportVista"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Tipo"
-                    android:textSize="28dp"></com.google.android.material.textview.MaterialTextView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@id/tvText2"
+                android:background="@color/white"
+                />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="25dp">
+        </RelativeLayout>
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_toLeftOf="@id/tvText2"
-                        android:background="@color/white" />
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descrizione"
+            android:id="@+id/DescrizioneVistaReport"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
 
-                    <TextView
-                        android:id="@+id/tvText2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Descrizione"
-                        android:textColor="#FFFFFF" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="25dp">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp"
-                        android:layout_toRightOf="@id/tvText2"
-                        android:background="@color/white" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@id/tvText3"
+                android:background="@color/white" />
 
-                </RelativeLayout>
+            <TextView
+                android:id="@+id/tvText3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Ultimo avvistamento"
+                android:textColor="#FFFFFF" />
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/DescrizioneVistaReport"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="Descrizione"
-                    android:textSize="28dp"></com.google.android.material.textview.MaterialTextView>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@id/tvText3"
+                android:background="@color/white"
+                />
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="25dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_toLeftOf="@id/tvText3"
-                        android:background="@color/white" />
-
-                    <TextView
-                        android:id="@+id/tvText3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Mappa"
-                        android:textColor="#FFFFFF" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp"
-                        android:layout_toRightOf="@id/tvText3"
-                        android:background="@color/white" />
-
-                </RelativeLayout>
+        </RelativeLayout>
 
 
-                <com.google.android.gms.maps.MapView
-                    android:id="@+id/mapView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="300dp" />
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginTop="25dp">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="16dp"
-                        android:layout_toLeftOf="@id/tvText4"
-                        android:background="@color/white" />
-
-                    <TextView
-                        android:id="@+id/tvText4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:text="Data Pubblicazione"
-                        android:textColor="#FFFFFF" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="16dp"
-                        android:layout_toRightOf="@id/tvText4"
-                        android:background="@color/white" />
-
-                </RelativeLayout>
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/dataVistaReport"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:hint="data"
-                    android:textSize="28dp"></com.google.android.material.textview.MaterialTextView>
 
 
-            </LinearLayout>
-        </ScrollView>
+
+        <com.google.android.gms.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="wrap_content"
+            android:layout_height="300dp"
+            android:layout_marginTop="25dp"
+            />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="25dp">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:layout_toLeftOf="@id/tvText4"
+                android:background="@color/white" />
+
+            <TextView
+                android:id="@+id/tvText4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Data Pubblicazione"
+                android:textColor="#FFFFFF" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="16dp"
+                android:layout_toRightOf="@id/tvText4"
+                android:background="@color/white"
+                />
+
+        </RelativeLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dataVistaReport"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="data"
+            android:textSize="28dp"></com.google.android.material.textview.MaterialTextView>
+
+
+
+
+
+
+
+
+    </LinearLayout>
+</ScrollView>
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -216,7 +234,4 @@
            />
 
     </FrameLayout>
-
-
-
 

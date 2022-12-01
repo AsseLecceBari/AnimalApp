@@ -17,9 +17,11 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -58,6 +60,9 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     private MapView mapView;
     private static final String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
 
+
+
+    private UiSettings mUiSettings;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,6 +112,8 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                         .into(immagineSegnalazione);
             }
         });
+
+
 
 
         return rootView;
@@ -164,7 +171,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
         fragment.setArguments(args);
-        //Log.e("ciao",param1+"");
+
         return fragment;
 
 
@@ -172,6 +179,23 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("Marker"));
+        mUiSettings = googleMap.getUiSettings();
+
+
+
+
+        googleMap.addMarker(new MarkerOptions().position(new LatLng(s.getLatitudine(),s.getLongitudine())).title(""));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(s.getLatitudine(),s.getLongitudine()),10));
+        mUiSettings.setScrollGesturesEnabled(false);
+        mUiSettings.setMapToolbarEnabled(true);
+        mUiSettings.setZoomControlsEnabled(true);
+        mUiSettings.setCompassEnabled(true);
+
+
+
+
+
     }
+
+
 }
