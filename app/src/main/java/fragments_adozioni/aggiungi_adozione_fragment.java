@@ -118,9 +118,10 @@ public class aggiungi_adozione_fragment extends Fragment {
                         checkbox= view.findViewById(R.id.checkBoxadozioni);
                         if(!checkbox.isChecked()){
                             Random idAdozione=new Random();
+                            String id= String.valueOf(idAdozione.nextInt());
                             SimpleDateFormat dataFor= new SimpleDateFormat("dd-MM-yyyy");
                             String data= dataFor.format(new Date());
-                            animaliAdozione.add(new Adozione(mDataset.get(position).getIdAnimale(),idAdozione.toString(),mDataset.get(position).getEmailProprietario(),data));
+                            animaliAdozione.add(new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data));
                             checkbox.setChecked(true);
                         }
                         else if(checkbox.isChecked()) {
@@ -160,39 +161,41 @@ public class aggiungi_adozione_fragment extends Fragment {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
-                            Query query = adozioni.whereNotEqualTo("emailProprietario", auth.getCurrentUser().getEmail());
+                            Animale temporaneo= document.toObject(Animale.class);
 
-                            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            Query query = adozioni.whereEqualTo("idAnimale", document.getId());
 
+                            adozioni.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()){
-                                        contatore=0;
-
+                                        int contatore=0;
                                         for (QueryDocumentSnapshot document1 : task.getResult()) {
+                                            Adozione a= document1.toObject(Adozione.class);
+                                           if(Objects.equals(a.getIdAnimale(), document.getId()))
+                                           {
+                                               contatore++;
 
 
-                                            //   if (document.getId().equals(document1.getId())) {
-                                            contatore += 1;
-                                            Log.d("ciao1", document1.getId());//faccio query per verificare se l'animale è gia in adozione
+                                           }
 
 
-                                            // }
-
-                                            //  }
-                                            //  if(contatore==0){
+                                        }
+                                        if(contatore==0)
+                                        {
                                             mDataset.add(document.toObject(Animale.class));
                                             Log.d("ciao", String.valueOf(mDataset.size()));
                                             mAdapter = new AggiungiAnimaleAdapter(mDataset);
                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                             mRecyclerView.setAdapter(mAdapter);
                                         }
-                                        //}
-
 
                                     }
                                 }
                             });
+
+
+
                         }
                     }
                 }
