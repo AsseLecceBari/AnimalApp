@@ -4,22 +4,34 @@ import java.io.Serializable;
 
 public class Adozione  implements Serializable {
     private String idAnimale;
+    private String idAdozione;
+    private String emailProprietario;
+    private String dataPubblicazione;
 
     public Adozione(){}
 
-    public Adozione(String idAnimale) {
+    public Adozione(String idAnimale, String idAdozione, String emailProprietario, String dataPubblicazione) {
         this.idAnimale = idAnimale;
+        this.idAdozione= idAdozione;
+        this.emailProprietario=emailProprietario;
+        this.dataPubblicazione=dataPubblicazione;
     }
 
     public String getIdAnimale() {
         return idAnimale;
     }
 
-    public void setIdAnimale(String idAnimale) {
-        this.idAnimale = idAnimale;
+    public String getIdAdozione() {
+        return idAdozione;
     }
 
-    public void setEmailProprietario(String emailProprietario) {
-
+    public String getEmailProprietario() {
+        return emailProprietario;
     }
+
+    public String getDataPubblicazione() {
+        return dataPubblicazione;
+    }
+
+
 }

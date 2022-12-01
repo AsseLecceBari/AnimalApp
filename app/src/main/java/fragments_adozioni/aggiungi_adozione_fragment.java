@@ -25,9 +25,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 
 import adapter.AggiungiAnimaleAdapter;
 import class_general.RecyclerItemClickListener;
@@ -46,7 +49,7 @@ public class aggiungi_adozione_fragment extends Fragment {
     protected RecyclerView.LayoutManager mLayoutManager;
     protected ArrayList<Animale> mDataset= new ArrayList<>();
     private Checkable checkbox;
-    private final ArrayList <String> idAnimali = new ArrayList<>();
+    private final ArrayList <String> adozioni = new ArrayList<>();
     private View botton;
     private View card;
     private ArrayList<Adozione> animaliAdozione =  new ArrayList<>();
@@ -114,15 +117,18 @@ public class aggiungi_adozione_fragment extends Fragment {
 
                         checkbox= view.findViewById(R.id.checkBoxadozioni);
                         if(!checkbox.isChecked()){
-                            idAnimali.add(new String(mDataset.get(position).getIdAnimale()));
+                            Random idAdozione=new Random();
+                            SimpleDateFormat dataFor= new SimpleDateFormat("dd-MM-yyyy");
+                            String data= dataFor.format(new Date());
+                            animaliAdozione.add(new Adozione(mDataset.get(position).getIdAnimale(),idAdozione.toString(),mDataset.get(position).getEmailProprietario(),data));
                             checkbox.setChecked(true);
                         }
                         else if(checkbox.isChecked()) {
                             checkbox.setChecked(false);
                             //se abbiamo gia aggiunto l'animale nell'array lo elimina
-                            for (int a = 0; a < idAnimali.size(); a++) {
-                                if (Objects.equals(idAnimali.get(a), mDataset.get(position).getIdAnimale())){
-                                    idAnimali.remove(a);
+                            for (int a = 0; a < animaliAdozione.size(); a++) {
+                                if (Objects.equals(animaliAdozione.get(a).getIdAnimale(), mDataset.get(position).getIdAnimale())){
+                                 animaliAdozione.remove(a);
 
                                 }
                             }
@@ -154,7 +160,9 @@ public class aggiungi_adozione_fragment extends Fragment {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
 
-                            adozioni.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            Query query = adozioni.whereNotEqualTo("emailProprietario", auth.getCurrentUser().getEmail());
+
+                            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
 
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -164,23 +172,22 @@ public class aggiungi_adozione_fragment extends Fragment {
                                         for (QueryDocumentSnapshot document1 : task.getResult()) {
 
 
+                                            //   if (document.getId().equals(document1.getId())) {
+                                            contatore += 1;
+                                            Log.d("ciao1", document1.getId());//faccio query per verificare se l'animale è gia in adozione
 
 
-                                            if (document.getId().equals(document1.getId())) {
-                                                contatore += 1;
-                                                Log.d("ciao1",document1.getId());//faccio query per verificare se l'animale è gia in adozione
+                                            // }
 
-
-                                            }
-
-                                        }
-                                        if(contatore==0){
+                                            //  }
+                                            //  if(contatore==0){
                                             mDataset.add(document.toObject(Animale.class));
                                             Log.d("ciao", String.valueOf(mDataset.size()));
                                             mAdapter = new AggiungiAnimaleAdapter(mDataset);
                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                             mRecyclerView.setAdapter(mAdapter);
                                         }
+                                        //}
 
 
                                     }
@@ -201,14 +208,14 @@ public class aggiungi_adozione_fragment extends Fragment {
             public void onClick(View view) {
 
 
-                if(idAnimali.size()>0) {//controllo se ha selezionato almeno un animale
-                    for (int a = 0; a < idAnimali.size(); a++) {
-                        Adozione adozione = new Adozione(idAnimali.get(a));
-                        db.collection("adozioni").document(idAnimali.get(a)).set(adozione);
+                if(animaliAdozione.size()>0) {//controllo se ha selezionato almeno un animale
+                    for (int a = 0; a < animaliAdozione.size(); a++) {
+                        //Adozione adozione = new Adozione();
+                        db.collection("adozioni").document(animaliAdozione.get(a).getIdAdozione()).set(animaliAdozione.get(a));
 
                     }
 
-                    if(idAnimali.size()>1) {
+                    if(animaliAdozione.size()>1) {
                         Toast.makeText(getActivity(), R.string.AnimaliAggiungiInBachecaAdozioni, Toast.LENGTH_LONG).show();
                     }
                     else
@@ -224,7 +231,7 @@ public class aggiungi_adozione_fragment extends Fragment {
                 }
 
 
-                idAnimali.clear();//elimino tutti gli animali selezionati
+                animaliAdozione.clear();//elimino tutti gli animali selezionati
             }
         });
 

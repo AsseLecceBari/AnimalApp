@@ -1,7 +1,9 @@
 package fragments_adozioni;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,34 +37,46 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.checkerframework.common.subtyping.qual.Bottom;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import adapter.AdozioniAdapter;
 import class_general.RecyclerItemClickListener;
 import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
+import model.Adozione;
 import model.Animale;
 
 
 public class adoptions_fragment extends Fragment {
 
     private FirebaseAuth auth;
+    private   SharedPreferences share;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
     protected AdozioniAdapter mAdapter;
     protected ArrayList<Animale> mDataset = new ArrayList<>();
     private LinearLayout paginalogin;
     private View btnaccesso;
-    private RadioButton chbimieiAnnunci;
-    private RadioButton chbannunciesterni;
-    private RadioButton chbannuncigenerale;
+    private RadioButton rdbimieiAnnunci;
+    private RadioButton rdbannuncigenerale;
+    private RadioButton rdbannuncipreferiti;
     private View layoutfiltri;
     private View layoutopenfiltri;
     private View btnopenFiltri;
     private View bottonechiudifiltri;
     private View layoutPreferiti;
     private int tipoannunci=2;
+    private View barrachilometri;
+
+    public static final String mypreference =  "animalipreferiti";
+    public static final String Name = "nameKey";
+    public static String Email ;
+    private Set<String> set  = new HashSet<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,6 +89,9 @@ public class adoptions_fragment extends Fragment {
     public void onResume() {
         super.onResume();
         filtri();
+        shareprefr();
+      Log.d("ciao5", String.valueOf(getActivity().getSharedPreferences(mypreference, Context.MODE_MULTI_PROCESS))) ;
+
 
 
         View aggiungiAdozione = getView().findViewById(R.id.aggiungiAdozione);
@@ -128,19 +146,21 @@ public class adoptions_fragment extends Fragment {
         }
         else{
             tipoannunci=3;
+            initDataAnnunci(tipoannunci);
         }
 
 
         paginalogin = rootView.findViewById(R.id.paginalogin);
         btnaccesso = rootView.findViewById(R.id.btnLogin);
-        chbimieiAnnunci = rootView.findViewById(R.id.checkBoxImieiannunci);
-        chbannunciesterni = rootView.findViewById(R.id.checkBox2annunciesterni);
-        chbannuncigenerale = rootView.findViewById(R.id.checkBox3annunciGenerale);
+        rdbimieiAnnunci = rootView.findViewById(R.id.radioImieiannunci);
+        rdbannuncigenerale = rootView.findViewById(R.id.radioannunciesterni);
+        rdbannuncipreferiti = rootView.findViewById(R.id.radioannunciPreferiti);
         layoutfiltri = rootView.findViewById(R.id.layoutfiltri);
         layoutopenfiltri = rootView.findViewById(R.id.layoutaprifiltri);
         btnopenFiltri = rootView.findViewById(R.id.btnaprifiltri);
         bottonechiudifiltri = rootView.findViewById(R.id.chiudifiltri);
         layoutPreferiti = rootView.findViewById(R.id.layoutPreferiti);
+        barrachilometri=rootView.findViewById(R.id.barrachilometri);
 
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
@@ -166,7 +186,11 @@ public class adoptions_fragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document1 : task.getResult()) {
-                        animali.whereEqualTo("idAnimale", document1.getId()).get()
+
+                        Adozione temporanea= document1.toObject(Adozione.class);
+
+
+                        animali.whereEqualTo("idAnimale", temporanea.getIdAnimale()).get()
                                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -217,7 +241,7 @@ public class adoptions_fragment extends Fragment {
 
 
     public void filtri() {
-        chbannunciesterni.setChecked(true);
+        rdbannuncigenerale.setChecked(true);
         layoutopenfiltri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -261,7 +285,7 @@ public class adoptions_fragment extends Fragment {
         });
 
 
-       /* chbannunciesterni.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        rdbannuncigenerale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 
             @Override
@@ -271,8 +295,8 @@ public class adoptions_fragment extends Fragment {
 
                 }
                 else{
-                    chbimieiAnnunci.setChecked(false);
-                    chbannuncigenerale.setChecked(false);
+                    barrachilometri.setEnabled(true);
+
                     tipoannunci=2;
                     mDataset.clear();
                     initDataAnnunci(tipoannunci);
@@ -280,7 +304,8 @@ public class adoptions_fragment extends Fragment {
             }
         });
 
-        chbimieiAnnunci.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        rdbimieiAnnunci.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 
             @Override
@@ -291,14 +316,18 @@ public class adoptions_fragment extends Fragment {
                 }
                 else{
                     tipoannunci=1;
-                    chbannunciesterni.setChecked(false);
-                    chbannuncigenerale.setChecked(false);
+                   // barrachilometri.setClickable(false);
+                    barrachilometri.setEnabled(false);
+
+
+
                     mDataset.clear();
                     initDataAnnunci(tipoannunci);
                 }
             }
         });
-        chbannuncigenerale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        rdbannuncipreferiti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
 
             @Override
@@ -308,14 +337,13 @@ public class adoptions_fragment extends Fragment {
 
                 }
                 else{
-                    chbannunciesterni.setChecked(false);
-                    chbimieiAnnunci.setChecked(false);
+
                     tipoannunci=3;
                     mDataset.clear();
                     initDataAnnunci(tipoannunci);
                 }
             }
-        });*/
+        });
 
     }
 
@@ -347,5 +375,41 @@ public class adoptions_fragment extends Fragment {
             // list to our adapter class.
             mAdapter.filterList(filteredlist);
         }
+    }
+
+    public void sharepref()
+    {
+        String a= "ciao";
+
+        SharedPreferences share= getActivity().getSharedPreferences(mypreference,Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit= share.edit();
+        edit.putString(Name,a);
+        edit.commit();
+
+        shareprefr();
+
+
+    }
+
+    public void shareprefr()
+    {
+        share = getActivity().getSharedPreferences(mypreference,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor edit= share.edit();
+       // edit.clear();
+        //edit.commit();
+
+        if(share.contains("preferiti")) {
+           // Log.d("ciao6","ciao");
+
+            Log.d("ciao6", String.valueOf(share.getStringSet("preferiti",null)));
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
     }
 }
