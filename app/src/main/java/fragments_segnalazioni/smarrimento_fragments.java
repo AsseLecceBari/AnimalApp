@@ -50,6 +50,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
@@ -88,11 +89,13 @@ import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.Segnalazione;
+import model.Utente;
 
 
 public class smarrimento_fragments extends Fragment {
 
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+    private FirebaseAuth auth;
 
 
     private static final String ARG_PARAM1 = "obj";
@@ -156,7 +159,7 @@ public class smarrimento_fragments extends Fragment {
             a= (Animale) getArguments().getSerializable(ARG_PARAM1);
         }
 
-
+        auth= FirebaseAuth.getInstance();
 
 
 
@@ -220,9 +223,9 @@ public class smarrimento_fragments extends Fragment {
             List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
             // Start the autocomplete intent.
-            Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
+           /* Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
                     .build(getContext());
-            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+            startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);*/
 
             // Specify the types of place data to return.
 
@@ -257,7 +260,7 @@ public class smarrimento_fragments extends Fragment {
                 public void onClick(View view) {
                      String tipo="smarrimento";
 
-                     Random idSegnalazione=new Random();
+                     Random idSegnalazione = new Random();
                      String descrizione=descrizioneEditText.getText().toString();
                     // String coordinateGps=indirizzoEditText.getText().toString();
 
@@ -273,8 +276,8 @@ public class smarrimento_fragments extends Fragment {
                      lat=geocoder.getLat();
                      lng=geocoder.getLng();
 
-
-                     Segnalazione s1=new Segnalazione(tipo,a.getIdAnimale(),idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
+                    Log.e("email",auth.getCurrentUser().getEmail());
+                     Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,a.getIdAnimale(),idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
                     db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

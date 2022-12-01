@@ -38,10 +38,21 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.StorageTask;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -50,11 +61,12 @@ import java.util.Locale;
 import java.util.Random;
 
 import class_general.GetCoordinates;
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
 
 public class animale_in_pericolo_fragments extends Fragment {
-
+    private FirebaseAuth auth;
     ImageView imgAnimaleInPericolo;
     Button scattaFotoButton;
     TextInputEditText etDescrizioneAnimaleFerito;
@@ -62,7 +74,7 @@ public class animale_in_pericolo_fragments extends Fragment {
 
     private FirebaseFirestore db;
 
-    private Uri file;
+    private File file;
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -72,7 +84,8 @@ public class animale_in_pericolo_fragments extends Fragment {
     String address;
     double lat,lng;
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
-
+    Bitmap bp;
+    String path="images/";
     //intent per poter ricevere il risultato dalla fotocamera e settare l'immagine
     ActivityResultLauncher<Intent> photoResult= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -80,12 +93,47 @@ public class animale_in_pericolo_fragments extends Fragment {
          if(result.getResultCode() == Activity.RESULT_OK){
             Intent data=result.getData();
 
-             Bitmap bp = (Bitmap) data.getExtras().get("data");
+              bp = (Bitmap) data.getExtras().get("data");
              imgAnimaleInPericolo.setImageBitmap(bp);
+             uploadImage();
             }
         }
     });
 
+    public boolean isInternetAvailable() {
+        try {
+            InetAddress ipAddr = InetAddress.getByName("google.com");
+            return !ipAddr.equals("");
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    public void uploadImage() {
+        storage= FirebaseStorage.getInstance();
+        storageRef=storage.getReference();
+
+        try{
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            byte[] data = baos.toByteArray();
+
+            StorageTask<UploadTask.TaskSnapshot> storageTask=storageRef.child(path).putBytes(data);
+            if(isInternetAvailable()) {
+                storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                        Log.e("storage", storageTask + "");
+
+                    }
+                });
+            }else{
+
+            }
+
+        }catch (Exception e){
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -111,7 +159,7 @@ public class animale_in_pericolo_fragments extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        auth= FirebaseAuth.getInstance();
 
 
     }
@@ -141,7 +189,7 @@ public class animale_in_pericolo_fragments extends Fragment {
 
             }
         });
-
+        uploadImage();
         //Autocomplete Indirizzo
 
         if (!Places.isInitialized()) {
@@ -157,9 +205,7 @@ public class animale_in_pericolo_fragments extends Fragment {
         List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
         // Start the autocomplete intent.
-        Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.FULLSCREEN, fields)
-                .build(getContext());
-        startActivityForResult(intent, AUTOCOMPLETE_REQUEST_CODE);
+
 
         // Specify the types of place data to return.
 
@@ -208,7 +254,7 @@ public class animale_in_pericolo_fragments extends Fragment {
                 lat=geocoder.getLat();
                 lng=geocoder.getLng();
 
-                Segnalazione s1=new Segnalazione(tipo,"",idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
+                Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,"",idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

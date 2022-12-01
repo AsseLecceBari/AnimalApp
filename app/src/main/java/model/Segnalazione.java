@@ -13,16 +13,17 @@ public class Segnalazione implements Serializable {
      * 5-raccolta fondi
      * 6-ritrovamento
      */
-    
+    private String emailSegnalatore;
     private String tipo;
     private String idAnimale;
     private String idSegnalazione;
     private String descrizione;
 
-    double latitudine,longitudine;
+    private double latitudine,longitudine;
     private String data, urlFoto, link;
 
-    public Segnalazione(String tipo, String idAnimale, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto, String link) {
+    public Segnalazione(String emailSegnalatore,String tipo, String idAnimale, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto, String link) {
+        this.emailSegnalatore=emailSegnalatore;
         this.tipo = tipo;
         this.idAnimale = idAnimale;//solo a smarrimento
         this.idSegnalazione = idSegnalazione;
@@ -34,7 +35,8 @@ public class Segnalazione implements Serializable {
         this.link = link;
     }
 
-    public Segnalazione(String tipo, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto) {
+    public Segnalazione(String emailSegnalatore,String tipo, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto) {
+        this.emailSegnalatore=emailSegnalatore;
         this.tipo = tipo;
         this.idSegnalazione = idSegnalazione;
         this.descrizione = descrizione;
@@ -61,6 +63,10 @@ public class Segnalazione implements Serializable {
 
     public double getLatitudine() {
         return latitudine;
+    }
+
+    public String getEmailSegnalatore() {
+        return emailSegnalatore;
     }
 
     public double getLongitudine() {
