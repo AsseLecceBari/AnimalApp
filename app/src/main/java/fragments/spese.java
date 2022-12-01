@@ -1,66 +1,112 @@
 package fragments;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Random;
+
+import adapter.AnimalAdapter;
+import adapter.SpeseAdapter;
+import fragments_mieiAnimali.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.R;
+import model.Animale;
+import model.SpesaAnimale;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link spese#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class spese extends Fragment {
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
+    private Animale animale;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FloatingActionButton addSpesa;
+    protected RecyclerView mRecyclerView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    protected ArrayList<SpesaAnimale> mDataset= new ArrayList<>();
+    protected SpeseAdapter mAdapter;
 
-    public spese() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment spese.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static spese newInstance(String param1, String param2) {
-        spese fragment = new spese();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        startDatabase();
+        View rootView = inflater.inflate(R.layout.fragment_spese, container, false);
+        addSpesa = rootView.findViewById(R.id.aggiungiSpesaBtn);
+        animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
+
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleSpese);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        initDataset();
+
+        //Inizializzo l'ascoltatore al click dell'item
+        mRecyclerView.addOnItemTouchListener(
+                new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                    }
+
+                    @Override public void onLongItemClick(View view, int position) {
+                    }
+                })
+        );
+
+
+        addSpesa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new AggiungiSpesa()).commit();
+            }
+        });
+
+        return rootView;
+    }
+
+    private void initDataset() {
+        mDataset.clear();
+        CollectionReference speseReference=db.collection("spese");
+        if(auth.getCurrentUser()!=null) {
+            Query query = speseReference.whereEqualTo("idAnimale", animale.getIdAnimale());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            mDataset.add(document.toObject(SpesaAnimale.class));
+                            Log.e("animale", document.getId() + " => " + document.getData());
+                        }
+                        //Passo i dati presi dal database all'adapter
+                        mAdapter = new SpeseAdapter(mDataset);
+                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                        mRecyclerView.setAdapter(mAdapter);
+                    }
+                }
+            });
         }
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_spese, container, false);
+    private void startDatabase(){
+        auth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
     }
 }

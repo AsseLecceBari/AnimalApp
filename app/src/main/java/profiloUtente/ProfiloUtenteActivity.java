@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,28 +15,19 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
 
-import java.util.Map;
-
-import adapter.AnimalAdapter;
-import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
-import model.Animale;
 import model.Associazione;
 import model.Ente;
 import model.Persona;
-import model.Utente;
 import model.Veterinario;
 
 public class ProfiloUtenteActivity extends AppCompatActivity {
@@ -62,7 +51,7 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         cf = findViewById(R.id.codiceFiscale);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
-        data = findViewById(R.id.data);
+        data = findViewById(R.id.descrizione);
         email = findViewById(R.id.email);
         telefono = findViewById(R.id.telefono);
         indirizzo = findViewById(R.id.indirizzo);
