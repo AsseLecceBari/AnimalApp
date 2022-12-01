@@ -38,9 +38,9 @@ public class AggiungiSpesa extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_spesa, container, false);
         descrizione = rootView.findViewById(R.id.descrizione);
-        categoria  = rootView.findViewById(R.id.descrizione);
-        costoUnitario = rootView.findViewById(R.id.descrizione);
-        quantita = rootView.findViewById(R.id.descrizione);
+        categoria  = rootView.findViewById(R.id.categoria);
+        costoUnitario = rootView.findViewById(R.id.costoUnitario);
+        quantita = rootView.findViewById(R.id.quantita);
         crea = rootView.findViewById(R.id.registraSpesaBtn);
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
@@ -51,7 +51,7 @@ public class AggiungiSpesa extends Fragment {
             @Override
             public void onClick(View view) {
                 // todo: aprire un fragment per inserire la spesa
-                SpesaAnimale s = new SpesaAnimale(categoria.getText().toString(), new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), descrizione.getText().toString(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), 10, 2);
+                SpesaAnimale s = new SpesaAnimale(categoria.getText().toString(), new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), descrizione.getText().toString(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), Integer.parseInt( costoUnitario.getText().toString()), Integer.parseInt(quantita.getText().toString()));
                 db.collection("spese").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

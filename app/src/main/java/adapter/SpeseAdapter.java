@@ -1,18 +1,13 @@
 package adapter;
 
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -28,8 +23,7 @@ public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private  TextView descrizione;
-        private  TextView data;
+        private  TextView descrizione, data, categoria, spesaTotale;
 
         public TextView getDescrizione() {
             return descrizione;
@@ -39,12 +33,22 @@ public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
             return data;
         }
 
+        public TextView getCategoria() {
+            return categoria;
+        }
+
+        public TextView getSpesaTotale() {
+            return spesaTotale;
+        }
+
         public ViewHolder(View view) {
             super(view);
 
             //Prendo i riferimenti ai widget
-            descrizione = (TextView) view.findViewById(R.id.descrizioneView);
+            descrizione = (TextView) view.findViewById(R.id.descrizioneVie);
             data = (TextView) view.findViewById(R.id.dataView);
+            categoria = (TextView) view.findViewById(R.id.categoriaView);
+            spesaTotale = (TextView) view.findViewById(R.id.spesaTotaleView);
         }
     }
 
@@ -79,8 +83,12 @@ public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
         StorageReference storageRef;
         storage= FirebaseStorage.getInstance();
         storageRef=storage.getReference();
+
+        float speseTotali = localDataSet.get(position).getCostoUnitario() * localDataSet.get(position).getQuantita();
         holder.getDescrizione().setText(localDataSet.get(position).getDescrizione());
         holder.getData().setText(localDataSet.get(position).getData());
+        holder.getSpesaTotale().setText(Float.toString(speseTotali));
+        holder.getCategoria().setText(localDataSet.get(position).getCategoria());
 
     }
 

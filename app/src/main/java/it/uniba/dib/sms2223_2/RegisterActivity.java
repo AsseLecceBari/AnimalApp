@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -156,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRegRuolo = findViewById(R.id.etRegRuolo);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
-        data = findViewById(R.id.data);
+        data = findViewById(R.id.descrizione);
 
         // Informazioni specifiche
         numEFNInputLayout = findViewById(R.id.numEFNInputLayout);

@@ -92,7 +92,7 @@
                 </com.google.android.material.textview.MaterialTextView>
 
                 <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/data"
+                    android:id="@+id/descrizione"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
