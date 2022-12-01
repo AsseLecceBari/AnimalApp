@@ -61,10 +61,13 @@ public class main_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null)
             posizione = savedInstanceState.getInt("posizione");
-// serve per francesco quando aggiunge segnalazione
+
+
+        // serve per francesco quando aggiunge segnalazione
         int pos = getActivity().getIntent().getIntExtra("posizione", 0);
         if(pos != 0){
-            posizione = pos;}//
+            posizione = pos;
+        }
 
         return inflater.inflate(R.layout.fragment_main_fragment, container, false);
     }
