@@ -31,6 +31,7 @@ import java.util.Random;
 
 import adapter.AnimalAdapter;
 import adapter.SpeseAdapter;
+import fragments_mieiAnimali.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.SpesaAnimale;
@@ -57,12 +58,7 @@ public class spese extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleSpese);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // simulo un dataset TODO ------
         initDataset();
-
-        // lo setto -------- TODO-------
-        mAdapter = new SpeseAdapter(mDataset);
-        mRecyclerView.setAdapter(mAdapter);
 
         //Inizializzo l'ascoltatore al click dell'item
         mRecyclerView.addOnItemTouchListener(
@@ -79,14 +75,7 @@ public class spese extends Fragment {
         addSpesa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // todo: aprire un fragment per inserire la spesa
-                SpesaAnimale s = new SpesaAnimale("toilettatura test", new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), "niente da aggiungere test", new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), 10, 2);
-                db.collection("spese").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                    }
-                });
-                Toast.makeText(getActivity().getApplicationContext(), "Spesa di test aggiunta!", Toast.LENGTH_SHORT).show();
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new AggiungiSpesa()).commit();
             }
         });
 
