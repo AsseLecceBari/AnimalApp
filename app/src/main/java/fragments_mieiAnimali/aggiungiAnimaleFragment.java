@@ -46,9 +46,11 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.UUID;
 
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
@@ -84,6 +86,11 @@ public class aggiungiAnimaleFragment extends Fragment {
                     }
                 }
             });
+
+
+
+
+
 
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -133,6 +140,13 @@ public class aggiungiAnimaleFragment extends Fragment {
         main_action_bar.setTitle("Aggiungi Animale");
         if(main_action_bar.getMenu()!=null) {
                 main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+                main_action_bar.setNavigationIcon(R.drawable.back);
+                main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        getActivity().onBackPressed();
+                    }
+                });
         }
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         auth=FirebaseAuth.getInstance();
@@ -286,6 +300,7 @@ public class aggiungiAnimaleFragment extends Fragment {
             main_action_bar.getMenu().removeGroup(R.id.aggiungiAnimaleGroup);
             main_action_bar.inflateMenu(R.menu.menu_bar_main);
             main_action_bar.setTitle("AnimalApp");
+            main_action_bar.setNavigationIcon(null);
         }
     }
 }

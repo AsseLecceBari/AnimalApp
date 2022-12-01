@@ -86,6 +86,7 @@
     <string name="SelezioneVuota">Selezionare animale da inserire</string>
     <string name="AnimaliAggiungiInBachecaAdozioni">Animali aggiunti nella bacheca adozioni</string>
     <string name="AnimaleAggiuntoInBachecaAdozioni">Animale aggiunto nella bacheca adozioni</string>
+    <string name="AggiuntoListaPreferiti">Animale aggiunto nella lista preferiti</string>
 
 
 </resources>

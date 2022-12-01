@@ -6,16 +6,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import adapter.VPAdapter;
 import fragments.main_fragment;
+import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.myanimals_fragment;
+import fragments_segnalazioni.reports_fragment;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
     }
 
     @Override
@@ -38,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
+        main_action_bar.setNavigationIcon(null);
         setSupportActionBar(main_action_bar);
     }
 
@@ -48,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
 
         }
+        ViewPager2 viewPager2= main_fragment.getViewPager2();
+        VPAdapter adapter= (VPAdapter) viewPager2.getAdapter();
+
+
+
        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
+
        MenuItem searchItem= menu.findItem(R.id.action_search);
         SearchView searchView= (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
@@ -60,10 +75,30 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+              try {
+                  myanimals_fragment myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                  myanimals_fragment.filter(newText);
+              }catch (Exception e){
+
+              }
+              try {
+                    adoptions_fragment adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    adoptions_fragment.filter(newText);
+                }catch (Exception e){
+
+                }
+                try {
+                    reports_fragment reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                  reports_fragment.filter(newText);
+                }catch (Exception e){
+
+                }
 
                 return false;
             }
         });
+
+
        return true;
     }
 

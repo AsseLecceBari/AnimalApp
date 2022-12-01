@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:background="#F3E4CF"
     android:orientation="vertical"
@@ -11,7 +11,7 @@
         android:id="@+id/layoutaprifiltri"
         android:layout_width="match_parent"
         android:layout_height="63dp"
-        android:layout_gravity="center"
+        android:layout_gravity="top"
         android:background="#F3CF9B"
         android:orientation="vertical">
 
@@ -37,20 +37,41 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="10dp"
                 android:src="@drawable/equalizer_filter_filtering_mixer_sorting_icon_123287__1_" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnaprifiltri"
+
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:layout_gravity="right"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="15dp"
+                    android:clickable="true"
+                    android:src="@drawable/_492790985_3arrow_down_84192"
+                    app:backgroundTint="#F3CF9B"
+                    tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/chiudifiltri"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginRight="15dp"
+                    android:clickable="true"
+                    android:src="@drawable/_492790975_4arrow_right_84163"
+                    android:visibility="gone"
+                    app:backgroundTint="#F3CF9B"
+                    tools:ignore="SpeakableTextPresentCheck" />
+            </FrameLayout>
+
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btnaprifiltri"
-
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_gravity="center|top"
-
-            android:clickable="true"
-            android:src="@drawable/filtri"
-            android:visibility="gone"
-            tools:ignore="SpeakableTextPresentCheck" />
 
         <View
             android:id="@+id/divider"
@@ -59,6 +80,7 @@
             android:background="?android:attr/listDivider" />
 
     </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/paginalogin"
@@ -92,7 +114,7 @@
         android:id="@+id/layoutfiltri"
 
         android:layout_width="match_parent"
-        android:layout_height="181dp"
+        android:layout_height="108dp"
         android:orientation="vertical"
         android:visibility="gone">
 
@@ -100,7 +122,8 @@
         <LinearLayout
 
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="106dp"
+            android:background="#F3CF9B"
             android:orientation="vertical">
 
             <LinearLayout
@@ -108,33 +131,71 @@
                 android:layout_height="74dp"
                 android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/checkBoxImieiannunci"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="I miei annunci" />
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
 
-                <CheckBox
-                    android:id="@+id/checkBox2annunciesterni"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    <RadioButton
+                        android:id="@+id/radioImieiannunci"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="I miei annunci" />
 
-                    android:layout_marginLeft="18dp"
-                    android:text="Annunci non miei" />
+                    <RadioButton
+                        android:id="@+id/radioannunciesterni"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
 
-                <CheckBox
-                    android:id="@+id/checkBox3annunciGenerale"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                        android:layout_marginLeft="18dp"
+                        android:text="Annunci non miei"
+                        tools:ignore="TouchTargetSizeCheck" />
 
-                    android:layout_marginLeft="18dp"
-                    android:layout_marginRight="2dp"
-                    android:text="Tutti" />
+                    <RadioButton
+                        android:id="@+id/radioannunciPreferiti"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+
+                        android:layout_marginLeft="18dp"
+                        android:layout_marginRight="1dp"
+                        android:text="Preferiti" />
+
+                    <FrameLayout
+                        android:id="@+id/notificapreferiti"
+                        android:layout_width="12dp"
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="15dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/imageView2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:src="@drawable/trafficlight_red_40428"
+                            tools:ignore="ImageContrastCheck" />
+
+                        <TextView
+                            android:id="@+id/testo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+
+                            android:layout_gravity="center"
+
+
+                            android:gravity="center"
+                            android:textAlignment="center" />
+
+                    </FrameLayout>
+
+                </RadioGroup>
 
             </LinearLayout>
 
             <SeekBar
-                android:id="@+id/seekBar2"
+                android:id="@+id/barrachilometri"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -144,14 +205,11 @@
 
         </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/chiudifiltri"
+        <View
+            android:id="@+id/divider2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:clickable="true"
-            android:src="@android:drawable/ic_menu_close_clear_cancel"
-            tools:ignore="SpeakableTextPresentCheck" />
+            android:layout_height="8dp"
+            android:background="?android:attr/listDivider" />
 
     </LinearLayout>
 

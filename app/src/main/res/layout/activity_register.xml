@@ -8,12 +8,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     >
 
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="24dp"
     tools:context=".RegisterActivity">
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -186,7 +188,11 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
-
+            <fragment android:id="@+id/autocomplete_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                />
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegIndirizzo"
                 android:layout_width="match_parent"

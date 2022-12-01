@@ -3,8 +3,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.CountDownTimer;
@@ -23,6 +25,11 @@ import it.uniba.dib.sms2223_2.R;
 public class main_fragment extends Fragment {
 
     private TabLayout tabLayout;
+
+    public ViewPager2 getViewPager2() {
+        return viewPager2;
+    }
+
     private ViewPager2 viewPager2;
     private VPAdapter vpAdapter;
     private FragmentActivity  activity;
@@ -46,9 +53,9 @@ public class main_fragment extends Fragment {
 
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
 
-            activity  = getActivity();
-            vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
-            viewPager2.setAdapter(vpAdapter);
+        activity  = getActivity();
+        vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
+        viewPager2.setAdapter(vpAdapter);
 
         tabLayout.getTabAt(posizione).select();
         viewPager2.setCurrentItem(posizione);
