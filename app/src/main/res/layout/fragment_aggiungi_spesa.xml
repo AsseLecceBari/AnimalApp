@@ -35,7 +35,7 @@ xmlns:tools="http://schemas.android.com/tools"
         android:layout_marginTop="12dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/descrizione"
+            android:id="@+id/motivoConsultazione"
             android:layout_width="match_parent"
             android:layout_height="101dp"
             android:hint="Descrizione"

@@ -37,7 +37,7 @@ public class AggiungiSpesa extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_spesa, container, false);
-        descrizione = rootView.findViewById(R.id.descrizione);
+        descrizione = rootView.findViewById(R.id.motivoConsultazione);
         categoria  = rootView.findViewById(R.id.categoria);
         costoUnitario = rootView.findViewById(R.id.costoUnitario);
         quantita = rootView.findViewById(R.id.quantita);
@@ -50,7 +50,6 @@ public class AggiungiSpesa extends Fragment {
         crea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // todo: aprire un fragment per inserire la spesa
                 SpesaAnimale s = new SpesaAnimale(categoria.getText().toString(), new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), descrizione.getText().toString(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), Integer.parseInt( costoUnitario.getText().toString()), Integer.parseInt(quantita.getText().toString()));
                 db.collection("spese").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override

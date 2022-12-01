@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recycleViewAnimals"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+
+    <com.google.android.material.card.MaterialCardView
+
+
+        android:id="@+id/cardAnimal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+
+        android:padding="10dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="202dp"
+            android:background="@drawable/background_main">
+
+            <TextView
+                android:id="@+id/dataView"
+                android:layout_width="205dp"
+                android:layout_height="23dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="32dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/motivoConsultazioneView"
+                android:layout_width="204dp"
+                android:layout_height="71dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="32dp"
+                android:text="TextView"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dataView"
+                app:layout_constraintVertical_bias="0.375" />
+
+            <TextView
+                android:id="@+id/data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Data"
+                app:layout_constraintEnd_toStartOf="@+id/dataView"
+                app:layout_constraintHorizontal_bias="0.172"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/motivoConsultazione"
+                android:layout_width="92dp"
+                android:layout_height="48dp"
+                android:layout_marginTop="48dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Motivo Consultazione"
+                app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
+                app:layout_constraintHorizontal_bias="0.372"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/data" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
