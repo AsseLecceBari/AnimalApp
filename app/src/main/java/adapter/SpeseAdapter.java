@@ -43,8 +43,8 @@ public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
             super(view);
 
             //Prendo i riferimenti ai widget
-            descrizione = (TextView) view.findViewById(R.id.descrizione);
-            data = (TextView) view.findViewById(R.id.data);
+            descrizione = (TextView) view.findViewById(R.id.descrizioneView);
+            data = (TextView) view.findViewById(R.id.dataView);
         }
     }
 
@@ -75,6 +75,12 @@ public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        FirebaseStorage storage;
+        StorageReference storageRef;
+        storage= FirebaseStorage.getInstance();
+        storageRef=storage.getReference();
+        holder.getDescrizione().setText(localDataSet.get(position).getDescrizione());
+        holder.getData().setText(localDataSet.get(position).getData());
 
     }
 
