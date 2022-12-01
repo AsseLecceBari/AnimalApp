@@ -83,6 +83,7 @@ public class spese extends Fragment {
     }
 
     private void initDataset() {
+        mDataset.clear();
         CollectionReference speseReference=db.collection("spese");
         if(auth.getCurrentUser()!=null) {
             Query query = speseReference.whereEqualTo("idAnimale", animale.getIdAnimale());
