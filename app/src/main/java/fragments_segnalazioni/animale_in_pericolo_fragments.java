@@ -86,6 +86,7 @@ public class animale_in_pericolo_fragments extends Fragment {
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     Bitmap bp;
     String path="images/";
+    private  Segnalazione s1;
     //intent per poter ricevere il risultato dalla fotocamera e settare l'immagine
     ActivityResultLauncher<Intent> photoResult= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
@@ -95,7 +96,8 @@ public class animale_in_pericolo_fragments extends Fragment {
 
               bp = (Bitmap) data.getExtras().get("data");
              imgAnimaleInPericolo.setImageBitmap(bp);
-             uploadImage();
+
+
             }
         }
     });
@@ -111,14 +113,15 @@ public class animale_in_pericolo_fragments extends Fragment {
     public void uploadImage() {
         storage= FirebaseStorage.getInstance();
         storageRef=storage.getReference();
-
+        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpeg").build();
         try{
 
+            File file = new File(path);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
-
-            StorageTask<UploadTask.TaskSnapshot> storageTask=storageRef.child(path).putBytes(data);
+            Log.e("datafoto",data+"");
+            StorageTask<UploadTask.TaskSnapshot> storageTask=storageRef.child("/imagesAnimaliInPericolo/"+s1.getIdSegnalazione()).putBytes(data);
             if(isInternetAvailable()) {
                 storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -128,7 +131,6 @@ public class animale_in_pericolo_fragments extends Fragment {
                     }
                 });
             }else{
-
             }
 
         }catch (Exception e){
@@ -189,7 +191,7 @@ public class animale_in_pericolo_fragments extends Fragment {
 
             }
         });
-        uploadImage();
+
         //Autocomplete Indirizzo
 
         if (!Places.isInitialized()) {
@@ -236,17 +238,17 @@ public class animale_in_pericolo_fragments extends Fragment {
             public void onClick(View view) {
                 String tipo="animaleFerito";
 
-                Random idSegnalazione=new Random();
+                Random rand=new Random();
                 String descrizione=etDescrizioneAnimaleFerito.getText().toString();
 
-
+                String idSegnalazione=rand.nextInt()+"";
 
                 SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy");
                 String data= dateFor.format(new Date());
 
 
                 //todo: da prendere la foto
-                String urlFoto="";
+                String urlFoto="/imagesAnimaliInPericolo/"+idSegnalazione;
 
                 //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
                 GetCoordinates geocoder= new GetCoordinates(lat,lng,address);
@@ -254,16 +256,17 @@ public class animale_in_pericolo_fragments extends Fragment {
                 lat=geocoder.getLat();
                 lng=geocoder.getLng();
 
-                Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,"",idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
+                s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                         //da attivare una volta salvata la foto
-                        // getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
+                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
 
                     }
                 });
+                uploadImage();
 
 
 

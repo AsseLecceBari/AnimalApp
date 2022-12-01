@@ -84,6 +84,7 @@ import java.util.Random;
 import class_general.GetCoordinates;
 import class_general.HttpDataHandler;
 import de.hdodenhof.circleimageview.CircleImageView;
+import fragments.main_fragment;
 import io.grpc.okhttp.internal.proxy.Request;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
@@ -283,7 +284,9 @@ public class smarrimento_fragments extends Fragment {
                         public void onComplete(@NonNull Task<Void> task) {
 
                             Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
+
+                            getActivity().startActivity(new Intent(getContext(),MainActivity.class).putExtra("posizione", 2));
+                            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new main_fragment(2)).addToBackStack(null).commit();
 
                         }
                     });

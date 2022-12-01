@@ -20,7 +20,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import adapter.VPAdapter;
+import fragments_segnalazioni.vistaSegnalazione;
 import it.uniba.dib.sms2223_2.R;
+import model.Segnalazione;
 
 public class main_fragment extends Fragment {
 
@@ -33,14 +35,37 @@ public class main_fragment extends Fragment {
     private ViewPager2 viewPager2;
     private VPAdapter vpAdapter;
     private FragmentActivity  activity;
-    private int posizione = 0;
+    private int posizione =0;
+    private int posizionePassata;
+
+
+    public main_fragment(int a){
+        this.posizione=a;
+    }
+
+    public main_fragment(){
+
+    }
 
 
 
+    public Fragment newInstance(int posizione) {
+        main_fragment fragment = new main_fragment();
+       fragment.posizionePassata=posizione;
+
+        return fragment;
+
+
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null)
             posizione = savedInstanceState.getInt("posizione");
+// serve per francesco quando aggiunge segnalazione
+        int pos = getActivity().getIntent().getIntExtra("posizione", 0);
+        if(pos != 0){
+            posizione = pos;}//
+
         return inflater.inflate(R.layout.fragment_main_fragment, container, false);
     }
 
