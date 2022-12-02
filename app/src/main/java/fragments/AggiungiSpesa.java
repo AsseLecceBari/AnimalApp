@@ -85,10 +85,8 @@ public class AggiungiSpesa extends Fragment {
                 db.collection("spese").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                     }
                 });
-                Toast.makeText(getActivity().getApplicationContext(), "Spesa aggiunta!", Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
             }
         });

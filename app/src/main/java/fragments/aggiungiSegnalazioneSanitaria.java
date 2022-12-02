@@ -23,6 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
@@ -31,7 +32,7 @@ import model.SegnalazioneSanitaria;
 import model.SpesaAnimale;
 
 public class aggiungiSegnalazioneSanitaria extends Fragment {
-    private TextView data;
+    private TextView data, emailVet, motivoConsultazione, diagnosi, farmaci, trattamento;
     private Button crea;
 
     private FirebaseAuth auth;
@@ -46,6 +47,11 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
 
         crea = rootView.findViewById(R.id.registraBtn);
         data = rootView.findViewById(R.id.data);
+        emailVet = rootView.findViewById(R.id.emailvet);
+        motivoConsultazione = rootView.findViewById(R.id.motivoConsultazione);
+        diagnosi = rootView.findViewById(R.id.diagnosi);
+        farmaci = rootView.findViewById(R.id.farmaci);
+        trattamento = rootView.findViewById(R.id.trattamento);
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         cldr = Calendar.getInstance();
@@ -77,14 +83,12 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
         crea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SegnalazioneSanitaria s = new SegnalazioneSanitaria(new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), "provaemail", "motivo consultazione", "diagnosi", "farmaci", "trattamento",new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
+                SegnalazioneSanitaria s = new SegnalazioneSanitaria(data.getText().toString(), emailVet.getText().toString(), motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
                 db.collection("segnalazioneSanitaria").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-
                     }
                 });
-                Toast.makeText(getActivity().getApplicationContext(), "Segnalazione aggiunta!", Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
             }
         });
