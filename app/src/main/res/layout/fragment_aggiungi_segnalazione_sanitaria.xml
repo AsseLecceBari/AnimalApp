@@ -29,18 +29,6 @@
                 android:hint="Data segnalazione sanitaria" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/emailvet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email veterinario" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -52,7 +40,7 @@
                 android:id="@+id/motivoConsultazione"
                 android:layout_width="match_parent"
                 android:layout_height="101dp"
-                android:hint="Motivo consultazione"
+                android:hint="Sintomi"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 

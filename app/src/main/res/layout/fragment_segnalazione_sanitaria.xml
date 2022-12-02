@@ -21,14 +21,23 @@ xmlns:tools="http://schemas.android.com/tools">
     android:gravity="center"
     android:orientation="vertical"
     android:padding="24dp"
-    tools:context="fragments.segnalazioneSanitariaFragment">
+    tools:context="fragments.segnalazioneSanitariaFragment"
+    >
+
+    <TextView
+        android:id="@+id/fattaDa"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Segnalazione fatta da"
+        android:textColor="@color/design_default_color_primary_dark">
+    </TextView>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dataLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="0dp">
+        android:layout_marginTop="28dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/data"
@@ -38,19 +47,7 @@ xmlns:tools="http://schemas.android.com/tools">
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/emailvet"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email veterinario" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/motivoConsultazioneLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -60,11 +57,12 @@ xmlns:tools="http://schemas.android.com/tools">
             android:id="@+id/motivoConsultazione"
             android:layout_width="match_parent"
             android:layout_height="101dp"
-            android:hint="Motivo consultazione"
+            android:hint="Sintomi"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/diagnosiLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

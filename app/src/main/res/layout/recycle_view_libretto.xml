@@ -70,7 +70,7 @@
                 android:layout_height="48dp"
                 android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif-black"
-                android:text="Motivo Consultazione"
+                android:text="Sintomi"
                 app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
                 app:layout_constraintHorizontal_bias="0.372"
                 app:layout_constraintStart_toStartOf="parent"

@@ -32,7 +32,7 @@ import model.SegnalazioneSanitaria;
 import model.SpesaAnimale;
 
 public class aggiungiSegnalazioneSanitaria extends Fragment {
-    private TextView data, emailVet, motivoConsultazione, diagnosi, farmaci, trattamento;
+    private TextView data, motivoConsultazione, diagnosi, farmaci, trattamento;
     private Button crea;
 
     private FirebaseAuth auth;
@@ -47,7 +47,6 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
 
         crea = rootView.findViewById(R.id.registraBtn);
         data = rootView.findViewById(R.id.data);
-        emailVet = rootView.findViewById(R.id.emailvet);
         motivoConsultazione = rootView.findViewById(R.id.motivoConsultazione);
         diagnosi = rootView.findViewById(R.id.diagnosi);
         farmaci = rootView.findViewById(R.id.farmaci);
@@ -83,7 +82,7 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
         crea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SegnalazioneSanitaria s = new SegnalazioneSanitaria(data.getText().toString(), emailVet.getText().toString(), motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
+                SegnalazioneSanitaria s = new SegnalazioneSanitaria(data.getText().toString(), "proprietario", motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
                 db.collection("segnalazioneSanitaria").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
