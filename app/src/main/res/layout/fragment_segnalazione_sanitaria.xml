@@ -120,15 +120,6 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"/>
 
-    <Button
-        android:id="@+id/conferma"
-        android:layout_width="wrap_content"
-        android:layout_height="63dp"
-        android:layout_marginTop="12dp"
-        android:text="Conferma modifiche"
-        android:backgroundTint="@color/quantum_googgreen"
-        android:visibility="gone"/>
-
 
 </LinearLayout>
 
@@ -142,7 +133,19 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
         android:clickable="true"
-        android:src="@android:drawable/btn_dialog"/>
+        android:src="@android:drawable/btn_dialog"
+        android:backgroundTint="@color/quantum_googblue"/>
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/conferma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:src="@android:drawable/btn_dialog"
+        android:visibility="gone"
+        android:backgroundTint="@color/quantum_googgreen"/>
+    
 </FrameLayout>

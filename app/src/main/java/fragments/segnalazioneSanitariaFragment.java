@@ -40,7 +40,7 @@ public class segnalazioneSanitariaFragment extends Fragment {
     }
 
     private TextView data, emailVet, motivoConsultazione, diagnosi, farmaci, trattamento;
-    private Button conferma;
+    private FloatingActionButton conferma;
     private FloatingActionButton modifica;
 
     private FirebaseAuth auth;
