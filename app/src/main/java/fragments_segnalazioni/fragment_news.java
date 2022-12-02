@@ -6,7 +6,6 @@ import static android.app.Activity.RESULT_OK;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -36,7 +35,6 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,12 +45,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -66,15 +60,15 @@ import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
 
-public class animale_in_pericolo_fragments extends Fragment {
+public class fragment_news extends Fragment {
     StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
 
 
     private FirebaseAuth auth;
-    ImageView imgAnimaleInPericolo;
-    Button scattaFotoButton;
-    TextInputEditText etDescrizioneAnimaleFerito;
-    FloatingActionButton confermaAnimaleFerito;
+    ImageView imgNews;
+    Button scattaFotoNews;
+    TextInputEditText descrzioneNews;
+    FloatingActionButton confermaNews;
 
     private FirebaseFirestore db;
 
@@ -91,16 +85,17 @@ public class animale_in_pericolo_fragments extends Fragment {
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     Bitmap bp;
     String path="images/";
-    private  Segnalazione s1;
+    private Segnalazione s1;
+
     //intent per poter ricevere il risultato dalla fotocamera e settare l'immagine
-    ActivityResultLauncher<Intent> photoResult= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+    ActivityResultLauncher<Intent> photoResult2= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
-         if(result.getResultCode() == Activity.RESULT_OK){
-            Intent data=result.getData();
+            if(result.getResultCode() == Activity.RESULT_OK){
+                Intent data=result.getData();
 
-              bp = (Bitmap) data.getExtras().get("data");
-             imgAnimaleInPericolo.setImageBitmap(bp);
+                bp = (Bitmap) data.getExtras().get("data");
+                imgNews.setImageBitmap(bp);
 
 
             }
@@ -126,7 +121,7 @@ public class animale_in_pericolo_fragments extends Fragment {
             bp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
             Log.e("datafoto",data+"");
-            StorageTask<UploadTask.TaskSnapshot> storageTask=storageRef.child("/imagesAnimaliInPericolo/"+s1.getIdSegnalazione()).putBytes(data);
+            StorageTask<UploadTask.TaskSnapshot> storageTask=storageRef.child("/imagesNews/"+s1.getIdSegnalazione()).putBytes(data);
             if(isInternetAvailable()) {
                 storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                     @Override
@@ -159,41 +154,45 @@ public class animale_in_pericolo_fragments extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-  public animale_in_pericolo_fragments(){
 
-  }
+
+
+    public fragment_news() {
+        // Required empty public constructor
+    }
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth= FirebaseAuth.getInstance();
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         StrictMode.setThreadPolicy(policy);
-        View rootView=inflater.inflate(R.layout.fragment_animale_in_pericolo_fragments, container, false);
+        View rootView=inflater.inflate(R.layout.fragment_news, container, false);
 
         db=FirebaseFirestore.getInstance();
 
-        imgAnimaleInPericolo=rootView.findViewById(R.id.imgAnimaleInPericolo);
-        scattaFotoButton=rootView.findViewById(R.id.scattaFotoButton);
-        etDescrizioneAnimaleFerito=rootView.findViewById(R.id.etDescrizioneAnimaleFerito);
+        imgNews=rootView.findViewById(R.id.imgNews);
+        scattaFotoNews=rootView.findViewById(R.id.scattaFotoNews);
+        descrzioneNews=rootView.findViewById(R.id.descrzioneNews);
 
-        confermaAnimaleFerito=rootView.findViewById((R.id.confermaAnimaleFerito));
+        confermaNews=rootView.findViewById((R.id.confermaNews));
 
 
 
         //Intent per poter avviare la fotocamera nell'app
-        scattaFotoButton.setOnClickListener(new View.OnClickListener() {
+        scattaFotoNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
-                photoResult.launch(photoIntent);
+
+                photoResult2.launch(photoIntent);
 
             }
         });
@@ -205,7 +204,7 @@ public class animale_in_pericolo_fragments extends Fragment {
         }
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getChildFragmentManager().findFragmentById(R.id.autoCompleteFragment);
+                getChildFragmentManager().findFragmentById(R.id.autoCompleteNews);
 
 
         // Set the fields to specify which types of place data to
@@ -237,15 +236,13 @@ public class animale_in_pericolo_fragments extends Fragment {
             }
         });
 
-
-        //bug: se non ce una foto crusha per nel reportadapter abbiamo getUrlFoto da capire bene come si potrebbe bypassare
-        confermaAnimaleFerito.setOnClickListener(new View.OnClickListener() {
+        confermaNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tipo="animaleFerito";
+                String tipo="News";
 
                 Random rand=new Random();
-                String descrizione=etDescrizioneAnimaleFerito.getText().toString();
+                String descrizione=descrzioneNews.getText().toString();
 
                 String idSegnalazione=rand.nextInt()+"";
 
@@ -253,8 +250,8 @@ public class animale_in_pericolo_fragments extends Fragment {
                 String data= dateFor.format(new Date());
 
 
-                //todo: da prendere la foto
-                String urlFoto="/imagesAnimaliInPericolo/"+idSegnalazione;
+
+                String urlFoto="/imagesNews/"+idSegnalazione;
 
                 //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
                 GetCoordinates geocoder= new GetCoordinates(lat,lng,address);
@@ -268,8 +265,8 @@ public class animale_in_pericolo_fragments extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                         //da attivare una volta salvata la foto
-                         //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
-                        getActivity().startActivity(new Intent(getContext(),MainActivity.class).putExtra("posizione", 2));
+                        //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
+                        getActivity().startActivity(new Intent(getContext(), MainActivity.class).putExtra("posizione", 2));
 
                     }
                 });
@@ -280,9 +277,8 @@ public class animale_in_pericolo_fragments extends Fragment {
             }
         });
 
+
+
         return rootView;
     }
-
-
-
 }

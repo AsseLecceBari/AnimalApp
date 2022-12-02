@@ -120,12 +120,14 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         pericolo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new fragment_zona_pericolosa()).addToBackStack(null).commit();
 
             }
         });
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new fragment_news()).addToBackStack(null).commit();
 
 
             }
