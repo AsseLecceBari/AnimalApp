@@ -40,7 +40,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/descrizioneVie"
+                android:id="@+id/motivoConsultazioneView"
                 android:layout_width="205dp"
                 android:layout_height="23dp"
                 android:layout_gravity="end"
@@ -63,13 +63,13 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/descrizione"
+                android:id="@+id/motivoConsultazione"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Descrizione"
-                app:layout_constraintEnd_toStartOf="@+id/descrizioneVie"
+                app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
                 app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/data" />
@@ -96,7 +96,7 @@
                 android:layout_marginEnd="52dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descrizioneVie" />
+                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazioneView" />
 
             <TextView
                 android:id="@+id/spesaTotale"
@@ -121,7 +121,7 @@
                 app:layout_constraintEnd_toStartOf="@+id/categoriaView"
                 app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descrizione" />
+                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazione" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

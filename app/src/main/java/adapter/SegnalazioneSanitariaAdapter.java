@@ -18,43 +18,36 @@ import model.SegnalazioneSanitaria;
 import model.SpesaAnimale;
 
 //Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
-public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
+public class SegnalazioneSanitariaAdapter extends RecyclerView.Adapter<SegnalazioneSanitariaAdapter.ViewHolder>{
     //Array con tutti i dati sugli animali da inserire nella view
-    private ArrayList<SpesaAnimale> localDataSet;
+    private ArrayList<SegnalazioneSanitaria> localDataSet;
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private  TextView descrizione, data, categoria, spesaTotale;
+        private  TextView data, motivoConsultazione;
 
-        public TextView getDescrizione() {
-            return descrizione;
-        }
 
         public TextView getData() {
             return data;
         }
 
-        public TextView getCategoria() {
-            return categoria;
-        }
-
-        public TextView getSpesaTotale() {
-            return spesaTotale;
+        public TextView getMotivoConsultazione() {
+            return motivoConsultazione;
         }
 
         public ViewHolder(View view) {
             super(view);
 
             //Prendo i riferimenti ai widget
-            descrizione = (TextView) view.findViewById(R.id.motivoConsultazioneView);
             data = (TextView) view.findViewById(R.id.dataView);
-            categoria = (TextView) view.findViewById(R.id.categoriaView);
-            spesaTotale = (TextView) view.findViewById(R.id.spesaTotaleView);
+            motivoConsultazione = (TextView) view.findViewById(R.id.motivoConsultazioneView);
         }
+
+
     }
 
     // method for filtering our recyclerview items.
-    public void filterList(ArrayList<SpesaAnimale> filterlist) {
+    public void filterList(ArrayList<SegnalazioneSanitaria> filterlist) {
         // below line is to add our filtered
         // list in our course array list.
         localDataSet = filterlist;
@@ -64,15 +57,15 @@ public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
     }
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
-    public SpeseAdapter(ArrayList<SpesaAnimale> dataSet){
+    public SegnalazioneSanitariaAdapter(ArrayList<SegnalazioneSanitaria> dataSet){
         localDataSet = dataSet;
     }
 
     @NonNull
     @Override
-    public SpeseAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public SegnalazioneSanitariaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_view_spese, parent, false);
+                .inflate(R.layout.recycle_view_libretto, parent, false);
 
         return new ViewHolder(v);
 
@@ -85,11 +78,8 @@ public class SpeseAdapter extends RecyclerView.Adapter<SpeseAdapter.ViewHolder>{
         storage= FirebaseStorage.getInstance();
         storageRef=storage.getReference();
 
-        float speseTotali = localDataSet.get(position).getCostoUnitario() * localDataSet.get(position).getQuantita();
-        holder.getDescrizione().setText(localDataSet.get(position).getDescrizione());
         holder.getData().setText(localDataSet.get(position).getData());
-        holder.getSpesaTotale().setText(Float.toString(speseTotali));
-        holder.getCategoria().setText(localDataSet.get(position).getCategoria());
+        holder.getMotivoConsultazione().setText(localDataSet.get(position).getMotivoConsultazione());
 
     }
 

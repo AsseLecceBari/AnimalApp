@@ -23,15 +23,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
-import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
+import model.SegnalazioneSanitaria;
 import model.SpesaAnimale;
 
-public class AggiungiSpesa extends Fragment {
-    private TextView descrizione, categoria, costoUnitario, quantita, data;
+public class aggiungiSegnalazioneSanitaria extends Fragment {
+    private TextView data, motivoConsultazione, diagnosi, farmaci, trattamento;
     private Button crea;
 
     private FirebaseAuth auth;
@@ -41,15 +42,15 @@ public class AggiungiSpesa extends Fragment {
     private DatePickerDialog picker;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_aggiungi_spesa, container, false);
-        descrizione = rootView.findViewById(R.id.descrizione);
-        categoria  = rootView.findViewById(R.id.categoria);
-        costoUnitario = rootView.findViewById(R.id.costoUnitario);
-        quantita = rootView.findViewById(R.id.quantita);
-        crea = rootView.findViewById(R.id.registraSpesaBtn);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.fragment_aggiungi_segnalazione_sanitaria, container, false);
+
+        crea = rootView.findViewById(R.id.registraBtn);
         data = rootView.findViewById(R.id.data);
+        motivoConsultazione = rootView.findViewById(R.id.motivoConsultazione);
+        diagnosi = rootView.findViewById(R.id.diagnosi);
+        farmaci = rootView.findViewById(R.id.farmaci);
+        trattamento = rootView.findViewById(R.id.trattamento);
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         cldr = Calendar.getInstance();
@@ -81,8 +82,8 @@ public class AggiungiSpesa extends Fragment {
         crea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SpesaAnimale s = new SpesaAnimale(categoria.getText().toString(), data.getText().toString(), descrizione.getText().toString(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), Integer.parseInt( costoUnitario.getText().toString()), Integer.parseInt(quantita.getText().toString()));
-                db.collection("spese").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
+                SegnalazioneSanitaria s = new SegnalazioneSanitaria(data.getText().toString(), "proprietario", motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
+                db.collection("segnalazioneSanitaria").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                     }

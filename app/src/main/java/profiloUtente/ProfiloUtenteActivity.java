@@ -51,7 +51,7 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         cf = findViewById(R.id.codiceFiscale);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
-        data = findViewById(R.id.descrizione);
+        data = findViewById(R.id.motivoConsultazione);
         email = findViewById(R.id.email);
         telefono = findViewById(R.id.telefono);
         indirizzo = findViewById(R.id.indirizzo);

@@ -155,7 +155,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRegRuolo = findViewById(R.id.etRegRuolo);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
-        data = findViewById(R.id.descrizione);
+        data = findViewById(R.id.motivoConsultazione);
 
         // Informazioni specifiche
         numEFNInputLayout = findViewById(R.id.numEFNInputLayout);
