@@ -72,16 +72,7 @@ public class librettoSanitario extends Fragment {
         addSegnalazioneSanitaria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiSegnalazioneSanitariaSpesa()).commit();
-                SegnalazioneSanitaria s = new SegnalazioneSanitaria(new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), "provaemail", "motivo consultazione", "diagnosi", "farmaci", "trattamento",new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
-                db.collection("segnalazioneSanitaria").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                    }
-                });
-                Toast.makeText(getActivity().getApplicationContext(), "Segnalazione aggiunta!", Toast.LENGTH_SHORT).show();
-
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiSegnalazioneSanitaria()).commit();
             }
         });
         return rootView;

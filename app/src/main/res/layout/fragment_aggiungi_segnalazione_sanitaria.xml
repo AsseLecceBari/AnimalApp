@@ -16,16 +16,30 @@
         tools:context="fragments.aggiungiSegnalazioneSanitaria">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/dataLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/categoria"
+                android:id="@+id/data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Categoria" />
+                android:hint="Data segnalazione sanitaria" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/emailvet"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email veterinario" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -38,7 +52,49 @@
                 android:id="@+id/motivoConsultazione"
                 android:layout_width="match_parent"
                 android:layout_height="101dp"
-                android:hint="Descrizione"
+                android:hint="Motivo consultazione"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/diagnosi"
+                android:layout_width="match_parent"
+                android:layout_height="101dp"
+                android:hint="Diagnosi"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/farmaci"
+                android:layout_width="match_parent"
+                android:layout_height="101dp"
+                android:hint="farmaci"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/trattamento"
+                android:layout_width="match_parent"
+                android:layout_height="101dp"
+                android:hint="Trattamento"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -51,29 +107,13 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="189dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/quantita"
-                    android:layout_width="158dp"
-                    android:layout_height="wrap_content"
-                    android:hint="Quantità"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="12dp"/>
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/costoUnitario"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Costo Unitario"
-                    android:inputType="numberDecimal" />
-            </com.google.android.material.textfield.TextInputLayout>
+                android:layout_marginTop="12dp"/>
         </LinearLayout>
 
 
@@ -92,11 +132,11 @@
             android:layout_marginTop="12dp"/>
 
         <Button
-            android:id="@+id/registraSpesaBtn"
+            android:id="@+id/registraBtn"
             android:layout_width="wrap_content"
             android:layout_height="63dp"
             android:layout_marginTop="12dp"
-            android:text="Registra spesa" />
+            android:text="Registra Segnalazione sanitaria" />
 
     </LinearLayout>
 </ScrollView>
