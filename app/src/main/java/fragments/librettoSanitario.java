@@ -62,6 +62,8 @@ public class librettoSanitario extends Fragment {
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
+                        SegnalazioneSanitaria s = mDataset.get(position);
+                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new segnalazioneSanitariaFragment(s)).commit();
                     }
 
                     @Override public void onLongItemClick(View view, int position) {

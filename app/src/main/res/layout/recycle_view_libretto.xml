@@ -25,7 +25,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="202dp"
+            android:layout_height="140dp"
             android:background="@drawable/background_main">
 
             <TextView
@@ -60,7 +60,7 @@
                 android:fontFamily="sans-serif-black"
                 android:text="Data"
                 app:layout_constraintEnd_toStartOf="@+id/dataView"
-                app:layout_constraintHorizontal_bias="0.172"
+                app:layout_constraintHorizontal_bias="0.141"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,7 +68,7 @@
                 android:id="@+id/motivoConsultazione"
                 android:layout_width="92dp"
                 android:layout_height="48dp"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Motivo Consultazione"
                 app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
