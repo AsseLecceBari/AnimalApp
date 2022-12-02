@@ -4,11 +4,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,31 +23,17 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
-
-import adapter.ReportAdapter;
-import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
 
-
-public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
-
-    private FirebaseAuth auth;
-    private FirebaseFirestore db;
-    protected ReportAdapter mAdapter;
-    protected ArrayList<Segnalazione> mDataset = new ArrayList<>();
-    private TextView descrizioneReport;
-    private TextView tipoReport;
-    private ImageView immagineSegnalazione;
-    private TextView dataVistaReport;
-
-    private Uri file;
+public class fragment_vista_zonaPericolosa extends Fragment implements OnMapReadyCallback {
+    private TextView descrizioneZonaPericolosa;
+    private TextView tipoReportZonaPericolosa;
+    private ImageView immagineZonaPericolosa;
+    private TextView dataZonaPericolosa;
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -58,12 +42,17 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     private static final String ARG_PARAM1 = "obj";
     private Segnalazione s;
 
-    private MapView mapView;
+    private MapView mapViewZonaPericolosa;
     private static final String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
-    private Toolbar main_action_bar;
+
 
 
     private UiSettings mUiSettings;
+    private Toolbar main_action_bar;
+
+    public fragment_vista_zonaPericolosa() {
+        // Required empty public constructor
+    }
 
 
     @Override
@@ -73,13 +62,13 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             s= (Segnalazione) getArguments().getSerializable(ARG_PARAM1);
         }
 
-
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_vista_segnalazione, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView=inflater.inflate(R.layout.fragment_vista_zona_pericolosa, container, false);
+
         Bundle mapViewBundle=null;
         if(savedInstanceState!=null){
             mapViewBundle=savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -99,18 +88,18 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         }
 
 
-        mapView=(MapView) rootView.findViewById(R.id.mapView);
-        mapView.onCreate(mapViewBundle);
-        mapView.getMapAsync(this);//imposta un oggeto di callback che verrà attivato quando l'istanza di google map è pronta per essere utilizzata
-        descrizioneReport=rootView.findViewById(R.id.DescrizioneVistaReport);
-        tipoReport=rootView.findViewById(R.id.TipoReportVista);
-        descrizioneReport.setText(s.getDescrizione());
-        tipoReport.setText(s.getTipo());
+        mapViewZonaPericolosa=(MapView) rootView.findViewById(R.id.mapViewZonaPericolosa);
+        mapViewZonaPericolosa.onCreate(mapViewBundle);
+        mapViewZonaPericolosa.getMapAsync(this);//imposta un oggeto di callback che verrà attivato quando l'istanza di google map è pronta per essere utilizzata
+        descrizioneZonaPericolosa=rootView.findViewById(R.id.descrizioneZonaPericolosa);
+        tipoReportZonaPericolosa=rootView.findViewById(R.id.tipoReportZonaPericolosa);
+        descrizioneZonaPericolosa.setText(s.getDescrizione());
+        tipoReportZonaPericolosa.setText(s.getTipo());
 
-        dataVistaReport=rootView.findViewById(R.id.dataVistaReport);
-        dataVistaReport.setText(s.getData());
+        dataZonaPericolosa=rootView.findViewById(R.id.dataZonaPericolosa);
+        dataZonaPericolosa.setText(s.getData());
 
-        immagineSegnalazione=rootView.findViewById(R.id.ImmagineReport);
+        immagineZonaPericolosa=rootView.findViewById(R.id.immagineZonaPericolosa);
 
         //setto immagine
         // setto l'immagine dell'animale
@@ -120,17 +109,16 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         storageRef.child(s.getUrlFoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri uri) {
-                Glide.with(immagineSegnalazione.getContext())
+                Glide.with(immagineZonaPericolosa.getContext())
                         .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(immagineSegnalazione);
+                        .into(immagineZonaPericolosa);
             }
         });
 
 
-
-
         return rootView;
     }
+
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
@@ -140,50 +128,51 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             mapViewBundle=new Bundle();
             outState.putBundle(MAPVIEW_BUNDLE_KEY,mapViewBundle);
         }
-        mapView.onSaveInstanceState(mapViewBundle);
+        mapViewZonaPericolosa.onSaveInstanceState(mapViewBundle);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        mapView.onResume();
+        mapViewZonaPericolosa.onResume();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        mapView.onStop();
+        mapViewZonaPericolosa.onStop();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mapView.onStart();
+        mapViewZonaPericolosa.onStart();
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        mapView.onPause();
+        mapViewZonaPericolosa.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        mapView.onDestroy();
+        mapViewZonaPericolosa.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        mapView.onLowMemory();
+        mapViewZonaPericolosa.onLowMemory();
     }
 
     public Fragment newInstance(Segnalazione param1) {
-        vistaSegnalazione fragment = new vistaSegnalazione();
+        fragment_vista_zonaPericolosa fragment = new fragment_vista_zonaPericolosa();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
         fragment.setArguments(args);
+
         return fragment;
 
 
@@ -192,6 +181,10 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mUiSettings = googleMap.getUiSettings();
+
+
+
+
         googleMap.addMarker(new MarkerOptions().position(new LatLng(s.getLatitudine(),s.getLongitudine())).title(""));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(s.getLatitudine(),s.getLongitudine()),10));
         mUiSettings.setScrollGesturesEnabled(false);
@@ -209,6 +202,4 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             main_action_bar.setNavigationIcon(null);
         }
     }
-
-
 }

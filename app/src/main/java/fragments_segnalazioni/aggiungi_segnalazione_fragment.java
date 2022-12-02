@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.text.Layout;
@@ -58,7 +59,7 @@ import model.Animale;
 public class aggiungi_segnalazione_fragment extends Fragment {
 
     ImageButton smarrimento,animaleFerito,pericolo,news,raccoltaFondi,ritrovamento;
-
+    private Toolbar main_action_bar;
 
     public aggiungi_segnalazione_fragment(){}
 
@@ -75,7 +76,20 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
 
         View rootView =inflater.inflate(R.layout.fragment_aggiungi_segnalazione_fragment, container, false);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Aggiungi segnalazione");
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    getActivity().onBackPressed();
+                }
+            });
+        }
 
 
 
@@ -120,12 +134,14 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         pericolo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new fragment_zona_pericolosa()).addToBackStack(null).commit();
 
             }
         });
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new fragment_news()).addToBackStack(null).commit();
 
 
             }
@@ -164,7 +180,16 @@ public class aggiungi_segnalazione_fragment extends Fragment {
     }
 
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.inflateMenu(R.menu.menu_bar_main);
 
-
+        }
+    }
 }
 

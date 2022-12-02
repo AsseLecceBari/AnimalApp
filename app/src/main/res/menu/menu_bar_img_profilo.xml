@@ -4,9 +4,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <group
-    android:id="@+id/aggiungiAnimaleGroup">
+    android:id="@+id/imgProfiloItem">
     <item
-
 
         android:icon="@drawable/uomocerchiato"
         android:title="@string/profilo"

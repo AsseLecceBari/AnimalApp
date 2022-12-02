@@ -62,20 +62,36 @@ public class aggiungi_adozione_fragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.inflateMenu(R.menu.menu_bar_main);
+
+        }
+    }
+
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_adozione_fragment, container, false);
-        main_action_bar = getActivity().findViewById(R.id.main_action_bar);
-
-
-        main_action_bar.setTitle("Seleziona Animali");
-
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Aggiungi adozione");
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    getActivity().onBackPressed();
+                }
+            });
         }
-        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         card= rootView.findViewById(R.id.cardAnimal);
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleaggiungiAdozione);
@@ -91,11 +107,6 @@ public class aggiungi_adozione_fragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        if(main_action_bar.getMenu()!=null) {
-            main_action_bar.inflateMenu(R.menu.menu_bar_main);
-            main_action_bar.setTitle("AnimalApp");
-        }
     }
 
 

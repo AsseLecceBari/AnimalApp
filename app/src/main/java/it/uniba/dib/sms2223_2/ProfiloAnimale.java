@@ -33,15 +33,26 @@ public class ProfiloAnimale extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         animale= (Animale) getIntent().getSerializableExtra("animale");
         setContentView(R.layout.activity_profilo_animale);
+        main_action_bar=findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(animale.getNome());
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.inflateMenu(R.menu.menu_bar_profilo_animale);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // Imposto l'actionBar di questa activity
-        main_action_bar=findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle(animale.getNome());
-        setSupportActionBar(main_action_bar);
+
     }
 
     @Override

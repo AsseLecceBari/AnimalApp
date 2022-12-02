@@ -63,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-       getMenuInflater().inflate(R.menu.menu_bar_main, menu);
+        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
 
-       MenuItem searchItem= menu.findItem(R.id.action_search);
+        MenuItem searchItem= menu.findItem(R.id.action_search);
         SearchView searchView= (SearchView) searchItem.getActionView();
         searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
