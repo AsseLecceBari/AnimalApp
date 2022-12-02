@@ -171,10 +171,7 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
         fragment.setArguments(args);
-
         return fragment;
-
-
     }
 
     @Override

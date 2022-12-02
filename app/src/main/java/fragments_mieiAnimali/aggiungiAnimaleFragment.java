@@ -136,9 +136,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                 main_action_bar.setNavigationIcon(R.drawable.back);
                 main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {
-                        getActivity().onBackPressed();
-                    }
+                    public void onClick(View view) {getActivity().onBackPressed();}
                 });
         }
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);

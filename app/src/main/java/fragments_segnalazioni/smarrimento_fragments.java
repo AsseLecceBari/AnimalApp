@@ -284,9 +284,9 @@ public class smarrimento_fragments extends Fragment {
                         public void onComplete(@NonNull Task<Void> task) {
 
                             Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-
-                            getActivity().startActivity(new Intent(getContext(),MainActivity.class).putExtra("posizione", 2));
-                            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new main_fragment(2)).addToBackStack(null).commit();
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            getActivity().getSupportFragmentManager().popBackStack();
 
                         }
                     });
