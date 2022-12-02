@@ -147,5 +147,5 @@ xmlns:tools="http://schemas.android.com/tools">
         android:src="@android:drawable/btn_dialog"
         android:visibility="gone"
         android:backgroundTint="@color/quantum_googgreen"/>
-    
+
 </FrameLayout>

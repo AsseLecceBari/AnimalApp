@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -105,6 +106,7 @@ public class segnalazioneSanitariaFragment extends Fragment {
 
                 modifica.setVisibility(View.GONE);
                 conferma.setVisibility(View.VISIBLE);
+                Toast.makeText(getContext(), "Modifica!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -119,6 +121,7 @@ public class segnalazioneSanitariaFragment extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                     }
                 });
+                Toast.makeText(getContext(), "Modificato!", Toast.LENGTH_SHORT).show();
                 getActivity().onBackPressed();
             }
         });
