@@ -95,23 +95,27 @@ public class reports_fragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
 
                         Segnalazione s = mDataset.get(position);
+
                         switch (s.getTipo()) {
                             case "smarrimento":
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
-
+                                break;
                             case "animaleFerito":
                                 //da cambiare con vistaAnimaleFerito
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s)).addToBackStack(null).commit();
-
+                                break;
                             case "zonaPericolosa":
                                 //da cambiare con vistaRitrovamento
                                  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s)).addToBackStack(null).commit();
+                                 break;
                             case "News":
                                 //da cambiare con vistaRitrovamento
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s)).addToBackStack(null).commit();
+                                break;
 
 
                             default:
+                                break;
 
                         }
 

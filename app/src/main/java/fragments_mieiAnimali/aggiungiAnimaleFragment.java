@@ -2,11 +2,9 @@ package fragments_mieiAnimali;
 import android.annotation.SuppressLint;
 import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -23,9 +21,6 @@ import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -46,11 +41,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
 import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Random;
-import java.util.UUID;
 
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
@@ -297,7 +290,7 @@ public class aggiungiAnimaleFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         if(main_action_bar.getMenu()!=null) {
-            main_action_bar.getMenu().removeGroup(R.id.aggiungiAnimaleGroup);
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
             main_action_bar.inflateMenu(R.menu.menu_bar_main);
             main_action_bar.setTitle("AnimalApp");
             main_action_bar.setNavigationIcon(null);

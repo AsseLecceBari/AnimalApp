@@ -4,15 +4,15 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintSet;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -33,6 +33,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 
 import adapter.ReportAdapter;
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
 
@@ -59,10 +60,11 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
 
     private MapView mapView;
     private static final String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
-
+    private Toolbar main_action_bar;
 
 
     private UiSettings mUiSettings;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,16 +77,27 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_vista_segnalazione, container, false);
         Bundle mapViewBundle=null;
         if(savedInstanceState!=null){
             mapViewBundle=savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(s.getTipo());
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().onBackPressed();
+                }
+            });
+        }
+
 
         mapView=(MapView) rootView.findViewById(R.id.mapView);
         mapView.onCreate(mapViewBundle);
@@ -171,7 +184,6 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
         fragment.setArguments(args);
-
         return fragment;
 
 
@@ -180,21 +192,22 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         mUiSettings = googleMap.getUiSettings();
-
-
-
-
         googleMap.addMarker(new MarkerOptions().position(new LatLng(s.getLatitudine(),s.getLongitudine())).title(""));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(s.getLatitudine(),s.getLongitudine()),10));
         mUiSettings.setScrollGesturesEnabled(false);
         mUiSettings.setMapToolbarEnabled(true);
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
-
-
-
-
-
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.inflateMenu(R.menu.menu_bar_main);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.setNavigationIcon(null);
+        }
     }
 
 

@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -44,7 +45,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
 
     private MapView mapViewAnimaleInPericolo;
     private static final String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
-
+    private Toolbar main_action_bar;
 
 
     private UiSettings mUiSettings;
@@ -72,6 +73,19 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         Bundle mapViewBundle=null;
         if(savedInstanceState!=null){
             mapViewBundle=savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        }
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(s.getTipo());
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().onBackPressed();
+                }
+            });
         }
 
 
@@ -180,10 +194,15 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         mUiSettings.setMapToolbarEnabled(true);
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
-
-
-
-
-
+    }
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.inflateMenu(R.menu.menu_bar_main);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.setNavigationIcon(null);
+        }
     }
 }
