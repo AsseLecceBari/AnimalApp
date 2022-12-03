@@ -16,7 +16,7 @@ import model.Animale;
 
 public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapter.ViewHolder>{
 
-
+    private int vistamieianimali;
 
 
     //Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
@@ -31,6 +31,7 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
             private  TextView dataNascitaAnimale;
             private  TextView codiceAnimale;
             private ImageView imageAnimal;
+
 
 
             public TextView getGenereAnimale() {
@@ -74,16 +75,30 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
         }
 
         //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
-        public AdozioniAdapter(ArrayList<Animale>  dataSet) {
+        public AdozioniAdapter(ArrayList<Animale>  dataSet, int vista) {
             localDataSet = dataSet;
+            vistamieianimali= vista;
+
         }
         @NonNull
         @Override
         public AdozioniAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recycle_view_adozioni, parent, false);
 
-            return new adapter.AdozioniAdapter.ViewHolder(v);
+           if(vistamieianimali==2) {
+               View v = LayoutInflater.from(parent.getContext())
+                       .inflate(R.layout.recycle_view_adozioni, parent, false);
+               return new adapter.AdozioniAdapter.ViewHolder(v);
+           }
+           else
+           {
+               View v = LayoutInflater.from(parent.getContext())
+
+                       .inflate(R.layout.recycle_view_le_mie_adozioni, parent, false);
+               return new adapter.AdozioniAdapter.ViewHolder(v);
+
+           }
+
+
         }
 
     @Override

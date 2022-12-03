@@ -35,6 +35,7 @@ import com.google.firebase.storage.StorageReference;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Set;
 
 import it.uniba.dib.sms2223_2.R;
@@ -82,7 +83,7 @@ public class info_animale extends Fragment {
         descrizioneAnimale=root.findViewById(R.id.DescrizioneAnimale);
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
         btnaggiungiPreferiti=root.findViewById(R.id.BtnaggiungiPreferiti);
-        btnaggiungiPreferiti=root.findViewById(R.id.btneliminaPreferiti);
+        btineliminaPreferiti=root.findViewById(R.id.btneliminaPreferiti);
 
         return  root;
     }
@@ -93,6 +94,8 @@ public class info_animale extends Fragment {
        caricaInfoAnimale();
        initDataAnnunci();
 
+
+       eliminadaPreferiti();
        aggiungiPreferiti();
 
 
@@ -129,8 +132,10 @@ public class info_animale extends Fragment {
             @Override
             public void onClick(View view) {
                 auth=FirebaseAuth.getInstance();
+                Log.d("ciao10","ciao");
 
                 if(preferenze!= null) {
+
 
                         int ultimaposiz= preferenze.getAdozioni().size();
 
@@ -140,9 +145,11 @@ public class info_animale extends Fragment {
 
                         }
 
+
                             preferenze.getAdozioni().add(adozione.getIdAdozione());
 
                         btineliminaPreferiti.setVisibility(View.VISIBLE);
+                    btnaggiungiPreferiti.setVisibility(View.GONE);
 
 
 
@@ -150,12 +157,14 @@ public class info_animale extends Fragment {
                 }
                 else
                 {
+                    Log.d("ciao10","ciao1");
                     ArrayList <String> adozionipreferite= new ArrayList<>();
                     adozionipreferite.add(adozione.getIdAdozione());
                     ArrayList <String> segnalazioni= new ArrayList<>();
                   segnalazioni.add(null);
 
                     preferenze= new Preferenze(auth.getCurrentUser().getEmail(),adozionipreferite,segnalazioni);
+                    btnaggiungiPreferiti.setVisibility(View.GONE);
 
                     btineliminaPreferiti.setVisibility(View.VISIBLE);
                     writeData(preferenze);
@@ -197,6 +206,35 @@ public class info_animale extends Fragment {
 
                     }
 
+                    if(preferenze!= null) // controllo se l'annuncio sta gia nella lista preferiti
+                    {
+                        int cont=0;
+                        for(int a=0; a<preferenze.getAdozioni().size(); a++) {
+
+
+                            if(Objects.equals(preferenze.getAdozioni().get(a), adozione.getIdAdozione()))
+
+                            {
+                                cont++;
+
+                            }
+
+                        }
+
+                        if (cont==0)
+                        {
+                            btnaggiungiPreferiti.setVisibility(View.VISIBLE);
+                        }
+                        else {
+                            btineliminaPreferiti.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    else
+                    {
+                        btnaggiungiPreferiti.setVisibility(View.VISIBLE);
+
+                    }
+
                 }
             }
         });
@@ -227,6 +265,37 @@ public class info_animale extends Fragment {
 
 
 
+
+    }
+
+
+
+    public void eliminadaPreferiti()
+
+    {
+        btineliminaPreferiti.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                for(int a=0; a<preferenze.getAdozioni().size(); a++)
+                {
+
+                    if(Objects.equals(preferenze.getAdozioni().get(a), adozione.getIdAdozione()))
+                    {
+                        preferenze.getAdozioni().remove(a);
+                        if(preferenze.getAdozioni().size()==0)
+                        {
+                            preferenze.getAdozioni().add(null);
+                        }
+                        // Log.d("ciao10", String.valueOf(preferenze.getAdozioni().size()));
+                    }
+                }
+                btineliminaPreferiti.setVisibility(View.GONE);
+                btnaggiungiPreferiti.setVisibility(View.VISIBLE);
+                writeData(preferenze);
+
+            }
+        });
 
     }
 

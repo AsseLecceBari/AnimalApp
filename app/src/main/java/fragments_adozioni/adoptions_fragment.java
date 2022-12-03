@@ -31,6 +31,7 @@ import com.google.android.material.internal.MaterialCheckable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -50,14 +51,18 @@ import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
+import model.Preferenze;
 
 
 public class adoptions_fragment extends Fragment {
 
     private FirebaseAuth auth;
+    private Preferenze preferenze;
     private   SharedPreferences share;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
+    protected RecyclerView recyclemieadozioni;
+
     protected AdozioniAdapter mAdapter;
     protected ArrayList<Animale> mDataset = new ArrayList<>();
     private LinearLayout paginalogin;
@@ -70,14 +75,11 @@ public class adoptions_fragment extends Fragment {
     private View btnopenFiltri;
     private View bottonechiudifiltri;
     private View layoutPreferiti;
+    private TextView numeroAnnPreferiti;
     private int tipoannunci=2;
     private View barrachilometri;
     private ArrayList <Adozione> adozione= new ArrayList<>();
 
-    public static final String mypreference =  "animalipreferiti";
-    public static final String Name = "nameKey";
-    public static String Email ;
-    private Set<String> set  = new HashSet<>();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,8 +92,13 @@ public class adoptions_fragment extends Fragment {
     public void onResume() {
         super.onResume();
         filtri();
-        shareprefr();
-      Log.d("ciao5", String.valueOf(getActivity().getSharedPreferences(mypreference, Context.MODE_MULTI_PROCESS))) ;
+
+
+        //numeroAnnPreferiti.setText(preferenze.getAdozioni().size());
+
+
+
+
 
 
 
@@ -109,10 +116,21 @@ public class adoptions_fragment extends Fragment {
                     @Override
                     public void onItemClick(View view, int position) {
 
+                        int poszione_adozione = 0; //la poszione dell'adozione non è uguale a quella dell'animale perche l'adapter è dell'animale
+
 
                         Animale animale = mDataset.get(position);
-                        Adozione ad= adozione.get(position);
-                        // Log.d("ciao", animale.getIdAnimale());
+
+
+                        for(int a=0; a< adozione.size(); a++)
+                        {
+                            if(Objects.equals(adozione.get(a).getIdAnimale(), animale.getIdAnimale()))
+                            {
+                                poszione_adozione=a;
+                            }
+                        }
+                        Adozione ad= adozione.get(poszione_adozione);
+
 
                         Intent intent = new Intent(getContext(), ProfiloAnimale.class);
                         intent.putExtra("animale", animale);
@@ -153,6 +171,7 @@ public class adoptions_fragment extends Fragment {
         }
 
 
+
         paginalogin = rootView.findViewById(R.id.paginalogin);
         btnaccesso = rootView.findViewById(R.id.btnLogin);
         rdbimieiAnnunci = rootView.findViewById(R.id.radioImieiannunci);
@@ -164,10 +183,14 @@ public class adoptions_fragment extends Fragment {
         bottonechiudifiltri = rootView.findViewById(R.id.chiudifiltri);
         layoutPreferiti = rootView.findViewById(R.id.layoutPreferiti);
         barrachilometri=rootView.findViewById(R.id.barrachilometri);
+        numeroAnnPreferiti=rootView.findViewById(R.id.numeroannpref);
+        initDataPreferiti();
 
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
+        recyclemieadozioni= rootView.findViewById(R.id.recyclemieadozioni);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleadoption);
+        recyclemieadozioni.setLayoutManager(new GridLayoutManager(getContext(),2));
         mRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
 
         return rootView;
@@ -182,6 +205,7 @@ public class adoptions_fragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         CollectionReference adozioniRef = db.collection("adozioni");
         CollectionReference animali = db.collection("animali");
+        CollectionReference preferenze = db.collection("preferenze");
 
         //if(auth.getCurrentUser()!=null) {
         adozioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -212,9 +236,10 @@ public class adoptions_fragment extends Fragment {
                                                         if (Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
                                                             mDataset.add(document.toObject(Animale.class));
                                                              Log.d("ciao4", t.getNome());
-                                                            mAdapter = new AdozioniAdapter(mDataset);
+                                                            mAdapter = new AdozioniAdapter(mDataset,1);
                                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                                             mRecyclerView.setAdapter(mAdapter);
+
                                                         } return;
                                                     case 2:
 
@@ -223,16 +248,50 @@ public class adoptions_fragment extends Fragment {
                                                         if (!Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
                                                             mDataset.add(document.toObject(Animale.class));
                                                             // Log.d("ciao", String.valueOf(mDataset.size()));
-                                                            mAdapter = new AdozioniAdapter(mDataset);
+                                                            mAdapter = new AdozioniAdapter(mDataset,2);
                                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                            recyclemieadozioni.setVisibility(View.GONE);
+                                                            mRecyclerView.setVisibility(View.VISIBLE);
                                                             mRecyclerView.setAdapter(mAdapter);
                                                         }   return;
                                                     case 3:
-                                                            mDataset.add(document.toObject(Animale.class));
-                                                            // Log.d("ciao", String.valueOf(mDataset.size()));
-                                                            mAdapter = new AdozioniAdapter(mDataset);
-                                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                            mRecyclerView.setAdapter(mAdapter);
+                                                        preferenze.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                                if(task.isSuccessful())
+
+
+                                                                {
+                                                                    for (QueryDocumentSnapshot document2 : task.getResult()) {
+                                                                       Preferenze ad= document2.toObject(Preferenze.class);
+
+                                                                     for(int a =0; a< ad.getAdozioni().size();a++)
+                                                                     {
+                                                                         if(Objects.equals(ad.getAdozioni().get(a), temporanea.getIdAdozione()))
+                                                                         {
+                                                                             Log.d("ciao10","c");
+                                                                             mDataset.add(document.toObject(Animale.class));
+                                                                             // Log.d("ciao", String.valueOf(mDataset.size()));
+                                                                             mAdapter = new AdozioniAdapter(mDataset,2);
+                                                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                                             recyclemieadozioni.setVisibility(View.GONE);
+                                                                             mRecyclerView.setVisibility(View.VISIBLE);
+                                                                             mRecyclerView.setAdapter(mAdapter);
+
+
+                                                                         }
+                                                                     }
+
+
+
+                                                                    }
+
+                                                                }
+
+                                                            }
+                                                        });
+
                                                            return;
                                                 }
                                             }
@@ -319,7 +378,7 @@ public class adoptions_fragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(!b){
-                    mRecyclerView.setAdapter(null);
+                    recyclemieadozioni.setAdapter(null);
 
                 }
                 else{
@@ -353,6 +412,8 @@ public class adoptions_fragment extends Fragment {
             }
         });
 
+
+
     }
 
     @Override
@@ -385,39 +446,56 @@ public class adoptions_fragment extends Fragment {
         }
     }
 
-    public void sharepref()
-    {
-        String a= "ciao";
-
-        SharedPreferences share= getActivity().getSharedPreferences(mypreference,Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit= share.edit();
-        edit.putString(Name,a);
-        edit.commit();
-
-        shareprefr();
 
 
-    }
-
-    public void shareprefr()
-    {
-        share = getActivity().getSharedPreferences(mypreference,
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor edit= share.edit();
-       // edit.clear();
-        //edit.commit();
-
-        if(share.contains("preferiti")) {
-           // Log.d("ciao6","ciao");
-
-            Log.d("ciao6", String.valueOf(share.getStringSet("preferiti",null)));
-        }
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
+
+    }
+
+    public void initDataPreferiti() {
+        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+        db = FirebaseFirestore.getInstance();
+
+        auth= FirebaseAuth.getInstance();
+        auth = FirebaseAuth.getInstance();
+        CollectionReference preferenzeRef = db.collection("preferenze");
+        //CollectionReference animali = firebaseStore.collection("animali");
+
+        Query query= preferenzeRef.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail());
+
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful())
+                {
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        preferenze=document.toObject(Preferenze.class);
+
+                    }
+
+                    if( preferenze.getAdozioni().get(0)!= null)
+
+                    {
+                        rdbannuncipreferiti.setEnabled(true);
+                        String s= String.valueOf(preferenze.getAdozioni().size());
+                        numeroAnnPreferiti.setText(s);
+                    }
+                    else {
+                        rdbannuncipreferiti.setEnabled(false);
+
+                        numeroAnnPreferiti.setText("0");
+
+                    }
+
+
+
+                }
+            }
+        });
 
     }
 }

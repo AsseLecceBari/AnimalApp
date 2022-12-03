@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3E4CF"
     android:orientation="vertical"
@@ -116,7 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="108dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <LinearLayout
@@ -148,7 +148,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginLeft="18dp"
-                        android:text="Annunci non miei"
+                        android:text="Generali"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <RadioButton
@@ -162,7 +162,7 @@
 
                     <FrameLayout
                         android:id="@+id/notificapreferiti"
-                        android:layout_width="12dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="48dp"
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="15dp"
@@ -170,15 +170,15 @@
 
                         <ImageView
                             android:id="@+id/imageView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="21dp"
+                            android:layout_height="19dp"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             android:src="@drawable/trafficlight_red_40428"
                             tools:ignore="ImageContrastCheck" />
 
                         <TextView
-                            android:id="@+id/testo"
+                            android:id="@+id/numeroannpref"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
 
@@ -186,6 +186,8 @@
 
 
                             android:gravity="center"
+
+
                             android:textAlignment="center" />
 
                     </FrameLayout>
@@ -233,11 +235,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleadoption"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="visible"
             tools:listitem="@layout/recycle_view_adozioni">
+
+        </androidx.recyclerview.widget.RecyclerView>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclemieadozioni"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            tools:listitem="@layout/recycle_view_le_mie_adozioni">
 
         </androidx.recyclerview.widget.RecyclerView>
 

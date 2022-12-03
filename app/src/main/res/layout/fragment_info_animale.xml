@@ -8,6 +8,26 @@
     tools:context="fragments_adozioni.info_animale">
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/BtnaggiungiPreferiti"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:src="@drawable/star"
+
+
+        android:visibility="gone"
+
+
+        app:backgroundTint="#F3E4CF"
+        app:maxImageSize="@dimen/design_fab_size_mini"
+        app:pressedTranslationZ="0dp"
+        app:tint="#E8B569"
+        tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -80,27 +100,6 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/BtnaggiungiPreferiti"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:clickable="true"
-        android:src="@drawable/star"
-
-
-        app:backgroundTint="#F3E4CF"
-
-        app:elevation="0dp"
-
-
-        app:maxImageSize="@dimen/design_fab_size_mini"
-        app:pressedTranslationZ="0dp"
-        app:tint="#E8B569"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btneliminaPreferiti"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -114,12 +113,12 @@
 
         android:visibility="gone"
         app:backgroundTint="#F3E4CF"
+
+
         app:borderWidth="4dp"
-
-
         app:elevation="0dp"
-        app:maxImageSize="@dimen/design_fab_size_mini"
 
+        app:maxImageSize="@dimen/design_fab_size_mini"
         app:pressedTranslationZ="0dp"
         app:tint="#E8B569"
         tools:ignore="SpeakableTextPresentCheck" />

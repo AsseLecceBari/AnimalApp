@@ -2,7 +2,7 @@
 <android.widget.FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/recycleViewadozioni"
+    android:id="@+id/recycleViewadozioni2"
 
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -43,6 +43,17 @@
                 app:layout_constraintStart_toEndOf="@+id/nomeAnimaleView"
 
                 />
+
+            <Button
+                android:id="@+id/elimaAnnuncio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#F64646"
+                android:minHeight="48dp"
+                android:text="Elimina"
+                android:textColor="#4E342E"
+                app:iconTint="#FFFFFF"
+                tools:ignore="TouchTargetSizeCheck" />
 
 
         </LinearLayout>
