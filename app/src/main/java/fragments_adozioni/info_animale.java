@@ -49,6 +49,7 @@ public class info_animale extends Fragment {
     private TextView descrizioneAnimale;
     private TextView dettagliAnimale;
     private View btnaggiungiPreferiti;
+    private View btineliminaPreferiti;
     private SharedPreferences share;
     private FirebaseAuth auth;
     private FirebaseFirestore firebaseStore;
@@ -81,6 +82,7 @@ public class info_animale extends Fragment {
         descrizioneAnimale=root.findViewById(R.id.DescrizioneAnimale);
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
         btnaggiungiPreferiti=root.findViewById(R.id.BtnaggiungiPreferiti);
+        btnaggiungiPreferiti=root.findViewById(R.id.btneliminaPreferiti);
 
         return  root;
     }
@@ -140,6 +142,8 @@ public class info_animale extends Fragment {
 
                             preferenze.getAdozioni().add(adozione.getIdAdozione());
 
+                        btineliminaPreferiti.setVisibility(View.VISIBLE);
+
 
 
                     writeData(preferenze);
@@ -152,6 +156,8 @@ public class info_animale extends Fragment {
                   segnalazioni.add(null);
 
                     preferenze= new Preferenze(auth.getCurrentUser().getEmail(),adozionipreferite,segnalazioni);
+
+                    btineliminaPreferiti.setVisibility(View.VISIBLE);
                     writeData(preferenze);
                 }
 
