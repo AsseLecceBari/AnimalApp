@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,11 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -82,13 +87,46 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
         crea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SegnalazioneSanitaria s = new SegnalazioneSanitaria(data.getText().toString(), "proprietario", motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
-                db.collection("segnalazioneSanitaria").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                    }
-                });
-                getActivity().onBackPressed();
+                // se chi è loggato è un veterinario allora nel campo email vet va la sua mail
+
+
+                CollectionReference reference=db.collection("utenti");
+                if(auth.getCurrentUser()!=null) {
+                    Query query = reference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            String ruolo = null;
+                            String emailveterinario;
+                            if (task.isSuccessful()) {
+                                for(QueryDocumentSnapshot document : task.getResult()) {
+
+                                    ruolo = document.get("ruolo").toString();
+
+                                    if(ruolo.equals("veterinario")){
+                                        emailveterinario = document.get("email").toString();
+                                    }else{
+                                        emailveterinario = "proprietario";
+                                    }
+
+                                    //--------
+                                    SegnalazioneSanitaria s = new SegnalazioneSanitaria(data.getText().toString(), emailveterinario, motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
+                                    db.collection("segnalazioneSanitaria").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                        }
+                                    });
+                                    getActivity().onBackPressed();
+                                    //--------
+
+                                    break;
+                                }
+                            }
+
+                        }
+                    });
+                }
+
             }
         });
 
