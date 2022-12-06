@@ -53,6 +53,7 @@
                     android:layout_marginRight="15dp"
                     android:clickable="true"
                     android:src="@drawable/_492790985_3arrow_down_84192"
+                    android:visibility="gone"
                     app:backgroundTint="#F3CF9B"
                     tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
 
@@ -65,7 +66,7 @@
                     android:layout_marginRight="15dp"
                     android:clickable="true"
                     android:src="@drawable/_492790975_4arrow_right_84163"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     app:backgroundTint="#F3CF9B"
                     tools:ignore="SpeakableTextPresentCheck" />
             </FrameLayout>
@@ -116,7 +117,7 @@
         android:layout_width="match_parent"
         android:layout_height="108dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <LinearLayout
@@ -226,7 +227,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleadoption"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="visible"
             tools:listitem="@layout/recycle_view_adozioni">
 

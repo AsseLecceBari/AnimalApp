@@ -94,11 +94,6 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
 
 
 
-
-
-            Log.d("ciao10","ciaod");
-
-
             //Prendo i riferimenti al layout di ogni singola riga
             nomeAnimale = (TextView) view.findViewById(R.id.nomeAnimaleView);
             genereAnimale = (TextView) view.findViewById(R.id.genereAnimaleView);
@@ -123,21 +118,6 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
 
 
 
-
-
-
-
-
-
-
-
-
-         /*   view.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("ciao10","peri");
-                }
-            });*/
 
         }
 
@@ -236,6 +216,11 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     }
     public void setOnClickListener(OnClickListener listener) {
         this.onClickListener= listener;
+    }
+
+    public void  aggiornadataset(ArrayList<Animale> animali)
+    {
+        localDataSet= animali;
     }
 
 
