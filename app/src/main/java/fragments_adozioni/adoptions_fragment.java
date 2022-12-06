@@ -74,6 +74,7 @@ public class adoptions_fragment extends Fragment {
     private View layoutopenfiltri;
     private View btnopenFiltri;
     private View bottonechiudifiltri;
+    private View eliminaAnnuncio;
     private View layoutPreferiti;
     private TextView numeroAnnPreferiti;
     private int tipoannunci=2;
@@ -94,6 +95,8 @@ public class adoptions_fragment extends Fragment {
         filtri();
 
 
+
+
         //numeroAnnPreferiti.setText(preferenze.getAdozioni().size());
 
 
@@ -111,40 +114,11 @@ public class adoptions_fragment extends Fragment {
         });
 
 
-        mRecyclerView.addOnItemTouchListener(
-                new class_general.RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-
-                        int poszione_adozione = 0; //la poszione dell'adozione non è uguale a quella dell'animale perche l'adapter è dell'animale
 
 
-                        Animale animale = mDataset.get(position);
 
 
-                        for(int a=0; a< adozione.size(); a++)
-                        {
-                            if(Objects.equals(adozione.get(a).getIdAnimale(), animale.getIdAnimale()))
-                            {
-                                poszione_adozione=a;
-                            }
-                        }
-                        Adozione ad= adozione.get(poszione_adozione);
 
-
-                        Intent intent = new Intent(getContext(), ProfiloAnimale.class);
-                        intent.putExtra("animale", animale);
-                        intent.putExtra("adozione",ad );
-                        startActivity(intent);
-
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-
-                    }
-                })
-        );
     }
 
 
@@ -181,7 +155,8 @@ public class adoptions_fragment extends Fragment {
         layoutopenfiltri = rootView.findViewById(R.id.layoutaprifiltri);
         btnopenFiltri = rootView.findViewById(R.id.btnaprifiltri);
         bottonechiudifiltri = rootView.findViewById(R.id.chiudifiltri);
-        layoutPreferiti = rootView.findViewById(R.id.layoutPreferiti);
+
+
         barrachilometri=rootView.findViewById(R.id.barrachilometri);
         numeroAnnPreferiti=rootView.findViewById(R.id.numeroannpref);
         initDataPreferiti();
@@ -237,8 +212,15 @@ public class adoptions_fragment extends Fragment {
                                                             mDataset.add(document.toObject(Animale.class));
                                                              Log.d("ciao4", t.getNome());
                                                             mAdapter = new AdozioniAdapter(mDataset,1);
+                                                           // mAdapter.eliminaAnnuncio();
+
                                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                                             mRecyclerView.setAdapter(mAdapter);
+                                                            if(mAdapter!= null) {
+                                                                onItemClick();
+
+                                                            }
+
 
                                                         } return;
                                                     case 2:
@@ -249,10 +231,16 @@ public class adoptions_fragment extends Fragment {
                                                             mDataset.add(document.toObject(Animale.class));
                                                             // Log.d("ciao", String.valueOf(mDataset.size()));
                                                             mAdapter = new AdozioniAdapter(mDataset,2);
+
                                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                                             recyclemieadozioni.setVisibility(View.GONE);
                                                             mRecyclerView.setVisibility(View.VISIBLE);
                                                             mRecyclerView.setAdapter(mAdapter);
+
+                                                            if(mAdapter!= null) {
+
+                                                            onItemClick();
+                                                            }
                                                         }   return;
                                                     case 3:
                                                         preferenze.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -274,10 +262,16 @@ public class adoptions_fragment extends Fragment {
                                                                              mDataset.add(document.toObject(Animale.class));
                                                                              // Log.d("ciao", String.valueOf(mDataset.size()));
                                                                              mAdapter = new AdozioniAdapter(mDataset,2);
+                                                                            // mAdapter.eliminaAnnuncio();
                                                                              // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                                                              recyclemieadozioni.setVisibility(View.GONE);
                                                                              mRecyclerView.setVisibility(View.VISIBLE);
                                                                              mRecyclerView.setAdapter(mAdapter);
+
+                                                                             if(mAdapter!= null) {
+
+                                                                               onItemClick();
+                                                                             }
 
 
                                                                          }
@@ -293,8 +287,10 @@ public class adoptions_fragment extends Fragment {
                                                         });
 
                                                            return;
+                                                           
                                                 }
                                             }
+
                                         }
                                     }
                                 });
@@ -383,6 +379,7 @@ public class adoptions_fragment extends Fragment {
                 }
                 else{
                     tipoannunci=1;
+
                    // barrachilometri.setClickable(false);
                     barrachilometri.setEnabled(false);
 
@@ -498,4 +495,50 @@ public class adoptions_fragment extends Fragment {
         });
 
     }
+
+
+    public void onItemClick()
+    {
+
+
+            mAdapter.setOnClickListener(new AdozioniAdapter.OnClickListener() {
+                @Override
+                public void onitemClick(View view, int position) {
+                    int poszione_adozione = 0; //la poszione dell'adozione non è uguale a quella dell'animale perche l'adapter è dell'animale
+
+
+                    Animale animale = mDataset.get(position);
+
+
+                    for(int a=0; a< adozione.size(); a++)
+                    {
+                        if(Objects.equals(adozione.get(a).getIdAnimale(), animale.getIdAnimale()))
+                        {
+                            poszione_adozione=a;
+                        }
+                    }
+                    Adozione ad= adozione.get(poszione_adozione);
+
+
+                    Intent intent = new Intent(getContext(), ProfiloAnimale.class);
+                    intent.putExtra("animale", animale);
+                    intent.putExtra("adozione",ad );
+                    startActivity(intent);
+
+
+                }
+
+                @Override
+                public void oneliminaClick(View view, int position) {
+                    Log.d("ciao10", "peppe");
+                }
+            });
+
+    }
+
+
+
+
+
+
 }

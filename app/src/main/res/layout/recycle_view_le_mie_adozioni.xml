@@ -20,6 +20,12 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Button" />
+
             <ImageView
                 android:id="@+id/imageAnimal"
 
@@ -27,13 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 tools:srcCompat="@tools:sample/avatars" />
-
-            <TextView
-                android:id="@+id/nomeAnimaleView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
 
             <TextView
                 android:id="@+id/codiceAnimaleView"
@@ -44,16 +43,12 @@
 
                 />
 
-            <Button
-                android:id="@+id/elimaAnnuncio"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/nomeAnimaleView"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="#F64646"
-                android:minHeight="48dp"
-                android:text="Elimina"
-                android:textColor="#4E342E"
-                app:iconTint="#FFFFFF"
-                tools:ignore="TouchTargetSizeCheck" />
+                android:text="TextView"
+                app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
 
 
         </LinearLayout>
