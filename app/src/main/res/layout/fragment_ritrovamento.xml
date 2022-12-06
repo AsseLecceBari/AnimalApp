@@ -35,7 +35,7 @@
                 android:layout_marginLeft="8dp"
                 android:background="?attr/selectableItemBackground"
                 android:text="Smarrimenti"
-                android:textColor="@color/teal_700"
+
                 android:textSize="20sp"
                 android:textStyle="bold" />
 

@@ -19,7 +19,6 @@ import androidx.fragment.app.Fragment;
 
 import android.text.InputType;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,16 +35,15 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Random;
 
-import dao.AnimaleDAO;
+import class_general.Utils;
+import DB.AnimaleDB;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -68,6 +66,8 @@ public class aggiungiAnimaleFragment extends Fragment {
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private MaterialCheckBox isAssistito;
+    private Utils utils;
+    private AnimaleDB animaleDB;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -131,6 +131,7 @@ public class aggiungiAnimaleFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_animale, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Aggiungi Animale");
+        animaleDB = new AnimaleDB();
         if(main_action_bar.getMenu()!=null) {
                 main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
                 main_action_bar.setNavigationIcon(R.drawable.back);
@@ -240,51 +241,30 @@ public class aggiungiAnimaleFragment extends Fragment {
                     registraAnimaleBtn.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();
                     Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito);
-                    AnimaleDAO animaleDAO= new AnimaleDAO();
-                    animaleDAO.registraAnimale(a,db).addOnCompleteListener(new OnCompleteListener() {
+                    utils= new Utils();
+                    animaleDB.registraAnimale(a,db).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
 
                         }
                     });
-                    uploadImage();
+                    StorageTask<UploadTask.TaskSnapshot> storageTask= animaleDB.uploadImageAnimale(storage,storageRef,file);
+                    if(utils.isInternetAvailable()) {
+                        storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                                startActivity(new Intent(getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                            }
+                        });
+                    }else {
+                        startActivity(new Intent(getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                    }
                 }
             }
         });
-
         return rootView;
     }
 
-    public void uploadImage() {
-        storage= FirebaseStorage.getInstance();
-        storageRef=storage.getReference();
-        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpeg").build();
-        try{
-            StorageTask<UploadTask.TaskSnapshot> storageTask=storageRef.child("images/"+file.getLastPathSegment()).putFile(file, metadata);
-            if(isInternetAvailable()) {
-                storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                        Log.e("storage", storageTask + "");
-                        startActivity(new Intent(getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-                    }
-                });
-            }else{
-                startActivity(new Intent(getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
-            }
-
-        }catch (Exception e){
-        }
-    }
-
-    public boolean isInternetAvailable() {
-        try {
-            InetAddress ipAddr = InetAddress.getByName("google.com");
-            return !ipAddr.equals("");
-        } catch (Exception e) {
-            return false;
-        }
-    }
 
     @Override
     public void onDestroyView() {

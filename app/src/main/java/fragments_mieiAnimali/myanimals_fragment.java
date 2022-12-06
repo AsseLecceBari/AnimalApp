@@ -4,27 +4,20 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,7 +25,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 import adapter.AnimalAdapter;
-import dao.AnimaleDAO;
+import DB.AnimaleDB;
 import fragments.RecyclerItemClickListener;
 import fragments.nonSeiRegistrato_fragment;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
@@ -67,7 +60,7 @@ public class myanimals_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataset.clear();
-        AnimaleDAO animaleDAO= new AnimaleDAO();
+        AnimaleDB animaleDAO= new AnimaleDB();
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
          animaleDAO.getMieiAnimali(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

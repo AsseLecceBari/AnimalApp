@@ -16,16 +16,11 @@ import java.util.ArrayList;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
-public class AggiungiAnimaleAdapter extends RecyclerView.Adapter<adapter.AggiungiAnimaleAdapter.ViewHolder>{
-
-
-
-
+public class AggiungiAdozioneAdapter extends RecyclerView.Adapter<AggiungiAdozioneAdapter.ViewHolder>{
     //Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
 
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet;
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nomeAnimale;
         private  TextView genereAnimale;
@@ -76,7 +71,7 @@ public class AggiungiAnimaleAdapter extends RecyclerView.Adapter<adapter.Aggiung
     }
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
-    public AggiungiAnimaleAdapter(ArrayList<Animale>  dataSet) {
+    public AggiungiAdozioneAdapter(ArrayList<Animale>  dataSet) {
         localDataSet = dataSet;
     }
     @NonNull
@@ -85,7 +80,7 @@ public class AggiungiAnimaleAdapter extends RecyclerView.Adapter<adapter.Aggiung
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.recycle_view_aggiungiadozione, parent, false);
 
-        return new adapter.AggiungiAnimaleAdapter.ViewHolder(v);
+        return new AggiungiAdozioneAdapter.ViewHolder(v);
     }
 
     @Override

@@ -76,35 +76,28 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         }
 
     }
-    // method for filtering our recyclerview items.
+
     public void filterList(ArrayList<Animale> filterlist) {
-        // below line is to add our filtered
-        // list in our course array list.
         localDataSet = filterlist;
-        // below line is to notify our adapter
-        // as change in recycler view data.
+       //notifica all'adapter che sono cambiati i dati nella recycle view
         notifyDataSetChanged();
     }
-
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public AnimalAdapter(ArrayList<Animale> dataSet){
-
         localDataSet = dataSet;
     }
 
     @NonNull
     @Override
     public AnimalAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.recycle_view_animals, parent, false);
-
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_animals, parent, false);
         return new ViewHolder(v);
 
     }
 
     @Override
     public void onBindViewHolder(@NonNull AnimalAdapter.ViewHolder holder, int position) {
-        //Vengono inseriti i dati degli animali
+        //Vengono inseriti i dati degli animali negli item
         FirebaseStorage storage;
         StorageReference storageRef;
         storage= FirebaseStorage.getInstance();

@@ -13,8 +13,9 @@
         android:layout_width="match_parent"
 
         android:layout_height="?attr/actionBarSize"
-
-        app:navigationIcon="?attr/actionModeCloseDrawable" />
+        android:background=" #F3CF9B"
+        app:navigationIcon="?attr/actionModeCloseDrawable"
+        app:titleTextColor="@color/md_theme_dark_background" />
 
 
 

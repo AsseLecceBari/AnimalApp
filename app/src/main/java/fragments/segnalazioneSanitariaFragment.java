@@ -124,7 +124,7 @@ public class segnalazioneSanitariaFragment extends Fragment {
                 modifica.setVisibility(View.GONE);
                 conferma.setVisibility(View.VISIBLE);
                 fattaDa.setText("Modifica la segnalazione sanitaria!");
-                fattaDa.setTextColor(R.color.purple_200);
+
                 Toast.makeText(getContext(), "Scegli il campo da modificare!", Toast.LENGTH_SHORT).show();
 
             }
