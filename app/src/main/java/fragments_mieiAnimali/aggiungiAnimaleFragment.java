@@ -45,6 +45,7 @@ import java.net.InetAddress;
 import java.util.Calendar;
 import java.util.Random;
 
+import dao.AnimaleDAO;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -239,9 +240,11 @@ public class aggiungiAnimaleFragment extends Fragment {
                     registraAnimaleBtn.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();
                     Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito);
-                    db.collection("animali").document(idAnimale).set(a).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    AnimaleDAO animaleDAO= new AnimaleDAO();
+                    animaleDAO.registraAnimale(a,db).addOnCompleteListener(new OnCompleteListener() {
                         @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                        public void onComplete(@NonNull Task task) {
+
                         }
                     });
                     uploadImage();
