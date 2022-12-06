@@ -477,8 +477,7 @@ public class adoptions_fragment extends Fragment {
 
                     }
 
-                    if( preferenze.getAdozioni().get(0)!= null)
-
+                    if( preferenze != null && preferenze.getAdozioni().get(0)!= null)
                     {
                         rdbannuncipreferiti.setEnabled(true);
                         String s= String.valueOf(preferenze.getAdozioni().size());
