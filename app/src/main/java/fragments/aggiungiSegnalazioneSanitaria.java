@@ -85,6 +85,7 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
         });
 
         crea.setOnClickListener(new View.OnClickListener() {
+            //TODO METTERE CONTROLLO RUOLO,  VETERINARIO è loggato ,emailvet deve essere l'email del veterinario...USIAMO IL FILE CONI DATI PERSISTENTI CHE CONOSCE IL DOTTOR DOMENICO
             @Override
             public void onClick(View view) {
                 // se chi è loggato è un veterinario allora nel campo email vet va la sua mail

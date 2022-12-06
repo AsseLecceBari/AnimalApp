@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId "it.uniba.dib.sms2223_2"
-        minSdk 23
+        minSdk 27
         targetSdk 32
         versionCode 1
         versionName "1.0"

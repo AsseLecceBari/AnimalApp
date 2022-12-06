@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private int posizione;
     private TabLayout tabLayout;
     private main_fragment main_fragment;
+    ViewPager2 viewPager2;
+    VPAdapter adapter;
 
 
     @Override
@@ -55,49 +57,48 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         try {
             main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+            viewPager2= main_fragment.getViewPager2();
+            adapter= (VPAdapter) viewPager2.getAdapter();
+            getMenuInflater().inflate(R.menu.menu_bar_main, menu);
+            MenuItem searchItem= menu.findItem(R.id.action_search);
+            SearchView searchView= (SearchView) searchItem.getActionView();
+            searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
+            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    try {
+                        myanimals_fragment myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                        myanimals_fragment.filter(newText);
+                    }catch (Exception e){
+
+                    }
+                    try {
+                        adoptions_fragment adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                        adoptions_fragment.filter(newText);
+                    }catch (Exception e){
+
+                    }
+                    try {
+                        reports_fragment reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                        reports_fragment.filter(newText);
+                    }catch (Exception e){
+
+                    }
+
+                    return false;
+                }
+            });
         }catch (Exception e){
 
         }
-        ViewPager2 viewPager2= main_fragment.getViewPager2();
-        VPAdapter adapter= (VPAdapter) viewPager2.getAdapter();
 
 
 
-        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
-
-        MenuItem searchItem= menu.findItem(R.id.action_search);
-        SearchView searchView= (SearchView) searchItem.getActionView();
-        searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-             return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-              try {
-                  myanimals_fragment myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                  myanimals_fragment.filter(newText);
-              }catch (Exception e){
-
-              }
-              try {
-                    adoptions_fragment adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                    adoptions_fragment.filter(newText);
-                }catch (Exception e){
-
-                }
-                try {
-                    reports_fragment reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                  reports_fragment.filter(newText);
-                }catch (Exception e){
-
-                }
-
-                return false;
-            }
-        });
 
 
        return true;

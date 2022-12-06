@@ -77,6 +77,12 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         main_action_bar=findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Profilo");
         setSupportActionBar(main_action_bar);
+        main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+        main_action_bar.setNavigationIcon(R.drawable.back);
+        main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {onBackPressed();}
+        });
 
         CollectionReference animaliReference=db.collection("utenti");
         if(auth.getCurrentUser()!=null) {

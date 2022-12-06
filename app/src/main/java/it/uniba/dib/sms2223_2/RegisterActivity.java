@@ -107,6 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         // Initialize the AutocompleteSupportFragment.
+        /*
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), "AIzaSyBcUs-OmuzIiP9WP_DShttueADR-GqvSwk", Locale.US);
         }
@@ -142,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.i("placeerror", "An error occurred: " + status);
             }
         });
-
+*/
         cldr = Calendar.getInstance();
 
         // Informazioni generali
