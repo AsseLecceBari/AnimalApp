@@ -12,12 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:layout_gravity="top"
-        android:background="#F3CF9B"
+
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/md_theme_dark_inverseSurface"
             android:orientation="horizontal">
 
             <TextView
@@ -28,6 +29,7 @@
                 android:drawableTint="#9A1515"
                 android:gravity="center|right"
                 android:text="FILTRI"
+                android:textColor="#000000"
                 android:textSize="23dp" />
 
             <ImageView
@@ -53,7 +55,9 @@
                     android:layout_marginRight="15dp"
                     android:clickable="true"
                     android:src="@drawable/_492790985_3arrow_down_84192"
-                    app:backgroundTint="#F3CF9B"
+                    android:visibility="gone"
+
+                    app:backgroundTint="@color/md_theme_dark_inverseSurface"
                     tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -65,8 +69,8 @@
                     android:layout_marginRight="15dp"
                     android:clickable="true"
                     android:src="@drawable/_492790975_4arrow_right_84163"
-                    android:visibility="gone"
-                    app:backgroundTint="#F3CF9B"
+                    android:visibility="visible"
+                    app:backgroundTint="@color/md_theme_dark_inverseSurface"
                     tools:ignore="SpeakableTextPresentCheck" />
             </FrameLayout>
 
@@ -76,8 +80,8 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
+            android:layout_height="10dp"
+            android:background="@color/md_theme_dark_background" />
 
     </LinearLayout>
 
@@ -116,14 +120,14 @@
         android:layout_width="match_parent"
         android:layout_height="108dp"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <LinearLayout
 
             android:layout_width="match_parent"
             android:layout_height="106dp"
-            android:background="#F3CF9B"
+            android:background="@color/md_theme_dark_inverseSurface"
             android:orientation="vertical">
 
             <LinearLayout
@@ -134,13 +138,20 @@
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal">
+
+                    android:orientation="horizontal"
+                     >
+
 
                     <RadioButton
                         android:id="@+id/radioImieiannunci"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="I miei annunci" />
+                        android:text="I miei annunci"
+
+                        android:textColor="@color/md_theme_dark_background"
+
+                        />
 
                     <RadioButton
                         android:id="@+id/radioannunciesterni"
@@ -149,6 +160,7 @@
 
                         android:layout_marginLeft="18dp"
                         android:text="Generali"
+                        android:textColor="@color/md_theme_dark_background"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <RadioButton
@@ -158,7 +170,11 @@
 
                         android:layout_marginLeft="18dp"
                         android:layout_marginRight="1dp"
-                        android:text="Preferiti" />
+                        android:text="Preferiti"
+                        android:textColor="@color/md_theme_dark_background"
+
+
+                       />
 
                     <FrameLayout
                         android:id="@+id/notificapreferiti"
@@ -226,7 +242,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycleadoption"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="visible"
             tools:listitem="@layout/recycle_view_adozioni">
 

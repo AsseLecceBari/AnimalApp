@@ -28,17 +28,13 @@ import model.Animale;
 public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapter.ViewHolder> {
 
     private int vistamieianimali;
-    private View eliminaAnnuncio;
-
-
     //Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
-
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet;
     private OnClickListener onClickListener;
 
 
-    public static class ViewHolder extends RecyclerView.ViewHolder  {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nomeAnimale;
         private TextView genereAnimale;
         private TextView specieAnimale;
@@ -47,12 +43,6 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
         private ImageView imageAnimal;
         private View elimina;
         private View viewtot;
-
-        private int posizione;
-
-
-
-
 
         public TextView getGenereAnimale() {
             return genereAnimale;
@@ -77,28 +67,19 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
         public TextView getNomeAnimale() {
             return nomeAnimale;
         }
-        public View getButtone(){
+
+        public View getButtone() {
             return elimina;
         }
-        public View getView(){
+
+        public View getView() {
             return viewtot;
         }
 
 
-
-
-
+        //ViewHolder serve alla RecycleView per prendere i riferimenti ad ogni singolo Item
         public ViewHolder(View view) {
             super(view);
-
-
-
-
-
-
-            Log.d("ciao10","ciaod");
-
-
             //Prendo i riferimenti al layout di ogni singola riga
             nomeAnimale = (TextView) view.findViewById(R.id.nomeAnimaleView);
             genereAnimale = (TextView) view.findViewById(R.id.genereAnimaleView);
@@ -106,80 +87,30 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
             dataNascitaAnimale = (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
             codiceAnimale = (TextView) view.findViewById(R.id.codiceAnimaleView);
             imageAnimal = (ImageView) view.findViewById(R.id.imageAnimal);
-            elimina= view.findViewById(R.id.button2);
-            viewtot=view;
-
-
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         /*   view.findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Log.d("ciao10","peri");
-                }
-            });*/
-
+            elimina = view.findViewById(R.id.button2);
+            viewtot = view;
         }
-
-
-
-
     }
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public AdozioniAdapter(ArrayList<Animale> dataSet, int vista) {
         localDataSet = dataSet;
         vistamieianimali = vista;
-
     }
 
     @NonNull
     @Override
     public AdozioniAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
+// in base a quale filtro stiamo utilizzando cambia la recycleview da caricare
         if (vistamieianimali == 2) {
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.recycle_view_adozioni, parent, false);
-
+            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_adozioni, parent, false);
             return new adapter.AdozioniAdapter.ViewHolder(v);
         } else {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycle_view_le_mie_adozioni, parent, false);
-
-
-
-
-
-            // return new adapter.AdozioniAdapter.ViewHolder(v);
             return new adapter.AdozioniAdapter.ViewHolder(v);
         }
-
-
     }
-
-
-
     @Override
-
     @SuppressLint("RecyclerView")
     public void onBindViewHolder(@NonNull adapter.AdozioniAdapter.ViewHolder holder, int position) {
         //Vengono inseriti i dati degli animali
@@ -188,8 +119,7 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
         //  holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
         // holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
         holder.getCodiceAnimale().setText(localDataSet.get(position).getIdAnimale());
-        if(holder.getButtone()!= null) {
-
+        if (holder.getButtone() != null) {
             holder.getButtone().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -197,25 +127,18 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
                 }
             });
         }
-       holder.getView().setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               onClickListener.onitemClick(view,position);
-           }
-       });
-
-
-        // holder.getImageAnimal().setImageBitmap(localDataSet.get(position).getFotoProfilo());
-
-
+        holder.getView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onClickListener.onitemClick(view, position);
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return localDataSet.size();
     }
-
-
 
 
     public void filterList(ArrayList<Animale> filterlist) {
@@ -230,21 +153,18 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     public interface OnClickListener {
         void onitemClick(View view, int position);
 
-        void oneliminaClick(View view, int position) ;
+        void oneliminaClick(View view, int position);
 
 
     }
+
     public void setOnClickListener(OnClickListener listener) {
-        this.onClickListener= listener;
+        this.onClickListener = listener;
     }
 
-
-
-
-
-
-
-
+    public void aggiornadataset(ArrayList<Animale> animali) {
+        localDataSet = animali;
+    }
 
 
 }

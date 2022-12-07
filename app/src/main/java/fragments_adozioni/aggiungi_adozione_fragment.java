@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Checkable;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -32,20 +31,19 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 
-import adapter.AggiungiAnimaleAdapter;
+import adapter.AggiungiAdozioneAdapter;
 import class_general.RecyclerItemClickListener;
 import fragments_mieiAnimali.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
-import fragments.main_fragment;
 
 public class aggiungi_adozione_fragment extends Fragment {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
-    protected AggiungiAnimaleAdapter mAdapter;
+    protected AggiungiAdozioneAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected ArrayList<Animale> mDataset= new ArrayList<>();
     private Checkable checkbox;
@@ -196,7 +194,7 @@ public class aggiungi_adozione_fragment extends Fragment {
                                         {
                                             mDataset.add(document.toObject(Animale.class));
                                             Log.d("ciao", String.valueOf(mDataset.size()));
-                                            mAdapter = new AggiungiAnimaleAdapter(mDataset);
+                                            mAdapter = new AggiungiAdozioneAdapter(mDataset);
                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                             mRecyclerView.setAdapter(mAdapter);
                                         }
