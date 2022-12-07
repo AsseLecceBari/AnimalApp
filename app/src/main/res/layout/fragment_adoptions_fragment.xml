@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3E4CF"
+
     android:orientation="vertical"
     tools:context="fragments_adozioni.adoptions_fragment">
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="63dp"
         android:layout_gravity="top"
-        android:background="#F3CF9B"
+
         android:orientation="vertical">
 
         <LinearLayout
@@ -25,7 +25,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
-                android:drawableTint="#9A1515"
+
                 android:gravity="center|right"
                 android:text="FILTRI"
                 android:textSize="23dp" />
@@ -54,7 +54,7 @@
                     android:clickable="true"
                     android:src="@drawable/_492790985_3arrow_down_84192"
                     android:visibility="gone"
-                    app:backgroundTint="#F3CF9B"
+
                     tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -67,7 +67,7 @@
                     android:clickable="true"
                     android:src="@drawable/_492790975_4arrow_right_84163"
                     android:visibility="visible"
-                    app:backgroundTint="#F3CF9B"
+
                     tools:ignore="SpeakableTextPresentCheck" />
             </FrameLayout>
 
@@ -124,7 +124,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="106dp"
-            android:background="#F3CF9B"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -204,7 +204,9 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
 
-                android:progress="30" />
+                android:progress="30"
+                android:progressTint="?attr/actionModeSplitBackground"
+                android:thumbTint="?attr/actionModeSplitBackground" />
 
         </LinearLayout>
 
