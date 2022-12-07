@@ -50,7 +50,7 @@
     <color name="md_theme_dark_background">#1F1C00</color>
     <color name="md_theme_dark_onBackground">#F2E66A</color>
     <color name="md_theme_dark_surface">#1F1C00</color>
-    <color name="md_theme_dark_onSurface">#F2E66A</color>
+    <color name="md_theme_dark_onSurface">#1F1C00</color>
     <color name="md_theme_dark_surfaceVariant">#45483D</color>
     <color name="md_theme_dark_onSurfaceVariant">#C6C8B9</color>
     <color name="md_theme_dark_outline">#8F9284</color>
