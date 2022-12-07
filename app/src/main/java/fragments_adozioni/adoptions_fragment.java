@@ -66,8 +66,7 @@ public class adoptions_fragment extends Fragment {
 
     protected AdozioniAdapter mAdapter;
     protected ArrayList<Animale> mDataset = new ArrayList<>();
-    protected ArrayList<Animale> mDatasetimieiAnnunci= new ArrayList<>();
-    protected ArrayList<Animale> mDatasetpreferiti = new ArrayList<>();
+
 
     private LinearLayout paginalogin;
     private View btnaccesso;
@@ -502,32 +501,31 @@ public class adoptions_fragment extends Fragment {
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
+                if(task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        preferenze=document.toObject(Preferenze.class);
+                        preferenze = document.toObject(Preferenze.class);
 
                     }
 
-                    if( preferenze.getAdozioni().get(0)!= null)
 
-                    {
-                        rdbannuncipreferiti.setEnabled(true);
-                        String s= String.valueOf(preferenze.getAdozioni().size());
-                        numeroAnnPreferiti.setText(s);
-                    }
-                    else {
-                        rdbannuncipreferiti.setEnabled(false);
+                        if (preferenze.getAdozioni().get(0) != null && preferenze!= null) {
+                            rdbannuncipreferiti.setEnabled(true);
+                            String s = String.valueOf(preferenze.getAdozioni().size());
+                            numeroAnnPreferiti.setText(s);
+                        } else {
+                            rdbannuncipreferiti.setEnabled(false);
 
-                        numeroAnnPreferiti.setText("0");
+                            numeroAnnPreferiti.setText("0");
 
-                    }
+                        }
+
 
 
 
                 }
             }
         });
+
 
     }
 
@@ -589,6 +587,10 @@ public class adoptions_fragment extends Fragment {
                                 public void onSuccess(Void aVoid) {
                                     Log.d("ciao10", String.valueOf(position));
                                    // Log.d("ciao10", String.valueOf(mDataset.size()));
+
+
+
+
 
 
 
