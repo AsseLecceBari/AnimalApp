@@ -24,10 +24,9 @@ public class AnimaleDB {
     }
 
     public Task<QuerySnapshot> getMieiAnimali(FirebaseAuth auth,FirebaseFirestore db) {
-        db=FirebaseFirestore.getInstance();
-        auth=FirebaseAuth.getInstance();
+
         CollectionReference animaliReference = db.collection("animali");
-        Query query = animaliReference.whereEqualTo("emailProprietario", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+        Query query = animaliReference.whereEqualTo("emailProprietario", auth.getCurrentUser().getEmail());
         return  query.get();
     }
 

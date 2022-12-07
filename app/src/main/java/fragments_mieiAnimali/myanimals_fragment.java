@@ -60,24 +60,29 @@ public class myanimals_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataset.clear();
+        db=FirebaseFirestore.getInstance();
+        auth=FirebaseAuth.getInstance();
         AnimaleDB animaleDAO= new AnimaleDB();
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
-         animaleDAO.getMieiAnimali(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        //Salvare animale in un array con elementi oggetto animale
-                        mDataset.add(document.toObject(Animale.class));
-                        Log.e("animale", document.getId() + " => " + document.getData());
-                    }
-                }//Passo i dati presi dal database all'adapter
-                mAdapter = new AnimalAdapter(mDataset);
-                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                mRecyclerView.setAdapter(mAdapter);
-                //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-            }
-        });;
+        if(auth.getCurrentUser()!=null) {
+            animaleDAO.getMieiAnimali(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //Salvare animale in un array con elementi oggetto animale
+                            mDataset.add(document.toObject(Animale.class));
+                            Log.e("animale", document.getId() + " => " + document.getData());
+                        }
+                    }//Passo i dati presi dal database all'adapter
+                    mAdapter = new AnimalAdapter(mDataset);
+                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                    mRecyclerView.setAdapter(mAdapter);
+                    //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                }
+            });
+            ;
+        }
 
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
