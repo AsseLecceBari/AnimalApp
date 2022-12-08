@@ -133,7 +133,7 @@ public class aggiungiAnimaleFragment extends Fragment {
         main_action_bar.setTitle("Aggiungi Animale");
         animaleDB = new AnimaleDB();
         if(main_action_bar.getMenu()!=null) {
-                main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+                main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
                 main_action_bar.setNavigationIcon(R.drawable.back);
                 main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
@@ -271,7 +271,7 @@ public class aggiungiAnimaleFragment extends Fragment {
         super.onDestroyView();
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
-            main_action_bar.inflateMenu(R.menu.menu_bar_main);
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
             main_action_bar.setTitle("AnimalApp");
             main_action_bar.setNavigationIcon(null);
         }

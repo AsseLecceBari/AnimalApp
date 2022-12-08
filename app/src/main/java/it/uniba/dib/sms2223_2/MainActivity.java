@@ -35,20 +35,16 @@ public class MainActivity extends AppCompatActivity {
     private int posizione;
     private TabLayout tabLayout;
     private main_fragment main_fragment;
-    ViewPager2 viewPager2;
-    VPAdapter adapter;
+    private ViewPager2 viewPager2;
+    private VPAdapter adapter;
+    private MenuItem searchItem;
+    private SearchView searchView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         // Imposto l'actionBar di questa activity
         main_action_bar=findViewById(R.id.main_action_bar);
         main_action_bar.setNavigationIcon(null);
@@ -56,14 +52,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_bar_main, menu);
         try {
             main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
             viewPager2= main_fragment.getViewPager2();
             adapter= (VPAdapter) viewPager2.getAdapter();
-            getMenuInflater().inflate(R.menu.menu_bar_main, menu);
-            MenuItem searchItem= menu.findItem(R.id.action_search);
-            SearchView searchView= (SearchView) searchItem.getActionView();
+
+            searchItem= menu.findItem(R.id.action_search);
+            searchView= (SearchView) searchItem.getActionView();
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override

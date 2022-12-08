@@ -67,7 +67,7 @@ public class aggiungi_adozione_fragment extends Fragment {
             main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
             main_action_bar.setNavigationIcon(null);
             main_action_bar.setTitle("AnimalApp");
-            main_action_bar.inflateMenu(R.menu.menu_bar_main);
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
 
         }
     }
@@ -79,7 +79,7 @@ public class aggiungi_adozione_fragment extends Fragment {
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Aggiungi adozione");
         if(main_action_bar.getMenu()!=null) {
-            main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
             main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
             main_action_bar.setNavigationIcon(R.drawable.back);
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {

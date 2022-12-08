@@ -139,6 +139,7 @@ public class myanimals_fragment extends Fragment {
 
 
     public void filter(String text) {
+
         filteredlist=new ArrayList<>();
 
         // running a for loop to compare elements.
