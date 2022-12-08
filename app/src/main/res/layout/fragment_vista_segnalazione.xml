@@ -83,11 +83,11 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
+                android:layout_height="5dp"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="16dp"
                 android:layout_toLeftOf="@id/tvText2"
-                 />
+                android:background="#FFFFFF" />
 
             <TextView
                 android:id="@+id/tvText2"

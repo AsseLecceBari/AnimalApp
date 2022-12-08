@@ -12,10 +12,12 @@ import android.widget.ArrayAdapter;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.color.DynamicColors;
+import com.google.android.material.color.DynamicColorsOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -41,8 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
+        
     }
 
     @Override
@@ -97,11 +98,6 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception e){
 
         }
-
-
-
-
-
        return true;
     }
 

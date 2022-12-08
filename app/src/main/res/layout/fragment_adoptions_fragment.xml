@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F3E4CF"
+
     android:orientation="vertical"
     tools:context="fragments_adozioni.adoptions_fragment">
 
@@ -18,7 +18,6 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/md_theme_dark_inverseSurface"
             android:orientation="horizontal">
 
             <TextView
@@ -26,10 +25,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="10dp"
-                android:drawableTint="#9A1515"
+
                 android:gravity="center|right"
                 android:text="FILTRI"
-                android:textColor="#000000"
                 android:textSize="23dp" />
 
             <ImageView
@@ -57,7 +55,6 @@
                     android:src="@drawable/_492790985_3arrow_down_84192"
                     android:visibility="gone"
 
-                    app:backgroundTint="@color/md_theme_dark_inverseSurface"
                     tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -70,7 +67,7 @@
                     android:clickable="true"
                     android:src="@drawable/_492790975_4arrow_right_84163"
                     android:visibility="visible"
-                    app:backgroundTint="@color/md_theme_dark_inverseSurface"
+
                     tools:ignore="SpeakableTextPresentCheck" />
             </FrameLayout>
 
@@ -80,8 +77,8 @@
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
-            android:layout_height="10dp"
-            android:background="@color/md_theme_dark_background" />
+            android:layout_height="2dp"
+            android:background="?android:attr/listDivider" />
 
     </LinearLayout>
 
@@ -127,7 +124,7 @@
 
             android:layout_width="match_parent"
             android:layout_height="106dp"
-            android:background="@color/md_theme_dark_inverseSurface"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -138,20 +135,13 @@
                 <RadioGroup
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
-                    android:orientation="horizontal"
-                     >
-
+                    android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/radioImieiannunci"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="I miei annunci"
-
-                        android:textColor="@color/md_theme_dark_background"
-
-                        />
+                        android:text="I miei annunci" />
 
                     <RadioButton
                         android:id="@+id/radioannunciesterni"
@@ -160,7 +150,6 @@
 
                         android:layout_marginLeft="18dp"
                         android:text="Generali"
-                        android:textColor="@color/md_theme_dark_background"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <RadioButton
@@ -170,11 +159,7 @@
 
                         android:layout_marginLeft="18dp"
                         android:layout_marginRight="1dp"
-                        android:text="Preferiti"
-                        android:textColor="@color/md_theme_dark_background"
-
-
-                       />
+                        android:text="Preferiti" />
 
                     <FrameLayout
                         android:id="@+id/notificapreferiti"
@@ -219,7 +204,9 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
 
-                android:progress="30" />
+                android:progress="30"
+                android:progressTint="?attr/actionModeSplitBackground"
+                android:thumbTint="?attr/actionModeSplitBackground" />
 
         </LinearLayout>
 

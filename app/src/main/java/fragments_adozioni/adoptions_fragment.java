@@ -158,8 +158,9 @@ public class adoptions_fragment extends Fragment {
 
         barrachilometri=rootView.findViewById(R.id.barrachilometri);
         numeroAnnPreferiti=rootView.findViewById(R.id.numeroannpref);
-        initDataPreferiti();
-
+        if(auth.getCurrentUser()!=null) {
+            initDataPreferiti();
+        }
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         recyclemieadozioni= rootView.findViewById(R.id.recyclemieadozioni);
@@ -209,83 +210,81 @@ public class adoptions_fragment extends Fragment {
                                                 Animale t;
                                                 switch (tip) {
                                                     case 1:
-
-                                                         t = document.toObject(Animale.class);
-                                                        if (Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
-
-
-
-                                                            mDataset.add(document.toObject(Animale.class));
+                                                        if(auth.getCurrentUser()!=null) {
+                                                            t = document.toObject(Animale.class);
+                                                            if (Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
 
 
-                                                            mAdapter = new AdozioniAdapter(mDataset,1);
-                                                           // mAdapter.eliminaAnnuncio();
+                                                                mDataset.add(document.toObject(Animale.class));
 
-                                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                            mRecyclerView.setAdapter(mAdapter);
-                                                            if(mAdapter!= null) {
-                                                                onItemClick();
+
+                                                                mAdapter = new AdozioniAdapter(mDataset, 1);
+                                                                // mAdapter.eliminaAnnuncio();
+
+                                                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                                mRecyclerView.setAdapter(mAdapter);
+                                                                if (mAdapter != null) {
+                                                                    onItemClick();
+
+
+                                                                }
 
 
                                                             }
-
-
-                                                        } return;
+                                                            return;
+                                                        }
                                                     case 2:
+                                                        if(auth.getCurrentUser()!=null) {
+                                                            t = document.toObject(Animale.class);
+                                                            Log.d("ciao4", t.getNome());
+                                                            if (!Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
+                                                                mDataset.add(document.toObject(Animale.class));
 
-                                                         t = document.toObject(Animale.class);
-                                                        Log.d("ciao4", t.getNome());
-                                                        if (!Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
-                                                            mDataset.add(document.toObject(Animale.class));
+                                                                mAdapter = new AdozioniAdapter(mDataset, 2);
 
-                                                            mAdapter = new AdozioniAdapter(mDataset,2);
+                                                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                                                // recyclemieadozioni.setVisibility(View.GONE);
+                                                                mRecyclerView.setVisibility(View.VISIBLE);
+                                                                mRecyclerView.setAdapter(mAdapter);
 
-                                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                           // recyclemieadozioni.setVisibility(View.GONE);
-                                                            mRecyclerView.setVisibility(View.VISIBLE);
-                                                            mRecyclerView.setAdapter(mAdapter);
-
-                                                            if(mAdapter!= null) {
+                                                                if (mAdapter != null) {
 
 
-                                                            onItemClick();
+                                                                    onItemClick();
+                                                                }
                                                             }
-                                                        }   return;
-                                                    case 3:
-                                                        preferenze.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            return;
+                                                        }
+                                                    case 3: if(auth.getCurrentUser()!=null) {
+
+                                                        preferenze.whereEqualTo("emailUtente", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                                                if(task.isSuccessful())
-
-
-                                                                {
+                                                                if (task.isSuccessful()) {
                                                                     for (QueryDocumentSnapshot document2 : task.getResult()) {
-                                                                       Preferenze ad= document2.toObject(Preferenze.class);
+                                                                        Preferenze ad = document2.toObject(Preferenze.class);
 
-                                                                     for(int a =0; a< ad.getAdozioni().size();a++)
-                                                                     {
-                                                                         if(Objects.equals(ad.getAdozioni().get(a), temporanea.getIdAdozione()))
-                                                                         {
-                                                                             Log.d("ciao10","c");
-                                                                             mDataset.add(document.toObject(Animale.class));
-                                                                             // Log.d("ciao", String.valueOf(mDataset.size()));
-                                                                             mAdapter = new AdozioniAdapter(mDataset,2);
+                                                                        for (int a = 0; a < ad.getAdozioni().size(); a++) {
+                                                                            if (Objects.equals(ad.getAdozioni().get(a), temporanea.getIdAdozione())) {
+                                                                                Log.d("ciao10", "c");
+                                                                                mDataset.add(document.toObject(Animale.class));
+                                                                                // Log.d("ciao", String.valueOf(mDataset.size()));
+                                                                                mAdapter = new AdozioniAdapter(mDataset, 2);
 
 
-                                                                             mRecyclerView.setAdapter(mAdapter);
+                                                                                mRecyclerView.setAdapter(mAdapter);
 
 
-                                                                             if(mAdapter!= null) {
+                                                                                if (mAdapter != null) {
 
 
-                                                                               onItemClick();
-                                                                             }
+                                                                                    onItemClick();
+                                                                                }
 
 
-                                                                         }
-                                                                     }
-
+                                                                            }
+                                                                        }
 
 
                                                                     }
@@ -294,7 +293,7 @@ public class adoptions_fragment extends Fragment {
 
                                                             }
                                                         });
-
+                                                    }
                                                            return;
                                                            
                                                 }
@@ -508,7 +507,7 @@ public class adoptions_fragment extends Fragment {
                     }
 
 
-                        if (preferenze.getAdozioni().get(0) != null && preferenze!= null) {
+                        if ( preferenze!= null && preferenze.getAdozioni().get(0) != null) {
                             rdbannuncipreferiti.setEnabled(true);
                             String s = String.valueOf(preferenze.getAdozioni().size());
                             numeroAnnPreferiti.setText(s);

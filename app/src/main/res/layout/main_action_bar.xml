@@ -6,16 +6,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context="fragments_adozioni.adoptions_fragment">
+    tools:context=".MainActivity">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/main_action_bar"
         android:layout_width="match_parent"
-
         android:layout_height="?attr/actionBarSize"
-        android:background=" #F3CF9B"
         app:navigationIcon="?attr/actionModeCloseDrawable"
-        app:titleTextColor="@color/md_theme_dark_background" />
+    />
 
 
 
