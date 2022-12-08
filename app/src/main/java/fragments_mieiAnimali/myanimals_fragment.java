@@ -40,15 +40,16 @@ public class myanimals_fragment extends Fragment {
     private Animale a;
 
     protected RecyclerView mRecyclerView;
-    protected AnimalAdapter mAdapter;
+    protected static AnimalAdapter mAdapter;
 
 
     public ArrayList<Animale> getmDataset() {
         return mDataset;
     }
 
-    protected ArrayList<Animale> mDataset= new ArrayList<>();
-    private ArrayList<Animale> filteredlist =null;
+    protected static ArrayList<Animale> mDataset= new ArrayList<>();
+    private ArrayList<Animale> filteredlist=new ArrayList<>();
+    private   AnimaleDB animaleDAO;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,9 +61,10 @@ public class myanimals_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataset.clear();
+
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
-        AnimaleDB animaleDAO= new AnimaleDB();
+        animaleDAO= new AnimaleDB();
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         if(auth.getCurrentUser()!=null) {
             animaleDAO.getMieiAnimali(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -79,9 +81,10 @@ public class myanimals_fragment extends Fragment {
                     // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                     mRecyclerView.setAdapter(mAdapter);
                     //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+
                 }
             });
-            ;
+
         }
 
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
@@ -111,11 +114,12 @@ public class myanimals_fragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         Animale a;
                         Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
-                        if(filteredlist==null) {
+                        if(filteredlist.size()==0) {
                             //Ottengo l'oggetto dalla lista in posizione "position"
                             a = mDataset.get(position);
                         }else{
-                            Log.e("filteredlist", filteredlist+"");
+                            Log.e("filtered",filteredlist+"");
+
                             a = filteredlist.get(position);}
                         //Inserisco l'oggetto nel bundle
                         i.putExtra("animale", a);
@@ -139,9 +143,7 @@ public class myanimals_fragment extends Fragment {
 
 
     public void filter(String text) {
-
         filteredlist=new ArrayList<>();
-
         // running a for loop to compare elements.
         for (Animale item : mDataset) {
             // checking if the entered string matched with any item of our recycler view.

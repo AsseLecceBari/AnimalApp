@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -37,8 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private main_fragment main_fragment;
     private ViewPager2 viewPager2;
     private VPAdapter adapter;
-    private MenuItem searchItem;
-    private SearchView searchView;
+    private  MenuItem searchItem;
+    private  SearchView searchView;
+    private myanimals_fragment myanimals_fragment;
+    private adoptions_fragment adoptions_fragment;
+    private reports_fragment reports_fragment;
 
 
     @Override
@@ -62,9 +66,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_bar_main, menu);
         try {
             main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-            viewPager2= main_fragment.getViewPager2();
-            adapter= (VPAdapter) viewPager2.getAdapter();
-
             searchItem= menu.findItem(R.id.action_search);
             searchView= (SearchView) searchItem.getActionView();
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
@@ -77,20 +78,29 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextChange(String newText) {
                     try {
-                        myanimals_fragment myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                        viewPager2= main_fragment.getViewPager2();
+                        adapter= (VPAdapter) viewPager2.getAdapter();
+                        myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                         myanimals_fragment.filter(newText);
+                        Log.e("query","animals");
                     }catch (Exception e){
 
                     }
                     try {
-                        adoptions_fragment adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                        viewPager2= main_fragment.getViewPager2();
+                        adapter= (VPAdapter) viewPager2.getAdapter();
+                        adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                         adoptions_fragment.filter(newText);
+                        Log.e("query","adoptions");
                     }catch (Exception e){
 
                     }
                     try {
-                        reports_fragment reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                        viewPager2= main_fragment.getViewPager2();
+                        adapter= (VPAdapter) viewPager2.getAdapter();
+                        reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                         reports_fragment.filter(newText);
+                        Log.e("query","reports");
                     }catch (Exception e){
 
                     }
