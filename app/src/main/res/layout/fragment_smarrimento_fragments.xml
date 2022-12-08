@@ -25,14 +25,15 @@
 
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/nomeAnimaleSmarrito"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/nome"
-            android:id="@+id/nomeAnimaleSmarrito"
+
             android:layout_marginTop="12dp"
-            android:textSize="28dp">
-        </com.google.android.material.textview.MaterialTextView>
+            android:cursorVisible="false"
+            android:hint="@string/nome"
+            android:textSize="28dp" />
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -68,12 +69,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
+            app:endIconMode="clear_text"
             android:id="@+id/descrizioneTextLayout">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/descrizioneEditText"
+
                 android:hint="Descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 

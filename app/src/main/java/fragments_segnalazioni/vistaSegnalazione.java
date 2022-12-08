@@ -171,6 +171,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+
     }
 
     @Override

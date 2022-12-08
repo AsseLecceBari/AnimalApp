@@ -19,13 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:targetApi="27" >
-        <activity
-            android:name=".VistaAdozioneActivity"
-            android:exported="false" >
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
+
         <activity
             android:name=".ProfiloAnimale"
             android:exported="false" >

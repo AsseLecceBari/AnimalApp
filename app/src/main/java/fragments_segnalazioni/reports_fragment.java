@@ -38,7 +38,6 @@ public class reports_fragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected ReportAdapter mAdapter;
     protected ArrayList<Segnalazione> mDataset= new ArrayList<>();
-    //MainActivity main1 = (MainActivity)getActivity() ;
 
     private String id;
     private SeekBar seekBarReport;

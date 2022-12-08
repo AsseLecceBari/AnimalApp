@@ -18,12 +18,27 @@ public class Segnalazione implements Serializable {
     private String idAnimale;
     private String idSegnalazione;
     private String descrizione;
-
+    private String titolo;//da aggiungere
     private double latitudine,longitudine;
     private String data, urlFoto, link;
 
+    public Segnalazione(String emailSegnalatore,String titolo,String tipo, String idAnimale, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto, String link) {
+        this.emailSegnalatore=emailSegnalatore;
+        this.titolo=titolo;
+        this.tipo = tipo;
+        this.idAnimale = idAnimale;//solo a smarrimento
+        this.idSegnalazione = idSegnalazione;
+        this.descrizione = descrizione;
+        this.latitudine=latitudine;
+        this.longitudine=longitudine;
+        this.data = data;//la prende dal timestamp
+        this.urlFoto = urlFoto;
+        this.link = link;
+    }
+//provvisorio
     public Segnalazione(String emailSegnalatore,String tipo, String idAnimale, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto, String link) {
         this.emailSegnalatore=emailSegnalatore;
+
         this.tipo = tipo;
         this.idAnimale = idAnimale;//solo a smarrimento
         this.idSegnalazione = idSegnalazione;
@@ -35,8 +50,9 @@ public class Segnalazione implements Serializable {
         this.link = link;
     }
 
-    public Segnalazione(String emailSegnalatore,String tipo, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto) {
+    public Segnalazione(String emailSegnalatore,String titolo,String tipo, String idSegnalazione, String descrizione, double latitudine,double longitudine, String data, String urlFoto) {
         this.emailSegnalatore=emailSegnalatore;
+        this.titolo=titolo;
         this.tipo = tipo;
         this.idSegnalazione = idSegnalazione;
         this.descrizione = descrizione;
@@ -47,6 +63,10 @@ public class Segnalazione implements Serializable {
     }
 
     public Segnalazione() {
+    }
+
+    public String getTitolo() {
+        return titolo;
     }
 
     public String getTipo() {

@@ -68,6 +68,7 @@ public class fragment_news extends Fragment {
     ImageView imgNews;
     Button scattaFotoNews;
     TextInputEditText descrzioneNews;
+    TextInputEditText titoloNews;
     FloatingActionButton confermaNews;
 
     private FirebaseFirestore db;
@@ -180,6 +181,7 @@ public class fragment_news extends Fragment {
         imgNews=rootView.findViewById(R.id.imgNews);
         scattaFotoNews=rootView.findViewById(R.id.scattaFotoNews);
         descrzioneNews=rootView.findViewById(R.id.descrzioneNews);
+        titoloNews=rootView.findViewById(R.id.titoloNews);
 
         confermaNews=rootView.findViewById((R.id.confermaNews));
 
@@ -243,9 +245,8 @@ public class fragment_news extends Fragment {
 
                 Random rand=new Random();
                 String descrizione=descrzioneNews.getText().toString();
-
+                String titolo=titoloNews.getText().toString();
                 String idSegnalazione=rand.nextInt()+"";
-
                 SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy");
                 String data= dateFor.format(new Date());
 
@@ -259,7 +260,7 @@ public class fragment_news extends Fragment {
                 lat=geocoder.getLat();
                 lng=geocoder.getLng();
 
-                s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
+                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

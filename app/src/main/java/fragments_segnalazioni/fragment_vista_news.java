@@ -31,7 +31,7 @@ import model.Segnalazione;
 
 public class fragment_vista_news extends Fragment implements OnMapReadyCallback {
     private TextView descrizioneNews;
-    private TextView tipoReportNews;
+    private TextView titoloReportNews;
     private ImageView immagineNews;
     private TextView dataNews;
 
@@ -90,12 +90,12 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
         mapViewNews.onCreate(mapViewBundle);
         mapViewNews.getMapAsync(this);//imposta un oggeto di callback che verrà attivato quando l'istanza di google map è pronta per essere utilizzata
         descrizioneNews=rootView.findViewById(R.id.descrizioneNews);
-        tipoReportNews=rootView.findViewById(R.id.tipoReportNews);
+        titoloReportNews=rootView.findViewById(R.id.titoloReportNews);
         descrizioneNews.setText(s.getDescrizione());
-        tipoReportNews.setText(s.getTipo());
+        titoloReportNews.setText(s.getTitolo());
 
         dataNews=rootView.findViewById(R.id.dataNews);
-        dataNews.setText(s.getData());
+        dataNews.setText("pubblicata il:"+s.getData());
 
         immagineNews=rootView.findViewById(R.id.immagineNews);
 

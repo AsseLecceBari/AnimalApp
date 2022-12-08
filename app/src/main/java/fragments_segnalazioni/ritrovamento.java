@@ -73,16 +73,7 @@ public class ritrovamento extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO fare i controlli sui campi
-                s= new Segnalazione(auth.getCurrentUser().getEmail(),
-                        "ritrovamento",
-                        r.nextInt()+"",
-                        descrizione.getText().toString()+"",
-                        0.0,
-                        0.0,
-                        "27/11/22",
-                        " "
-
-                );
+                s= new Segnalazione(auth.getCurrentUser().getEmail(),"titolo","ritrovamento",r.nextInt()+"",descrizione.getText().toString()+"",0.0,0.0,"27/11/22"," ");
                 db.collection("segnalazioni").document(s.getIdSegnalazione()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
