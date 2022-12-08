@@ -90,6 +90,7 @@ public class adoptions_fragment extends Fragment {
     private int tipoannunci=2;
     private View barrachilometri;
     private ArrayList <Adozione> adozione= new ArrayList<>();
+    private ArrayList<Animale> filteredlist =null;
 
 
     @Override
@@ -462,7 +463,7 @@ public class adoptions_fragment extends Fragment {
     }
     public void filter(String text) {
         // creating a new array list to filter our data.
-        ArrayList<Animale> filteredlist = new ArrayList<Animale>();
+        filteredlist = new ArrayList<Animale>();
 
         // running a for loop to compare elements.
         for (Animale item : mDataset) {
@@ -547,7 +548,14 @@ public class adoptions_fragment extends Fragment {
                     int poszione_adozione = 0; //la poszione dell'adozione non è uguale a quella dell'animale perche l'adapter è dell'animale
 
 
-                    Animale animale = mDataset.get(position);
+                    Animale animale;
+                    if(filteredlist==null) {
+                        //Ottengo l'oggetto dalla lista in posizione "position"
+                        animale = mDataset.get(position);
+                    }else{
+                        Log.e("filteredlist", filteredlist+"");
+                        animale = filteredlist.get(position);}
+
 
 
                     for(int a=0; a< adozione.size(); a++)

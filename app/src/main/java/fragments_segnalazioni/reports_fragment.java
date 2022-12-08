@@ -42,7 +42,7 @@ public class reports_fragment extends Fragment {
 
     private String id;
     private SeekBar seekBarReport;
-
+    private ArrayList<Segnalazione> filteredlist =null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,8 +93,14 @@ public class reports_fragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
+                        Segnalazione s;
+                        if(filteredlist==null) {
+                            //Ottengo l'oggetto dalla lista in posizione "position"
+                            s= mDataset.get(position);
+                        }else{
+                            Log.e("filteredlist", filteredlist+"");
+                            s = filteredlist.get(position);}
 
-                        Segnalazione s = mDataset.get(position);
 
                         switch (s.getTipo()) {
                             case "smarrimento":
@@ -177,7 +183,7 @@ public class reports_fragment extends Fragment {
     }
     public void filter(String text) {
         // creating a new array list to filter our data.
-        ArrayList<Segnalazione> filteredlist = new ArrayList<Segnalazione>();
+        filteredlist = new ArrayList<>();
 
         // running a for loop to compare elements.
         for (Segnalazione item : mDataset) {

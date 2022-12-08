@@ -48,7 +48,7 @@ public class myanimals_fragment extends Fragment {
     }
 
     protected ArrayList<Animale> mDataset= new ArrayList<>();
-
+    private ArrayList<Animale> filteredlist =null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,9 +109,14 @@ public class myanimals_fragment extends Fragment {
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
+                        Animale a;
                         Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
-                        //Ottengo l'oggetto dalla lista in posizione "position"
-                        Animale a = mDataset.get(position);
+                        if(filteredlist==null) {
+                            //Ottengo l'oggetto dalla lista in posizione "position"
+                            a = mDataset.get(position);
+                        }else{
+                            Log.e("filteredlist", filteredlist+"");
+                            a = filteredlist.get(position);}
                         //Inserisco l'oggetto nel bundle
                         i.putExtra("animale", a);
                         startActivity(i);
@@ -134,8 +139,7 @@ public class myanimals_fragment extends Fragment {
 
 
     public void filter(String text) {
-        // creating a new array list to filter our data.
-        ArrayList<Animale> filteredlist = new ArrayList<Animale>();
+        filteredlist=new ArrayList<>();
 
         // running a for loop to compare elements.
         for (Animale item : mDataset) {
