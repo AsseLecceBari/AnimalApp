@@ -1,0 +1,134 @@
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
+
+
+        <LinearLayout
+            android:id="@+id/modificaSegnalazioneSanitariaLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="24dp"
+            tools:context="fragments.modificaSegnalazioneSanitaria"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/fattaDaS"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Segnalazione fatta da"
+                android:textColor="@color/design_default_color_primary_dark">
+            </com.google.android.material.textview.MaterialTextView>
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:id="@+id/dataS"
+                android:layout_marginTop="12dp"
+                android:textSize="28dp">
+            </com.google.android.material.textview.MaterialTextView>
+
+            <com.google.android.material.divider.MaterialDivider
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:id="@+id/sintomiS"
+                android:layout_marginTop="12dp"
+                android:textSize="28dp">
+            </com.google.android.material.textview.MaterialTextView>
+
+            <com.google.android.material.divider.MaterialDivider
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:id="@+id/diagnosiS"
+                android:layout_marginTop="12dp"
+                android:textSize="28dp">
+            </com.google.android.material.textview.MaterialTextView>
+
+            <com.google.android.material.divider.MaterialDivider
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:id="@+id/farmaciS"
+                android:layout_marginTop="12dp"
+                android:textSize="28dp">
+            </com.google.android.material.textview.MaterialTextView>
+
+            <com.google.android.material.divider.MaterialDivider
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:id="@+id/trattamentoS"
+                android:layout_marginTop="12dp"
+                android:textSize="28dp">
+            </com.google.android.material.textview.MaterialTextView>
+
+            <com.google.android.material.divider.MaterialDivider
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                />
+        </LinearLayout>
+
+
+    </ScrollView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/modifica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:src="@android:drawable/btn_dialog"/>
+
+</FrameLayout>

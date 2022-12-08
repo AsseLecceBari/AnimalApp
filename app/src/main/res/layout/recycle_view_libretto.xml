@@ -26,7 +26,10 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:background="@drawable/background_main">
+            android:background="?attr/colorOnPrimaryContainer"
+            android:clickable="true"
+
+            android:foreground="?android:attr/selectableItemBackground">
 
             <TextView
                 android:id="@+id/dataView"
@@ -36,6 +39,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:text="TextView"
+                android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,6 +51,8 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="32dp"
                 android:text="TextView"
+
+                android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/dataView"
@@ -59,6 +65,7 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Data"
+                android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintEnd_toStartOf="@+id/dataView"
                 app:layout_constraintHorizontal_bias="0.141"
                 app:layout_constraintStart_toStartOf="parent"
@@ -71,6 +78,7 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Sintomi"
+                android:textColor="?attr/colorOnPrimary"
                 app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
                 app:layout_constraintHorizontal_bias="0.372"
                 app:layout_constraintStart_toStartOf="parent"

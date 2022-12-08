@@ -30,6 +30,7 @@ import java.util.Random;
 
 import adapter.SegnalazioneSanitariaAdapter;
 import adapter.SpeseAdapter;
+import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.SegnalazioneSanitaria;
@@ -63,7 +64,9 @@ public class librettoSanitario extends Fragment {
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         SegnalazioneSanitaria s = mDataset.get(position);
-                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new segnalazioneSanitariaFragment(s)).commit();
+                        ProfiloAnimale p = (ProfiloAnimale) getActivity();
+                        p.setS(s);
+                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new visualizzaSegnalazioneSanitaria()).commit();
                     }
 
                     @Override public void onLongItemClick(View view, int position) {

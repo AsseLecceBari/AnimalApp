@@ -26,7 +26,9 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="202dp"
-            android:background="@drawable/background_main">
+
+            android:background="?attr/colorOnPrimaryContainer"
+            android:clickable="true">
 
             <TextView
                 android:id="@+id/dataView"
@@ -37,7 +39,8 @@
                 android:layout_marginEnd="52dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <TextView
                 android:id="@+id/motivoConsultazioneView"
@@ -48,7 +51,8 @@
                 android:layout_marginEnd="52dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dataView" />
+                app:layout_constraintTop_toBottomOf="@+id/dataView"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <TextView
                 android:id="@+id/data"
@@ -60,7 +64,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/dataView"
                 app:layout_constraintHorizontal_bias="0.258"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <TextView
                 android:id="@+id/motivoConsultazione"
@@ -72,7 +77,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
                 app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/data" />
+                app:layout_constraintTop_toBottomOf="@+id/data"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <TextView
                 android:id="@+id/spesaTotaleView"
@@ -85,7 +91,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoriaView"
-                app:layout_constraintVertical_bias="0.045" />
+                app:layout_constraintVertical_bias="0.045"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <TextView
                 android:id="@+id/categoriaView"
@@ -96,7 +103,8 @@
                 android:layout_marginEnd="52dp"
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazioneView" />
+                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazioneView"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <TextView
                 android:id="@+id/spesaTotale"
@@ -109,7 +117,8 @@
                 app:layout_constraintHorizontal_bias="0.571"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoria"
-                app:layout_constraintVertical_bias="0.491" />
+                app:layout_constraintVertical_bias="0.491"
+                android:textColor="?attr/colorOnPrimary"/>
 
             <TextView
                 android:id="@+id/categoria"
@@ -121,7 +130,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/categoriaView"
                 app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazione" />
+                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazione"
+                android:textColor="?attr/colorOnPrimary"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

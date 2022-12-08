@@ -24,14 +24,6 @@ xmlns:tools="http://schemas.android.com/tools">
     tools:context="fragments.segnalazioneSanitariaFragment"
     >
 
-    <TextView
-        android:id="@+id/fattaDa"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Segnalazione fatta da"
-        android:textColor="@color/design_default_color_primary_dark">
-    </TextView>
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/dataLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -123,16 +115,6 @@ xmlns:tools="http://schemas.android.com/tools">
 
 
 </ScrollView>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/modifica"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:clickable="true"
-        android:src="@android:drawable/btn_dialog"
-        android:backgroundTint="@color/quantum_googblue"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/conferma"
@@ -143,7 +125,6 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_marginBottom="15dp"
         android:clickable="true"
         android:src="@android:drawable/btn_dialog"
-        android:visibility="gone"
         android:backgroundTint="@color/quantum_googgreen"/>
 
 </FrameLayout>

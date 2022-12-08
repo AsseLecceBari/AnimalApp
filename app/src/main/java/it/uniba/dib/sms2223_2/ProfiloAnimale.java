@@ -18,9 +18,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import adapter.VPAdapterAnimale;
 import fragments.anagrafica;
 import model.Animale;
+import model.SegnalazioneSanitaria;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class ProfiloAnimale extends AppCompatActivity {
+    private SegnalazioneSanitaria s;
     private Animale animale;
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
@@ -98,5 +100,13 @@ public class ProfiloAnimale extends AppCompatActivity {
     public void modificaAnimale(View view) {
         Toast.makeText(this, "qui si apre il fragment modificare", Toast.LENGTH_SHORT).show();
         // Apertura del fragment per modificare l'animale
+    }
+
+    public SegnalazioneSanitaria getS() {
+        return s;
+    }
+
+    public void setS(SegnalazioneSanitaria s) {
+        this.s = s;
     }
 }
