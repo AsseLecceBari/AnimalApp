@@ -31,7 +31,12 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.internal.MaterialCheckable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -46,6 +51,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import adapter.AdozioniAdapter;
+import class_general.OnSwipeListener;
 import class_general.RecyclerItemClickListener;
 import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
@@ -79,6 +85,7 @@ public class adoptions_fragment extends Fragment {
     private View bottonechiudifiltri;
     private View eliminaAnnuncio;
     private View layoutPreferiti;
+    private View listaAnimali;
     private TextView numeroAnnPreferiti;
     private int tipoannunci=2;
     private View barrachilometri;
@@ -92,16 +99,22 @@ public class adoptions_fragment extends Fragment {
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onResume() {
         super.onResume();
         filtri();
+        listnerPreferiti();
+
+        mRecyclerView.setOnTouchListener(new OnSwipeListener(getContext()) {
 
 
+            public void onSwipeBottom() {
+                mDataset.clear();
+            initDataAnnunci(tipoannunci);
+            }
 
-
-        //numeroAnnPreferiti.setText(preferenze.getAdozioni().size());
-
+        });
 
 
 
@@ -115,12 +128,6 @@ public class adoptions_fragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new aggiungi_adozione_fragment()).addToBackStack(null).commit();
             }
         });
-
-
-
-
-
-
 
     }
 
@@ -154,6 +161,7 @@ public class adoptions_fragment extends Fragment {
         layoutopenfiltri = rootView.findViewById(R.id.layoutaprifiltri);
         btnopenFiltri = rootView.findViewById(R.id.btnaprifiltri);
         bottonechiudifiltri = rootView.findViewById(R.id.chiudifiltri);
+        listaAnimali= rootView.findViewById(R.id.listaAnimali);
 
 
         barrachilometri=rootView.findViewById(R.id.barrachilometri);
@@ -614,7 +622,43 @@ public class adoptions_fragment extends Fragment {
 
     }
 
+public void listnerPreferiti()
+{
+    auth= FirebaseAuth.getInstance();
+    final Query docRef = db.collection("preferenze").whereEqualTo("emailUtente", auth.getCurrentUser().getEmail());
+    docRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        @Override
+        public void onEvent(@Nullable QuerySnapshot snapshot,
+                            @Nullable FirebaseFirestoreException e) {
+            if (e != null) {
+                Log.d("ciao12","ciaot");
 
+                return;
+            }
+
+            assert snapshot != null;
+            for (DocumentChange dc : snapshot.getDocumentChanges()) {
+
+
+                switch (dc.getType()) {
+                    case ADDED:
+
+                        break;
+                    case MODIFIED:
+                        initDataPreferiti();
+                        break;
+                    case REMOVED:
+
+                        break;
+                }
+            }
+
+        }
+
+
+
+    });
+}
 
 
 
