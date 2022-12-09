@@ -94,14 +94,17 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         storage= FirebaseStorage.getInstance();
         storageRef=storage.getReference();
 
-        storageRef.child(localDataSet.get(position).getUrlFoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(holder.itemView.getContext())
-                        .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(holder.imageReport);
-            }
-        });
+        if(localDataSet.get(position).getUrlFoto() != null){
+            storageRef.child(localDataSet.get(position).getUrlFoto()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(holder.itemView.getContext())
+                            .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(holder.imageReport);
+                }
+            });
+        }
+
     }
 
     @Override

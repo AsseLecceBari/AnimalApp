@@ -34,7 +34,7 @@ import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
 public class choiceAnimals_fragment extends Fragment {
-
+    private int flag = 0;
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -50,6 +50,10 @@ public class choiceAnimals_fragment extends Fragment {
         // Required empty public constructor
     }
 
+    public choiceAnimals_fragment(int a) {
+        // Required empty public constructor
+        flag = 1;
+    }
 
 
     @Override
@@ -84,10 +88,13 @@ public class choiceAnimals_fragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
 
                         a = mDataset.get(position);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new smarrimento_fragments().newInstance(a)).addToBackStack(null).commit();
-
-
-
+                        if(flag == 0){
+                            // smarrimento
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new smarrimento_fragments().newInstance(a)).addToBackStack(null).commit();
+                        }else{
+                            // raccolta fondi
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungiRaccoltaFondi(a)).addToBackStack(null).commit();
+                        }
                     }
 
                     @Override public void onLongItemClick(View view, int position) {

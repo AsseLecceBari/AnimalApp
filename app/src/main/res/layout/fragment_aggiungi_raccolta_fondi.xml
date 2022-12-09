@@ -1,0 +1,84 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="fragments_segnalazioni.aggiungiRaccoltaFondi">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+
+        android:id="@+id/raccoltaFondiLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="24dp"
+        tools:context="fragments_segnalazioni.animale_in_pericolo_fragments">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgAnimale"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            tools:src="@tools:sample/avatars"
+
+            />
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/titolo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Titolo" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etDescrizione"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Descrizione" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etLink"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Link" />
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
+</ScrollView>
+<com.google.android.material.floatingactionbutton.FloatingActionButton
+    android:id="@+id/conferma"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:src="@android:drawable/checkbox_on_background"
+    android:layout_gravity="bottom|end"
+    android:layout_marginBottom="16dp"
+    android:layout_marginEnd="16dp" />
+</FrameLayout>

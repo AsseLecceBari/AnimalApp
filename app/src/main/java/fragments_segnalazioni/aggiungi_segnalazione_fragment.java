@@ -107,7 +107,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         raccoltaFondi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new choiceAnimals_fragment(1)).addToBackStack(null).commit();
                 }
         });
 
