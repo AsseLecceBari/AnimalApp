@@ -31,7 +31,7 @@ import model.Segnalazione;
 
 public class fragment_vista_zonaPericolosa extends Fragment implements OnMapReadyCallback {
     private TextView descrizioneZonaPericolosa;
-    private TextView tipoReportZonaPericolosa;
+    private TextView titoloReportZonaPericolosa;
     private ImageView immagineZonaPericolosa;
     private TextView dataZonaPericolosa;
 
@@ -92,12 +92,12 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         mapViewZonaPericolosa.onCreate(mapViewBundle);
         mapViewZonaPericolosa.getMapAsync(this);//imposta un oggeto di callback che verrà attivato quando l'istanza di google map è pronta per essere utilizzata
         descrizioneZonaPericolosa=rootView.findViewById(R.id.descrizioneZonaPericolosa);
-        tipoReportZonaPericolosa=rootView.findViewById(R.id.tipoReportZonaPericolosa);
+        titoloReportZonaPericolosa=rootView.findViewById(R.id.titoloReportZonaPericolosa);
         descrizioneZonaPericolosa.setText(s.getDescrizione());
-        tipoReportZonaPericolosa.setText(s.getTipo());
+        titoloReportZonaPericolosa.setText(s.getTitolo());
 
         dataZonaPericolosa=rootView.findViewById(R.id.dataZonaPericolosa);
-        dataZonaPericolosa.setText(s.getData());
+        dataZonaPericolosa.setText("pubblicata il:"+s.getData());
 
         immagineZonaPericolosa=rootView.findViewById(R.id.immagineZonaPericolosa);
 
@@ -191,6 +191,7 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         mUiSettings.setMapToolbarEnabled(true);
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
+        googleMap.setPadding(0,0,0,150);
     }
     @Override
     public void onDestroyView() {

@@ -45,7 +45,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     protected ReportAdapter mAdapter;
     protected ArrayList<Segnalazione> mDataset = new ArrayList<>();
     private TextView descrizioneReport;
-    private TextView tipoReport;
+    private TextView titoloReport;
     private ImageView immagineSegnalazione;
     private TextView dataVistaReport;
 
@@ -103,12 +103,12 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         mapView.onCreate(mapViewBundle);
         mapView.getMapAsync(this);//imposta un oggeto di callback che verrà attivato quando l'istanza di google map è pronta per essere utilizzata
         descrizioneReport=rootView.findViewById(R.id.DescrizioneVistaReport);
-        tipoReport=rootView.findViewById(R.id.TipoReportVista);
+        titoloReport=rootView.findViewById(R.id.titoloReportVista);
         descrizioneReport.setText(s.getDescrizione());
-        tipoReport.setText(s.getTipo());
+        titoloReport.setText(s.getTitolo());
 
         dataVistaReport=rootView.findViewById(R.id.dataVistaReport);
-        dataVistaReport.setText(s.getData());
+        dataVistaReport.setText("pubblicata il:"+s.getData());
 
         immagineSegnalazione=rootView.findViewById(R.id.ImmagineReport);
 
@@ -199,6 +199,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         mUiSettings.setMapToolbarEnabled(true);
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
+        googleMap.setPadding(0,0,0,150);
     }
     @Override
     public void onDestroyView() {

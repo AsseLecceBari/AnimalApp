@@ -68,6 +68,7 @@ public class fragment_zona_pericolosa extends Fragment {
     ImageView imgZonaPericolosa;
     Button scattaFotoZona;
     TextInputEditText descrzioneZonaPericolosa;
+    TextInputEditText titoloZonaPericolosa;
     FloatingActionButton confermaZonaPericolosa;
 
     private FirebaseFirestore db;
@@ -180,7 +181,7 @@ public class fragment_zona_pericolosa extends Fragment {
         imgZonaPericolosa=rootView.findViewById(R.id.imgZonaPericolosa);
         scattaFotoZona=rootView.findViewById(R.id.scattaFotoZona);
         descrzioneZonaPericolosa=rootView.findViewById(R.id.descrzioneZonaPericolosa);
-
+        titoloZonaPericolosa=rootView.findViewById(R.id.titoloZonaPericolosa);
         confermaZonaPericolosa=rootView.findViewById((R.id.confermaZonaPericolosa));
 
 
@@ -243,7 +244,7 @@ public class fragment_zona_pericolosa extends Fragment {
 
                 Random rand=new Random();
                 String descrizione=descrzioneZonaPericolosa.getText().toString();
-
+                String titolo=titoloZonaPericolosa.getText().toString();
                 String idSegnalazione=rand.nextInt()+"";
 
                 SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy");
@@ -259,7 +260,7 @@ public class fragment_zona_pericolosa extends Fragment {
                 lat=geocoder.getLat();
                 lng=geocoder.getLng();
 
-                s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
+                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

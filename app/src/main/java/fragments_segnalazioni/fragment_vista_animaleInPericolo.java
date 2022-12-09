@@ -32,7 +32,7 @@ import model.Segnalazione;
 
 public class fragment_vista_animaleInPericolo extends Fragment implements OnMapReadyCallback {
     private TextView descrizioneAnimaleInPericolo;
-    private TextView tipoReportAnimaleInPericolo;
+    private TextView titoloReportAnimaleInPericolo;
     private ImageView immagineAnimaleInPericolo;
     private TextView dataAnimaleInPericolo;
 
@@ -93,12 +93,12 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         mapViewAnimaleInPericolo.onCreate(mapViewBundle);
         mapViewAnimaleInPericolo.getMapAsync(this);//imposta un oggeto di callback che verrà attivato quando l'istanza di google map è pronta per essere utilizzata
         descrizioneAnimaleInPericolo=rootView.findViewById(R.id.DescrizioneAnimaleInPericolo);
-        tipoReportAnimaleInPericolo=rootView.findViewById(R.id.TipoReportAnimaleInPericolo);
+        titoloReportAnimaleInPericolo=rootView.findViewById(R.id.titoloReportAnimaleInPericolo);
         descrizioneAnimaleInPericolo.setText(s.getDescrizione());
-        tipoReportAnimaleInPericolo.setText(s.getTipo());
+        titoloReportAnimaleInPericolo.setText(s.getTitolo());
 
         dataAnimaleInPericolo=rootView.findViewById(R.id.dataAnimaleInPericolo);
-        dataAnimaleInPericolo.setText(s.getData());
+        dataAnimaleInPericolo.setText("pubblicata il:"+s.getData());
 
         immagineAnimaleInPericolo=rootView.findViewById(R.id.ImmagineAnimaleInPericolo);
 
@@ -194,6 +194,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         mUiSettings.setMapToolbarEnabled(true);
         mUiSettings.setZoomControlsEnabled(true);
         mUiSettings.setCompassEnabled(true);
+        googleMap.setPadding(0,0,0,150);
     }
     @Override
     public void onDestroyView() {

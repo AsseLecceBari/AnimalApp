@@ -75,6 +75,7 @@ public class animale_in_pericolo_fragments extends Fragment {
     Button scattaFotoButton;
     TextInputEditText etDescrizioneAnimaleFerito;
     FloatingActionButton confermaAnimaleFerito;
+    TextInputEditText titoloAnimaleInPericolo;
 
     private FirebaseFirestore db;
 
@@ -182,7 +183,7 @@ public class animale_in_pericolo_fragments extends Fragment {
         imgAnimaleInPericolo=rootView.findViewById(R.id.imgAnimaleInPericolo);
         scattaFotoButton=rootView.findViewById(R.id.scattaFotoButton);
         etDescrizioneAnimaleFerito=rootView.findViewById(R.id.etDescrizioneAnimaleFerito);
-
+        titoloAnimaleInPericolo=rootView.findViewById(R.id.titoloAnimaleInPericolo);
         confermaAnimaleFerito=rootView.findViewById((R.id.confermaAnimaleFerito));
 
 
@@ -246,7 +247,7 @@ public class animale_in_pericolo_fragments extends Fragment {
 
                 Random rand=new Random();
                 String descrizione=etDescrizioneAnimaleFerito.getText().toString();
-
+                String titolo=titoloAnimaleInPericolo.getText().toString();
                 String idSegnalazione=rand.nextInt()+"";
 
                 SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy");
@@ -262,7 +263,7 @@ public class animale_in_pericolo_fragments extends Fragment {
                 lat=geocoder.getLat();
                 lng=geocoder.getLng();
 
-                s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
+                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

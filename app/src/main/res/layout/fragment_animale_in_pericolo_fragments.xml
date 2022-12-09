@@ -4,7 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <LinearLayout
 
@@ -39,24 +41,44 @@
             android:layout_marginTop="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/titoloAnimaleInPericolo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Titolo" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:endIconMode="clear_text"
+            android:layout_marginTop="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etDescrizioneAnimaleFerito"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
         <fragment
             android:id="@+id/autoCompleteFragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
             />
-
+        </androidx.cardview.widget.CardView>
 
 
 
     </LinearLayout>
 
+    </ScrollView>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/confermaAnimaleFerito"
         android:layout_width="wrap_content"

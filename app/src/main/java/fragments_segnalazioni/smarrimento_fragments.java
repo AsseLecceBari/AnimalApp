@@ -105,7 +105,7 @@ public class smarrimento_fragments extends Fragment {
     CircleImageView imgAnimaleSmarrito;
     TextView nomeAnimaleSmarrito,genereAnimaleSmarrito,specieANimaleSmarrito,nascitaAnimaleSmarrito;
     TextInputLayout descrizioneTextLayout,indirizzoTextLayout;
-    TextInputEditText descrizioneEditText,indirizzoEditText;
+    TextInputEditText descrizioneEditText,indirizzoEditText,titoloSmarrimento;
     FloatingActionButton confermaSmarrimento;
     private FirebaseFirestore db;
 
@@ -181,7 +181,7 @@ public class smarrimento_fragments extends Fragment {
       genereAnimaleSmarrito=rootView.findViewById(R.id.genereAnimaleSmarrito);
       specieANimaleSmarrito=rootView.findViewById(R.id.specieANimaleSmarrito);
       nascitaAnimaleSmarrito=rootView.findViewById(R.id.nascitaAnimaleSmarrito);
-
+      titoloSmarrimento=rootView.findViewById(R.id.titoloSmarrimento);
       descrizioneTextLayout=rootView.findViewById(R.id.descrizioneTextLayout);
 
       descrizioneEditText=rootView.findViewById(R.id.descrizioneEditText);
@@ -263,7 +263,7 @@ public class smarrimento_fragments extends Fragment {
 
                      Random idSegnalazione = new Random();
                      String descrizione=descrizioneEditText.getText().toString();
-                    // String coordinateGps=indirizzoEditText.getText().toString();
+                    String titolo=titoloSmarrimento.getText().toString();
 
                      //da prendere la foto
                      String data;
@@ -278,7 +278,7 @@ public class smarrimento_fragments extends Fragment {
                      lng=geocoder.getLng();
 
                     Log.e("email",auth.getCurrentUser().getEmail());
-                     Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),tipo,a.getIdAnimale(),idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
+                     Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,a.getIdAnimale(),idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
                     db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
