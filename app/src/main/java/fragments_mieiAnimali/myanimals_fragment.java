@@ -15,9 +15,12 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -31,6 +34,10 @@ import fragments.nonSeiRegistrato_fragment;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
+import model.Associazione;
+import model.Ente;
+import model.Persona;
+import model.Veterinario;
 
 public class myanimals_fragment extends Fragment {
 
@@ -38,6 +45,7 @@ public class myanimals_fragment extends Fragment {
     private FirebaseFirestore db;
     FloatingActionButton addAnimale;
     private Animale a;
+    private MaterialCheckBox mostraSoloIncarico;
 
     protected RecyclerView mRecyclerView;
     protected static AnimalAdapter mAdapter;
@@ -65,6 +73,30 @@ public class myanimals_fragment extends Fragment {
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         animaleDAO= new AnimaleDB();
+
+        // controlli per la checkbox in carico
+        CollectionReference reference=db.collection("utenti");
+        if(auth.getCurrentUser()!=null) {
+            Query query = reference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            if(document.get("ruolo").toString().equals("proprietario")){
+                                // Nascondo la checkbox che mi mostra gli in carico
+                                mostraSoloIncarico.setVisibility(View.GONE);
+                                break;
+                            }else{
+                                //Todo: init dataset alternatvo ---------------------------------------------------
+                            }
+                        }
+                    }
+
+                }
+            });
+        }
+
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         if(auth.getCurrentUser()!=null) {
             animaleDAO.getMieiAnimali(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -88,12 +120,14 @@ public class myanimals_fragment extends Fragment {
         }
 
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
+        mostraSoloIncarico = rootView.findViewById(R.id.mostraInCarico);
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
         //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
         auth=FirebaseAuth.getInstance();
+
         if(auth.getCurrentUser()==null){
               getChildFragmentManager().beginTransaction().replace(R.id.myAnimalsFragment, new nonSeiRegistrato_fragment()).commit();
         }
@@ -131,6 +165,7 @@ public class myanimals_fragment extends Fragment {
                     }
                 })
         );
+
         return rootView;
     }
 

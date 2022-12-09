@@ -6,11 +6,37 @@
     android:layout_height="match_parent"
     tools:context="fragments_mieiAnimali.myanimals_fragment">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleMyAnimals"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/recycle_view_animals"/>
+        android:layout_height="match_parent">
+
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/mostraInCarico"
+            android:layout_width="384dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:text="Solo animali in carico"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.481"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </com.google.android.material.checkbox.MaterialCheckBox>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleMyAnimals"
+            android:layout_width="409dp"
+            android:layout_height="715dp"
+            android:layout_marginTop="7dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mostraInCarico"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/recycle_view_animals" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/aggiungiAnimaliBtn"
