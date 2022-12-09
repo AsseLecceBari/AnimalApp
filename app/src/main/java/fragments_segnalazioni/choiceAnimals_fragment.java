@@ -51,7 +51,6 @@ public class choiceAnimals_fragment extends Fragment {
     }
 
     public choiceAnimals_fragment(int a) {
-        // Required empty public constructor
         flag = 1;
     }
 
@@ -103,19 +102,8 @@ public class choiceAnimals_fragment extends Fragment {
                 })
         );
 
-
-
-
-
         return rootView;
     }
-
-
-
-
-
-
-
 
 
     private void initDataset() {

@@ -67,14 +67,19 @@ public class aggiungiRaccoltaFondi extends Fragment {
         storage= FirebaseStorage.getInstance();
         storageRef=storage.getReference();
 
-        storageRef.child(animale.getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(imgAnimale.getContext())
-                        .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(imgAnimale);
-            }
-        });
+        if (animale.getFotoProfilo() != null) {
+            storageRef.child(animale.getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(imgAnimale.getContext())
+                            .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imgAnimale);
+                }
+            });
+        }else{
+            imgAnimale.setVisibility(View.GONE);
+        }
+
 
         return rootView;
     }

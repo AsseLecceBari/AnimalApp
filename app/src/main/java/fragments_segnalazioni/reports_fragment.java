@@ -117,6 +117,9 @@ public class reports_fragment extends Fragment {
                                 //da cambiare con vistaRitrovamento
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s)).addToBackStack(null).commit();
                                 break;
+                            case "raccoltaFondi":
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
+                                break;
 
 
                             default:
