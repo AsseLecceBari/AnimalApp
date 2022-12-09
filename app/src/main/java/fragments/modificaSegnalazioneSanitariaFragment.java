@@ -113,7 +113,9 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
                 });
                 Toast.makeText(getContext(), "Modificato!", Toast.LENGTH_SHORT).show();
                 ProfiloAnimale p = (ProfiloAnimale) getActivity();
-                p.setS(segn);
+                if (p != null) {
+                    p.setS(segn);
+                }
                 getActivity().getSupportFragmentManager().popBackStack();
                 //getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new visualizzaSegnalazioneSanitaria(segn)).commit();
             }

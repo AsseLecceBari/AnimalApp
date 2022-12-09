@@ -51,7 +51,9 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_visualizza_segnalazione_sanitaria, container, false);
 
         ProfiloAnimale profilo = (ProfiloAnimale) getActivity();
-        s = profilo.getS();
+        if (profilo != null) {
+            s = profilo.getS();
+        }
 
         modifica = rootView.findViewById(R.id.modifica);
         data = rootView.findViewById(R.id.dataS);
@@ -82,7 +84,16 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
         modifica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaSegnalazioneSanitariaFragment(s)).commit();
+                // Se la segnalazione è del veterinario è modificiacabile solo da quello specifico veterinario
+                if(s.getEmailVet() != "proprietario"){
+                    FirebaseAuth auth = FirebaseAuth.getInstance();
+                    if(s.getEmailVet().equals(auth.getCurrentUser())){
+                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaSegnalazioneSanitariaFragment(s)).commit();
+                    }else{
+                        Toast.makeText(getContext(), "Questa segnalazione è modificabile solo dal veterinario che l'ha fatta!", Toast.LENGTH_SHORT).show();
+                    }
+                }else
+                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaSegnalazioneSanitariaFragment(s)).commit();
             }
         });
         return rootView;
