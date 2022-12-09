@@ -36,12 +36,12 @@ public class reports_fragment extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
-    protected ReportAdapter mAdapter;
-    protected ArrayList<Segnalazione> mDataset= new ArrayList<>();
+    protected static ReportAdapter mAdapter;
+    protected static ArrayList<Segnalazione> mDataset= new ArrayList<>();
 
     private String id;
     private SeekBar seekBarReport;
-    private ArrayList<Segnalazione> filteredlist =null;
+    private ArrayList<Segnalazione> filteredlist =new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class reports_fragment extends Fragment {
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         Segnalazione s;
-                        if(filteredlist==null) {
+                        if(filteredlist.size()==0) {
                             //Ottengo l'oggetto dalla lista in posizione "position"
                             s= mDataset.get(position);
                         }else{

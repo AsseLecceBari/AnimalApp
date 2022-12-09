@@ -287,13 +287,10 @@ public class smarrimento_fragments extends Fragment {
                             getActivity().getSupportFragmentManager().popBackStack();
                             getActivity().getSupportFragmentManager().popBackStack();
                             getActivity().getSupportFragmentManager().popBackStack();
-
                         }
                     });
-
                 }
             });
-
         }
 
 

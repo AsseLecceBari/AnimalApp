@@ -70,8 +70,8 @@ public class adoptions_fragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
 
-    protected AdozioniAdapter mAdapter;
-    protected ArrayList<Animale> mDataset = new ArrayList<>();
+    protected static AdozioniAdapter mAdapter;
+    protected static ArrayList<Animale> mDataset = new ArrayList<>();
 
 
     private LinearLayout paginalogin;
@@ -90,7 +90,7 @@ public class adoptions_fragment extends Fragment {
     private int tipoannunci=2;
     private View barrachilometri;
     private ArrayList <Adozione> adozione= new ArrayList<>();
-    private ArrayList<Animale> filteredlist =null;
+    private ArrayList<Animale> filteredlist =new ArrayList<>();
 
 
     @Override
@@ -549,7 +549,7 @@ public class adoptions_fragment extends Fragment {
 
 
                     Animale animale;
-                    if(filteredlist==null) {
+                    if(filteredlist.size()==0) {
                         //Ottengo l'oggetto dalla lista in posizione "position"
                         animale = mDataset.get(position);
                     }else{
