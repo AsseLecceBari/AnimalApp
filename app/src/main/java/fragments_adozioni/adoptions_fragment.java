@@ -512,6 +512,7 @@ public class adoptions_fragment extends Fragment {
         auth= FirebaseAuth.getInstance();
 
         CollectionReference preferenzeRef = db.collection("preferenze");
+        CollectionReference adozioniref= db.collection("adozioni");
 
 
 
@@ -529,16 +530,11 @@ public class adoptions_fragment extends Fragment {
                     }
 
 
-                    if ( preferenze!= null && preferenze.getAdozioni().get(0) != null) {
+                    if ( preferenze!= null ) {
+                        checkPreferenze(preferenze);
 
 
 
-
-
-
-                            rdbannuncipreferiti.setEnabled(true);
-                            String s = String.valueOf(preferenze.getAdozioni().size());
-                            numeroAnnPreferiti.setText(s);
                         } else {
                             rdbannuncipreferiti.setEnabled(false);
 
@@ -694,20 +690,8 @@ public void listnerAdozioni()
                                 }
                             }
 
-                        for(int a=0; a<preferenze.getAdozioni().size();a++)
-                        {
-                            if(Objects.equals(preferenze.getAdozioni().get(a), dc.getDocument().getId()))
-                            {
-                               preferenze.getAdozioni().remove(a);
-                                if(preferenze.getAdozioni().size()==0)
-                                {
-                                    preferenze.getAdozioni().add(null);
-                                }
-                                writeDataPreferiti(preferenze);
+                            initDataPreferiti();
 
-                                initDataPreferiti();
-                            }
-                        }
 
 
 
@@ -747,6 +731,46 @@ public void listnerAdozioni()
 
 
 
+    }
+
+    public void checkPreferenze(Preferenze preferenze)
+    {
+
+        for(int a =0; a<preferenze.getAdozioni().size();a++)
+        {
+            int cont=0;
+            for(int b=0; b<adozione.size();b++)
+            {
+                if(Objects.equals(preferenze.getAdozioni().get(a), adozione.get(b).getIdAdozione()))
+                {
+                    cont++;
+                }
+
+
+            }
+            if (cont==0)
+            {
+                preferenze.getAdozioni().remove(a);
+                if(preferenze.getAdozioni().size()==0)
+                {
+                    preferenze.getAdozioni().add(null);
+                }
+                writeDataPreferiti(preferenze);
+
+            }
+        }
+
+
+        if( preferenze.getAdozioni().get(0) != null) {
+            rdbannuncipreferiti.setEnabled(true);
+            String s = String.valueOf(preferenze.getAdozioni().size());
+            numeroAnnPreferiti.setText(s);
+        }
+        else{
+            rdbannuncipreferiti.setEnabled(false);
+
+            numeroAnnPreferiti.setText("0");
+        }
     }
 
 
