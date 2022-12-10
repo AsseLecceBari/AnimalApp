@@ -22,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -46,6 +47,7 @@ import org.checkerframework.common.subtyping.qual.Bottom;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -105,17 +107,21 @@ public class adoptions_fragment extends Fragment {
     public void onResume() {
         super.onResume();
         filtri();
-        listnerPreferiti();
-
-        mRecyclerView.setOnTouchListener(new OnSwipeListener(getContext()) {
+        listnerAdozioni();
 
 
+   /*    mRecyclerView.setOnTouchListener(new OnSwipeListener(getContext()) {
+
+
+            @SuppressLint("ClickableViewAccessibility")
             public void onSwipeBottom() {
                 mDataset.clear();
-            initDataAnnunci(tipoannunci);
+                initDataAnnunci(tipoannunci);
             }
 
-        });
+        });*/
+
+
 
 
 
@@ -262,6 +268,8 @@ public class adoptions_fragment extends Fragment {
                                                                     onItemClick();
                                                                 }
                                                             }
+
+
                                                             return;
                                                         }
                                                     case 3: if(auth.getCurrentUser()!=null) {
@@ -308,7 +316,9 @@ public class adoptions_fragment extends Fragment {
                                                 }
                                             }
 
+
                                         }
+
                                     }
                                 });
                         //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
@@ -500,9 +510,10 @@ public class adoptions_fragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         auth= FirebaseAuth.getInstance();
-        auth = FirebaseAuth.getInstance();
+
         CollectionReference preferenzeRef = db.collection("preferenze");
-        //CollectionReference animali = firebaseStore.collection("animali");
+
+
 
         Query query= preferenzeRef.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail());
 
@@ -513,10 +524,18 @@ public class adoptions_fragment extends Fragment {
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         preferenze = document.toObject(Preferenze.class);
 
+
+
                     }
 
 
-                        if ( preferenze!= null && preferenze.getAdozioni().get(0) != null) {
+                    if ( preferenze!= null && preferenze.getAdozioni().get(0) != null) {
+
+
+
+
+
+
                             rdbannuncipreferiti.setEnabled(true);
                             String s = String.valueOf(preferenze.getAdozioni().size());
                             numeroAnnPreferiti.setText(s);
@@ -630,10 +649,10 @@ public class adoptions_fragment extends Fragment {
 
     }
 
-public void listnerPreferiti()
+public void listnerAdozioni()
 {
     auth= FirebaseAuth.getInstance();
-    final Query docRef = db.collection("preferenze").whereEqualTo("emailUtente", auth.getCurrentUser().getEmail());
+    final Query docRef = db.collection("adozioni");
     docRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
         @Override
         public void onEvent(@Nullable QuerySnapshot snapshot,
@@ -644,8 +663,16 @@ public void listnerPreferiti()
                 return;
             }
 
+
+
             assert snapshot != null;
             for (DocumentChange dc : snapshot.getDocumentChanges()) {
+
+
+
+
+
+
 
 
                 switch (dc.getType()) {
@@ -653,9 +680,38 @@ public void listnerPreferiti()
 
                         break;
                     case MODIFIED:
-                        initDataPreferiti();
+
+                      //  initDataPreferiti();
                         break;
                     case REMOVED:
+
+
+                            for(int a=0; a<adozione.size();a++)
+                            {
+                                if(Objects.equals(adozione.get(a).getIdAdozione(), dc.getDocument().getId()))
+                                {
+                                    adozione.remove(a);
+                                }
+                            }
+
+                        for(int a=0; a<preferenze.getAdozioni().size();a++)
+                        {
+                            if(Objects.equals(preferenze.getAdozioni().get(a), dc.getDocument().getId()))
+                            {
+                               preferenze.getAdozioni().remove(a);
+                                if(preferenze.getAdozioni().size()==0)
+                                {
+                                    preferenze.getAdozioni().add(null);
+                                }
+                                writeDataPreferiti(preferenze);
+
+                                initDataPreferiti();
+                            }
+                        }
+
+
+
+
 
                         break;
                 }
@@ -667,6 +723,34 @@ public void listnerPreferiti()
 
     });
 }
+
+    public void writeDataPreferiti(Preferenze preferenze) {
+
+       db = FirebaseFirestore.getInstance();
+
+        auth = FirebaseAuth.getInstance();
+
+
+
+        db.collection("preferenze").document(auth.getCurrentUser().getEmail()).set(preferenze).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()) {
+
+
+                }
+            }
+        });
+
+
+
+
+
+
+    }
+
+
+
 
 
 
