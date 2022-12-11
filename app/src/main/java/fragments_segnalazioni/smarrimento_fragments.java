@@ -103,7 +103,7 @@ public class smarrimento_fragments extends Fragment {
     private Animale a;
 
     CircleImageView imgAnimaleSmarrito;
-    TextView nomeAnimaleSmarrito,genereAnimaleSmarrito,specieANimaleSmarrito,nascitaAnimaleSmarrito;
+    TextView nomeAnimaleSmarrito,genereAnimaleSmarrito,specieANimaleSmarrito,sessoAnimaleSmarrito,nascitaAnimaleSmarrito;
     TextInputLayout descrizioneTextLayout,indirizzoTextLayout;
     TextInputEditText descrizioneEditText,indirizzoEditText,titoloSmarrimento;
     FloatingActionButton confermaSmarrimento;
@@ -180,6 +180,7 @@ public class smarrimento_fragments extends Fragment {
       nomeAnimaleSmarrito=rootView.findViewById(R.id.nomeAnimaleSmarrito);
       genereAnimaleSmarrito=rootView.findViewById(R.id.genereAnimaleSmarrito);
       specieANimaleSmarrito=rootView.findViewById(R.id.specieANimaleSmarrito);
+      sessoAnimaleSmarrito=rootView.findViewById(R.id.sessoAnimaleSmarrito);
       nascitaAnimaleSmarrito=rootView.findViewById(R.id.nascitaAnimaleSmarrito);
       titoloSmarrimento=rootView.findViewById(R.id.titoloSmarrimento);
       descrizioneTextLayout=rootView.findViewById(R.id.descrizioneTextLayout);
@@ -193,7 +194,9 @@ public class smarrimento_fragments extends Fragment {
             nomeAnimaleSmarrito.setText(a.getNome());
             genereAnimaleSmarrito.setText(a.getGenere());
             specieANimaleSmarrito.setText(a.getSpecie());
+            sessoAnimaleSmarrito.setText(a.getSesso());
             nascitaAnimaleSmarrito.setText(a.getDataDiNascita());
+
 
             //setto immagine
             // setto l'immagine dell'animale

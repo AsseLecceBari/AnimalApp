@@ -66,7 +66,10 @@
     <string name="noneassistito">L\'animale ha una proprietà</string>
     <string name="animaleSpinnerSegnalazione">Animale</string>
 
-
+    <string-array name="Sesso">
+        <item>Maschio</item>
+        <item>Femmina</item>
+    </string-array>
     <string-array name="Ruolo">
         <item>Proprietario / Assistente animale</item>
         <item>Veterinario</item>

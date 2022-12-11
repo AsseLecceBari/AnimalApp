@@ -31,13 +31,17 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         private  TextView nomeAnimale;
         private  TextView genereAnimale;
         private  TextView specieAnimale;
+
+
+
+        private TextView sessoAnimale;
         private  TextView dataNascitaAnimale;
         private  TextView codiceAnimale;
         private ImageView imageAnimal;
 
 
 
-
+        public TextView getSessoAnimale() {return sessoAnimale;}
 
         public TextView getGenereAnimale() {
             return genereAnimale;
@@ -70,6 +74,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
             nomeAnimale = (TextView) view.findViewById(R.id.nomeAnimaleView);
             genereAnimale=(TextView) view.findViewById(R.id.genereAnimaleView);
             specieAnimale= (TextView) view.findViewById(R.id.specieAnimaleView);
+            sessoAnimale=view.findViewById(R.id.sessoAnimaleView);
             dataNascitaAnimale= (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
             codiceAnimale= (TextView) view.findViewById(R.id.codiceAnimaleView);
             imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
@@ -104,6 +109,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         storageRef=storage.getReference();
         holder.getNomeAnimale().setText(localDataSet.get(position).getNome());
         holder.getSpecieAnimale().setText(localDataSet.get(position).getSpecie());
+        holder.getSessoAnimale().setText(localDataSet.get(position).getSesso());
         holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
         holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
         holder.getCodiceAnimale().setText(localDataSet.get(position).getIdAnimale());

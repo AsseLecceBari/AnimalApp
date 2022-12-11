@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -56,6 +57,8 @@ public class aggiungiAnimaleFragment extends Fragment {
     private  TextInputEditText etRegNomeAnimale;
     private  TextInputEditText etRegGenereAnimale;
     private  TextInputEditText etRegSpecieAnimale;
+    private   TextInputLayout iLSessoAnimale;
+    private Spinner etRegSessoAnimale;
     private Button selectImgButton;
     private Button registraAnimaleBtn;
     private ImageView imgAnimaleReg;
@@ -75,6 +78,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                 public void onActivityResult(Uri uri) {
                     file=uri;
                     if(file!=null){
+                        imgAnimaleReg.setVisibility(View.VISIBLE);
                         imgAnimaleReg.setImageURI(file);
 
                     }
@@ -165,6 +169,8 @@ public class aggiungiAnimaleFragment extends Fragment {
         etRegNomeAnimale=rootView.findViewById(R.id.etRegNomeAnimale);
         etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
         etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
+        etRegSessoAnimale=rootView.findViewById(R.id.etRegSessoAnimale);
+        iLSessoAnimale=rootView.findViewById(R.id.inputSessoAnimale);
         registraAnimaleBtn=rootView.findViewById(R.id.registraAnimaleBtn);
         dataLayout = rootView.findViewById(R.id.dataNascitaAnimaleIL);
         data=rootView.findViewById(R.id.dataNascitaAnimaleText);
@@ -199,6 +205,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                 String nome= etRegNomeAnimale.getText().toString();
                 String genere=etRegGenereAnimale.getText().toString();
                 String specie=etRegSpecieAnimale.getText().toString();
+                String sesso= etRegSessoAnimale.getSelectedItem().toString();
                 String emailProprietario=auth.getCurrentUser().getEmail();
                 String dataDiNascita=data.getText().toString();
                 String fotoProfilo=null;
@@ -225,6 +232,10 @@ public class aggiungiAnimaleFragment extends Fragment {
                     etRegSpecieAnimale.setError(getString(R.string.specieRequired));
                     flag = 1;
                 }
+                if(TextUtils.isEmpty(sesso)){
+                    iLSessoAnimale.setError("Sesso obbligatorio");
+                    flag = 1;
+                }
                 if(TextUtils.isEmpty(fotoProfilo)){
                     Toast.makeText(getContext(),"Inserire una immagine del profilo",Toast.LENGTH_LONG).show();
                     flag = 1;
@@ -240,7 +251,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                 }else{
                     registraAnimaleBtn.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();
-                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito);
+                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito,sesso);
                     utils= new Utils();
                     animaleDB.registraAnimale(a,db).addOnCompleteListener(new OnCompleteListener() {
                         @Override

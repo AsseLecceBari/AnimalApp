@@ -66,10 +66,15 @@ public class myanimals_fragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataset.clear();
-
+        View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
+        mostraSoloIncarico = rootView.findViewById(R.id.mostraInCarico);
+        //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
+        //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         animaleDAO= new AnimaleDB();
@@ -83,9 +88,9 @@ public class myanimals_fragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for(QueryDocumentSnapshot document : task.getResult()){
-                            if(document.get("ruolo").toString().equals("proprietario")){
+                            if(!(document.get("ruolo").toString().equals("proprietario"))){
                                 // Nascondo la checkbox che mi mostra gli in carico
-                                mostraSoloIncarico.setVisibility(View.GONE);
+                                mostraSoloIncarico.setVisibility(View.VISIBLE);
                                 break;
                             }else{
                                 //Todo: init dataset alternatvo ---------------------------------------------------
@@ -119,12 +124,8 @@ public class myanimals_fragment extends Fragment {
 
         }
 
-        View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
-        mostraSoloIncarico = rootView.findViewById(R.id.mostraInCarico);
-        //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
-        //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
         addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
         auth=FirebaseAuth.getInstance();
 

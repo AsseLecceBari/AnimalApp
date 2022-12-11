@@ -12,6 +12,13 @@ public class Animale implements Serializable{
     private String idAnimale; //Stesso id del documento
     private Boolean isAssistito;
 
+
+
+    private String sesso;
+    public String getSesso() {
+        return sesso;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -44,7 +51,7 @@ public class Animale implements Serializable{
         return isAssistito;
     }
 
-    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito) {
+    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito,String sesso) {
         this.nome = nome;
         this.genere = genere;
         this.specie = specie;
@@ -53,6 +60,7 @@ public class Animale implements Serializable{
         this.fotoProfilo = fotoProfilo;
         this.idAnimale = idAnimale;
         this.isAssistito = isAssistito;
+        this.sesso=sesso;
     }
 
     public Animale(){}

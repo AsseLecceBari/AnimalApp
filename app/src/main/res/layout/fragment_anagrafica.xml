@@ -85,6 +85,21 @@
             android:layout_marginTop="12dp"
             android:textSize="28dp">
         </com.google.android.material.textview.MaterialTextView>
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            />
+        <com.google.android.material.textview.MaterialTextView
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Sesso"
+            android:id="@+id/sessoAnimale"
+            android:layout_marginTop="12dp"
+            android:textSize="28dp">
+        </com.google.android.material.textview.MaterialTextView>
 
         <com.google.android.material.divider.MaterialDivider
             style="@style/AppTheme"
