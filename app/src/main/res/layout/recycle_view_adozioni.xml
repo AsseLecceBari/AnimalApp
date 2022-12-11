@@ -8,7 +8,7 @@
     android:layout_height="wrap_content">
 
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="189dp"
         android:layout_height="284dp"
 
@@ -48,7 +48,7 @@
         </LinearLayout>
 
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 
 </android.widget.FrameLayout>
