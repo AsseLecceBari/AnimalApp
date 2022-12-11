@@ -1,29 +1,29 @@
 package adapter;
 
-import static androidx.core.content.ContextCompat.startActivity;
-import static java.security.AccessController.getContext;
-
 import android.annotation.SuppressLint;
-import android.content.Intent;
+import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-import class_general.RecyclerItemClickListener;
-import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
+import model.Utente;
 
 public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapter.ViewHolder> {
 
@@ -32,20 +32,23 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet;
     private OnClickListener onClickListener;
+    private ArrayList<Utente> utenteDataset;
+
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nomeAnimale;
-        private TextView genereAnimale;
+        private TextView nomeProprietario;
         private TextView specieAnimale;
         private TextView dataNascitaAnimale;
-        private TextView codiceAnimale;
+        private TextView zona;
+
         private ImageView imageAnimal;
         private View elimina;
         private View viewtot;
 
-        public TextView getGenereAnimale() {
-            return genereAnimale;
+        public TextView getProprietario() {
+            return nomeProprietario;
         }
 
         public TextView getSpecieAnimale() {
@@ -56,9 +59,7 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
             return dataNascitaAnimale;
         }
 
-        public TextView getCodiceAnimale() {
-            return codiceAnimale;
-        }
+        public TextView getZona() {return zona;       }
 
         public ImageView getImageAnimal() {
             return imageAnimal;
@@ -82,10 +83,10 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
             super(view);
             //Prendo i riferimenti al layout di ogni singola riga
             nomeAnimale = (TextView) view.findViewById(R.id.nomeAnimaleView);
-            genereAnimale = (TextView) view.findViewById(R.id.genereAnimaleView);
+            nomeProprietario = (TextView) view.findViewById(R.id.nomeProprietario);
             specieAnimale = (TextView) view.findViewById(R.id.specieAnimaleView);
             dataNascitaAnimale = (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
-            codiceAnimale = (TextView) view.findViewById(R.id.codiceAnimaleView);
+            zona = (TextView) view.findViewById(R.id.zona);
             imageAnimal = (ImageView) view.findViewById(R.id.imageAnimal);
             elimina = view.findViewById(R.id.button2);
             viewtot = view;
@@ -93,9 +94,15 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     }
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
+    public AdozioniAdapter(ArrayList<Animale> dataSet, int vista, ArrayList<Utente> utente) {
+        localDataSet = dataSet;
+        vistamieianimali = vista;
+        utenteDataset= utente;
+    }
     public AdozioniAdapter(ArrayList<Animale> dataSet, int vista) {
         localDataSet = dataSet;
         vistamieianimali = vista;
+
     }
 
     @NonNull
@@ -114,11 +121,27 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     @SuppressLint("RecyclerView")
     public void onBindViewHolder(@NonNull adapter.AdozioniAdapter.ViewHolder holder, int position) {
         //Vengono inseriti i dati degli animali
+        FirebaseStorage storage;
+        StorageReference storageRef;
+        storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
+        if (vistamieianimali == 2) {
+            holder.getZona().setText(setZona(position));
+            holder.getProprietario().setText(setNomeProprietario(position));
+        }
         holder.getNomeAnimale().setText(localDataSet.get(position).getNome());
         //holder.getSpecieAnimale().setText(localDataSet.get(position).getSpecie());
         //  holder.getGenereAnimale().setText(localDataSet.get(position).getGenere());
         // holder.getDataNascitaAnimale().setText(localDataSet.get(position).getDataDiNascita().toString());
-        holder.getCodiceAnimale().setText(localDataSet.get(position).getIdAnimale());
+
+        storageRef.child(localDataSet.get(position).getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(holder.itemView.getContext())
+                        .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.imageAnimal);
+            }
+        });
         if (holder.getButtone() != null) {
             holder.getButtone().setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,12 +150,16 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
                 }
             });
         }
-        holder.getView().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onClickListener.onitemClick(view, position);
-            }
-        });
+        if (holder.getView() != null) {
+            holder.getView().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                        onClickListener.onitemClick(view, position);
+
+                }
+            });
+        }
     }
 
     @Override
@@ -164,6 +191,33 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
 
     public void aggiornadataset(ArrayList<Animale> animali) {
         localDataSet = animali;
+    }
+
+    public String setZona(int position)
+    {
+
+            for(int b=0; b<utenteDataset.size();b++){
+                if(Objects.equals(localDataSet.get(position).getEmailProprietario(), utenteDataset.get(b).getEmail()))
+                {
+                    return utenteDataset.get(b).getIndirizzo().get("citta")+"("+utenteDataset.get(b).getIndirizzo().get("provincia")+")";
+                }
+            }
+
+
+        return null;
+    }
+    public String setNomeProprietario(int position)
+    {
+
+        for(int b=0; b<utenteDataset.size();b++){
+            if(Objects.equals(localDataSet.get(position).getEmailProprietario(), utenteDataset.get(b).getEmail()))
+            {
+             //   return utenteDataset.get(b).getEmail();
+            }
+        }
+
+
+        return null;
     }
 
 

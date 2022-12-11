@@ -20,29 +20,85 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageAnimal"
+                android:layout_width="150dp"
 
 
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <TextView
                 android:id="@+id/nomeAnimaleView"
+                style="@style/TextAppearance.AppCompat.Large"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="15dp"
                 android:text="TextView"
+                android:textSize="20dp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
 
-            <TextView
-                android:id="@+id/codiceAnimaleView"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/posizione_annuncio"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
-                app:layout_constraintStart_toEndOf="@+id/nomeAnimaleView"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
 
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="85dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:foregroundGravity="left"
+                    app:srcCompat="@drawable/baseline_location_pin_black_18" />
+
+
+                <TextView
+                    android:id="@+id/zona"
+                    style="@style/MaterialAlertDialog.Material3"
+                    android:layout_width="160dp"
+
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="3dp"
+
+
+                    app:layout_constraintStart_toEndOf="@+id/nomeAnimaleView"
+
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:id="@+id/imageView9"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_weight="1"
+                    android:foregroundGravity="left"
+                    app:srcCompat="@drawable/outline_person_black_18" />
+
+                <TextView
+                    android:id="@+id/nomeProprietario"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="3dp"
                 />
+            </LinearLayout>
 
 
         </LinearLayout>

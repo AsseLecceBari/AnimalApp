@@ -8,11 +8,13 @@ public class Utente {
     private Map<String,String> indirizzo;
     private String ruolo;
 
+
     public Utente(String email, String telefono, Map<String, String> indirizzo, String ruolo) {
         this.email = email;
         this.telefono = telefono;
         this.indirizzo = indirizzo;
         this.ruolo = ruolo;
+
     }
 
     public Utente() {
@@ -33,5 +35,6 @@ public class Utente {
     public String getRuolo() {
         return ruolo;
     }
+
 
 }

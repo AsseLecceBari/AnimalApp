@@ -61,6 +61,7 @@ import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
 import model.Preferenze;
+import model.Utente;
 
 
 public class adoptions_fragment extends Fragment {
@@ -92,6 +93,7 @@ public class adoptions_fragment extends Fragment {
     private int tipoannunci=2;
     private View barrachilometri;
     private ArrayList <Adozione> adozione= new ArrayList<>();
+    private ArrayList<Utente> utenti = new ArrayList<>();
     private ArrayList<Animale> filteredlist =new ArrayList<>();
 
 
@@ -196,6 +198,7 @@ public class adoptions_fragment extends Fragment {
         CollectionReference adozioniRef = db.collection("adozioni");
         CollectionReference animali = db.collection("animali");
         CollectionReference preferenze = db.collection("preferenze");
+        CollectionReference utenteref= db.collection("utenti");
 
 
         //if(auth.getCurrentUser()!=null) {
@@ -255,18 +258,42 @@ public class adoptions_fragment extends Fragment {
                                                             if (!Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
                                                                 mDataset.add(document.toObject(Animale.class));
 
-                                                                mAdapter = new AdozioniAdapter(mDataset, 2);
+                                                                Log.d("ciao13", String.valueOf(mDataset.get(mDataset.size()-1).getEmailProprietario()));
 
-                                                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                                // recyclemieadozioni.setVisibility(View.GONE);
-                                                                mRecyclerView.setVisibility(View.VISIBLE);
-                                                                mRecyclerView.setAdapter(mAdapter);
+                                                                utenteref.whereEqualTo("email",mDataset.get(mDataset.size()-1).getEmailProprietario()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                                                if (mAdapter != null) {
+                                                                        if(task.isSuccessful())
+                                                                        {
+                                                                            for (QueryDocumentSnapshot document3 : task.getResult()) {
+                                                                                utenti.add(document3.toObject(Utente.class));
+                                                                                Log.d("ciao13", String.valueOf(mDataset.size()));
+                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,utenti);
+                                                                                mRecyclerView.setAdapter(mAdapter);
+                                                                                if (mAdapter != null) {
 
 
-                                                                    onItemClick();
-                                                                }
+                                                                                    onItemClick();
+                                                                                }
+
+
+
+
+                                                                            }
+
+                                                                        }
+
+                                                                    }
+                                                                });
+
+
+
+
+
+
+
+
                                                             }
 
 
@@ -286,8 +313,22 @@ public class adoptions_fragment extends Fragment {
                                                                             if (Objects.equals(ad.getAdozioni().get(a), temporanea.getIdAdozione())) {
                                                                                 Log.d("ciao10", "c");
                                                                                 mDataset.add(document.toObject(Animale.class));
+
+                                                                                utenteref.whereEqualTo("emailUtente",mDataset.get(mDataset.size()-1)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                                        if(task.isSuccessful())
+                                                                                        {
+                                                                                            for (QueryDocumentSnapshot document3 : task.getResult()) {
+                                                                                                utenti.add(document.toObject(Utente.class));
+                                                                                            }
+
+                                                                                        }
+
+                                                                                    }
+                                                                                });
                                                                                 // Log.d("ciao", String.valueOf(mDataset.size()));
-                                                                                mAdapter = new AdozioniAdapter(mDataset, 2);
+                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,utenti);
 
 
                                                                                 mRecyclerView.setAdapter(mAdapter);
