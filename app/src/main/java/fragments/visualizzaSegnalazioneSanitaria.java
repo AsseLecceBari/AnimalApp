@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
@@ -85,7 +86,7 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
             @Override
             public void onClick(View view) {
                 // Se la segnalazione è del veterinario è modificiacabile solo da quello specifico veterinario
-                if(s.getEmailVet() != "proprietario"){
+                if(!Objects.equals(s.getEmailVet(), "proprietario")){
                     FirebaseAuth auth = FirebaseAuth.getInstance();
                     if(s.getEmailVet().equals(auth.getCurrentUser())){
                         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaSegnalazioneSanitariaFragment(s)).commit();
