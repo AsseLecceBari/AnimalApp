@@ -60,6 +60,7 @@ import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
+import model.Persona;
 import model.Preferenze;
 import model.Utente;
 
@@ -93,7 +94,7 @@ public class adoptions_fragment extends Fragment {
     private int tipoannunci=2;
     private View barrachilometri;
     private ArrayList <Adozione> adozione= new ArrayList<>();
-    private ArrayList<Utente> utenti = new ArrayList<>();
+    private ArrayList<Persona> proprietari = new ArrayList<>();
     private ArrayList<Animale> filteredlist =new ArrayList<>();
 
 
@@ -267,15 +268,13 @@ public class adoptions_fragment extends Fragment {
                                                                         if(task.isSuccessful())
                                                                         {
                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
-                                                                                utenti.add(document3.toObject(Utente.class));
-                                                                                Log.d("ciao13", String.valueOf(mDataset.size()));
-                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,utenti);
+                                                                                proprietari.add( document3.toObject(Persona.class));
+                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
                                                                                 mRecyclerView.setAdapter(mAdapter);
                                                                                 if (mAdapter != null) {
-
-
                                                                                     onItemClick();
                                                                                 }
+
 
 
 
@@ -286,6 +285,7 @@ public class adoptions_fragment extends Fragment {
 
                                                                     }
                                                                 });
+
 
 
 
@@ -320,31 +320,22 @@ public class adoptions_fragment extends Fragment {
                                                                                         if(task.isSuccessful())
                                                                                         {
                                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
-                                                                                                utenti.add(document.toObject(Utente.class));
+                                                                                               // proprietari.add( document.toObject(Persona.class));
+
                                                                                             }
 
                                                                                         }
 
                                                                                     }
                                                                                 });
-                                                                                // Log.d("ciao", String.valueOf(mDataset.size()));
-                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,utenti);
-
-
+                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
                                                                                 mRecyclerView.setAdapter(mAdapter);
-
-
                                                                                 if (mAdapter != null) {
-
-
                                                                                     onItemClick();
                                                                                 }
 
-
                                                                             }
                                                                         }
-
-
                                                                     }
 
                                                                 }

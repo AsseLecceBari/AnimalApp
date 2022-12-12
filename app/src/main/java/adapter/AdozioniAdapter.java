@@ -23,6 +23,7 @@ import java.util.Objects;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
+import model.Persona;
 import model.Utente;
 
 public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapter.ViewHolder> {
@@ -32,7 +33,7 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet;
     private OnClickListener onClickListener;
-    private ArrayList<Utente> utenteDataset;
+    private ArrayList<Persona> utenteDataset;
 
 
 
@@ -94,7 +95,7 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     }
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
-    public AdozioniAdapter(ArrayList<Animale> dataSet, int vista, ArrayList<Utente> utente) {
+    public AdozioniAdapter(ArrayList<Animale> dataSet, int vista, ArrayList<Persona> utente) {
         localDataSet = dataSet;
         vistamieianimali = vista;
         utenteDataset= utente;
@@ -212,7 +213,7 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
         for(int b=0; b<utenteDataset.size();b++){
             if(Objects.equals(localDataSet.get(position).getEmailProprietario(), utenteDataset.get(b).getEmail()))
             {
-             //   return utenteDataset.get(b).getEmail();
+                return utenteDataset.get(b).getNome()+ " " +utenteDataset.get(b).getCognome();
             }
         }
 
