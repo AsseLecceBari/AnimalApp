@@ -3,8 +3,11 @@ package fragments_segnalazioni;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 
@@ -14,6 +17,8 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
@@ -154,7 +159,37 @@ public class fragment_news extends Fragment {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
+                    photoResult2.launch(photoIntent);
+                } else {
+                    //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
 
+                }
+            });
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
+        alertDialogBuilder.setPositiveButton("Ho capito",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
 
 
@@ -191,13 +226,23 @@ public class fragment_news extends Fragment {
         scattaFotoNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
-
-                photoResult2.launch(photoIntent);
+                if (ContextCompat.checkSelfPermission(
+                        getContext(), Manifest.permission.CAMERA) ==
+                        PackageManager.PERMISSION_GRANTED) {
+                    Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
+                    photoResult2.launch(photoIntent);
+                } else if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    showAlertDialog();
+                } else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                }
 
             }
         });
+
 
         //Autocomplete Indirizzo
 
