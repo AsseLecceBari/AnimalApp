@@ -96,7 +96,8 @@
                 android:id="@+id/nome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/nome" />
+                android:hint="@string/nome"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -110,7 +111,8 @@
                 android:id="@+id/cognome"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/cognome" />
+                android:hint="@string/cognome"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéèùàòì "/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -121,7 +123,7 @@
             android:layout_marginTop="12dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/motivoConsultazione"
+                android:id="@+id/etRegDataNascitaUtente"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/data_di_nascita" />
@@ -217,6 +219,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/citta"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéèùàòì "
                 />
         </com.google.android.material.textfield.TextInputLayout>
 

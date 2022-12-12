@@ -201,7 +201,7 @@ public class fragment_zona_pericolosa extends Fragment {
         //Autocomplete Indirizzo
 
         if (!Places.isInitialized()) {
-            Places.initialize(getActivity().getApplicationContext(), "AIzaSyBcUs-OmuzIiP9WP_DShttueADR-GqvSwk", Locale.US);
+            Places.initialize(getActivity().getApplicationContext(), "AIzaSyDlX6obgKqLyk_7MU5HD6hKzZeWQo0xEaA", Locale.US);
         }
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)

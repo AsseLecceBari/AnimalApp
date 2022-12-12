@@ -31,6 +31,8 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,8 +42,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
+import java.util.TimeZone;
 
 import class_general.Utils;
 import DB.AnimaleDB;
@@ -50,7 +54,6 @@ import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
 public class aggiungiAnimaleFragment extends Fragment {
-    private DatePickerDialog picker;
     private Calendar cldr;
     private TextInputLayout dataLayout;
     private TextInputEditText data;
@@ -176,28 +179,47 @@ public class aggiungiAnimaleFragment extends Fragment {
         data=rootView.findViewById(R.id.dataNascitaAnimaleText);
         isAssistito = rootView.findViewById(R.id.isAssistito);
 
-        cldr = Calendar.getInstance();
+
 
         // Al click nel campo Nascita si apre il date picker
         data.setInputType(InputType.TYPE_NULL);
         data.setFocusable(false);
+
+        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+
+        // now define the properties of the
+        // materialDateBuilder that is title text as SELECT A DATE
+        materialDateBuilder.setTitleText("SELECT A DATE");
+
+
+        // now create the instance of the material date
+        // picker
+        final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
         data.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                picker = new DatePickerDialog(rootView.getContext(),
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                data.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                picker.show();
+                materialDatePicker.show(getActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
             }
         });
+        materialDatePicker.addOnPositiveButtonClickListener(
+                new MaterialPickerOnPositiveButtonClickListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
+                        calendar.setTimeInMillis((Long) selection);
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        String formattedDate  = format.format(calendar.getTime());
+                        // if the user clicks on the positive
+                        // button that is ok button update the
+                        // selected date
+                       data.setText(formattedDate);
+                        // in the above statement, getHeaderText
+                        // is the selected date preview from the
+                        // dialog
+                    }
+                });
+
 
         registraAnimaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override

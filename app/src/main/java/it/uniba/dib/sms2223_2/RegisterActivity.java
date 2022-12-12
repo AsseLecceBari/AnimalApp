@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -29,18 +30,22 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import model.Associazione;
 import model.Ente;
@@ -154,7 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
         etRegRuolo = findViewById(R.id.etRegRuolo);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
-        data = findViewById(R.id.motivoConsultazione);
+        data = findViewById(R.id.etRegDataNascitaUtente);
 
         // Informazioni specifiche
         numEFNInputLayout = findViewById(R.id.numEFNInputLayout);
@@ -164,7 +169,7 @@ public class RegisterActivity extends AppCompatActivity {
         nomeLayout = findViewById(R.id.nomeLayout);
         cognomeLayout = findViewById(R.id.cognomeLayout);
         dataLayout = findViewById(R.id.dataLayout);
-
+/*
         // Al click nel campo Nascita si apre il date picker
         data.setInputType(InputType.TYPE_NULL);
         data.setFocusable(false);
@@ -185,7 +190,47 @@ public class RegisterActivity extends AppCompatActivity {
                 picker.show();
             }
         });
-        
+
+ */ // Al click nel campo Nascita si apre il date picker
+        data.setInputType(InputType.TYPE_NULL);
+        data.setFocusable(false);
+
+        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+
+        // now define the properties of the
+        // materialDateBuilder that is title text as SELECT A DATE
+        materialDateBuilder.setTitleText("SELECT A DATE");
+
+
+        // now create the instance of the material date
+        // picker
+        final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+        data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+            }
+        });
+        materialDatePicker.addOnPositiveButtonClickListener(
+                new MaterialPickerOnPositiveButtonClickListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
+                        calendar.setTimeInMillis((Long) selection);
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        String formattedDate  = format.format(calendar.getTime());
+                        // if the user clicks on the positive
+                        // button that is ok button update the
+                        // selected date
+                        data.setText(formattedDate);
+                        // in the above statement, getHeaderText
+                        // is the selected date preview from the
+                        // dialog
+                    }
+                });
+
+
         // Rendo visibili alcuni campi in base al ruolo
         etRegRuolo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override

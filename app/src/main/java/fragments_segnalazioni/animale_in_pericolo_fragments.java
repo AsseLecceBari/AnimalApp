@@ -202,7 +202,7 @@ public class animale_in_pericolo_fragments extends Fragment {
         //Autocomplete Indirizzo
 
         if (!Places.isInitialized()) {
-            Places.initialize(getActivity().getApplicationContext(), "AIzaSyBcUs-OmuzIiP9WP_DShttueADR-GqvSwk", Locale.US);
+            Places.initialize(getActivity().getApplicationContext(), "AIzaSyDlX6obgKqLyk_7MU5HD6hKzZeWQo0xEaA", Locale.US);
         }
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)

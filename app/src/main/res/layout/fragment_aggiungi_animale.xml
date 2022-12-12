@@ -45,7 +45,8 @@
                 android:id="@+id/etRegNomeAnimale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/nome" />
+                android:hint="@string/nome"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ " />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Genere"
-                android:inputType="text" />
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -72,7 +73,8 @@
                 android:id="@+id/etRegSpecieAnimale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Specie" />
+                android:hint="Specie"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
