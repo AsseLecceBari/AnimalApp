@@ -132,6 +132,7 @@
             android:hint="Assistito"
             android:id="@+id/assistito"
             android:layout_marginTop="12dp"
+            android:layout_marginBottom="20dp"
             android:textSize="28dp">
         </com.google.android.material.textview.MaterialTextView>
     </LinearLayout>
