@@ -10,6 +10,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +33,17 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
@@ -55,8 +62,6 @@ public class info_animale extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore firebaseStore;
     private Preferenze preferenze;
-
-   private static final String mypreference = "animalipreferiti";
 
     private static String Email  ;
     private Set<String> set = new HashSet<>() ;
@@ -93,6 +98,9 @@ public class info_animale extends Fragment {
         super.onResume();
        caricaInfoAnimale();
        initDataAnnunci();
+
+       String d=differenzaDataPubblicazione(adozione.getDataPubblicazione());
+       Log.d("ciao17",d);
 
 
        eliminadaPreferiti();
@@ -296,6 +304,151 @@ public class info_animale extends Fragment {
 
             }
         });
+
+    }
+
+    public String differenzaDataPubblicazione(String datadiPublicazione)
+    {
+        String datafinale= "";
+        SimpleDateFormat dataFor= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+
+
+        String data= dataFor.format(new Date());
+
+        int giornopub;
+        int mesepub;
+        int annopub;
+        int orapub;
+        int minutipub;
+
+
+        int giornoOd ;
+        int meseOd;
+        int annoOd;
+        int oraOd;
+        int minutiOd;
+
+
+        int annotot;
+        int meseTot;
+        int giornotot;
+        int orariotot;
+        int minutiTot;
+
+        String[] result = datadiPublicazione.split(" ");
+       String[] datapubblicazione = result[0].split("-");
+        String[] orariopubblicazione = result[1].split(":");
+        String utcpubblicazione=result[2];
+
+
+        result= data.split(" ");
+        String[] dataOdierna = result[0].split("-");
+        String[] orarioOdierno = result[1].split(":");
+
+
+
+        annopub= Integer.parseInt(datapubblicazione[0]);
+        mesepub=Integer.parseInt(datapubblicazione[1]);
+        giornopub=Integer.parseInt(datapubblicazione[2]);
+
+        orapub=Integer.parseInt(orariopubblicazione[0]);
+        minutipub= Integer.parseInt(orariopubblicazione[1]);
+
+
+        annoOd=Integer.parseInt(dataOdierna[0]);
+        meseOd=Integer.parseInt(dataOdierna[1]);
+        giornoOd=Integer.parseInt(dataOdierna[2]);
+
+
+        oraOd=Integer.parseInt(orarioOdierno[0]);
+        minutiOd=Integer.parseInt(orarioOdierno[1]);
+
+   
+
+        if(annopub!= annoOd)
+        {
+
+            annotot=annoOd-annopub;
+            datafinale= datafinale +" " + annotot +" " +"anni";
+            if(mesepub!= meseOd)
+            {
+                meseTot= meseOd-mesepub;
+
+
+                if(meseTot<0)
+                {
+                    meseTot= 12+(meseTot);
+                }
+
+                datafinale= datafinale +" e " + meseTot+ " mesi ";
+
+            }
+        }
+        else if(mesepub!= meseOd)
+        {
+            meseTot= meseOd-mesepub;
+            datafinale= datafinale +" " + meseTot +" " +"mesi";
+            if(giornopub!= giornoOd)
+            {
+                giornotot= giornoOd-giornopub;
+                if(giornotot<0)
+                {
+                    giornotot= 30+(giornotot);
+                }
+
+                datafinale= datafinale +" e " + giornotot + " giorni ";
+
+            }
+        }
+
+        else if(giornopub!= giornoOd)
+
+        {
+            giornotot=giornoOd-giornopub;
+
+            datafinale= datafinale +" " + giornotot +" " +" giorni ";
+        }else if(giornopub!= giornoOd)
+
+        {
+            giornotot=giornoOd-giornopub;
+
+            datafinale= datafinale +" " + giornotot +" " +" giorni ";
+        }
+        else if(orapub!= oraOd)
+        {
+
+
+            orariotot=oraOd-orapub;
+
+            datafinale= datafinale +" " + orariotot +" " +" ore ";
+
+            if(minutipub!= minutiOd)
+            {
+                minutiTot= minutiOd-minutipub;
+
+                if(minutiTot<0)
+                {
+                   minutiTot= 60+(minutiTot);
+                }
+
+                datafinale= datafinale +" e " + minutiTot + " minuti ";
+            }
+
+        }
+
+        else if(minutipub!= minutiOd)
+        {
+            minutiTot= minutiOd-minutipub;
+            datafinale= datafinale +" " + minutiTot +" " +" minuti ";
+
+        }
+
+        else{
+            datafinale="Pubblicato meno di un minuto fa";
+        }
+
+        return datafinale;
+
 
     }
 
