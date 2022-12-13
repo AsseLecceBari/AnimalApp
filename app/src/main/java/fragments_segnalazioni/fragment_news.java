@@ -277,7 +277,7 @@ public class fragment_news extends Fragment {
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("place", "Place: " + place.getName() + ", " + place.getId());
-                address=place.getName();
+                address=place.getAddress();
 
             }
 

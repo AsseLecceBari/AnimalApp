@@ -270,7 +270,7 @@ public class fragment_zona_pericolosa extends Fragment {
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("place", "Place: " + place.getName() + ", " + place.getId());
-                address=place.getName();
+                address=place.getAddress();
 
             }
 
@@ -285,7 +285,7 @@ public class fragment_zona_pericolosa extends Fragment {
         confermaZonaPericolosa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tipo="zonaPericolosa";
+                String tipo="Zona Pericolosa";
 
                 Random rand=new Random();
                 String descrizione=descrzioneZonaPericolosa.getText().toString();

@@ -84,34 +84,6 @@
 
 
     <LinearLayout
-        android:id="@+id/paginalogin"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="200dp"
-            android:gravity="center"
-            android:text="Accedi per inserire i tuoi animali nella bacheca addozioni"
-            android:textSize="20dp" />
-
-        <Button
-            android:id="@+id/buttonAccesso"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="150dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="100dp"
-            android:gravity="center"
-            android:text="Accedi" />
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/layoutfiltri"
 
         android:layout_width="match_parent"

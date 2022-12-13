@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -36,12 +35,12 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -52,12 +51,8 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -272,8 +267,7 @@ public class animale_in_pericolo_fragments extends Fragment {
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("place", "Place: " + place.getName() + ", " + place.getId());
-                address=place.getName();
-
+                address=place.getAddress();
             }
 
 
@@ -289,7 +283,7 @@ public class animale_in_pericolo_fragments extends Fragment {
         confermaAnimaleFerito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tipo="animaleFerito";
+                String tipo="Animale Ferito";
 
                 Random rand=new Random();
                 String descrizione=etDescrizioneAnimaleFerito.getText().toString();

@@ -1,5 +1,7 @@
 package fragments_segnalazioni;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +33,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import class_general.GeolocationClass;
 import class_general.HttpDataHandler;
@@ -55,6 +60,13 @@ public class reports_fragment extends Fragment {
 
     private Slider sliderReport;
     private ImageView imageSliderRep;
+
+
+    private View layoutfiltri1;
+    private View layoutopenfiltri1;
+    private View btnopenFiltri1;
+    private View bottonechiudifiltri1;
+
 
 
     @Override
@@ -88,6 +100,7 @@ public class reports_fragment extends Fragment {
             }
         });
 
+        filtri();
 
 
 
@@ -101,6 +114,12 @@ public class reports_fragment extends Fragment {
         initDataset();
         View rootView = inflater.inflate(R.layout.fragment_reports_fragment, container, false);
         StrictMode.setThreadPolicy(policy);
+
+
+        layoutfiltri1 = rootView.findViewById(R.id.layoutfiltri1);
+        layoutopenfiltri1 = rootView.findViewById(R.id.layoutaprifiltri1);
+        btnopenFiltri1 = rootView.findViewById(R.id.btnaprifiltri1);
+        bottonechiudifiltri1 = rootView.findViewById(R.id.chiudifiltri1);
 
 
 
@@ -163,14 +182,14 @@ public class reports_fragment extends Fragment {
 
 
                         switch (s.getTipo()) {
-                            case "smarrimento":
+                            case "Smarrimento":
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
                                 break;
-                            case "animaleFerito":
+                            case "Animale Ferito":
                                 //da cambiare con vistaAnimaleFerito
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s)).addToBackStack(null).commit();
                                 break;
-                            case "zonaPericolosa":
+                            case "Zona Pericolosa":
                                 //da cambiare con vistaRitrovamento
                                  getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s)).addToBackStack(null).commit();
                                  break;
@@ -178,8 +197,12 @@ public class reports_fragment extends Fragment {
                                 //da cambiare con vistaRitrovamento
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s)).addToBackStack(null).commit();
                                 break;
-                            case "raccoltaFondi":
+                            case "Raccolta Fondi":
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
+                                break;
+                            case "Ritrovamento":
+                                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
+                                Toast.makeText(getContext(), "Fare vista ritrovamento", Toast.LENGTH_SHORT).show();
                                 break;
 
 
@@ -272,5 +295,36 @@ public class reports_fragment extends Fragment {
 
 
 
+    public void filtri(){
+
+        btnopenFiltri1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutfiltri1.setVisibility(View.VISIBLE);
+                // layoutopenfiltri.setVisibility(View.GONE);
+                //btnopenFiltri.setVisibility(View.GONE);
+                // layoutopenfiltri.setVisibility(View.GONE);
+                btnopenFiltri1.setVisibility(View.GONE);
+                bottonechiudifiltri1.setVisibility(View.VISIBLE);
+
+                //bottonechiudifiltri.setVisibility(View.VISIBLE);
+
+            }
+        });
+
+        bottonechiudifiltri1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layoutfiltri1.setVisibility(View.GONE);
+                // btnopenFiltri.setVisibility(View.VISIBLE);
+                bottonechiudifiltri1.setVisibility(View.GONE);
+                btnopenFiltri1.setVisibility(View.VISIBLE);
+
+                //layoutopenfiltri.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+    }
 
 }

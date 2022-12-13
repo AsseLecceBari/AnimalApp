@@ -91,5 +91,14 @@
     <string name="AnimaleAggiuntoInBachecaAdozioni">Animale aggiunto nella bacheca adozioni</string>
     <string name="AggiuntoListaPreferiti">Animale aggiunto nella lista preferiti</string>
 
+    <string-array name="TipoSegnalazione">
+        <item>Tutti</item>
+        <item>Smarrimento</item>
+        <item>Animale Ferito</item>
+        <item>Pericolo</item>
+        <item>News</item>
+        <item>Raccolta Fondi</item>
+        <item>Ritrovamento</item>
 
+    </string-array>
 </resources>

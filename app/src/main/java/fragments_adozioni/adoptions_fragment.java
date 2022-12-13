@@ -162,7 +162,7 @@ public class adoptions_fragment extends Fragment {
 
 
 
-        paginalogin = rootView.findViewById(R.id.paginalogin);
+
         btnaccesso = rootView.findViewById(R.id.btnLogin);
         rdbimieiAnnunci = rootView.findViewById(R.id.radioImieiannunci);
         rdbannuncigenerale = rootView.findViewById(R.id.radioannunciesterni);

@@ -39,6 +39,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponent;
+import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
@@ -241,7 +243,8 @@ public class smarrimento_fragments extends Fragment {
                 public void onPlaceSelected(@NonNull Place place) {
                     // TODO: Get info about the selected place.
                     Log.i("place", "Place: " + place.getName() + ", " + place.getId());
-                    address=place.getName();
+                    address=place.getAddress();
+
 
                 }
 
@@ -262,7 +265,7 @@ public class smarrimento_fragments extends Fragment {
             confermaSmarrimento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                     String tipo="smarrimento";
+                     String tipo="Smarrimento";
 
                      Random idSegnalazione = new Random();
                      String descrizione=descrizioneEditText.getText().toString();

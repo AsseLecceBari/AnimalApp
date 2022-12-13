@@ -87,7 +87,7 @@ public class aggiungiRaccoltaFondi extends Fragment {
     private void registra() {
         // todo: controlli campi
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        Segnalazione s =  new Segnalazione(auth.getCurrentUser().getEmail(), titolo.getText().toString(),"raccoltaFondi", animale.getIdAnimale(), new Random().nextInt(999999999)+"", descrizione.getText().toString(), -1, -1, new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), animale.getFotoProfilo(), link.getText().toString());
+        Segnalazione s =  new Segnalazione(auth.getCurrentUser().getEmail(), titolo.getText().toString(),"Raccolta Fondi", animale.getIdAnimale(), new Random().nextInt(999999999)+"", descrizione.getText().toString(), -1, -1, new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString(), animale.getFotoProfilo(), link.getText().toString());
         db.collection("segnalazioni").document(s.getIdSegnalazione()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
