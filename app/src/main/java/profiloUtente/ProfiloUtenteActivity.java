@@ -55,7 +55,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         email = findViewById(R.id.email);
         telefono = findViewById(R.id.telefono);
         indirizzo = findViewById(R.id.indirizzo);
-        citta = findViewById(R.id.citta);
         efnovi = findViewById(R.id.numeroEFNOVI);
         partitaIva = findViewById(R.id.partitaIva);
         modificaProfilo = findViewById(R.id.modificaProfilo);

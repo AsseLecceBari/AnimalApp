@@ -138,16 +138,6 @@ android:layout_height="match_parent"
             android:textSize="25dp">
         </com.google.android.material.textview.MaterialTextView>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/citta"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="text"
-            android:textSize="25dp">
-        </com.google.android.material.textview.MaterialTextView>
-
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/numeroEFNOVI"
