@@ -12,11 +12,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.slider.LabelFormatter;
+import com.google.android.material.slider.Slider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -45,10 +48,13 @@ public class reports_fragment extends Fragment {
     protected static ArrayList<Segnalazione> mDataset= new ArrayList<>();
 
     private String id;
-    private SeekBar seekBarReport;
+
     private ArrayList<Segnalazione> filteredlist =new ArrayList<>();
     private double lat5,lng5;
     private GeolocationClass g5;
+
+    private Slider sliderReport;
+    private ImageView imageSliderRep;
 
 
     @Override
@@ -97,29 +103,6 @@ public class reports_fragment extends Fragment {
         StrictMode.setThreadPolicy(policy);
 
 
-        seekBarReport=rootView.findViewById(R.id.seekBarReport);
-        seekBarReport.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                Toast.makeText(getActivity().getApplicationContext(), "latitudine: "+ lat5+" longitudine: "+lng5+" ", Toast.LENGTH_SHORT).show();
-
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                //Eseguo la geolocalizzazione
-                g5=new GeolocationClass(lat5,lng5);
-                lat5=g5.getLat();
-                lng5=g5.getLng();
-              
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
 
 
 
@@ -129,6 +112,41 @@ public class reports_fragment extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleReport);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        sliderReport=rootView.findViewById(R.id.sliderReport);
+        imageSliderRep= rootView.findViewById(R.id.imageSliderRep);
+        imageSliderRep.setClickable(true);
+        imageSliderRep.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        //touch listener
+        sliderReport.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
+            @Override
+            public void onStartTrackingTouch(@NonNull Slider slider) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(@NonNull Slider slider) {
+
+            }
+        });
+        //on change value listener
+        sliderReport.addOnChangeListener(new Slider.OnChangeListener() {
+            @Override
+            public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                sliderReport.setLabelFormatter(new LabelFormatter() {
+                    @NonNull
+                    @Override
+                    public String getFormattedValue(float value1) {
+                        return value+"km";
+                    }
+                });
+            }
+        });
 
 
         //Inizializzo l'ascoltatore al click dell'item

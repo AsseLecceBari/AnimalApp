@@ -5,13 +5,44 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="fragments_segnalazioni.reports_fragment">
 
-    <SeekBar
-        android:id="@+id/seekBarReport"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
+<com.google.android.material.textview.MaterialTextView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text=" Raggio di ricerca "
 
-        android:progressTint="?attr/actionModeSplitBackground"
-        android:thumbTint="?attr/actionModeSplitBackground" />
+    style="@style/MaterialAlertDialog.Material3"
+    android:textAlignment="center"
+    android:textSize="18dp"
+    />
+
+<androidx.appcompat.widget.LinearLayoutCompat
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingTop="10dp"
+    android:layout_marginTop="10dp">
+
+    <ImageView
+        android:id="@+id/imageSliderRep"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        app:srcCompat="@drawable/baseline_location_pin_black_18"
+        />
+    <!-- Discrete slider -->
+    <com.google.android.material.slider.Slider
+        android:id="@+id/sliderReport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contextClickable="false"
+        android:stepSize="5.0"
+        android:valueFrom="0.0"
+        android:valueTo="100.0" />
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+</androidx.appcompat.widget.LinearLayoutCompat>
+
 
 
     <androidx.recyclerview.widget.RecyclerView

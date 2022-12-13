@@ -13,16 +13,15 @@
 
         android:id="@+id/cardAnimal"
         style="?attr/materialCardViewOutlinedStyle"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="350dp"
 
         android:padding="10dp"
         app:cardCornerRadius="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -30,31 +29,31 @@
 
             >
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/sessoAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="52dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="56dp"
+                android:width="58dp"
                 android:text="TextView"
                 android:visibility="visible"
-                app:layout_constraintStart_toEndOf="@+id/sessoAnimalField"
-                app:layout_constraintTop_toBottomOf="@+id/specieAnimaleView" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="1.0" />
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageAnimal"
                 android:layout_width="96dp"
                 android:layout_height="103dp"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
 
+                android:layout_marginTop="40dp"
                 android:drawingCacheQuality="auto"
                 app:circularflow_angles="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.376"
                 tools:srcCompat="@tools:sample/avatars" />
 
             <com.google.android.material.textview.MaterialTextView
@@ -62,116 +61,127 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginStart="52dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="10dp"
                 android:text="TextView"
-                app:layout_constraintStart_toEndOf="@+id/nomeAnimalField"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageAnimal"
+                app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/genereAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="136dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="20dp"
+                android:width="58dp"
                 android:text="TextView"
                 android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal"
+                app:layout_constraintBottom_toTopOf="@+id/specieAnimaleView"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
-                app:layout_constraintVertical_bias="0.025" />
+                app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/specieAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="16dp"
+                android:width="58dp"
                 android:text="TextView"
                 android:visibility="visible"
-                app:layout_constraintStart_toEndOf="@+id/specieAnimalField"
-                app:layout_constraintTop_toBottomOf="@+id/genereAnimaleView" />
+                app:layout_constraintBottom_toTopOf="@+id/sessoAnimaleView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="0.978" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/dateNascitaAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:text="TextView"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/specieAnimaleView"
-                app:layout_constraintTop_toTopOf="@+id/specieAnimaleView"
-                app:layout_constraintVertical_bias="0.633" />
+                android:visibility="gone" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/nomeAnimalField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="32dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Nome"
-                android:visibility="visible"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="26dp"
+                tools:layout_editor_absoluteY="91dp" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/genereAnimalField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Genere"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/specieAnimalField"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
+                app:layout_constraintEnd_toStartOf="@+id/genereAnimaleView"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/specieAnimalField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginBottom="80dp"
+                android:layout_marginTop="46dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="16dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Specie"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/dateNascitaAnimalField"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
+                app:layout_constraintBottom_toTopOf="@+id/sessoAnimalField"
+                app:layout_constraintEnd_toStartOf="@+id/specieAnimaleView"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/sessoAnimalField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginBottom="44dp"
+                android:layout_marginEnd="52dp"
+                android:layout_marginBottom="56dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Sesso"
                 android:visibility="visible"
-                app:layout_constraintBottom_toTopOf="@+id/dateNascitaAnimalField"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/sessoAnimaleView"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="1.0" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/dateNascitaAnimalField"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginBottom="12dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Data di Nascita"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
+                tools:layout_editor_absoluteX="120dp"
+                tools:layout_editor_absoluteY="200dp" />
 
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/codiceAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
-                android:visibility="invisible"
-                tools:layout_editor_absoluteX="305dp"
-                tools:layout_editor_absoluteY="135dp" />
+                android:visibility="gone"
+                tools:layout_editor_absoluteX="312dp"
+                tools:layout_editor_absoluteY="101dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>
