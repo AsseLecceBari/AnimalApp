@@ -338,7 +338,7 @@ public class info_animale extends Fragment {
         String[] result = datadiPublicazione.split(" ");
        String[] datapubblicazione = result[0].split("-");
         String[] orariopubblicazione = result[1].split(":");
-        String utcpubblicazione=result[2];
+
 
 
         result= data.split(" ");

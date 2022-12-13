@@ -128,7 +128,7 @@ public class aggiungi_adozione_fragment extends Fragment {
                         if(!checkbox.isChecked()){
                             Random idAdozione=new Random();
                             String id= String.valueOf(idAdozione.nextInt());
-                            SimpleDateFormat dataFor= new SimpleDateFormat("dd-MM-yyyy");
+                            SimpleDateFormat dataFor= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
                             String data= dataFor.format(new Date());
                             animaliAdozione.add(new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data));
                             checkbox.setChecked(true);
