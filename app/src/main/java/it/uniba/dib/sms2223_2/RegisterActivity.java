@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -47,12 +49,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
+import class_general.GetCoordinates;
 import model.Associazione;
 import model.Ente;
 import model.Persona;
 import model.Veterinario;
 
 public class RegisterActivity extends AppCompatActivity {
+    private StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     private TextInputLayout numEFNInputLayout;
     private TextInputLayout piVAInputLayout;
     private TextInputLayout denomInputLayout;
@@ -89,6 +93,10 @@ public class RegisterActivity extends AppCompatActivity {
     private String ruolo;
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
 
+    private double latitudine, longitudine;
+    private String address;
+    private LatLng latLong;
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == AUTOCOMPLETE_REQUEST_CODE) {
@@ -110,14 +118,20 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_register);
-        // Initialize the AutocompleteSupportFragment.
-        /*
+
+        StrictMode.setThreadPolicy(policy);
+
+        //Autocomplete Indirizzo
+
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyBcUs-OmuzIiP9WP_DShttueADR-GqvSwk", Locale.US);
+            Places.initialize(getApplicationContext(), "AIzaSyDlX6obgKqLyk_7MU5HD6hKzZeWQo0xEaA", Locale.US);
         }
+
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+                this.getSupportFragmentManager().findFragmentById(R.id.autoComplete);
 
 
         // Set the fields to specify which types of place data to
@@ -128,8 +142,10 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         // Specify the types of place data to return.
-        assert autocompleteFragment != null;
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        if (autocompleteFragment != null) {
+            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        }
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -137,6 +153,9 @@ public class RegisterActivity extends AppCompatActivity {
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("place", "Place: " + place.getName() + ", " + place.getId());
+                address=place.getName();
+               // latLong = place.getLatLng(); // ?????????????
+
             }
 
 
@@ -146,7 +165,9 @@ public class RegisterActivity extends AppCompatActivity {
                 Log.i("placeerror", "An error occurred: " + status);
             }
         });
-*/
+
+
+
         cldr = Calendar.getInstance();
 
         // Informazioni generali
@@ -154,8 +175,6 @@ public class RegisterActivity extends AppCompatActivity {
         etRegPassword = findViewById(R.id.etRegPass);
         etRegConfPass = findViewById(R.id.etRegConfPass);
         etRegTelefono = findViewById(R.id.etRegTelefono);
-        etRegIndirizzo = findViewById(R.id.etRegIndirizzo);
-        etRegCitta = findViewById(R.id.etRegCitta);
         etRegRuolo = findViewById(R.id.etRegRuolo);
         nome = findViewById(R.id.nome);
         cognome = findViewById(R.id.cognome);
@@ -169,29 +188,8 @@ public class RegisterActivity extends AppCompatActivity {
         nomeLayout = findViewById(R.id.nomeLayout);
         cognomeLayout = findViewById(R.id.cognomeLayout);
         dataLayout = findViewById(R.id.dataLayout);
-/*
-        // Al click nel campo Nascita si apre il date picker
-        data.setInputType(InputType.TYPE_NULL);
-        data.setFocusable(false);
-        data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int day = cldr.get(Calendar.DAY_OF_MONTH);
-                int month = cldr.get(Calendar.MONTH);
-                int year = cldr.get(Calendar.YEAR);
-                // date picker dialog
-                picker = new DatePickerDialog(RegisterActivity.this,
-                        new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                                data.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-                            }
-                        }, year, month, day);
-                picker.show();
-            }
-        });
 
- */ // Al click nel campo Nascita si apre il date picker
+        // Al click nel campo Nascita si apre il date picker
         data.setInputType(InputType.TYPE_NULL);
         data.setFocusable(false);
 
@@ -319,6 +317,15 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createUser(){
+        //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
+        GetCoordinates geocoder= new GetCoordinates(latitudine,longitudine,address);
+        //prendo le coordinate dalle variabili dell'oggetto
+        latitudine=geocoder.getLat();
+        longitudine=geocoder.getLng();
+        Log.d("lat", latitudine+"");
+        Log.d("long", longitudine+"");
+        Log.d("indirizzo", address+"");
+
         String email;
         String password;
         String confPassword;
@@ -334,8 +341,8 @@ public class RegisterActivity extends AppCompatActivity {
         password = etRegPassword.getText().toString();
         confPassword= etRegConfPass.getText().toString();
         telefono= etRegTelefono.getText().toString();
-        indirizzo = etRegIndirizzo.getText().toString();
-        citta = etRegCitta.getText().toString();
+        //indirizzo = etRegIndirizzo.getText().toString();
+        //citta = etRegCitta.getText().toString();
         name = nome.getText().toString();
         surname = cognome.getText().toString();
         dataNascita = data.getText().toString();
@@ -344,9 +351,6 @@ public class RegisterActivity extends AppCompatActivity {
         codiceFiscaleAssociazione = etRegCodiceFiscaleAssociazione.getText().toString();
         denominazione = etRegDenominazione.getText().toString();
 
-        Map<String,String> indirizzoMap = new HashMap<>();
-        indirizzoMap.put("viaCivico", indirizzo);
-        indirizzoMap.put("citta", citta);
 
         // Controllo se gli input sono corretti
         int flag = 0;
@@ -371,17 +375,18 @@ public class RegisterActivity extends AppCompatActivity {
             etRegTelefono.setError(getString(R.string.minimum11cifre));
             flag = 1;
         }
+        /*
         if(TextUtils.isEmpty(indirizzo)){
             etRegIndirizzo.setError(getString(R.string.addressRequired));
             flag = 1;
         }else if(indirizzoNonConforme(indirizzo)){
             etRegIndirizzo.setError("Il formato deve rispettare: via xxxx, n");
             flag = 1;
-        }
+
         if(TextUtils.isEmpty(citta)){
             etRegCitta.setError("Citta' obbligatoria");
             flag = 1;
-        }
+        }}*/
 
         switch (ruolo){
             // Controlli
@@ -405,7 +410,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Persona p =new Persona(email,telefono, indirizzoMap, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
+                            Persona p =new Persona(email,telefono, latitudine, longitudine, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
                             db.collection("utenti").document(email+"").set(p);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -446,7 +451,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Veterinario v =new Veterinario(email, telefono, indirizzoMap, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
+                            Veterinario v =new Veterinario(email, telefono, latitudine, longitudine, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
                             db.collection("utenti").document(email+"").set(v);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -482,7 +487,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Associazione a =new Associazione(email, telefono, indirizzoMap, ruolo, codiceFiscaleAssociazione, denominazione);
+                            Associazione a =new Associazione(email, telefono, latitudine, longitudine, ruolo, codiceFiscaleAssociazione, denominazione);
                             db.collection("utenti").document(email+"").set(a);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -518,7 +523,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Ente e =new Ente(email, telefono, indirizzoMap, ruolo, partitaIva, denominazione, etRegIsPrivato.isChecked());
+                            Ente e =new Ente(email, telefono, latitudine, longitudine, ruolo, partitaIva, denominazione, etRegIsPrivato.isChecked());
                             db.collection("utenti").document(email+"").set(e);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{

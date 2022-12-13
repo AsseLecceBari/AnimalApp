@@ -4,17 +4,16 @@ import java.util.Map;
 
 public class Utente {
     private String email; //Stesso valore del documento
-    private  String telefono;
-    private Map<String,String> indirizzo;
+    private String telefono;
+    private double latitudine, longitudine;
     private String ruolo;
 
-
-    public Utente(String email, String telefono, Map<String, String> indirizzo, String ruolo) {
+    public Utente(String email, String telefono, double latitudine, double longitudine, String ruolo) {
         this.email = email;
         this.telefono = telefono;
-        this.indirizzo = indirizzo;
+        this.latitudine = latitudine;
+        this.longitudine = longitudine;
         this.ruolo = ruolo;
-
     }
 
     public Utente() {
@@ -28,13 +27,16 @@ public class Utente {
         return telefono;
     }
 
-    public Map<String, String> getIndirizzo() {
-        return indirizzo;
-    }
-
     public String getRuolo() {
         return ruolo;
     }
 
 
+    public double getLatitudine() {
+        return latitudine;
+    }
+
+    public double getLongitudine() {
+        return longitudine;
+    }
 }

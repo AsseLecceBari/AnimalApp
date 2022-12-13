@@ -100,8 +100,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                 case "proprietario":
                                     Persona p = document.toObject(Persona.class);
 
-                                    indirizzo.setText(p.getIndirizzo().get("viaCivico"));
-                                    citta.setText(p.getIndirizzo().get("citta"));
                                     tipoUtente.setText(p.getRuolo());
                                     nome.setText(p.getNome());
                                     cognome.setText(p.getCognome());
@@ -131,8 +129,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                         tipoUtente.setText(e.getRuolo() + " privato");
                                     else
                                         tipoUtente.setText(e.getRuolo() + " pubblico");
-                                    indirizzo.setText(e.getIndirizzo().get("viaCivico"));
-                                    citta.setText(e.getIndirizzo().get("citta"));
                                     email.setText(e.getEmail());
                                     telefono.setText(e.getTelefono());
                                     denominazione.setText(e.getDenominazione());
@@ -156,8 +152,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                 case "associazione":
                                     Associazione a = document.toObject(Associazione.class);
 
-                                    indirizzo.setText(a.getIndirizzo().get("viaCivico"));
-                                    citta.setText(a.getIndirizzo().get("citta"));
                                     tipoUtente.setText(a.getRuolo());
                                     email.setText(a.getEmail());
                                     telefono.setText(a.getTelefono());
@@ -183,8 +177,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                 case "veterinario":
                                     Veterinario v = document.toObject(Veterinario.class);
 
-                                    indirizzo.setText(v.getIndirizzo().get("viaCivico"));
-                                    citta.setText(v.getIndirizzo().get("citta"));
                                     tipoUtente.setText(v.getRuolo());
                                     nome.setText(v.getNome());
                                     cognome.setText(v.getCognome());

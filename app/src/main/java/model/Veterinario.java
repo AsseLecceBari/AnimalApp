@@ -6,11 +6,12 @@ import java.util.Map;
 public class Veterinario extends Persona{
     private String numEFNOVI,partitaIva;
 
-    public Veterinario(String email, String telefono, Map<String, String> indirizzo, String ruolo, String nome, String cognome, String dataDiNascita, String numEFNOVI, String partitaIva) {
-        super(email, telefono, indirizzo, ruolo, nome, cognome, dataDiNascita);
+    public Veterinario(String email, String telefono, double latitudine, double longitudine, String ruolo, String nome, String cognome, String dataDiNascita, String numEFNOVI, String partitaIva) {
+        super(email, telefono, latitudine, longitudine, ruolo, nome, cognome, dataDiNascita);
         this.numEFNOVI = numEFNOVI;
         this.partitaIva = partitaIva;
     }
+
     public Veterinario(){
 
     }

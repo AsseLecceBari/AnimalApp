@@ -198,9 +198,8 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     {
 
             for(int b=0; b<utenteDataset.size();b++){
-                if(Objects.equals(localDataSet.get(position).getEmailProprietario(), utenteDataset.get(b).getEmail()))
-                {
-                    return utenteDataset.get(b).getIndirizzo().get("citta")+"("+utenteDataset.get(b).getIndirizzo().get("provincia")+")";
+                if(Objects.equals(localDataSet.get(position).getEmailProprietario(), utenteDataset.get(b).getEmail())){
+                    return "decodificare le cordinate";
                 }
             }
 
