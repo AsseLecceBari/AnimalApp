@@ -7,6 +7,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.text.InputType;
@@ -69,8 +71,6 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText etRegPassword;
     private TextInputEditText etRegConfPass;
     private TextInputEditText etRegTelefono;
-    private TextInputEditText etRegIndirizzo;
-    private TextInputEditText etRegCitta;
     private TextInputEditText etRegNumEFNOVI;
     private TextInputEditText etRegPartitaIva;
     private TextInputEditText etRegDenominazione;
@@ -81,10 +81,9 @@ public class RegisterActivity extends AppCompatActivity {
     private Spinner etRegRuolo;
     private MaterialCheckBox etRegIsPrivato;
 
-    private TextView tvLoginHere;
+    private TextView tvLoginHere, etichettaLocalita;
     private Button btnRegister;
 
-    private DatePickerDialog picker;
     private Calendar cldr;
 
     private FirebaseAuth mAuth;
@@ -95,8 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private double latitudine, longitudine;
     private String address;
-    private LatLng latLong;
-    private String citta;
+    private ColorStateList oldColors;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -128,21 +126,11 @@ public class RegisterActivity extends AppCompatActivity {
         //Autocomplete Indirizzo
 
         if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), "AIzaSyDlX6obgKqLyk_7MU5HD6hKzZeWQo0xEaA", Locale.US);
+            Places.initialize(getApplicationContext(), "AIzaSyDlX6obgKqLyk_7MU5HD6hKzZeWQo0xEaA", Locale.ITALY);
         }
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 this.getSupportFragmentManager().findFragmentById(R.id.autoComplete);
-
-
-        // Set the fields to specify which types of place data to
-        // return after the user has made a selection.
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
-
-        // Start the autocomplete intent.
-
-
-        // Specify the types of place data to return.
 
         if (autocompleteFragment != null) {
             autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
@@ -155,14 +143,11 @@ public class RegisterActivity extends AppCompatActivity {
                 address = place.getAddress();
             }
 
-
             @Override
             public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
                 Log.i("placeerror", "An error occurred: " + status);
             }
         });
-
 
 
         cldr = Calendar.getInstance();
@@ -185,6 +170,9 @@ public class RegisterActivity extends AppCompatActivity {
         nomeLayout = findViewById(R.id.nomeLayout);
         cognomeLayout = findViewById(R.id.cognomeLayout);
         dataLayout = findViewById(R.id.dataLayout);
+
+        etichettaLocalita = findViewById(R.id.etichettaLocalita);
+        oldColors =  etichettaLocalita.getTextColors();
 
         // Al click nel campo Nascita si apre il date picker
         data.setInputType(InputType.TYPE_NULL);
@@ -239,6 +227,7 @@ public class RegisterActivity extends AppCompatActivity {
                         etRegIsPrivato.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         mostraNomeCognomeNascita();
+                        etichettaLocalita.setText("Località di residenza ");
                         break;
 
                     case 1:
@@ -249,6 +238,7 @@ public class RegisterActivity extends AppCompatActivity {
                         etRegIsPrivato.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         mostraNomeCognomeNascita();
+                        etichettaLocalita.setText("Sede studio medico ");
                         break;
 
                     case 2:
@@ -259,6 +249,7 @@ public class RegisterActivity extends AppCompatActivity {
                         etRegIsPrivato.setVisibility(View.GONE);
                         codFiscAssInputLayout.setVisibility(View.VISIBLE);
                         nascondiNomeCognomeNascita();
+                        etichettaLocalita.setText("Sede associazione ");
                         break;
 
                     case 3:
@@ -269,6 +260,7 @@ public class RegisterActivity extends AppCompatActivity {
                         etRegIsPrivato.setVisibility(View.VISIBLE );
                         codFiscAssInputLayout.setVisibility(View.GONE);
                         nascondiNomeCognomeNascita();
+                        etichettaLocalita.setText("Sede dell'ente ");
                         break;
                 }
             }
@@ -327,8 +319,6 @@ public class RegisterActivity extends AppCompatActivity {
         String password;
         String confPassword;
         String telefono;
-        String indirizzo;
-        String citta;
         String efnovi;
         String partitaIva;
         String codiceFiscaleAssociazione, denominazione;
@@ -364,6 +354,12 @@ public class RegisterActivity extends AppCompatActivity {
         if(!confPassword.equals(password)){
             etRegConfPass.setError(getString(R.string.passwordRepeatRequired));
             flag = 1;
+        }
+        if(address == null){
+            etichettaLocalita.setTextColor(Color.RED);
+            flag =1;
+        }else{
+            etichettaLocalita.setTextColor(oldColors);
         }
         if(TextUtils.isEmpty(telefono)){
             etRegTelefono.setError(getString(R.string.teleponeRequired));

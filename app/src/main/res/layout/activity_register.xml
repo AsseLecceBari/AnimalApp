@@ -185,53 +185,6 @@
                 android:inputType="phone" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp">
-            <fragment
-                android:id="@+id/autoComplete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-
-                />
-        </androidx.cardview.widget.CardView>
-
-        <!--
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etRegIndirizzo"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/indirizzo"
-
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etRegCitta"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/citta"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZéèùàòì "
-                />
-        </com.google.android.material.textfield.TextInputLayout>
-        -->
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/numEFNInputLayout"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -261,6 +214,46 @@
                 android:hint="@string/partita_iva"
                 android:inputType="number" />
         </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp"
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/etichettaLocalita"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="13dp"
+
+
+                />
+            <com.google.android.material.divider.MaterialDivider
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="9dp"
+
+                />
+
+        </LinearLayout>
+
+          <androidx.cardview.widget.CardView
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="4dp"
+              android:layout_marginBottom="15dp">
+              <fragment
+                  android:id="@+id/autoComplete"
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+
+                  />
+          </androidx.cardview.widget.CardView>
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnRegister"
