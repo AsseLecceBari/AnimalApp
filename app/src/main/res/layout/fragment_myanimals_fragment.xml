@@ -1,7 +1,7 @@
-<FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/myAnimalsFragment"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/myAnimalsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="fragments_mieiAnimali.myanimals_fragment">
@@ -12,29 +12,26 @@
         android:layout_width="384dp"
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
-        android:layout_marginLeft="12dp"
         android:text="Solo animali in carico"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone">
+        app:layout_constraintTop_toTopOf="parent">
 
     </com.google.android.material.checkbox.MaterialCheckBox>
 
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleMyAnimals"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mostraInCarico"
-            app:layout_constraintVertical_bias="0.0"
-            tools:listitem="@layout/recycle_view_animals"
-            android:layout_marginTop="50dp"/>
-
-
+        android:id="@+id/recycleMyAnimals"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mostraInCarico"
+        app:layout_constraintVertical_bias="0.0"
+        tools:listitem="@layout/recycle_view_animals" />
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -46,6 +43,5 @@
         android:layout_marginBottom="16dp"
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
-        tools:ignore="SpeakableTextPresentCheck"
-        />
+        tools:ignore="SpeakableTextPresentCheck" />
 </FrameLayout>
