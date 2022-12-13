@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +23,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
+import class_general.GeolocationClass;
+import class_general.HttpDataHandler;
 import fragments.RecyclerItemClickListener;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -32,7 +37,7 @@ import adapter.ReportAdapter;
 
 
 public class reports_fragment extends Fragment {
-
+    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
@@ -42,6 +47,9 @@ public class reports_fragment extends Fragment {
     private String id;
     private SeekBar seekBarReport;
     private ArrayList<Segnalazione> filteredlist =new ArrayList<>();
+    private double lat5,lng5;
+    private GeolocationClass g5;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,6 +81,11 @@ public class reports_fragment extends Fragment {
               getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
             }
         });
+
+
+
+
+
     }
 
     @Override
@@ -81,11 +94,41 @@ public class reports_fragment extends Fragment {
         mDataset.clear();
         initDataset();
         View rootView = inflater.inflate(R.layout.fragment_reports_fragment, container, false);
+        StrictMode.setThreadPolicy(policy);
+
+
+        seekBarReport=rootView.findViewById(R.id.seekBarReport);
+        seekBarReport.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                Toast.makeText(getActivity().getApplicationContext(), "latitudine: "+ lat5+" longitudine: "+lng5+" ", Toast.LENGTH_SHORT).show();
+
+
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //Eseguo la geolocalizzazione
+                g5=new GeolocationClass(lat5,lng5);
+                lat5=g5.getLat();
+                lng5=g5.getLng();
+              
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+
+
+
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleReport);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
 
         //Inizializzo l'ascoltatore al click dell'item
@@ -191,8 +234,8 @@ public class reports_fragment extends Fragment {
         for (Segnalazione item : mDataset) {
             // checking if the entered string matched with any item of our recycler view.
 
-            //TODO CAMBIARE CON getTitolo
-            if (item.getTipo().toLowerCase().contains(text.toLowerCase())) {
+            //TODO CAMBIARE CON getTitolo vedere se è corretto
+            if (item.getTitolo().toLowerCase().contains(text.toLowerCase()) || item.getTipo().toLowerCase().contains(text.toLowerCase())) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item);
@@ -208,5 +251,8 @@ public class reports_fragment extends Fragment {
             mAdapter.filterList(filteredlist);
         }
     }
+
+
+
 
 }

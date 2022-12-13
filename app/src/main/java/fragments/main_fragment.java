@@ -20,6 +20,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
 import adapter.VPAdapter;
+import class_general.GeolocationClass;
 import fragments_segnalazioni.vistaSegnalazione;
 import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
@@ -37,6 +38,7 @@ public class main_fragment extends Fragment {
     private FragmentActivity  activity;
     private int posizione =0;
     private int posizionePassata;
+    double lat,lng;
 
 
     public main_fragment(int a){
@@ -93,6 +95,7 @@ public class main_fragment extends Fragment {
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
                 posizione = tab.getPosition();
+
             }
 
             @Override
@@ -109,6 +112,7 @@ public class main_fragment extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 tabLayout.getTabAt(position).select();
+
             }
         });
     }

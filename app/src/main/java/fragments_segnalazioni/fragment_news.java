@@ -60,6 +60,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
+import class_general.GeolocationClass;
 import class_general.GetCoordinates;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
@@ -78,12 +79,12 @@ public class fragment_news extends Fragment {
 
     private FirebaseFirestore db;
 
-    private File file;
+
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
 
-    private final int PHOTO_REQUEST_CODE=1;
+
 
     String address;
     double lat,lng;
@@ -213,6 +214,11 @@ public class fragment_news extends Fragment {
 
         db=FirebaseFirestore.getInstance();
 
+
+
+
+        db=FirebaseFirestore.getInstance();
+
         imgNews=rootView.findViewById(R.id.imgNews);
         scattaFotoNews=rootView.findViewById(R.id.scattaFotoNews);
         descrzioneNews=rootView.findViewById(R.id.descrzioneNews);
@@ -304,6 +310,7 @@ public class fragment_news extends Fragment {
                 //prendo le coordinate dalle variabili dell'oggetto
                 lat=geocoder.getLat();
                 lng=geocoder.getLng();
+
 
                 s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {

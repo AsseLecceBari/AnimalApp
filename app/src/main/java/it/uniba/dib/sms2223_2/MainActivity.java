@@ -22,7 +22,11 @@ import com.google.android.material.color.DynamicColorsOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.json.JSONObject;
+
 import adapter.VPAdapter;
+import class_general.GeolocationClass;
+import class_general.HttpDataHandler;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.myanimals_fragment;
@@ -43,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
     private myanimals_fragment myanimals_fragment;
     private adoptions_fragment adoptions_fragment;
     private reports_fragment reports_fragment;
+
+
+
+
 
 
     @Override
@@ -149,5 +157,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
+
 
 }
