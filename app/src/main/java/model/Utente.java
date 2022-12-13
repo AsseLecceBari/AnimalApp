@@ -7,13 +7,15 @@ public class Utente {
     private String telefono;
     private double latitudine, longitudine;
     private String ruolo;
+    private String indirizzo;
 
-    public Utente(String email, String telefono, double latitudine, double longitudine, String ruolo) {
+    public Utente(String email, String telefono, double latitudine, double longitudine, String ruolo, String indirizzo) {
         this.email = email;
         this.telefono = telefono;
         this.latitudine = latitudine;
         this.longitudine = longitudine;
         this.ruolo = ruolo;
+        this.indirizzo = indirizzo;
     }
 
     public Utente() {
@@ -38,5 +40,9 @@ public class Utente {
 
     public double getLongitudine() {
         return longitudine;
+    }
+
+    public String getIndirizzo() {
+        return indirizzo;
     }
 }

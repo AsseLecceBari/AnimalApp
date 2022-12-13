@@ -96,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
     private double latitudine, longitudine;
     private String address;
     private LatLng latLong;
+    private String citta;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -144,18 +145,14 @@ public class RegisterActivity extends AppCompatActivity {
         // Specify the types of place data to return.
 
         if (autocompleteFragment != null) {
-            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
         }
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
-                Log.i("place", "Place: " + place.getName() + ", " + place.getId());
-                address=place.getName();
-               // latLong = place.getLatLng(); // ?????????????
-
+                address = place.getAddress();
             }
 
 
@@ -410,7 +407,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Persona p =new Persona(email,telefono, latitudine, longitudine, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
+                            Persona p =new Persona(email,telefono, latitudine, longitudine, ruolo, address, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
                             db.collection("utenti").document(email+"").set(p);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -451,7 +448,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Veterinario v =new Veterinario(email, telefono, latitudine, longitudine, ruolo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
+                            Veterinario v =new Veterinario(email, telefono, latitudine, longitudine, ruolo, address, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
                             db.collection("utenti").document(email+"").set(v);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -487,7 +484,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Associazione a =new Associazione(email, telefono, latitudine, longitudine, ruolo, codiceFiscaleAssociazione, denominazione);
+                            Associazione a =new Associazione(email, telefono, latitudine, longitudine, ruolo, address, codiceFiscaleAssociazione, denominazione);
                             db.collection("utenti").document(email+"").set(a);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -523,7 +520,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Ente e =new Ente(email, telefono, latitudine, longitudine, ruolo, partitaIva, denominazione, etRegIsPrivato.isChecked());
+                            Ente e =new Ente(email, telefono, latitudine, longitudine, ruolo, address, partitaIva, denominazione, etRegIsPrivato.isChecked());
                             db.collection("utenti").document(email+"").set(e);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
