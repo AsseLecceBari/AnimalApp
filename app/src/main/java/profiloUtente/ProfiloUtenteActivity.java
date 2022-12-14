@@ -105,9 +105,9 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     data.setText(p.getDataDiNascita());
                                     email.setText(p.getEmail());
                                     telefono.setText(p.getTelefono());
+                                    indirizzo.setText(p.getIndirizzo());
 
                                     indirizzo.setVisibility(View.VISIBLE);
-                                    citta.setVisibility(View.VISIBLE);
                                     tipoUtente.setVisibility(View.VISIBLE);
                                     nome.setVisibility(View.VISIBLE);
                                     cognome.setVisibility(View.VISIBLE);
@@ -135,7 +135,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
 
                                     tipoUtente.setVisibility(View.VISIBLE);
                                     indirizzo.setVisibility(View.VISIBLE);
-                                    citta.setVisibility(View.VISIBLE);
                                     email.setVisibility(View.VISIBLE);
                                     telefono.setVisibility(View.VISIBLE);
                                     denominazione.setVisibility(View.VISIBLE);
@@ -159,7 +158,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
 
 
                                     indirizzo.setVisibility(View.VISIBLE);
-                                    citta.setVisibility(View.VISIBLE);
                                     tipoUtente.setVisibility(View.VISIBLE);
                                     email.setVisibility(View.VISIBLE);
                                     telefono.setVisibility(View.VISIBLE);
@@ -186,7 +184,6 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     partitaIva.setText(v.getPartitaIva());
 
                                     indirizzo.setVisibility(View.VISIBLE);
-                                    citta.setVisibility(View.VISIBLE);
                                     tipoUtente.setVisibility(View.VISIBLE);
                                     nome.setVisibility(View.VISIBLE);
                                     cognome.setVisibility(View.VISIBLE);

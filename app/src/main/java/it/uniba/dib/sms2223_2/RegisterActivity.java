@@ -141,6 +141,7 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 address = place.getAddress();
+                // todo remove focus from other fields -----------------------------
             }
 
             @Override
