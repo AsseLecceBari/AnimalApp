@@ -267,7 +267,7 @@ public class animale_in_pericolo_fragments extends Fragment {
             public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
                 Log.i("place", "Place: " + place.getName() + ", " + place.getId());
-                address=place.getAddress();
+                address=place.getName();
             }
 
 
@@ -298,12 +298,12 @@ public class animale_in_pericolo_fragments extends Fragment {
                 String urlFoto="/imagesAnimaliInPericolo/"+idSegnalazione;
 
                 //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
-                GetCoordinates geocoder= new GetCoordinates(lat,lng,address);
+                GetCoordinates geocoder= new GetCoordinates(address);
                 //prendo le coordinate dalle variabili dell'oggetto
-                lat=geocoder.getLat();
-                lng=geocoder.getLng();
+                //lat=geocoder.getLat();
+                //lng=geocoder.getLng();
 
-                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
+                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,geocoder.getLat(),geocoder.getLng(),data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

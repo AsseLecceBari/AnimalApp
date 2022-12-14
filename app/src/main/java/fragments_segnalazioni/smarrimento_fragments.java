@@ -243,7 +243,7 @@ public class smarrimento_fragments extends Fragment {
                 public void onPlaceSelected(@NonNull Place place) {
                     // TODO: Get info about the selected place.
                     Log.i("place", "Place: " + place.getName() + ", " + place.getId());
-                    address=place.getAddress();
+                    address=place.getName();
 
 
                 }
@@ -278,13 +278,13 @@ public class smarrimento_fragments extends Fragment {
                      data = dateFor.format(new Date());
 
                      //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
-                     GetCoordinates geocoder= new GetCoordinates(lat,lng,address);
+                     GetCoordinates geocoder= new GetCoordinates(address);
                     //prendo le coordinate dalle variabili dell'oggetto
-                     lat=geocoder.getLat();
-                     lng=geocoder.getLng();
+                    // lat=geocoder.getLat();
+                    // lng=geocoder.getLng();
 
                     Log.e("email",auth.getCurrentUser().getEmail());
-                     Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,a.getIdAnimale(),idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
+                     Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,a.getIdAnimale(),idSegnalazione.nextInt()+"",descrizione,geocoder.getLat(),geocoder.getLng(),data,urlFoto," ");
                     db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

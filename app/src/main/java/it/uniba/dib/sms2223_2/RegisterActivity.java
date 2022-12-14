@@ -307,7 +307,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void createUser(){
         //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
-        GetCoordinates geocoder= new GetCoordinates(latitudine,longitudine,address);
+        GetCoordinates geocoder= new GetCoordinates(address);
         //prendo le coordinate dalle variabili dell'oggetto
         latitudine=geocoder.getLat();
         longitudine=geocoder.getLng();

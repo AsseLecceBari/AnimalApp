@@ -55,8 +55,8 @@ public class reports_fragment extends Fragment {
     private String id;
 
     private ArrayList<Segnalazione> filteredlist =new ArrayList<>();
-    private double lat5,lng5;
-    private GeolocationClass g5;
+    private double myLat,myLng;
+    private GeolocationClass myLocation;
 
     private Slider sliderReport;
     private ImageView imageSliderRep;
@@ -157,10 +157,29 @@ public class reports_fragment extends Fragment {
         sliderReport.addOnChangeListener(new Slider.OnChangeListener() {
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                Log.e("ciao61", String.valueOf(value));
+                //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
+                double addLat=value*(1/111.121);
+                double addLng=(1/111.0)*value;
+                Log.e("ciao11", String.valueOf(addLat));
+                Log.e("ciao11", String.valueOf(addLng));
+
+                myLocation=new GeolocationClass(myLat,myLng);
+                Log.e("ciao21", String.valueOf(myLocation.getLat()));
+                Log.e("ciao21", String.valueOf(myLocation.getLng()));
+
+
+
+
+
+
+
+
                 sliderReport.setLabelFormatter(new LabelFormatter() {
                     @NonNull
                     @Override
                     public String getFormattedValue(float value1) {
+
                         return value+"km";
                     }
                 });
@@ -267,7 +286,7 @@ public class reports_fragment extends Fragment {
 
 
     }
-    public void filter(String text) {
+    public void filterCoordinates(String text) {
         // creating a new array list to filter our data.
         filteredlist = new ArrayList<>();
 
@@ -293,6 +312,31 @@ public class reports_fragment extends Fragment {
         }
     }
 
+    public void filter(String text) {
+        // creating a new array list to filter our data.
+        filteredlist = new ArrayList<>();
+
+        // running a for loop to compare elements.
+        for (Segnalazione item : mDataset) {
+            // checking if the entered string matched with any item of our recycler view.
+
+            //TODO CAMBIARE CON getTitolo vedere se è corretto
+            if (item.getTitolo().toLowerCase().contains(text.toLowerCase()) || item.getTipo().toLowerCase().contains(text.toLowerCase())) {
+                // if the item is matched we are
+                // adding it to our filtered list.
+                filteredlist.add(item);
+            }
+        }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            mAdapter.filterList(filteredlist);
+        }
+    }
 
 
     public void filtri(){
