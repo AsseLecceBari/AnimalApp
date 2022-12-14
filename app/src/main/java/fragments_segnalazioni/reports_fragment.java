@@ -1,9 +1,14 @@
 package fragments_segnalazioni;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.location.Location;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,8 +24,12 @@ import android.widget.RadioButton;
 import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textview.MaterialTextView;
@@ -67,12 +76,35 @@ public class reports_fragment extends Fragment {
     private View btnopenFiltri1;
     private View bottonechiudifiltri1;
 
+    private FusedLocationProviderClient fusedLocationClient;
+
+    //permessi posizione
+    ActivityResultLauncher<String[]> locationPermissionRequest =
+            registerForActivityResult(new ActivityResultContracts
+                            .RequestMultiplePermissions(), result -> {
+                        Boolean fineLocationGranted = result.getOrDefault(
+                                Manifest.permission.ACCESS_FINE_LOCATION, false);
+                        Boolean coarseLocationGranted = result.getOrDefault(
+                                Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                        if (fineLocationGranted != null && fineLocationGranted) {
+                            // Precise location access granted.
+                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                            // Only approximate location access granted.
+                        } else {
+                            // No location access granted.
+                        }
+                    }
+            );
+
+
+    // ...
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
 
     }
@@ -145,7 +177,13 @@ public class reports_fragment extends Fragment {
         sliderReport.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
-
+                // Before you perform the actual permission request, check whether your app
+                // already has the permissions, and whether your app needs to show a permission
+                // rationale dialog. For more details, see Request permissions.
+                locationPermissionRequest.launch(new String[] {
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                });
             }
 
             @Override
@@ -155,6 +193,7 @@ public class reports_fragment extends Fragment {
         });
         //on change value listener
         sliderReport.addOnChangeListener(new Slider.OnChangeListener() {
+            @SuppressLint("MissingPermission")
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
                 Log.e("ciao61", String.valueOf(value));
@@ -168,9 +207,23 @@ public class reports_fragment extends Fragment {
                 Log.e("ciao21", String.valueOf(myLocation.getLat()));
                 Log.e("ciao21", String.valueOf(myLocation.getLng()));
 
+                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                // Got last known location. In some rare situations this can be null.
+                                if (location != null) {
+                                    // Logic to handle location object
+                                    //passo la mia posizione piu i km selezionati
+                                    filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
 
-                //passo la mia posizione piu i km selezionati
-                filterCoordinates((myLocation.getLat()+addLat),(myLocation.getLng()+addLng),(myLocation.getLat()-addLat),(myLocation.getLng()-addLng));
+                                    Log.e("ciao200",location.toString());
+                                }
+                            }
+                        });
+
+
+
+
 
 
 
