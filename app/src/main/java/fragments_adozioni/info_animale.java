@@ -369,7 +369,12 @@ public class info_animale extends Fragment {
         {
 
             annotot=annoOd-annopub;
-            datafinale= datafinale +" " + annotot +" " +"anni";
+            if(annotot>1) {
+
+                datafinale = datafinale + " " + annotot + " " + "anni fa ";
+            }
+
+
             if(mesepub!= meseOd)
             {
                 meseTot= meseOd-mesepub;
@@ -378,25 +383,57 @@ public class info_animale extends Fragment {
                 if(meseTot<0)
                 {
                     meseTot= 12+(meseTot);
-                }
+                    if(annotot<2)// se negativo e minore di 2 inserisci solo i mesi vuol dire che non è passato un anno
+                    {
+                        datafinale= datafinale  + meseTot+ " mesi fa ";
+                    }
+                    else{
+                        datafinale= datafinale +" e " + meseTot+ " mesi fa ";
+                    }
 
-                datafinale= datafinale +" e " + meseTot+ " mesi ";
+                }
+                else{
+                    if(annotot<2)//se è maggiore ed è un anno allora inserisci un anno e mesi
+                    {
+                        datafinale= datafinale  + annotot +"anno e " + meseTot+ " mesi fa ";
+                    }
+                    else{
+                        datafinale= datafinale +" e " + meseTot+ " mesi fa ";
+                    }
+                }
+            }
+            else{// se è uguale il mese allora è passato solo un anno
+                if(annotot<2) {
+                    datafinale = datafinale + " " + annotot + " " + "anno fa ";
+                }
 
             }
         }
         else if(mesepub!= meseOd)
         {
             meseTot= meseOd-mesepub;
-            datafinale= datafinale +" " + meseTot +" " +"mesi";
+            if(meseTot>1) {
+                datafinale = datafinale + " " + meseTot + " " + "mesi";
+            }
             if(giornopub!= giornoOd)
             {
                 giornotot= giornoOd-giornopub;
                 if(giornotot<0)
                 {
                     giornotot= 30+(giornotot);
+
+                    if(meseTot<2)
+                    {datafinale= datafinale  + giornotot + " giorni fa ";}
+                    else{datafinale= datafinale +" e " + giornotot + " giorni ";}
+                }
+                else{
+                    if(meseTot<2)
+                    {datafinale= datafinale  + meseTot+ " mese e "+ giornotot + " giorni fa ";}
+                    else{datafinale= datafinale +" e " + giornotot + " giorni ";}
                 }
 
-                datafinale= datafinale +" e " + giornotot + " giorni ";
+            }else if(meseTot<2) //se i giorni sono uguali allora è passato un mese
+            {datafinale= datafinale +meseTot + " mese fa ";
 
             }
         }
@@ -405,14 +442,10 @@ public class info_animale extends Fragment {
 
         {
             giornotot=giornoOd-giornopub;
+            if (giornotot>1) {
 
-            datafinale= datafinale +" " + giornotot +" " +" giorni ";
-        }else if(giornopub!= giornoOd)
-
-        {
-            giornotot=giornoOd-giornopub;
-
-            datafinale= datafinale +" " + giornotot +" " +" giorni ";
+                datafinale = datafinale + " " + giornotot + " " + " giorni ";
+            }
         }
         else if(orapub!= oraOd)
         {
