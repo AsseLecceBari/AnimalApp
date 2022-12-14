@@ -142,6 +142,20 @@ public class RegisterActivity extends AppCompatActivity {
             public void onPlaceSelected(@NonNull Place place) {
                 address = place.getAddress();
                 // todo remove focus from other fields -----------------------------
+                etRegEmail.clearFocus();
+                etRegPassword.clearFocus();
+                etRegConfPass.clearFocus();
+                etRegTelefono.clearFocus();
+                etRegNumEFNOVI.clearFocus();
+                etRegPartitaIva.clearFocus();
+                etRegDenominazione.clearFocus();
+                etRegCodiceFiscaleAssociazione.clearFocus();
+                data.clearFocus();
+                nome.clearFocus();
+                cognome.clearFocus();
+                etichettaLocalita.setTextColor(Color.GREEN);
+                String testo = (String) etichettaLocalita.getText();
+                etichettaLocalita.setText(testo + " - INSERITO! ");
             }
 
             @Override

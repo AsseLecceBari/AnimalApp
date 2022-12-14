@@ -16,7 +16,7 @@ public class GetCoordinates  {
         String response;
         this.address=address1;
 
-        Log.e("ciao12",address);
+        //Log.e("ciao12",address);
         try {
 
             //utilizzo l'oggetto httpdatahandler per effettuare la richiesta al server google
