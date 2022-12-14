@@ -110,7 +110,12 @@ public class adoptions_fragment extends Fragment {
     public void onResume() {
         super.onResume();
         filtri();
-        listnerAdozioni();
+        try {
+            listnerAdozioni();
+        }catch(Exception e){
+
+        }
+
 
 
    /*    mRecyclerView.setOnTouchListener(new OnSwipeListener(getContext()) {
