@@ -56,6 +56,7 @@ public class info_animale extends Fragment {
     private ImageView immagineAnimale ;
     private TextView descrizioneAnimale;
     private TextView dettagliAnimale;
+    private TextView dataPubblicazione;
     private View btnaggiungiPreferiti;
     private View btineliminaPreferiti;
     private SharedPreferences share;
@@ -89,18 +90,20 @@ public class info_animale extends Fragment {
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
         btnaggiungiPreferiti=root.findViewById(R.id.BtnaggiungiPreferiti);
         btineliminaPreferiti=root.findViewById(R.id.btneliminaPreferiti);
+        dataPubblicazione=root.findViewById(R.id.dataPubblicazione);
 
         return  root;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onResume() {
         super.onResume();
        caricaInfoAnimale();
        initDataAnnunci();
 
-       String d=differenzaDataPubblicazione(adozione.getDataPubblicazione());
-       Log.d("ciao17",d);
+       dataPubblicazione.setText("Pubblicato" +differenzaDataPubblicazione(adozione.getDataPubblicazione()));
+
 
 
        eliminadaPreferiti();
@@ -395,7 +398,7 @@ public class info_animale extends Fragment {
                 else{
                     if(annotot<2)//se è maggiore ed è un anno allora inserisci un anno e mesi
                     {
-                        datafinale= datafinale  + annotot +"anno e " + meseTot+ " mesi fa ";
+                        datafinale= datafinale  + annotot +" anno e " + meseTot+ " mesi fa ";
                     }
                     else{
                         datafinale= datafinale +" e " + meseTot+ " mesi fa ";
@@ -446,6 +449,25 @@ public class info_animale extends Fragment {
 
                 datafinale = datafinale + " " + giornotot + " " + " giorni ";
             }
+
+            if(orapub!= oraOd)
+            {
+                orariotot=oraOd-orapub;
+                if (orariotot<0){
+                    orariotot=24+(orariotot);
+
+                    if(giornotot<2){ datafinale = datafinale +orariotot +" ore fa";}
+                    else{datafinale = datafinale + " e " + orariotot + " ore fa " ;}
+                }else{
+                    if(giornotot<2){ datafinale = datafinale + giornotot  +" giorno "+ " e "+ orariotot+" ore fa";}
+                    else{datafinale = datafinale + " e " + orariotot + " ore fa " ;}
+
+                }
+
+            }else
+            if(giornotot<2){ datafinale = datafinale + giornotot  +" giorno fa";}
+
+
         }
         else if(orapub!= oraOd)
         {
@@ -453,7 +475,10 @@ public class info_animale extends Fragment {
 
             orariotot=oraOd-orapub;
 
-            datafinale= datafinale +" " + orariotot +" " +" ore ";
+            if(orariotot>1) {
+
+                datafinale = datafinale + " " + orariotot + " " + " ore ";
+            }
 
             if(minutipub!= minutiOd)
             {
@@ -462,9 +487,20 @@ public class info_animale extends Fragment {
                 if(minutiTot<0)
                 {
                    minutiTot= 60+(minutiTot);
+
+                   if(orariotot<2)
+                   {
+                       datafinale = datafinale + " " + minutiTot + " " + " minuti fa ";
+                   }
+                   else{
+                       datafinale = datafinale + " e " + minutiTot  + " minuti fa ";
+                   }
+                }else{
+                    if(orariotot<2){ datafinale = datafinale + orariotot  +" ora fa";}
                 }
 
-                datafinale= datafinale +" e " + minutiTot + " minuti ";
+
+
             }
 
         }
@@ -472,7 +508,13 @@ public class info_animale extends Fragment {
         else if(minutipub!= minutiOd)
         {
             minutiTot= minutiOd-minutipub;
-            datafinale= datafinale +" " + minutiTot +" " +" minuti ";
+            if(minutiTot==1)
+            {
+                datafinale= datafinale +" " + minutiTot +" " +" minuto fa ";
+            }
+            else {
+                datafinale = datafinale + " " + minutiTot + " " + " minuti fa ";
+            }
 
         }
 
