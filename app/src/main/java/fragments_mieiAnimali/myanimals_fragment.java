@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,6 +33,7 @@ import adapter.AnimalAdapter;
 import DB.AnimaleDB;
 import fragments.RecyclerItemClickListener;
 import fragments.nonSeiRegistrato_fragment;
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -48,16 +51,18 @@ public class myanimals_fragment extends Fragment {
     private MaterialCheckBox mostraSoloIncarico;
 
     protected RecyclerView mRecyclerView;
-    protected static AnimalAdapter mAdapter;
+    protected AnimalAdapter mAdapter;
 
 
     public ArrayList<Animale> getmDataset() {
         return mDataset;
     }
 
-    protected static ArrayList<Animale> mDataset= new ArrayList<>();
+    protected ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
-    private   AnimaleDB animaleDAO;
+    private AnimaleDB animaleDAO;
+    private MainActivity mainActivity;
+    private Toolbar main_action_bar;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -135,7 +140,11 @@ public class myanimals_fragment extends Fragment {
         addAnimale.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
+                closeSearchView();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fragment_slide_left_enter,
+                        R.anim.fragment_slide_left_exit,
+                        R.anim.fragment_slide_right_enter,
+                        R.anim.fragment_slide_right_exit).addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
             }
         });
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
@@ -149,17 +158,26 @@ public class myanimals_fragment extends Fragment {
                     @Override public void onItemClick(View view, int position) {
                         Animale a;
                         Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
+                        Log.e("filtered",filteredlist.size()+"");
                         if(filteredlist.size()==0) {
                             //Ottengo l'oggetto dalla lista in posizione "position"
-                            a = mDataset.get(position);
-                        }else{
-                            Log.e("filtered",filteredlist+"");
 
-                            a = filteredlist.get(position);}
+                            a = mDataset.get(position);
+                            closeSearchView();
+                            mDataset.clear();
+                            filteredlist.clear();
+                        }else{
+
+                            a = filteredlist.get(position);
+                           mDataset.clear();
+                           filteredlist.clear();
+                            closeSearchView();
+                        }
                         //Inserisco l'oggetto nel bundle
                         i.putExtra("animale", a);
                         startActivity(i);
                     }
+
 
                     @Override public void onLongItemClick(View view, int position) {
                         // TODO: menu rapido
@@ -179,6 +197,7 @@ public class myanimals_fragment extends Fragment {
 
 
     public void filter(String text) {
+        Log.e("text",text);
         filteredlist=new ArrayList<>();
         // running a for loop to compare elements.
         for (Animale item : mDataset) {
@@ -199,7 +218,11 @@ public class myanimals_fragment extends Fragment {
             mAdapter.filterList(filteredlist);
         }
     }
-
+    private void closeSearchView() {
+        mainActivity= (MainActivity) getActivity();
+        main_action_bar= mainActivity.getMain_action_bar();
+        main_action_bar.collapseActionView();
+    }
 
 
 

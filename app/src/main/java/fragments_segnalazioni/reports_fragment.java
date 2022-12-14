@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +49,8 @@ import java.util.Collections;
 import class_general.GeolocationClass;
 import class_general.HttpDataHandler;
 import fragments.RecyclerItemClickListener;
+import fragments.main_fragment;
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.Segnalazione;
@@ -58,12 +62,12 @@ public class reports_fragment extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
-    protected static ReportAdapter mAdapter;
-    protected static ArrayList<Segnalazione> mDataset= new ArrayList<>();
+    protected ReportAdapter mAdapter;
+    protected ArrayList<Segnalazione> mDataset= new ArrayList<>();
 
     private String id;
 
-    private ArrayList<Segnalazione> filteredlist =new ArrayList<>();
+    private ArrayList<Segnalazione> filteredlist=new ArrayList<>();
     private double myLat,myLng;
     private GeolocationClass myLocation;
 
@@ -77,6 +81,8 @@ public class reports_fragment extends Fragment {
     private View bottonechiudifiltri1;
 
     private FusedLocationProviderClient fusedLocationClient;
+    private   MainActivity mainActivity;
+    private Toolbar main_action_bar;
 
     //permessi posizione
     ActivityResultLauncher<String[]> locationPermissionRequest =
@@ -105,8 +111,6 @@ public class reports_fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
-
-
     }
 
 
@@ -122,7 +126,6 @@ public class reports_fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
         //questo è il floating button
         View aggiungiSegnalazione = getView().findViewById(R.id.aggiungiSegnalazione);
         aggiungiSegnalazione.setOnClickListener(new View.OnClickListener() {
@@ -131,12 +134,7 @@ public class reports_fragment extends Fragment {
               getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
             }
         });
-
         filtri();
-
-
-
-
     }
 
     @Override
@@ -144,6 +142,9 @@ public class reports_fragment extends Fragment {
                              Bundle savedInstanceState) {
         mDataset.clear();
         initDataset();
+
+
+
         View rootView = inflater.inflate(R.layout.fragment_reports_fragment, container, false);
         StrictMode.setThreadPolicy(policy);
 
@@ -214,24 +215,12 @@ public class reports_fragment extends Fragment {
                                 if (location != null) {
                                     // Logic to handle location object
                                     //passo la mia posizione piu i km selezionati
-                                    filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
+                                //    filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
 
                                     Log.e("ciao200",location.toString());
                                 }
                             }
                         });
-
-
-
-
-
-
-
-
-
-
-
-
                 sliderReport.setLabelFormatter(new LabelFormatter() {
                     @NonNull
                     @Override
@@ -249,42 +238,27 @@ public class reports_fragment extends Fragment {
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
                         Segnalazione s;
+                        Log.e("pippo",filteredlist.size()+"");
                         if(filteredlist.size()==0) {
+
                             //Ottengo l'oggetto dalla lista in posizione "position"
+                            Log.e("dataset",mDataset.size()+"sono qui");
                             s= mDataset.get(position);
+                            switchTipoSegnalazione(s);
+                            closeSearchView();
+                            mDataset.clear();
+                            filteredlist.clear();
+
+
                         }else{
-                            Log.e("filteredlist", filteredlist+"");
-                            s = filteredlist.get(position);}
 
+                            Log.e("dataset", "sono in filtered");
+                            s = filteredlist.get(position);
+                            closeSearchView();
+                            switchTipoSegnalazione(s);
 
-                        switch (s.getTipo()) {
-                            case "Smarrimento":
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
-                                break;
-                            case "Animale Ferito":
-                                //da cambiare con vistaAnimaleFerito
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s)).addToBackStack(null).commit();
-                                break;
-                            case "Zona Pericolosa":
-                                //da cambiare con vistaRitrovamento
-                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s)).addToBackStack(null).commit();
-                                 break;
-                            case "News":
-                                //da cambiare con vistaRitrovamento
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s)).addToBackStack(null).commit();
-                                break;
-                            case "Raccolta Fondi":
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
-                                break;
-                            case "Ritrovamento":
-                                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
-                                Toast.makeText(getContext(), "Fare vista ritrovamento", Toast.LENGTH_SHORT).show();
-                                break;
-
-
-                            default:
-                                break;
-
+                            filteredlist.clear();
+                            mDataset.clear();
                         }
 
                     }
@@ -301,6 +275,45 @@ public class reports_fragment extends Fragment {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+    private void closeSearchView() {
+        mainActivity= (MainActivity) getActivity();
+        main_action_bar= mainActivity.getMain_action_bar();
+        main_action_bar.collapseActionView();
+    }
+
+    private void switchTipoSegnalazione(Segnalazione s) {
+        closeSearchView();
+        switch (s.getTipo()) {
+            case "Smarrimento":
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
+                break;
+            case "Animale Ferito":
+                //da cambiare con vistaAnimaleFerito
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s)).addToBackStack(null).commit();
+                break;
+            case "Zona Pericolosa":
+                //da cambiare con vistaRitrovamento
+                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s)).addToBackStack(null).commit();
+                 break;
+            case "News":
+                //da cambiare con vistaRitrovamento
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s)).addToBackStack(null).commit();
+                break;
+            case "Raccolta Fondi":
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
+                break;
+            case "Ritrovamento":
+                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
+                Toast.makeText(getContext(), "Fare vista ritrovamento", Toast.LENGTH_SHORT).show();
+                break;
+
+
+            default:
+                break;
+
+        }
     }
 
     private void initDataset() {
@@ -326,15 +339,9 @@ public class reports_fragment extends Fragment {
                     mAdapter = new ReportAdapter(mDataset);
                     // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                     mRecyclerView.setAdapter(mAdapter);
-
-
-
                 }else {
                     Log.d("ERROR", "Error getting documents: ", task.getException());
                 }
-
-
-
             }
         });
 
@@ -367,20 +374,24 @@ public class reports_fragment extends Fragment {
             // list to our adapter class.
             mAdapter.filterList(filteredlist);
         }
+        for (Segnalazione item : filteredlist) {
+            Log.e("pippo2", item.getTipo() + " " + item.getTitolo());
+        }
     }
 
     public void filter(String text) {
         // creating a new array list to filter our data.
+
         filteredlist = new ArrayList<>();
 
         // running a for loop to compare elements.
         for (Segnalazione item : mDataset) {
-            // checking if the entered string matched with any item of our recycler view.
 
+            // checking if the entered string matched with any item of our recycler view.
             //TODO CAMBIARE CON getTitolo vedere se è corretto
             if (item.getTitolo().toLowerCase().contains(text.toLowerCase()) || item.getTipo().toLowerCase().contains(text.toLowerCase())) {
                 // if the item is matched we are
-                // adding it to our filtered list.
+                Log.e("gianpierpaologiovanni",item.getTipo()+" "+item.getTitolo());
                 filteredlist.add(item);
             }
         }
@@ -391,6 +402,7 @@ public class reports_fragment extends Fragment {
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
+
             mAdapter.filterList(filteredlist);
         }
     }

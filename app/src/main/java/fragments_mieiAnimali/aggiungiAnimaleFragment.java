@@ -144,7 +144,8 @@ public class aggiungiAnimaleFragment extends Fragment {
                 main_action_bar.setNavigationIcon(R.drawable.back);
                 main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View view) {getActivity().onBackPressed();}
+                    public void onClick(View view) {
+                        getActivity().onBackPressed();}
                 });
         }
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
@@ -286,11 +287,11 @@ public class aggiungiAnimaleFragment extends Fragment {
                         storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                startActivity(new Intent(getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                               getActivity().onBackPressed();
                             }
                         });
                     }else {
-                        startActivity(new Intent(getContext(), MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+                        getActivity().onBackPressed();
                     }
                 }
             }

@@ -83,6 +83,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     getActivity().onBackPressed();
                 }
             });

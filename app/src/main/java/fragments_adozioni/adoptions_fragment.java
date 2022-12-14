@@ -8,6 +8,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -56,6 +57,7 @@ import adapter.AdozioniAdapter;
 import class_general.OnSwipeListener;
 import class_general.RecyclerItemClickListener;
 import it.uniba.dib.sms2223_2.LoginActivity;
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
@@ -74,8 +76,8 @@ public class adoptions_fragment extends Fragment {
     protected RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
 
-    protected static AdozioniAdapter mAdapter;
-    protected static ArrayList<Animale> mDataset = new ArrayList<>();
+    protected  AdozioniAdapter mAdapter;
+    protected  ArrayList<Animale> mDataset = new ArrayList<>();
 
 
     private LinearLayout paginalogin;
@@ -96,6 +98,8 @@ public class adoptions_fragment extends Fragment {
     private ArrayList <Adozione> adozione= new ArrayList<>();
     private ArrayList<Persona> proprietari = new ArrayList<>();
     private ArrayList<Animale> filteredlist =new ArrayList<>();
+    private   MainActivity mainActivity;
+    private Toolbar main_action_bar;
 
 
     @Override
@@ -140,6 +144,7 @@ public class adoptions_fragment extends Fragment {
         aggiungiAdozione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                closeSearchView();
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new aggiungi_adozione_fragment()).addToBackStack(null).commit();
             }
         });
@@ -273,16 +278,12 @@ public class adoptions_fragment extends Fragment {
                                                                         if(task.isSuccessful())
                                                                         {
                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
-                                                                                proprietari.add( document3.toObject(Persona.class));
+                                                                              //  proprietari.add( document3.toObject(Persona.class));
                                                                                 mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
                                                                                 mRecyclerView.setAdapter(mAdapter);
                                                                                 if (mAdapter != null) {
                                                                                     onItemClick();
                                                                                 }
-
-
-
-
 
                                                                             }
 
@@ -605,11 +606,19 @@ public class adoptions_fragment extends Fragment {
 
                     Animale animale;
                     if(filteredlist.size()==0) {
+
                         //Ottengo l'oggetto dalla lista in posizione "position"
                         animale = mDataset.get(position);
+                        closeSearchView();
+                        mDataset.clear();
+                        filteredlist.clear();
                     }else{
+
                         Log.e("filteredlist", filteredlist+"");
                         animale = filteredlist.get(position);}
+                    closeSearchView();
+                    mDataset.clear();
+                    filteredlist.clear();
 
 
 
@@ -820,7 +829,11 @@ public void listnerAdozioni()
         }
     }
 
-
+    private void closeSearchView() {
+        mainActivity= (MainActivity) getActivity();
+        main_action_bar= mainActivity.getMain_action_bar();
+        main_action_bar.collapseActionView();
+    }
 
 
 

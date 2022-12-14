@@ -35,6 +35,10 @@ import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
 
+    public Toolbar getMain_action_bar() {
+        return main_action_bar;
+    }
+
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
     private int posizione;
@@ -42,15 +46,16 @@ public class MainActivity extends AppCompatActivity {
     private main_fragment main_fragment;
     private ViewPager2 viewPager2;
     private VPAdapter adapter;
-    private  MenuItem searchItem;
-    private  SearchView searchView;
+    private MenuItem searchItem;
+
+    public SearchView getSearchView() {
+        return searchView;
+    }
+
+    private SearchView searchView;
     private myanimals_fragment myanimals_fragment;
     private adoptions_fragment adoptions_fragment;
     private reports_fragment reports_fragment;
-
-
-
-
 
 
     @Override
@@ -67,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+
     }
 
     @Override
@@ -76,50 +82,100 @@ public class MainActivity extends AppCompatActivity {
             main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
             searchItem= menu.findItem(R.id.action_search);
             searchView= (SearchView) searchItem.getActionView();
+            viewPager2= main_fragment.getViewPager2();
+            adapter= (VPAdapter) viewPager2.getAdapter();
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String query) {
-                    return false;
-                }
-
-                @Override
-                public boolean onQueryTextChange(String newText) {
-                    try {
-                        viewPager2= main_fragment.getViewPager2();
-                        adapter= (VPAdapter) viewPager2.getAdapter();
-                        myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                        myanimals_fragment.filter(newText);
-                        Log.e("query","animals");
-                    }catch (Exception e){
-
-                    }
-                    try {
-                        viewPager2= main_fragment.getViewPager2();
-                        adapter= (VPAdapter) viewPager2.getAdapter();
-                        adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                        adoptions_fragment.filter(newText);
-                        Log.e("query","adoptions");
-                    }catch (Exception e){
-
-                    }
-                    try {
-                        viewPager2= main_fragment.getViewPager2();
-                        adapter= (VPAdapter) viewPager2.getAdapter();
-                        reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                        reports_fragment.filter(newText);
-                        Log.e("query","reports");
-                    }catch (Exception e){
-
-                    }
-
-                    return false;
-                }
-            });
+            searchFilterListener();
         }catch (Exception e){
 
         }
        return true;
+    }
+
+    private void searchFilterListener() {
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                /*
+                Log.e("dioaiutaci","CIAO");
+                try {
+
+                    myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    myanimals_fragment.filter(query);
+                    Log.e("query","animals");
+                }catch (Exception e){
+
+                }
+                try {
+
+                    adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    adoptions_fragment.filter(query);
+                    Log.e("query","adoptions");
+                }catch (Exception e){
+
+                }
+                try {
+
+                    reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    reports_fragment.filter(query);
+                    Log.e("query","reports");
+                }catch (Exception e){
+
+                }
+
+                 */
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                try {
+
+                    myanimals_fragment = (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    myanimals_fragment.filter(newText);
+                    Log.e("query", "animals");
+                } catch (Exception e) {
+
+                }
+                try {
+
+                    adoptions_fragment = (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    adoptions_fragment.filter(newText);
+                    Log.e("query", "adoptions");
+                } catch (Exception e) {
+
+                }
+                try {
+
+                    reports_fragment = (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+                    reports_fragment.filter(newText);
+                    Log.e("query", "reports");
+                } catch (Exception e) {
+
+                }
+
+
+                return true;
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+
+            @Override
+            public boolean onClose() {
+                try {
+
+                    Log.e("chiuso","per ferie");
+
+                }catch (Exception e) {
+
+                }
+                return false;
+            }
+
+        });
     }
 
     public void mostraProfilo(MenuItem item) {
