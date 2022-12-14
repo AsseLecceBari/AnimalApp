@@ -169,6 +169,10 @@ public class reports_fragment extends Fragment {
                 Log.e("ciao21", String.valueOf(myLocation.getLng()));
 
 
+                //passo la mia posizione piu i km selezionati
+                filterCoordinates((myLocation.getLat()+addLat),(myLocation.getLng()+addLng),(myLocation.getLat()-addLat),(myLocation.getLng()-addLng));
+
+
 
 
 
@@ -286,7 +290,7 @@ public class reports_fragment extends Fragment {
 
 
     }
-    public void filterCoordinates(String text) {
+    public void filterCoordinates(double latitudinePiu, double longitudinePiu,double latitudineMeno, double longitudineMeno) {
         // creating a new array list to filter our data.
         filteredlist = new ArrayList<>();
 
@@ -294,8 +298,8 @@ public class reports_fragment extends Fragment {
         for (Segnalazione item : mDataset) {
             // checking if the entered string matched with any item of our recycler view.
 
-            //TODO CAMBIARE CON getTitolo vedere se è corretto
-            if (item.getTitolo().toLowerCase().contains(text.toLowerCase()) || item.getTipo().toLowerCase().contains(text.toLowerCase())) {
+            //dove latitudine e longitudine è la mia posizione + i km scelti
+            if (item.getLatitudine()<=latitudinePiu && item.getLongitudine()<=longitudinePiu && item.getLatitudine()>=latitudineMeno && item.getLongitudine()>=longitudineMeno) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item);
