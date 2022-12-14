@@ -388,7 +388,7 @@ public class info_animale extends Fragment {
                     meseTot= 12+(meseTot);
                     if(annotot<2)// se negativo e minore di 2 inserisci solo i mesi vuol dire che non è passato un anno
                     {
-                        datafinale= datafinale  + meseTot+ " mesi fa ";
+                        datafinale= datafinale  + " " + meseTot+ " mesi fa ";
                     }
                     else{
                         datafinale= datafinale +" e " + meseTot+ " mesi fa ";
@@ -426,7 +426,7 @@ public class info_animale extends Fragment {
                     giornotot= 30+(giornotot);
 
                     if(meseTot<2)
-                    {datafinale= datafinale  + giornotot + " giorni fa ";}
+                    {datafinale= datafinale  + " "+ giornotot + " giorni fa ";}
                     else{datafinale= datafinale +" e " + giornotot + " giorni ";}
                 }
                 else{
@@ -456,7 +456,7 @@ public class info_animale extends Fragment {
                 if (orariotot<0){
                     orariotot=24+(orariotot);
 
-                    if(giornotot<2){ datafinale = datafinale +orariotot +" ore fa";}
+                    if(giornotot<2){ datafinale = datafinale + " "+ orariotot +" ore fa";}
                     else{datafinale = datafinale + " e " + orariotot + " ore fa " ;}
                 }else{
                     if(giornotot<2){ datafinale = datafinale + giornotot  +" giorno "+ " e "+ orariotot+" ore fa";}
@@ -519,7 +519,7 @@ public class info_animale extends Fragment {
         }
 
         else{
-            datafinale="Pubblicato meno di un minuto fa";
+            datafinale=" meno di un minuto fa";
         }
 
         return datafinale;
