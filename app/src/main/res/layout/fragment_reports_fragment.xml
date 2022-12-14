@@ -14,54 +14,44 @@
     <LinearLayout
         android:id="@+id/layoutaprifiltri1"
         android:layout_width="match_parent"
-        android:layout_height="63dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:orientation="vertical">
 
 
-
-
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btnaprifiltri1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginRight="15dp"
-                    android:text="Filtri"
-                    app:icon="@drawable/_492790985_3arrow_down_84192"
-                    app:iconPadding="8dp"
-                    android:visibility="visible"
-
-                    tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/chiudifiltri1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:layout_marginTop="3dp"
-                    android:layout_marginRight="15dp"
-                    android:clickable="true"
-                    android:text="Filtri"
-                    android:visibility="gone"
-                    app:icon="@drawable/_492790975_4arrow_right_84163"
-                    app:iconPadding="8dp"
-                    tools:ignore="SpeakableTextPresentCheck" />
-            </FrameLayout>
-
-
-
-
-        <View
-            android:id="@+id/divider"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="?android:attr/listDivider" />
+            android:layout_height="match_parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnaprifiltri1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="15dp"
+                android:text="Filtri"
+                android:visibility="visible"
+                app:icon="@drawable/_492790985_3arrow_down_84192"
+                app:iconPadding="8dp"
+
+                tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chiudifiltri1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="15dp"
+                android:clickable="true"
+                android:text="Filtri"
+                android:visibility="gone"
+                app:icon="@drawable/_492790975_4arrow_right_84163"
+                app:iconPadding="8dp"
+                tools:ignore="SpeakableTextPresentCheck" />
+        </FrameLayout>
+
 
     </LinearLayout>
 

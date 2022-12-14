@@ -1,19 +1,19 @@
 package model;
 
+import java.io.Serializable;
 import java.util.Map;
 
-public class Utente {
+public class Utente implements Serializable {
     private String email; //Stesso valore del documento
     private String telefono;
-    private double latitudine, longitudine;
-    private String ruolo;
-    private String indirizzo;
 
-    public Utente(String email, String telefono, double latitudine, double longitudine, String ruolo, String indirizzo) {
+    private String ruolo;
+    private Map<String,String> indirizzo;
+
+    public Utente(String email, String telefono, String ruolo, Map<String,String> indirizzo) {
         this.email = email;
         this.telefono = telefono;
-        this.latitudine = latitudine;
-        this.longitudine = longitudine;
+
         this.ruolo = ruolo;
         this.indirizzo = indirizzo;
     }
@@ -34,15 +34,9 @@ public class Utente {
     }
 
 
-    public double getLatitudine() {
-        return latitudine;
-    }
 
-    public double getLongitudine() {
-        return longitudine;
-    }
 
-    public String getIndirizzo() {
+    public Map<String, String> getIndirizzo() {
         return indirizzo;
     }
 }

@@ -595,9 +595,12 @@ public class adoptions_fragment extends Fragment {
 
 
             mAdapter.setOnClickListener(new AdozioniAdapter.OnClickListener() {
+
+                @SuppressLint("SuspiciousIndentation")
                 @Override
                 public void onitemClick(View view, int position) {
-                    int poszione_adozione = 0; //la poszione dell'adozione non è uguale a quella dell'animale perche l'adapter è dell'animale
+                    int poszione_adozione = 0;
+                    int posizione_proprietario=0;//la poszione dell'adozione non è uguale a quella dell'animale perche l'adapter è dell'animale
 
 
                     Animale animale;
@@ -619,10 +622,23 @@ public class adoptions_fragment extends Fragment {
                     }
                     Adozione ad= adozione.get(poszione_adozione);
 
+                    for(int a=0; a<proprietari.size(); a++)
+                    {
+                        if(Objects.equals(proprietari.get(a).getEmail(),animale.getEmailProprietario()))
+                        {
+                          posizione_proprietario=a;
+
+                            Log.d("ciao18",proprietari.get(posizione_proprietario).getEmail());
+                        }
+                    }
+
+                    Persona b= proprietari.get(posizione_proprietario);
+
 
                     Intent intent = new Intent(getContext(), ProfiloAnimale.class);
                     intent.putExtra("animale", animale);
                     intent.putExtra("adozione",ad );
+                    intent.putExtra("proprietario",b);
                     startActivity(intent);
 
 
@@ -700,12 +716,6 @@ public void listnerAdozioni()
 
             assert snapshot != null;
             for (DocumentChange dc : snapshot.getDocumentChanges()) {
-
-
-
-
-
-
 
 
                 switch (dc.getType()) {

@@ -5,8 +5,8 @@ import java.util.Map;
 public class Associazione extends Utente{
     private String codiceFiscaleAssociazione, denominazione;
 
-    public Associazione(String email, String telefono, double latitudine, double longitudine, String ruolo, String indirizzo, String codiceFiscaleAssociazione, String denominazione) {
-        super(email, telefono, latitudine, longitudine, ruolo, indirizzo);
+    public Associazione(String email, String telefono,  String ruolo, Map<String,String> indirizzo, String codiceFiscaleAssociazione, String denominazione) {
+        super(email, telefono,  ruolo, indirizzo);
         this.codiceFiscaleAssociazione = codiceFiscaleAssociazione;
         this.denominazione = denominazione;
     }

@@ -3,6 +3,7 @@ package profiloUtente;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -87,6 +88,7 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         if(auth.getCurrentUser()!=null) {
             Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                @SuppressLint("SetTextI18n")
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -105,9 +107,9 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     data.setText(p.getDataDiNascita());
                                     email.setText(p.getEmail());
                                     telefono.setText(p.getTelefono());
-                                    indirizzo.setText(p.getIndirizzo());
+                                    indirizzo.setText(p.getIndirizzo().get("via") +", " +p.getIndirizzo().get("civico")+" "+p.getIndirizzo().get("città")+"("+p.getIndirizzo().get("provincia")+")");
 
-                                    indirizzo.setVisibility(View.VISIBLE);
+                                            indirizzo.setVisibility(View.VISIBLE);
                                     tipoUtente.setVisibility(View.VISIBLE);
                                     nome.setVisibility(View.VISIBLE);
                                     cognome.setVisibility(View.VISIBLE);

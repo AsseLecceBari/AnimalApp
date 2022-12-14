@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -17,22 +16,22 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.AddressComponent;
+import com.google.android.libraries.places.api.model.AddressComponents;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
-import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
@@ -47,6 +46,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -95,6 +95,7 @@ public class RegisterActivity extends AppCompatActivity {
     private double latitudine, longitudine;
     private String address;
     private ColorStateList oldColors;
+   private  Map<String,String> indirizzo = new HashMap<>();
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -134,13 +135,78 @@ public class RegisterActivity extends AppCompatActivity {
 
         if (autocompleteFragment != null) {
             autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
+            autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
+
         }
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
-                address = place.getAddress();
+                AddressComponents ac = place.getAddressComponents();
+                List<AddressComponent> ac1=ac.asList();
+
+                String stato=" ";
+                String città= " ";
+                String provincia= " ";
+                String via= " ";
+                String civico= " ";
+                String CodicePostale= " ";
+
+                for(int a =0; a< ac1.size(); a++)
+               {
+               Log.d( "ciao20", String.valueOf(ac1.get(a).getTypes()));
+               Log.d("ciao20",ac1.get(a).getShortName());
+
+               if(ac1.get(a).getTypes().get(0).equals("street_number"))
+               {
+                   civico=ac1.get(a).getName();
+
+               }
+                else if(ac1.get(a).getTypes().get(0).equals("route"))
+                   {
+                       via=ac1.get(a).getName();
+
+                   }
+
+                else if(ac1.get(a).getTypes().get(0).equals("administrative_area_level_3" )||ac1.get(a).getTypes().get(0).equals("locality"))
+                   {
+                       città=ac1.get(a).getName();
+                   }
+
+                else if(ac1.get(a).getTypes().get(0).equals("administrative_area_level_2"))
+               {
+                   provincia = ac1.get(a).getShortName();
+
+               }
+               else if(ac1.get(a).getTypes().get(0).equals("country"))
+               {
+
+                   stato=ac1.get(a).getName();
+               }
+               else if(ac1.get(a).getTypes().get(0).equals("postal_code"))
+               {
+
+                   CodicePostale=ac1.get(a).getName();
+               }
+
+               }
+                indirizzo.put("via",via);
+                indirizzo.put("civico", civico);
+                indirizzo.put("codicePostale", CodicePostale);
+                indirizzo.put("città",città);
+                indirizzo.put("provincia",provincia);
+                indirizzo.put("stato",stato);
+
+
+
+
+                address = via+ ", " +civico +" "+CodicePostale+" " + città +", " + provincia +", "+ stato ;
+
+                Log.d("ciao123",address);
+
+
+
                 // todo remove focus from other fields -----------------------------
                 etRegEmail.clearFocus();
                 etRegPassword.clearFocus();
@@ -326,6 +392,10 @@ public class RegisterActivity extends AppCompatActivity {
         //prendo le coordinate dalle variabili dell'oggetto
         latitudine=geocoder.getLat();
         longitudine=geocoder.getLng();
+
+        indirizzo.put("latitudine", String.valueOf(latitudine));
+        indirizzo.put("longitudine",String.valueOf(longitudine));
+
         Log.d("lat", latitudine+"");
         Log.d("long", longitudine+"");
         Log.d("indirizzo", address+"");
@@ -417,8 +487,13 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
+
+
+
+
+
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Persona p =new Persona(email,telefono, latitudine, longitudine, ruolo, address, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
+                            Persona p =new Persona(email,telefono, ruolo, indirizzo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
                             db.collection("utenti").document(email+"").set(p);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -459,7 +534,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Veterinario v =new Veterinario(email, telefono, latitudine, longitudine, ruolo, address, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
+                            Veterinario v =new Veterinario(email, telefono, ruolo, indirizzo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
                             db.collection("utenti").document(email+"").set(v);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -495,7 +570,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Associazione a =new Associazione(email, telefono, latitudine, longitudine, ruolo, address, codiceFiscaleAssociazione, denominazione);
+                            Associazione a =new Associazione(email, telefono,  ruolo,indirizzo, codiceFiscaleAssociazione, denominazione);
                             db.collection("utenti").document(email+"").set(a);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{
@@ -531,7 +606,7 @@ public class RegisterActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
-                            Ente e =new Ente(email, telefono, latitudine, longitudine, ruolo, address, partitaIva, denominazione, etRegIsPrivato.isChecked());
+                            Ente e =new Ente(email, telefono,  ruolo,indirizzo, partitaIva, denominazione, etRegIsPrivato.isChecked());
                             db.collection("utenti").document(email+"").set(e);
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
                         }else{

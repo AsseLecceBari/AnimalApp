@@ -45,14 +45,17 @@ import java.util.Set;
 import java.util.TimeZone;
 import java.util.concurrent.TimeUnit;
 
+import class_general.GetCoordinates;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
+import model.Persona;
 import model.Preferenze;
 
 public class info_animale extends Fragment {
     private Animale animale;
     private Adozione adozione;
+    private Persona proprietario;
     private ImageView immagineAnimale ;
     private TextView descrizioneAnimale;
     private TextView dettagliAnimale;
@@ -75,6 +78,7 @@ public class info_animale extends Fragment {
         super.onCreate(savedInstanceState);
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
         adozione=(Adozione) getActivity().getIntent().getSerializableExtra("adozione");
+        proprietario=(Persona) getActivity().getIntent().getSerializableExtra("proprietario");
 
     }
 
@@ -103,6 +107,13 @@ public class info_animale extends Fragment {
        initDataAnnunci();
 
        dataPubblicazione.setText("Pubblicato" +differenzaDataPubblicazione(adozione.getDataPubblicazione()));
+
+
+       // GetCoordinates coordinates= new GetCoordinates(proprietario.getIndirizzo());
+
+      //  Log.d("ciao18",coordinates.getLat()+ " " +coordinates.getLng());
+
+
 
 
 
