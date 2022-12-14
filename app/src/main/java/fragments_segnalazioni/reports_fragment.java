@@ -181,15 +181,43 @@ public class reports_fragment extends Fragment {
                 // Before you perform the actual permission request, check whether your app
                 // already has the permissions, and whether your app needs to show a permission
                 // rationale dialog. For more details, see Request permissions.
+                /*
                 locationPermissionRequest.launch(new String[] {
                         Manifest.permission.ACCESS_FINE_LOCATION,
                         Manifest.permission.ACCESS_COARSE_LOCATION
                 });
+
+                 */
             }
 
+            @SuppressLint("MissingPermission")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
+                float value=slider.getValue();
+                Log.e("ciao61", String.valueOf(value));
+                //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
+                double addLat=value*(1/111.121);
+                double addLng=(1/111.0)*value;
+                Log.e("ciao11", String.valueOf(addLat));
+                Log.e("ciao11", String.valueOf(addLng));
 
+                myLocation=new GeolocationClass(myLat,myLng);
+                Log.e("ciao21", String.valueOf(myLocation.getLat()));
+                Log.e("ciao21", String.valueOf(myLocation.getLng()));
+
+                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            // Logic to handle location object
+                            //passo la mia posizione piu i km selezionati
+                            filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
+
+                            Log.e("ciao200",location.toString());
+                        }
+                    }
+                });
             }
         });
         //on change value listener
@@ -197,6 +225,7 @@ public class reports_fragment extends Fragment {
             @SuppressLint("MissingPermission")
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+                /*
                 Log.e("ciao61", String.valueOf(value));
                 //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
                 double addLat=value*(1/111.121);
@@ -215,12 +244,14 @@ public class reports_fragment extends Fragment {
                                 if (location != null) {
                                     // Logic to handle location object
                                     //passo la mia posizione piu i km selezionati
-                                //    filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
+                                    filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
 
                                     Log.e("ciao200",location.toString());
                                 }
                             }
                         });
+
+                 */
                 sliderReport.setLabelFormatter(new LabelFormatter() {
                     @NonNull
                     @Override
@@ -248,15 +279,11 @@ public class reports_fragment extends Fragment {
                             closeSearchView();
                             mDataset.clear();
                             filteredlist.clear();
-
-
                         }else{
-
                             Log.e("dataset", "sono in filtered");
                             s = filteredlist.get(position);
                             closeSearchView();
                             switchTipoSegnalazione(s);
-
                             filteredlist.clear();
                             mDataset.clear();
                         }
