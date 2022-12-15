@@ -134,6 +134,8 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     telefono.setText(e.getTelefono());
                                     denominazione.setText(e.getDenominazione());
                                     partitaIva.setText(e.getPartitaIva());
+                                    indirizzo.setText(e.getIndirizzo().get("via") +", " +e.getIndirizzo().get("civico")+" "+e.getIndirizzo().get("città")+"("+e.getIndirizzo().get("provincia")+")");
+
 
                                     tipoUtente.setVisibility(View.VISIBLE);
                                     indirizzo.setVisibility(View.VISIBLE);
@@ -157,6 +159,7 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     telefono.setText(a.getTelefono());
                                     cf.setText(a.getCodiceFiscaleAssociazione());
                                     denominazione.setText((a.getDenominazione()));
+                                    indirizzo.setText(a.getIndirizzo().get("via") +", " +a.getIndirizzo().get("civico")+" "+a.getIndirizzo().get("città")+"("+a.getIndirizzo().get("provincia")+")");
 
 
                                     indirizzo.setVisibility(View.VISIBLE);
@@ -184,6 +187,8 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     telefono.setText(v.getTelefono());
                                     efnovi.setText(v.getNumEFNOVI());
                                     partitaIva.setText(v.getPartitaIva());
+                                    indirizzo.setText(v.getIndirizzo().get("via") +", " +v.getIndirizzo().get("civico")+" "+v.getIndirizzo().get("città")+"("+v.getIndirizzo().get("provincia")+")");
+
 
                                     indirizzo.setVisibility(View.VISIBLE);
                                     tipoUtente.setVisibility(View.VISIBLE);
