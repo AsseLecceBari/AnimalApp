@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
+import android.widget.CompoundButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -46,7 +47,7 @@ public class myanimals_fragment extends Fragment {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    FloatingActionButton addAnimale;
+    private FloatingActionButton addAnimale, addIncarico;
     private Animale a;
     private MaterialCheckBox mostraSoloIncarico;
 
@@ -84,14 +85,18 @@ public class myanimals_fragment extends Fragment {
         auth=FirebaseAuth.getInstance();
         animaleDAO= new AnimaleDB();
 
+
         // controlli per la checkbox in carico
         CollectionReference reference=db.collection("utenti");
         if(auth.getCurrentUser()!=null) {
             Query query = reference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
+
+
                         for(QueryDocumentSnapshot document : task.getResult()){
                             if(!(document.get("ruolo").toString().equals("proprietario"))){
                                 // Nascondo la checkbox che mi mostra gli in carico
@@ -106,6 +111,44 @@ public class myanimals_fragment extends Fragment {
                 }
             });
         }
+
+        addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
+        addIncarico=rootView.findViewById(R.id.aggiungiAnimaliInCaricoBtn);
+
+
+
+        //se la check box è premuta il bottone cambia
+        if(!mostraSoloIncarico.isChecked()){
+            addAnimale.setVisibility(View.VISIBLE);
+            addIncarico.setVisibility(View.GONE);
+        }else{
+            addAnimale.setVisibility(View.GONE);
+            addIncarico.setVisibility(View.VISIBLE);
+        }
+        mostraSoloIncarico.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //se la check box è premuta il bottone cambia
+                if(!mostraSoloIncarico.isChecked()){
+                    addAnimale.setVisibility(View.VISIBLE);
+                    addIncarico.setVisibility(View.GONE);
+                }else{
+                    addAnimale.setVisibility(View.GONE);
+                    addIncarico.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+        addIncarico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // passo al fragment per leggere il qr code dell'animale
+                // e inserire la data di inizio carico
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiCarico()).commit();
+
+            }
+        });
+
 
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         if(auth.getCurrentUser()!=null) {
@@ -141,10 +184,7 @@ public class myanimals_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 closeSearchView();
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.fragment_slide_left_enter,
-                        R.anim.fragment_slide_left_exit,
-                        R.anim.fragment_slide_right_enter,
-                        R.anim.fragment_slide_right_exit).addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
             }
         });
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml

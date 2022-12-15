@@ -220,8 +220,6 @@ public class RegisterActivity extends AppCompatActivity {
                 nome.clearFocus();
                 cognome.clearFocus();
                 etichettaLocalita.setTextColor(Color.GREEN);
-                String testo = (String) etichettaLocalita.getText();
-                etichettaLocalita.setText(testo + " - INSERITO! ");
             }
 
             @Override
