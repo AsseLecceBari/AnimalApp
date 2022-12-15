@@ -225,7 +225,7 @@ public class reports_fragment extends Fragment {
             @SuppressLint("MissingPermission")
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-                /*
+
                 Log.e("ciao61", String.valueOf(value));
                 //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
                 double addLat=value*(1/111.121);
@@ -251,7 +251,7 @@ public class reports_fragment extends Fragment {
                             }
                         });
 
-                 */
+
                 sliderReport.setLabelFormatter(new LabelFormatter() {
                     @NonNull
                     @Override
