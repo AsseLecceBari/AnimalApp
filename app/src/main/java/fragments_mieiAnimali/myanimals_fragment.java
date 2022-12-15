@@ -187,10 +187,7 @@ public class myanimals_fragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
             }
         });
-        //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
-        //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         //Inizializzo l'ascoltatore al click dell'item
         mRecyclerView.addOnItemTouchListener(

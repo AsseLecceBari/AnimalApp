@@ -22,11 +22,6 @@
         android:theme="@style/AppTheme"
         tools:targetApi="32" >
 
-        <service
-            android:name=".MainActivity"
-            android:foregroundServiceType="location" >
-        <!-- Any inner elements would go here. -->
-    </service>
 
 
 

@@ -32,7 +32,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mostraInCarico"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/recycle_view_animals" />
+        tools:listitem="@layout/recycle_view_animals"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="vertical"/>
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

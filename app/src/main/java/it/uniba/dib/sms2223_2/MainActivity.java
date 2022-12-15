@@ -44,8 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private int posizione;
     private TabLayout tabLayout;
     private main_fragment main_fragment;
-    private ViewPager2 viewPager2;
-    private VPAdapter adapter;
+
     private MenuItem searchItem;
 
     public SearchView getSearchView() {
@@ -73,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
 
+
     }
 
     @Override
@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
             main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
             searchItem= menu.findItem(R.id.action_search);
             searchView= (SearchView) searchItem.getActionView();
-            viewPager2= main_fragment.getViewPager2();
-            adapter= (VPAdapter) viewPager2.getAdapter();
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
             searchFilterListener();
         }catch (Exception e){
@@ -131,8 +129,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
+                main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                ViewPager2 viewPager2=main_fragment.getViewPager2();
+                VPAdapter adapter= (VPAdapter) viewPager2.getAdapter();
                 try {
 
+                    Log.e("DOVESEI","SONOQUI");
                     myanimals_fragment = (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     myanimals_fragment.filter(newText);
                     Log.e("query", "animals");
@@ -140,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 try {
-
                     adoptions_fragment = (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     adoptions_fragment.filter(newText);
                     Log.e("query", "adoptions");
@@ -148,15 +150,12 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 try {
-
                     reports_fragment = (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     reports_fragment.filter(newText);
                     Log.e("query", "reports");
                 } catch (Exception e) {
 
                 }
-
-
                 return true;
             }
         });

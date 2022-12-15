@@ -18,6 +18,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
 import com.google.android.material.textview.MaterialTextView;
@@ -96,7 +98,7 @@ public class reports_fragment extends Fragment {
     //permessi posizione
 
 
-    ActivityResultLauncher<String[]> locationPermissionRequest;
+    private ActivityResultLauncher<String[]> locationPermissionRequest;
 
 
 
@@ -118,7 +120,7 @@ public class reports_fragment extends Fragment {
                                 // Only approximate location access granted.
 
                             } else {
-                                // No location access granted.
+
                             }
                         }
                 );
@@ -174,6 +176,7 @@ public class reports_fragment extends Fragment {
 
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleReport);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerView.setHasFixedSize(true);
 
         sliderReport=rootView.findViewById(R.id.sliderReport);
         imageSliderRep= rootView.findViewById(R.id.imageSliderRep);
@@ -192,7 +195,6 @@ public class reports_fragment extends Fragment {
                 // Before you perform the actual permission request, check whether your app
                 // already has the permissions, and whether your app needs to show a permission
                 // rationale dialog. For more details, see Request permissions.
-
                getCurrentLocationPosition();
 
 
@@ -457,8 +459,8 @@ public class reports_fragment extends Fragment {
     private void  getCurrentLocationPosition() {
 
 
-        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
 
         } else if ((shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) && (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION))) {
@@ -479,7 +481,9 @@ public class reports_fragment extends Fragment {
 
 
     public void showAlertDialog() {
-        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+
+
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getView().getContext());
         alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
         alertDialogBuilder.setPositiveButton("Ho capito",
                 new DialogInterface.OnClickListener() {
