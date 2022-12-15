@@ -214,5 +214,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    public fragments_segnalazioni.reports_fragment getReports_fragment() {
+        return reports_fragment;
+    }
 }

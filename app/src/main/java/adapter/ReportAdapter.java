@@ -17,7 +17,10 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -27,8 +30,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     private ArrayList<Segnalazione> localDataSet;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView dataReport;
-        private TextView tipoReport;
+        private TextView dataReport,tipoReport,titoloReport;
 
         private ImageView imageReport;
 
@@ -43,6 +45,9 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             return dataReport;
         }
 
+        public TextView getTitoloReport() {
+            return titoloReport;
+        }
 
         public ImageView getImageReport() {
             return imageReport;
@@ -55,11 +60,12 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         public ViewHolder(View view) {
             super(view);
             //Prendo i riferimenti ai widget
-            dataReport = (TextView) view.findViewById(R.id.dataPub);
-            tipoReport= (TextView) view.findViewById(R.id.tipoReport);
+            dataReport =  view.findViewById(R.id.dataPub);
+            tipoReport=  view.findViewById(R.id.tipoReport);
+            titoloReport=  view.findViewById(R.id.titoloReport);
 
 
-            imageReport=(ImageView) view.findViewById(R.id.imageReport);
+            imageReport= view.findViewById(R.id.imageReport);
         }
 
 
@@ -88,6 +94,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         //Vengono inseriti i dati degli animali
         holder.getDataReport().setText(localDataSet.get(position).getData());
         holder.getTipoReport().setText(localDataSet.get(position).getTipo());
+        holder.getTitoloReport().setText(localDataSet.get(position).getTitolo());
 
         FirebaseStorage storage;
         StorageReference storageRef;
@@ -120,6 +127,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         // as change in recycler view data.
         notifyDataSetChanged();
     }
+
 
 
 
