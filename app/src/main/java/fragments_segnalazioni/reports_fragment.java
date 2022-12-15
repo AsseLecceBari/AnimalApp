@@ -2,16 +2,22 @@ package fragments_segnalazioni;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,7 +64,7 @@ import adapter.ReportAdapter;
 
 
 public class reports_fragment extends Fragment {
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+   // StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     protected RecyclerView mRecyclerView;
@@ -81,11 +87,31 @@ public class reports_fragment extends Fragment {
     private View bottonechiudifiltri1;
 
     private FusedLocationProviderClient fusedLocationClient;
+    private static final int Request_code=101;
     private   MainActivity mainActivity;
     private Toolbar main_action_bar;
 
+    private ActivityResultLauncher<String[]> locationPermissionRequest1= new ActivityResultLauncher<String[]>() {
+        @Override
+        public void launch(String[] input, @Nullable ActivityOptionsCompat options) {
+
+        }
+
+        @Override
+        public void unregister() {
+
+        }
+
+        @NonNull
+        @Override
+        public ActivityResultContract<String[], ?> getContract() {
+            return null;
+        }
+    };
+
+
     //permessi posizione
-    ActivityResultLauncher<String[]> locationPermissionRequest =
+      ActivityResultLauncher<String[]> locationPermissionRequest =
             registerForActivityResult(new ActivityResultContracts
                             .RequestMultiplePermissions(), result -> {
                         Boolean fineLocationGranted = result.getOrDefault(
@@ -94,16 +120,20 @@ public class reports_fragment extends Fragment {
                                 Manifest.permission.ACCESS_COARSE_LOCATION,false);
                         if (fineLocationGranted != null && fineLocationGranted) {
                             // Precise location access granted.
+
                         } else if (coarseLocationGranted != null && coarseLocationGranted) {
                             // Only approximate location access granted.
+
                         } else {
                             // No location access granted.
+
+
                         }
                     }
             );
 
 
-    // ...
+
 
 
 
@@ -146,7 +176,7 @@ public class reports_fragment extends Fragment {
 
 
         View rootView = inflater.inflate(R.layout.fragment_reports_fragment, container, false);
-        StrictMode.setThreadPolicy(policy);
+       // StrictMode.setThreadPolicy(policy);
 
 
         layoutfiltri1 = rootView.findViewById(R.id.layoutfiltri1);
@@ -181,29 +211,23 @@ public class reports_fragment extends Fragment {
                 // Before you perform the actual permission request, check whether your app
                 // already has the permissions, and whether your app needs to show a permission
                 // rationale dialog. For more details, see Request permissions.
-                /*
-                locationPermissionRequest.launch(new String[] {
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                });
 
-                 */
+               // getCurrentLocationPosition();
+                checkAndRequestForPermission();
+
+
             }
+
 
             @SuppressLint("MissingPermission")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                float value=slider.getValue();
-                Log.e("ciao61", String.valueOf(value));
+/*
                 //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
                 double addLat=value*(1/111.121);
                 double addLng=(1/111.0)*value;
-                Log.e("ciao11", String.valueOf(addLat));
-                Log.e("ciao11", String.valueOf(addLng));
 
-                myLocation=new GeolocationClass(myLat,myLng);
-                Log.e("ciao21", String.valueOf(myLocation.getLat()));
-                Log.e("ciao21", String.valueOf(myLocation.getLng()));
+               // getCurrentLocation(fusedLocationClient,addLat,addLng);
 
                 fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
                     @Override
@@ -214,44 +238,23 @@ public class reports_fragment extends Fragment {
                             //passo la mia posizione piu i km selezionati
                             filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
 
-                            Log.e("ciao200",location.toString());
-                        }
+                        Log.e("ciao200",location.toString());
                     }
-                });
+                }
+            });
+
+*/
+
+
             }
         });
+
+
         //on change value listener
         sliderReport.addOnChangeListener(new Slider.OnChangeListener() {
             @SuppressLint("MissingPermission")
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-
-                Log.e("ciao61", String.valueOf(value));
-                //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
-                double addLat=value*(1/111.121);
-                double addLng=(1/111.0)*value;
-                Log.e("ciao11", String.valueOf(addLat));
-                Log.e("ciao11", String.valueOf(addLng));
-
-                myLocation=new GeolocationClass(myLat,myLng);
-                Log.e("ciao21", String.valueOf(myLocation.getLat()));
-                Log.e("ciao21", String.valueOf(myLocation.getLng()));
-
-                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-                            @Override
-                            public void onSuccess(Location location) {
-                                // Got last known location. In some rare situations this can be null.
-                                if (location != null) {
-                                    // Logic to handle location object
-                                    //passo la mia posizione piu i km selezionati
-                                    filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
-
-                                    Log.e("ciao200",location.toString());
-                                }
-                            }
-                        });
-
-
                 sliderReport.setLabelFormatter(new LabelFormatter() {
                     @NonNull
                     @Override
@@ -378,6 +381,7 @@ public class reports_fragment extends Fragment {
 
     }
     public void filterCoordinates(double latitudinePiu, double longitudinePiu,double latitudineMeno, double longitudineMeno) {
+        Log.e("provaaaa","sono dentro");
         // creating a new array list to filter our data.
         filteredlist = new ArrayList<>();
 
@@ -466,5 +470,72 @@ public class reports_fragment extends Fragment {
 
 
     }
+
+    //gesitone permessi
+
+    private void  getCurrentLocationPosition() {
+
+
+        if (ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+
+
+        } else if ((shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) && (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION))) {
+            showAlertDialog();
+
+        } else {
+            // You can directly ask for the permission.
+            // The registered ActivityResultCallback gets the result of this request.
+            locationPermissionRequest.launch(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            });
+
+        }
+    }
+       // return false;
+
+
+
+    public void showAlertDialog() {
+        androidx.appcompat.app.AlertDialog.Builder alertDialogBuilder = new androidx.appcompat.app.AlertDialog.Builder(getContext());
+        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
+        alertDialogBuilder.setPositiveButton("Ho capito",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
+    private void checkAndRequestForPermission() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)&& ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)){
+               // Toast.makeText(getContext(), "Please Allow the Required Permissions", Toast.LENGTH_SHORT).show();
+                showAlertDialog();
+            }
+            else{
+                locationPermissionRequest.launch(new String[]{
+                        Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION
+                });
+            }
+        }
+
+    }
+
+
+
 
 }

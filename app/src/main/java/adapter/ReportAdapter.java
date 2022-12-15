@@ -112,6 +112,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         return localDataSet.size();
     }
     public void filterList(ArrayList<Segnalazione> filterlist) {
+
         // below line is to add our filtered
         // list in our course array list.
         localDataSet = filterlist;
