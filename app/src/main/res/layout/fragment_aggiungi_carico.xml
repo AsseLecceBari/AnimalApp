@@ -1,14 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments_mieiAnimali.aggiungiCarico">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="fragments_mieiAnimali.aggiungiCarico"
+    android:id="@+id/aggiungiInCarico">
+>
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Aggiungi in carico con il qr code"
-        android:textSize="30dp"/>
+        android:orientation="vertical">
 
+
+    <com.budiyev.android.codescanner.CodeScannerView
+        android:id="@+id/scanner_view"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/datiAnimale"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="20dp"
+            android:padding="10dp"
+            android:text="Dati animale"
+            android:textSize="30dp"></com.google.android.material.textview.MaterialTextView>
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/aggiungi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:src="@android:color/holo_green_dark"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:visibility="gone"/>
 </FrameLayout>
