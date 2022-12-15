@@ -91,48 +91,12 @@ public class reports_fragment extends Fragment {
     private   MainActivity mainActivity;
     private Toolbar main_action_bar;
 
-    private ActivityResultLauncher<String[]> locationPermissionRequest1= new ActivityResultLauncher<String[]>() {
-        @Override
-        public void launch(String[] input, @Nullable ActivityOptionsCompat options) {
-
-        }
-
-        @Override
-        public void unregister() {
-
-        }
-
-        @NonNull
-        @Override
-        public ActivityResultContract<String[], ?> getContract() {
-            return null;
-        }
-    };
 
 
     //permessi posizione
-      ActivityResultLauncher<String[]> locationPermissionRequest =
-            registerForActivityResult(new ActivityResultContracts
-                            .RequestMultiplePermissions(), result -> {
-                        Boolean fineLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_FINE_LOCATION, false);
-                        Boolean coarseLocationGranted = result.getOrDefault(
-                                Manifest.permission.ACCESS_COARSE_LOCATION,false);
-                        if (fineLocationGranted != null && fineLocationGranted) {
-                            // Precise location access granted.
-
-                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                            // Only approximate location access granted.
-
-                        } else {
-                            // No location access granted.
 
 
-                        }
-                    }
-            );
-
-
+    ActivityResultLauncher<String[]> locationPermissionRequest;
 
 
 
@@ -141,6 +105,23 @@ public class reports_fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        locationPermissionRequest= registerForActivityResult(new ActivityResultContracts
+                                .RequestMultiplePermissions(), result -> {
+                            Boolean fineLocationGranted = result.getOrDefault(
+                                    Manifest.permission.ACCESS_FINE_LOCATION, false);
+                            Boolean coarseLocationGranted = result.getOrDefault(
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                            if (fineLocationGranted != null && fineLocationGranted) {
+                                // Precise location access granted.
+
+                            } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                                // Only approximate location access granted.
+
+                            } else {
+                                // No location access granted.
+                            }
+                        }
+                );
     }
 
 
@@ -212,8 +193,8 @@ public class reports_fragment extends Fragment {
                 // already has the permissions, and whether your app needs to show a permission
                 // rationale dialog. For more details, see Request permissions.
 
-               // getCurrentLocationPosition();
-                checkAndRequestForPermission();
+               getCurrentLocationPosition();
+
 
 
             }
@@ -486,7 +467,7 @@ public class reports_fragment extends Fragment {
         } else {
             // You can directly ask for the permission.
             // The registered ActivityResultCallback gets the result of this request.
-            locationPermissionRequest.launch(new String[]{
+           locationPermissionRequest.launch(new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             });
@@ -504,6 +485,10 @@ public class reports_fragment extends Fragment {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
+                        locationPermissionRequest.launch(new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        });
 
                     }
                 });
@@ -519,21 +504,7 @@ public class reports_fragment extends Fragment {
     }
 
 
-    private void checkAndRequestForPermission() {
-        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
-            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION)&& ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION)){
-               // Toast.makeText(getContext(), "Please Allow the Required Permissions", Toast.LENGTH_SHORT).show();
-                showAlertDialog();
-            }
-            else{
-                locationPermissionRequest.launch(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.ACCESS_COARSE_LOCATION
-                });
-            }
-        }
 
-    }
 
 
 
