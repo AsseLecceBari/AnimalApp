@@ -17,10 +17,14 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -30,7 +34,9 @@ import com.google.zxing.Result;
 import java.time.temporal.Temporal;
 import java.util.Random;
 
+import DB.AnimaleDB;
 import it.uniba.dib.sms2223_2.R;
+import model.Animale;
 import model.Carico;
 
 public class aggiungiCarico extends Fragment {
@@ -63,16 +69,8 @@ public class aggiungiCarico extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(activity, result.getText(), Toast.LENGTH_SHORT).show();
-                        // se l'idAnimale è appartenente ad un animale che non è in carico a nessuno
-                        // allora passo alla fase di conferma presa in carico
-                        if(isAllow("-105106619")){ // todo inserire come parametro result.getText()
-                            aggiungi.setVisibility(View.VISIBLE);
-                            // todo mettere dati reali del carico
-                            carico = new Carico(new Random().nextInt(999999999)+"", "datainizio", "datafine", "idAnimale", "idProfessionista", "nota", true);
-                        }else{
-                            aggiungi.setVisibility(View.GONE);
-                        }
+                        // se l'idAnimale è appartenente ad un animale che non è in carico a nessuno allora passo alla fase di conferma presa in carico
+                        esisteAnimale(result.getText());
                     }
                 });
             }
@@ -96,13 +94,34 @@ public class aggiungiCarico extends Fragment {
         return root;
     }
 
-    private boolean isAllow(String idAnimale) {
+    private void esisteAnimale(String idAnimale) {
+        // mi riempio la field dati
+        DocumentReference docRef = db.collection("animali").document(idAnimale);
+        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+            @Override
+            public void onSuccess(DocumentSnapshot documentSnapshot) {
+                Animale a = documentSnapshot.toObject(Animale.class);
+                if(a!= null){
+                    controllo(idAnimale, a);
+                }else{
+                    dati.setText("Non è un animale censito!");
+                    aggiungi.setVisibility(View.GONE);
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+            }
+        });
+    }
+
+    private void controllo(String idAnimale, Animale a) {
         // controlli per la checkbox in carico
         CollectionReference reference=db.collection("carichi");
         if(auth.getCurrentUser()!=null) {
             Query query = reference.whereEqualTo("idProfessionista", auth.getCurrentUser().getEmail())
                                    .whereEqualTo("idAnimale", idAnimale)
-                                   .whereEqualTo("isInCorso", true);
+                                   .whereEqualTo("inCorso", true);
 
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
                 @Override
@@ -110,23 +129,24 @@ public class aggiungiCarico extends Fragment {
                     if (task.isSuccessful()) {
                         if (task.getResult().isEmpty()){
                             // non ce nessuno in corso
-                            res = true;
-                            Log.e("test", "1");
+                            aggiungi.setVisibility(View.VISIBLE);
+                            carico = new Carico(new Random().nextInt(999999999)+"", java.time.LocalTime.now()+"", "datafine", idAnimale, auth.getCurrentUser().getEmail(), "nota prova", true);
+
+                            // mi riempio la field dati
+                            dati.setText(a.getNome() + ", questo " + a.getGenere() + ", può essere preso in carico! \nPREMI IL PULSANTE PER AGGIUNGERE");
+
                         }else{
-                            res = false;
-                            Log.e("test", "2");
+                            // ce gia qualcuno in corso
+                            aggiungi.setVisibility(View.GONE);
+                            dati.setText("Attualmente gia' in carico");
                         }
-                    }else{
-                        res = true;
-                        Log.e("test", "3");
+                    }else {
+                        aggiungi.setVisibility(View.GONE);
+                        dati.setText("Impossibile aggiungere!");
                     }
                 }
             });
-            Log.e("test", res+" - -");
-            return res;  // todo res sembra asincrono e rimane false quando viene restituito
         }
-
-        return false;
     }
 
     @Override
