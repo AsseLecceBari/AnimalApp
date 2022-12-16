@@ -28,24 +28,33 @@
                 android:layout_height="200dp"
                 tools:src="@drawable/ic_launcher_foreground" />
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/dataZonaPericolosa"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="data"
-                android:textSize="12dp"
-                android:gravity="right"
-                />
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/AppTheme"
+                    android:layout_width="140dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
 
-            <com.google.android.material.divider.MaterialDivider
-                style="@style/AppTheme"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="15dp"
-                />
+                    />
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Titolo "
+                    android:textSize="18dp"
+                    />
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/AppTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
 
+                    />
+
+            </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -57,12 +66,33 @@
                 android:textSize="28dp">
             </com.google.android.material.textview.MaterialTextView>
 
-            <com.google.android.material.divider.MaterialDivider
-                style="@style/AppTheme"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="15dp"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/AppTheme"
+                    android:layout_width="120dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
+
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Descrizione "
+                    android:textSize="18dp"
+                    />
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/AppTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
+
+                    />
+
+            </LinearLayout>
 
             <com.google.android.material.textview.MaterialTextView
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -74,30 +104,51 @@
                 android:textSize="28dp">
             </com.google.android.material.textview.MaterialTextView>
 
-
-            <com.google.android.material.divider.MaterialDivider
-                style="@style/AppTheme"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="15dp"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                >
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/AppTheme"
+                    android:layout_width="140dp"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
 
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" Mappa "
+                    android:textSize="18dp"
+                    />
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/AppTheme"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="13dp"
 
+                    />
+
+            </LinearLayout>
 
             <com.google.android.gms.maps.MapView
                 android:id="@+id/mapViewZonaPericolosa"
                 android:layout_width="wrap_content"
-                android:layout_height="300dp"
+                android:layout_height="220dp"
                 android:layout_marginTop="25dp"
                 />
 
-
-
-
-
-
-
-
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/dataZonaPericolosa"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="data"
+                android:textSize="12dp"
+                android:gravity="left"
+                />
 
 
         </LinearLayout>

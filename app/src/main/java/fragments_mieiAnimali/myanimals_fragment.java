@@ -53,7 +53,6 @@ public class myanimals_fragment extends Fragment {
     private MaterialCheckBox mostraSoloIncarico;
 
     private RecyclerView mRecyclerView;
-    private static AnimalAdapter mAdapter;
 
 
     public ArrayList<Animale> getmDataset() {
@@ -62,7 +61,9 @@ public class myanimals_fragment extends Fragment {
 
     private static ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
-    private ArrayList<Carico> caricoDataset= new ArrayList<>();
+
+    private static AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
+
     private AnimaleDB animaleDAO;
     private MainActivity mainActivity;
     private Toolbar main_action_bar;
@@ -238,10 +239,7 @@ public class myanimals_fragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
             }
         });
-        //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
-        //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
 
         //Inizializzo l'ascoltatore al click dell'item
         mRecyclerView.addOnItemTouchListener(

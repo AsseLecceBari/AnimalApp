@@ -170,11 +170,9 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
 
 
     public void filterList(ArrayList<Animale> filterlist) {
-        // below line is to add our filtered
-        // list in our course array list.
-        localDataSet = filterlist;
-        // below line is to notify our adapter
-        // as change in recycler view data.
+        localDataSet.clear();
+        localDataSet.addAll(filterlist);
+        //notifica all'adapter che sono cambiati i dati nella recycle view
         notifyDataSetChanged();
     }
 

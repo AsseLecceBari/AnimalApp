@@ -23,6 +23,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnaprifiltri1"
                 android:layout_width="wrap_content"
@@ -50,6 +52,18 @@
                 app:icon="@drawable/_492790975_4arrow_right_84163"
                 app:iconPadding="8dp"
                 tools:ignore="SpeakableTextPresentCheck" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/resetButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reset"
+                android:layout_gravity="left"
+                android:layout_marginTop="3dp"
+                android:layout_marginRight="15dp"
+                android:clickable="true"
+                app:icon="@android:drawable/ic_menu_revert"
+                android:visibility="gone"/>
         </FrameLayout>
 
 
@@ -69,39 +83,49 @@
             android:gravity="center">
 
             <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioTueSegnalazioni"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Le tue Segnalazioni"
+                android:layout_marginLeft="0dp"
                 />
 
             <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioTutti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tutti"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="20dp"/>
 
             <com.google.android.material.radiobutton.MaterialRadioButton
+                android:id="@+id/radioPreferiti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Preferiti"
-                android:layout_marginLeft="10dp"/>
+                android:layout_marginLeft="20dp"/>
 
 
 
         </RadioGroup>
 
-            <com.google.android.material.textview.MaterialTextView
-                style="@style/MaterialAlertDialog.Material3"
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/attivaSlider"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text=" Raggio di ricerca "
-                android:textSize="18dp" />
+                android:text="Filtra per Raggio"
+                android:textSize="18dp"
+                />
+
+
+
 
             <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/sliderLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:visibility="gone"
                >
 
                 <ImageView
@@ -116,14 +140,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contextClickable="false"
-                    android:stepSize="5.0"
-                    android:valueFrom="5.0"
-                    android:valueTo="100.0"
+                    android:stepSize="15.0"
+                    android:valueFrom="15.0"
+                    android:valueTo="105.0"
+
                     tools:ignore="SpeakableTextPresentCheck" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+
             </androidx.appcompat.widget.LinearLayoutCompat>
 
 

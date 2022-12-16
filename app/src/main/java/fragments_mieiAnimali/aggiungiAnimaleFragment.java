@@ -83,7 +83,6 @@ public class aggiungiAnimaleFragment extends Fragment {
                     if(file!=null){
                         imgAnimaleReg.setVisibility(View.VISIBLE);
                         imgAnimaleReg.setImageURI(file);
-
                     }
                 }
             });

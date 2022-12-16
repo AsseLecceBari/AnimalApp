@@ -87,12 +87,15 @@ public class fragment_news extends Fragment {
 
 
     String address;
-    double lat,lng;
+
 
     private static int AUTOCOMPLETE_REQUEST_CODE = 1;
     Bitmap bp;
     String path="images/";
     private Segnalazione s1;
+
+    private MainActivity mainActivity;
+
 
     //intent per poter ricevere il risultato dalla fotocamera e settare l'immagine
     ActivityResultLauncher<Intent> photoResult2= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
@@ -319,6 +322,7 @@ public class fragment_news extends Fragment {
                         Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                         //da attivare una volta salvata la foto
                         //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
+
                         getActivity().startActivity(new Intent(getContext(), MainActivity.class).putExtra("posizione", 2));
 
                     }

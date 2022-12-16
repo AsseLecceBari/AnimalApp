@@ -56,6 +56,7 @@ import java.util.Set;
 import adapter.AdozioniAdapter;
 import class_general.OnSwipeListener;
 import class_general.RecyclerItemClickListener;
+import it.uniba.dib.sms2223_2.AdozioneActivity;
 import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
@@ -73,11 +74,11 @@ public class adoptions_fragment extends Fragment {
     private Preferenze preferenze;
     private   SharedPreferences share;
     private FirebaseFirestore db;
-    protected RecyclerView mRecyclerView;
+    private  RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
 
-    protected  AdozioniAdapter mAdapter;
-    protected  ArrayList<Animale> mDataset = new ArrayList<>();
+    private static AdozioniAdapter mAdapter;
+    private static  ArrayList<Animale> mDataset = new ArrayList<>();
 
 
     private LinearLayout paginalogin;
@@ -278,7 +279,7 @@ public class adoptions_fragment extends Fragment {
                                                                         if(task.isSuccessful())
                                                                         {
                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
-                                                                              //  proprietari.add( document3.toObject(Persona.class));
+                                                                                proprietari.add( document3.toObject(Persona.class));
                                                                                 mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
                                                                                 mRecyclerView.setAdapter(mAdapter);
                                                                                 if (mAdapter != null) {
@@ -326,7 +327,7 @@ public class adoptions_fragment extends Fragment {
                                                                                         if(task.isSuccessful())
                                                                                         {
                                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
-                                                                                               // proprietari.add( document.toObject(Persona.class));
+                                                                                                proprietari.add( document.toObject(Persona.class));
 
                                                                                             }
 
@@ -644,7 +645,7 @@ public class adoptions_fragment extends Fragment {
                     Persona b= proprietari.get(posizione_proprietario);
 
 
-                    Intent intent = new Intent(getContext(), ProfiloAnimale.class);
+                    Intent intent = new Intent(getContext(), AdozioneActivity.class);
                     intent.putExtra("animale", animale);
                     intent.putExtra("adozione",ad );
                     intent.putExtra("proprietario",b);
