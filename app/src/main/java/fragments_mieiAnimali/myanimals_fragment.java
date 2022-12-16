@@ -61,9 +61,9 @@ public class myanimals_fragment extends Fragment {
         return mDataset;
     }
 
-    private static ArrayList<Animale> mDataset= new ArrayList<>();
+    private  ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
-    private static AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
+    private  AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
 
     private AnimaleDB animaleDAO;
     private MainActivity mainActivity;
@@ -124,10 +124,10 @@ public class myanimals_fragment extends Fragment {
 
 
         //se la check box è premuta il bottone cambia
+
         if(!mostraSoloIncarico.isChecked()){
             addAnimale.setVisibility(View.VISIBLE);
             addIncarico.setVisibility(View.GONE);
-
         }else{
             addAnimale.setVisibility(View.GONE);
             addIncarico.setVisibility(View.VISIBLE);
@@ -137,12 +137,14 @@ public class myanimals_fragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //se la check box è premuta il bottone cambia
+
                 if(!mostraSoloIncarico.isChecked()){
                     addAnimale.setVisibility(View.VISIBLE);
                     addIncarico.setVisibility(View.GONE);
                     if(caricoDataset.size()>0){
                         filterMieiAnimali(caricoDataset);
                     }
+
 
                 }else{
                     addAnimale.setVisibility(View.GONE);
@@ -213,7 +215,7 @@ public class myanimals_fragment extends Fragment {
                                 // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                 mRecyclerView.setAdapter(mAdapter);
                                 //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                                filterMieiAnimali(caricoDataset);
+
                             }
 
                         });
