@@ -2,16 +2,15 @@ package fragments;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.google.android.material.tabs.TabItem;
 import com.google.android.material.tabs.TabLayout;
@@ -19,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
-import adapter.VPAdapter;
 import adapter.VPAdapterAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -76,7 +74,7 @@ public class main_fragment_animale extends Fragment {
     private void caricamentoTab()
     {
 
-        viewPager2=getView().findViewById(R.id.viewPager);
+        viewPager2=getView().findViewById(R.id.viewPager2);
 
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
         try {
