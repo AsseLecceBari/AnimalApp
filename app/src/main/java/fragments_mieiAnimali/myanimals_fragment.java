@@ -52,7 +52,7 @@ public class myanimals_fragment extends Fragment {
     private Animale a;
     private MaterialCheckBox mostraSoloIncarico;
 
-    protected RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerView;
     private static AnimalAdapter mAdapter;
 
 
@@ -66,7 +66,8 @@ public class myanimals_fragment extends Fragment {
     private AnimaleDB animaleDAO;
     private MainActivity mainActivity;
     private Toolbar main_action_bar;
-    String ruolo;
+    private String ruolo="";
+    private int countMyAnimals;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +78,7 @@ public class myanimals_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataset.clear();
+        countMyAnimals=0;
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         mostraSoloIncarico = rootView.findViewById(R.id.mostraInCarico);
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
@@ -122,10 +124,11 @@ public class myanimals_fragment extends Fragment {
         if(!mostraSoloIncarico.isChecked()){
             addAnimale.setVisibility(View.VISIBLE);
             addIncarico.setVisibility(View.GONE);
+
         }else{
             addAnimale.setVisibility(View.GONE);
             addIncarico.setVisibility(View.VISIBLE);
-            filterCarico(caricoDataset);
+
         }
         mostraSoloIncarico.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -134,7 +137,10 @@ public class myanimals_fragment extends Fragment {
                 if(!mostraSoloIncarico.isChecked()){
                     addAnimale.setVisibility(View.VISIBLE);
                     addIncarico.setVisibility(View.GONE);
+                    if(caricoDataset.size()>0){
                     filterMieiAnimali(caricoDataset);
+                    }
+
                 }else{
                     addAnimale.setVisibility(View.GONE);
                     addIncarico.setVisibility(View.VISIBLE);
@@ -164,6 +170,7 @@ public class myanimals_fragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             //Salvare animale in un array con elementi oggetto animale
                             mDataset.add(document.toObject(Animale.class));
+                            countMyAnimals++;
                             Log.e("animale", document.getId() + " => " + document.getData());
                         }
                     }
@@ -190,12 +197,7 @@ public class myanimals_fragment extends Fragment {
                                                     Log.e("animale", document.getId() + " => " + document.getData());
                                                 }
                                                 Log.e("ehi","ehi");
-                                                //Passo i dati presi dal database all'adapter
-                                                mAdapter = new AnimalAdapter(mDataset);
-                                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                mRecyclerView.setAdapter(mAdapter);
-                                                //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                                                filterMieiAnimali(caricoDataset);
+
 
                                             }
 
@@ -203,7 +205,12 @@ public class myanimals_fragment extends Fragment {
                                     });
 
                                 }
-
+//Passo i dati presi dal database all'adapter
+                                mAdapter = new AnimalAdapter(mDataset);
+                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                mRecyclerView.setAdapter(mAdapter);
+                                //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                                filterMieiAnimali(caricoDataset);
                             }
 
                         });
@@ -280,18 +287,17 @@ public class myanimals_fragment extends Fragment {
 
         filteredlist=new ArrayList<>();
         // running a for loop to compare elements.
-
+/*
             for (Animale item : mDataset) {
                 for (Carico carico : caricoDataset) {
                 // checking if the entered string matched with any item of our recycler view.
                     if (item.getIdAnimale().equals(carico.getIdAnimale())) {
                         }else {
-                        if(filteredlist.size()>0){
+                        if(filteredlist.size()!=0){
                                 for (Animale filter : filteredlist){
                                     if (filter.getIdAnimale().equals(carico.getIdAnimale())){
-                                        Log.e("ou","ouif");
                                     }else{
-                                        Log.e("ou","ou");
+                                        Log.e("aggiunto","aggiunto");
                                         filteredlist.add(item);
                                         break;
                                     }
@@ -303,7 +309,10 @@ public class myanimals_fragment extends Fragment {
                     }
                     }
                 }
-
+*/
+        for(int i=0;i<countMyAnimals;i++){
+            filteredlist.add(mDataset.get(i));
+        }
             mAdapter.filterList(filteredlist);
     }
 
