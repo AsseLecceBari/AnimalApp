@@ -295,7 +295,7 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
     private void expandFab() {
 
         AnimatorSet animatorSet = new AnimatorSet();
-        animatorSet.playSequentially(createExpandAnimator(fabAction1, offset1),
+        animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
                 createExpandAnimator(fabAction2, offset2));
         animatorSet.start();
         //animateFab();
