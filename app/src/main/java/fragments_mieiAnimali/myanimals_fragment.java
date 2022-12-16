@@ -51,16 +51,17 @@ public class myanimals_fragment extends Fragment {
     private Animale a;
     private MaterialCheckBox mostraSoloIncarico;
 
-    protected RecyclerView mRecyclerView;
-    protected AnimalAdapter mAdapter;
+    private RecyclerView mRecyclerView;
+
 
 
     public ArrayList<Animale> getmDataset() {
         return mDataset;
     }
 
-    protected ArrayList<Animale> mDataset= new ArrayList<>();
+    private static ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
+    private static AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
     private AnimaleDB animaleDAO;
     private MainActivity mainActivity;
     private Toolbar main_action_bar;

@@ -8,23 +8,16 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.StrictMode;
-import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,7 +26,6 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -41,35 +33,25 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.libraries.places.api.net.PlacesClient;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
-import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.json.JSONObject;
-
 import java.util.ArrayList;
-import java.util.Collections;
 
-import class_general.GeolocationClass;
-import class_general.HttpDataHandler;
 import fragments.RecyclerItemClickListener;
-import fragments.main_fragment;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
-import model.Animale;
 import model.Segnalazione;
 import adapter.ReportAdapter;
 
 
-public class reports_fragment extends Fragment {
+public class reports_fragment extends Fragment  {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -100,16 +82,10 @@ public class reports_fragment extends Fragment {
 
     private   MainActivity mainActivity;
     private Toolbar main_action_bar;
-
-
-
-
+    private ActivityResultLauncher<String[]> locationPermissionRequest;
 
 
     //permessi posizione
-
-
-    private ActivityResultLauncher<String[]> locationPermissionRequest;
 
 
 
@@ -117,8 +93,10 @@ public class reports_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         auth=FirebaseAuth.getInstance();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
+
         locationPermissionRequest= registerForActivityResult(new ActivityResultContracts
                                 .RequestMultiplePermissions(), result -> {
                             Boolean fineLocationGranted = result.getOrDefault(
@@ -136,6 +114,9 @@ public class reports_fragment extends Fragment {
                             }
                         }
                 );
+
+
+
     }
 
 
@@ -278,6 +259,7 @@ public class reports_fragment extends Fragment {
             public void onStopTrackingTouch(@NonNull Slider slider) {
 
                 //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
+                /*
                 double addLat=slider.getValue()*(1/111.121);
                 double addLng=(1/111.0)*slider.getValue();
 
@@ -296,6 +278,8 @@ public class reports_fragment extends Fragment {
                     }
                 }
             });
+
+                 */
 
 
 
@@ -533,20 +517,14 @@ public class reports_fragment extends Fragment {
             mAdapter.filterList(filteredlist);
         }
     }
-
-
     public void filtri(){
-
         btnopenFiltri1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 layoutfiltri1.setVisibility(View.VISIBLE);
-
                 btnopenFiltri1.setVisibility(View.GONE);
                 bottonechiudifiltri1.setVisibility(View.VISIBLE);
                 resetButton.setVisibility(View.VISIBLE);
-
-
             }
         });
 
@@ -554,16 +532,11 @@ public class reports_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 layoutfiltri1.setVisibility(View.GONE);
-
                 bottonechiudifiltri1.setVisibility(View.GONE);
                 btnopenFiltri1.setVisibility(View.VISIBLE);
                 resetButton.setVisibility(View.GONE);
-
-
             }
         });
-
-
     }
 
     //gesitone permessi
@@ -595,16 +568,21 @@ public class reports_fragment extends Fragment {
     public void showAlertDialog() {
 
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getView().getContext());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
         alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
         alertDialogBuilder.setPositiveButton("Ho capito",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        locationPermissionRequest.launch(new String[]{
-                                Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION
-                        });
+                        try {
+                            locationPermissionRequest.launch(new String[]{
+                                    Manifest.permission.ACCESS_FINE_LOCATION,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION
+                            });
+                        }catch (Exception e){
+                            Log.e("ERROREGRAVE",e.getMessage());
+                        }
+
 
                     }
                 });

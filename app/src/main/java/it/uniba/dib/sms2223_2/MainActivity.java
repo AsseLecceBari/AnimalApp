@@ -129,10 +129,15 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                VPAdapter adapter=null;
+                ViewPager2 viewPager2=null;
+                try {
+                    main_fragment = (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+                     viewPager2 = main_fragment.getViewPager2();
+                    adapter = (VPAdapter) viewPager2.getAdapter();
+                }catch (Exception e){
 
-                main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-                ViewPager2 viewPager2=main_fragment.getViewPager2();
-                VPAdapter adapter= (VPAdapter) viewPager2.getAdapter();
+                }
                 try {
 
                     Log.e("DOVESEI","SONOQUI");

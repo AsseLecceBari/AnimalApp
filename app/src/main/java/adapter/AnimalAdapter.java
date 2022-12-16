@@ -83,7 +83,8 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
     }
 
     public void filterList(ArrayList<Animale> filterlist) {
-        localDataSet = filterlist;
+       localDataSet.clear();
+       localDataSet.addAll(filterlist);
        //notifica all'adapter che sono cambiati i dati nella recycle view
         notifyDataSetChanged();
     }

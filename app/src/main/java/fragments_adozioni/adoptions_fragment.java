@@ -73,11 +73,11 @@ public class adoptions_fragment extends Fragment {
     private Preferenze preferenze;
     private   SharedPreferences share;
     private FirebaseFirestore db;
-    protected RecyclerView mRecyclerView;
+    private  RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
 
-    protected  AdozioniAdapter mAdapter;
-    protected  ArrayList<Animale> mDataset = new ArrayList<>();
+    private static AdozioniAdapter mAdapter;
+    private static  ArrayList<Animale> mDataset = new ArrayList<>();
 
 
     private LinearLayout paginalogin;
