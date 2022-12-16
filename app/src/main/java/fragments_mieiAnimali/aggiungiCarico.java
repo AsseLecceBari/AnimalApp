@@ -1,5 +1,10 @@
 package fragments_mieiAnimali;
+
 import android.app.Activity;
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -46,7 +52,7 @@ public class aggiungiCarico extends Fragment {
     private Carico carico;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    private boolean res;
+    private ColorStateList coloreDati;
 
     @Nullable
     @Override
@@ -58,10 +64,22 @@ public class aggiungiCarico extends Fragment {
 
         dati = root.findViewById(R.id.datiAnimale);
         aggiungi = root.findViewById(R.id.aggiungi);
+        coloreDati = dati.getTextColors();
 
 
         CodeScannerView scannerView = root.findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(activity, scannerView);
+
+        scannerView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+
+                dati.setText("Scannerizza un animale valido!");
+                dati.setAllCaps(false);
+                dati.setTextColor(coloreDati);
+                return false;
+            }
+        });
 
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
@@ -71,6 +89,8 @@ public class aggiungiCarico extends Fragment {
                     public void run() {
                         // se l'idAnimale è appartenente ad un animale che non è in carico a nessuno allora passo alla fase di conferma presa in carico
                         esisteAnimale(result.getText());
+
+                        Toast.makeText(getActivity().getApplicationContext(), "Rilevazione", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -104,8 +124,10 @@ public class aggiungiCarico extends Fragment {
                 if(a!= null){
                     controllo(idAnimale, a);
                 }else{
-                    dati.setText("Non è un animale censito!");
+                    dati.setText("Non è un animale censito! \n\nTocca il QR SCANNER per riprovare!");
                     aggiungi.setVisibility(View.GONE);
+                    dati.setAllCaps(false);
+                    dati.setTextColor(Color.RED);
                 }
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -133,16 +155,21 @@ public class aggiungiCarico extends Fragment {
                             carico = new Carico(new Random().nextInt(999999999)+"", java.time.LocalTime.now()+"", "datafine", idAnimale, auth.getCurrentUser().getEmail(), "nota prova", true);
 
                             // mi riempio la field dati
-                            dati.setText(a.getNome() + ", questo " + a.getGenere() + ", può essere preso in carico! \nPREMI IL PULSANTE PER AGGIUNGERE");
-
+                            dati.setText(a.getNome() + ",  " + a.getGenere() + "\nPuò essere preso in carico! \nPREMI IL PULSANTE  VERDE PER AGGIUNGERE");
+                            dati.setAllCaps(true);
+                            dati.setTextColor(coloreDati);
                         }else{
                             // ce gia qualcuno in corso
                             aggiungi.setVisibility(View.GONE);
-                            dati.setText("Attualmente gia' in carico");
+                            dati.setText("Attualmente gia' in carico!\n\nTocca il QR SCANNER per riprovare!");
+                            dati.setAllCaps(false);
+                            dati.setTextColor(Color.RED);
                         }
                     }else {
                         aggiungi.setVisibility(View.GONE);
-                        dati.setText("Impossibile aggiungere!");
+                        dati.setText("Impossibile aggiungere!\n\nTocca il QR SCANNER per riprovare!");
+                        dati.setAllCaps(false);
+                        dati.setTextColor(Color.RED);
                     }
                 }
             });
