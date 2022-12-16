@@ -28,6 +28,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
+import org.checkerframework.checker.units.qual.C;
+
 import java.util.ArrayList;
 
 import adapter.AnimalAdapter;
@@ -61,7 +63,6 @@ public class myanimals_fragment extends Fragment {
 
     private static ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
-
     private static AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
 
     private AnimaleDB animaleDAO;
@@ -69,6 +70,7 @@ public class myanimals_fragment extends Fragment {
     private Toolbar main_action_bar;
     private String ruolo="";
     private int countMyAnimals;
+    private ArrayList<Carico> caricoDataset=new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,7 +141,7 @@ public class myanimals_fragment extends Fragment {
                     addAnimale.setVisibility(View.VISIBLE);
                     addIncarico.setVisibility(View.GONE);
                     if(caricoDataset.size()>0){
-                    filterMieiAnimali(caricoDataset);
+                        filterMieiAnimali(caricoDataset);
                     }
 
                 }else{
@@ -206,7 +208,7 @@ public class myanimals_fragment extends Fragment {
                                     });
 
                                 }
-//Passo i dati presi dal database all'adapter
+                                //Passo i dati presi dal database all'adapter
                                 mAdapter = new AnimalAdapter(mDataset);
                                 // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                 mRecyclerView.setAdapter(mAdapter);

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -13,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +29,6 @@ import android.widget.Toast;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.LabelFormatter;
@@ -56,8 +53,8 @@ public class reports_fragment extends Fragment  {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private RecyclerView mRecyclerView;
-    private static ReportAdapter mAdapter;
-    private static ArrayList<Segnalazione> mDataset= new ArrayList<>();
+    private static ReportAdapter reportAdapter;
+    private static ArrayList<Segnalazione> segnalazioneDataset= new ArrayList<>();
 
     private String id;
 
@@ -147,7 +144,7 @@ public class reports_fragment extends Fragment  {
    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mDataset.clear();
+        segnalazioneDataset.clear();
         initDataset();
 
 
@@ -186,7 +183,7 @@ public class reports_fragment extends Fragment  {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    mDataset.clear();
+                    segnalazioneDataset.clear();
                     filteredlist.clear();
                     initDataset();
                     sliderReport.setValue(15.0F);
@@ -199,7 +196,7 @@ public class reports_fragment extends Fragment  {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
-                    mDataset.clear();
+                    segnalazioneDataset.clear();
                     filteredlist.clear();
                     initDatasetTueSegnalazioni();
                     sliderReport.setValue(15.0F);
@@ -226,7 +223,7 @@ public class reports_fragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 attivaSlider.setChecked(false);
-                mDataset.clear();
+                segnalazioneDataset.clear();
                 filteredlist.clear();
 
                 if (radioTutti.isChecked()){
@@ -314,11 +311,11 @@ public class reports_fragment extends Fragment  {
                         if(filteredlist.size()==0) {
 
                             //Ottengo l'oggetto dalla lista in posizione "position"
-                            Log.e("dataset",mDataset.size()+"sono qui");
-                            s= mDataset.get(position);
+                            Log.e("dataset",segnalazioneDataset.size()+"sono qui");
+                            s= segnalazioneDataset.get(position);
                             switchTipoSegnalazione(s);
                             closeSearchView();
-                            mDataset.clear();
+                            segnalazioneDataset.clear();
                             filteredlist.clear();
                         }else{
                             Log.e("dataset", "sono in filtered");
@@ -326,7 +323,7 @@ public class reports_fragment extends Fragment  {
                             closeSearchView();
                             switchTipoSegnalazione(s);
                             filteredlist.clear();
-                            mDataset.clear();
+                            segnalazioneDataset.clear();
                         }
 
                     }
@@ -407,13 +404,13 @@ public class reports_fragment extends Fragment  {
                 if(task.isSuccessful()){
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         //Salvare animale in un array con elementi oggetto animale
-                        mDataset.add(document.toObject(Segnalazione.class));
+                        segnalazioneDataset.add(document.toObject(Segnalazione.class));
                         //Passo i dati presi dal database all'adapter
 
                     }
-                    mAdapter = new ReportAdapter(mDataset);
+                    reportAdapter = new ReportAdapter(segnalazioneDataset);
                     // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                    mRecyclerView.setAdapter(mAdapter);
+                    mRecyclerView.setAdapter(reportAdapter);
                 }else {
                     Log.d("ERROR", "Error getting documents: ", task.getException());
                 }
@@ -439,13 +436,13 @@ public class reports_fragment extends Fragment  {
                      if (task.isSuccessful()) {
                          for (QueryDocumentSnapshot document : task.getResult()) {
                              //Salvare animale in un array con elementi oggetto animale
-                             mDataset.add(document.toObject(Segnalazione.class));
+                             segnalazioneDataset.add(document.toObject(Segnalazione.class));
                              //Passo i dati presi dal database all'adapter
 
                          }
-                         mAdapter = new ReportAdapter(mDataset);
+                         reportAdapter = new ReportAdapter(segnalazioneDataset);
                          // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                         mRecyclerView.setAdapter(mAdapter);
+                         mRecyclerView.setAdapter(reportAdapter);
                      } else {
                          Log.d("ERROR", "Error getting documents: ", task.getException());
                      }
@@ -464,7 +461,7 @@ public class reports_fragment extends Fragment  {
         filteredlist = new ArrayList<>();
 
         // running a for loop to compare elements.
-        for (Segnalazione item : mDataset) {
+        for (Segnalazione item : segnalazioneDataset) {
             // checking if the entered string matched with any item of our recycler view.
 
             //dove latitudine e longitudine è la mia posizione + i km scelti
@@ -481,7 +478,7 @@ public class reports_fragment extends Fragment  {
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
-            mAdapter.filterList(filteredlist);
+            reportAdapter.filterList(filteredlist);
         }
         for (Segnalazione item : filteredlist) {
             Log.e("pippo2", item.getTipo() + " " + item.getTitolo());
@@ -496,7 +493,7 @@ public class reports_fragment extends Fragment  {
         filteredlist = new ArrayList<>();
 
         // running a for loop to compare elements.
-        for (Segnalazione item : mDataset) {
+        for (Segnalazione item : segnalazioneDataset) {
 
             // checking if the entered string matched with any item of our recycler view.
 
@@ -514,7 +511,7 @@ public class reports_fragment extends Fragment  {
             // at last we are passing that filtered
             // list to our adapter class.
 
-            mAdapter.filterList(filteredlist);
+            reportAdapter.filterList(filteredlist);
         }
     }
     public void filtri(){
