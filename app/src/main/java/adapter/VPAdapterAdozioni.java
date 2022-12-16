@@ -1,4 +1,5 @@
 package adapter;
+
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -15,30 +16,28 @@ import fragments.spese;
 import fragments_adozioni.info_Proprietario;
 import fragments_adozioni.info_animale;
 
-public class VPAdapterAnimale extends FragmentStateAdapter {
-    private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
+public class VPAdapterAdozioni extends FragmentStateAdapter {
 
-    public VPAdapterAnimale(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, @NonNull boolean proprietario) {
+    private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
+    public VPAdapterAdozioni(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, @NonNull boolean proprietario) {
         super(fragmentManager, lifecycle);
 
         if(!proprietario) {
 
             fragmentArrayList.add(new info_animale());
             fragmentArrayList.add(new info_Proprietario());
-
-
-
+          Log.d("ciao1234", String.valueOf(fragmentArrayList.size()));
 
         }
         else{
 
 
-            fragmentArrayList.add(new anagrafica());
-            fragmentArrayList.add(new spese());
-            fragmentArrayList.add(new librettoSanitario());
+
 
         }
     }
+
+
     @NonNull
     @Override
     public Fragment createFragment(int position) {
@@ -47,6 +46,6 @@ public class VPAdapterAnimale extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return fragmentArrayList.size();
+        return  fragmentArrayList.size();
     }
 }

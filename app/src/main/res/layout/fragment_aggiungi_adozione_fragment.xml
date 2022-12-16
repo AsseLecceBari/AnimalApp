@@ -12,16 +12,16 @@
         android:orientation="vertical">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycleaggiungiAdozione"
+            android:id="@+id/item_aggiungiAdozione"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/recycle_view_aggiungiadozione"
-
-
-            >
-
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            tools:listitem="@layout/item_view_aggiungiadozione">
 
         </androidx.recyclerview.widget.RecyclerView>
+
+
+
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardAnimal"

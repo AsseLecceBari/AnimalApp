@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.Checkable;
 import android.widget.Toast;
 
@@ -46,7 +47,7 @@ public class aggiungi_adozione_fragment extends Fragment {
     protected AggiungiAdozioneAdapter mAdapter;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected ArrayList<Animale> mDataset= new ArrayList<>();
-    private Checkable checkbox;
+    private CheckBox checkbox;
     private final ArrayList <String> adozioni = new ArrayList<>();
     private View botton;
     private View card;
@@ -92,7 +93,7 @@ public class aggiungi_adozione_fragment extends Fragment {
         }
         card= rootView.findViewById(R.id.cardAnimal);
 
-        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleaggiungiAdozione);
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.item_aggiungiAdozione);
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mDataset.clear();
@@ -120,11 +121,11 @@ public class aggiungi_adozione_fragment extends Fragment {
             }
         });
 
-        mRecyclerView.addOnItemTouchListener(
+     /* mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
                     @Override public void onItemClick(View view, int position) {
 
-                        checkbox= view.findViewById(R.id.checkBoxadozioni);
+                        checkbox= view.findViewById(R.id.checkBoxAggiungiadozioni);
                         if(!checkbox.isChecked()){
                             Random idAdozione=new Random();
                             String id= String.valueOf(idAdozione.nextInt());
@@ -148,9 +149,13 @@ public class aggiungi_adozione_fragment extends Fragment {
                         // TODO: menu rapido
                     }
                 })
-        );
+        );*/
 
      aggiungiAnimaliSelezionati();
+
+
+
+
     }
 
 
@@ -197,6 +202,10 @@ public class aggiungi_adozione_fragment extends Fragment {
                                             mAdapter = new AggiungiAdozioneAdapter(mDataset);
                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                             mRecyclerView.setAdapter(mAdapter);
+                                            if(mAdapter!= null)
+                                            {
+                                                selezionaAnimali();
+                                            }
                                         }
 
                                     }
@@ -213,11 +222,61 @@ public class aggiungi_adozione_fragment extends Fragment {
 
     }
 
+    public void selezionaAnimali()
+    {
+        mAdapter.setOnClickListener(new AggiungiAdozioneAdapter.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
+            @Override
+            public void onViewClick(View view, int position) {
+                Random idAdozione=new Random();
+                String id= String.valueOf(idAdozione.nextInt());
+                SimpleDateFormat dataFor= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+                String data= dataFor.format(new Date());
+              Adozione adozione =new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data);
+
+
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new riepilogo_Adozione().newInstance(adozione)).addToBackStack(null).commit();
+                //checkbox= view.findViewById(R.id.checkBoxAggiungiadozioni);
+
+               /* if(!checkbox.isChecked()){
+
+
+                    Random idAdozione=new Random();
+                    String id= String.valueOf(idAdozione.nextInt());
+                    SimpleDateFormat dataFor= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
+                    String data= dataFor.format(new Date());
+                    animaliAdozione.add(new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data));
+                    checkbox.setVisibility(View.VISIBLE);
+                    checkbox.setChecked(true);
+                }
+                else if(checkbox.isChecked()) {
+
+                    checkbox.setVisibility(View.GONE);
+                    checkbox.setChecked(false);
+                    //se abbiamo gia aggiunto l'animale nell'array lo elimina
+                    for (int a = 0; a < animaliAdozione.size(); a++) {
+                        if (Objects.equals(animaliAdozione.get(a).getIdAnimale(), mDataset.get(position).getIdAnimale())){
+                            animaliAdozione.remove(a);
+
+                        }
+                    }
+                }*/
+            }
+
+            @Override
+            public void oncheckboxclick(View view, int position) {
+
+            }
+    });
+    }
+
     public void aggiungiAnimaliSelezionati() {
         botton= getView().findViewById(R.id.Btnaggiungiadozioni);
         botton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
 
 
                 if(animaliAdozione.size()>0) {//controllo se ha selezionato almeno un animale
