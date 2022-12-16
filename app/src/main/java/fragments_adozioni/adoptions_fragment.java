@@ -1,6 +1,7 @@
 package fragments_adozioni;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,17 +17,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.internal.MaterialCheckable;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -34,17 +43,29 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.checkerframework.common.subtyping.qual.Bottom;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import adapter.AdozioniAdapter;
+import class_general.OnSwipeListener;
+import class_general.RecyclerItemClickListener;
 import it.uniba.dib.sms2223_2.AdozioneActivity;
+import it.uniba.dib.sms2223_2.LoginActivity;
 import it.uniba.dib.sms2223_2.MainActivity;
+import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
 import model.Persona;
 import model.Preferenze;
+import model.Utente;
 
 
 public class adoptions_fragment extends Fragment {
@@ -56,8 +77,8 @@ public class adoptions_fragment extends Fragment {
     private  RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
 
-    private static AdozioniAdapter adozioniAdapter;
-    private static  ArrayList<Animale> adozioniDataset = new ArrayList<>();
+    private static AdozioniAdapter mAdapter;
+    private static  ArrayList<Animale> mDataset = new ArrayList<>();
 
 
     private LinearLayout paginalogin;
@@ -142,7 +163,7 @@ public class adoptions_fragment extends Fragment {
         }
 
         View rootView = inflater.inflate(R.layout.fragment_adoptions_fragment, container, false);
-        adozioniDataset.clear();
+        mDataset.clear();
         auth = FirebaseAuth.getInstance();
 
         if(auth.getCurrentUser()!= null) {
@@ -224,15 +245,15 @@ public class adoptions_fragment extends Fragment {
                                                             if (Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
 
 
-                                                                adozioniDataset.add(document.toObject(Animale.class));
+                                                                mDataset.add(document.toObject(Animale.class));
 
 
-                                                                adozioniAdapter = new AdozioniAdapter(adozioniDataset, 1);
+                                                                mAdapter = new AdozioniAdapter(mDataset, 1);
                                                                 // mAdapter.eliminaAnnuncio();
 
                                                                 // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                                                mRecyclerView.setAdapter(adozioniAdapter);
-                                                                if (adozioniAdapter != null) {
+                                                                mRecyclerView.setAdapter(mAdapter);
+                                                                if (mAdapter != null) {
                                                                     onItemClick();
 
 
@@ -247,11 +268,11 @@ public class adoptions_fragment extends Fragment {
                                                             t = document.toObject(Animale.class);
                                                             Log.d("ciao4", t.getNome());
                                                             if (!Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
-                                                                adozioniDataset.add(document.toObject(Animale.class));
+                                                                mDataset.add(document.toObject(Animale.class));
 
-                                                                Log.d("ciao13", String.valueOf(adozioniDataset.get(adozioniDataset.size()-1).getEmailProprietario()));
+                                                                Log.d("ciao13", String.valueOf(mDataset.get(mDataset.size()-1).getEmailProprietario()));
 
-                                                                utenteref.whereEqualTo("email", adozioniDataset.get(adozioniDataset.size()-1).getEmailProprietario()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                utenteref.whereEqualTo("email",mDataset.get(mDataset.size()-1).getEmailProprietario()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
@@ -259,9 +280,9 @@ public class adoptions_fragment extends Fragment {
                                                                         {
                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
                                                                                 proprietari.add( document3.toObject(Persona.class));
-                                                                                adozioniAdapter = new AdozioniAdapter(adozioniDataset, 2,proprietari);
-                                                                                mRecyclerView.setAdapter(adozioniAdapter);
-                                                                                if (adozioniAdapter != null) {
+                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
+                                                                                mRecyclerView.setAdapter(mAdapter);
+                                                                                if (mAdapter != null) {
                                                                                     onItemClick();
                                                                                 }
 
@@ -298,9 +319,9 @@ public class adoptions_fragment extends Fragment {
                                                                         for (int a = 0; a < ad.getAdozioni().size(); a++) {
                                                                             if (Objects.equals(ad.getAdozioni().get(a), temporanea.getIdAdozione())) {
                                                                                 Log.d("ciao10", "c");
-                                                                                adozioniDataset.add(document.toObject(Animale.class));
+                                                                                mDataset.add(document.toObject(Animale.class));
 
-                                                                                utenteref.whereEqualTo("emailUtente", adozioniDataset.get(adozioniDataset.size()-1)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                                                utenteref.whereEqualTo("emailUtente",mDataset.get(mDataset.size()-1)).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                                                         if(task.isSuccessful())
@@ -314,9 +335,9 @@ public class adoptions_fragment extends Fragment {
 
                                                                                     }
                                                                                 });
-                                                                                adozioniAdapter = new AdozioniAdapter(adozioniDataset, 2,proprietari);
-                                                                                mRecyclerView.setAdapter(adozioniAdapter);
-                                                                                if (adozioniAdapter != null) {
+                                                                                mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
+                                                                                mRecyclerView.setAdapter(mAdapter);
+                                                                                if (mAdapter != null) {
                                                                                     onItemClick();
                                                                                 }
 
@@ -424,8 +445,8 @@ public class adoptions_fragment extends Fragment {
                     barrachilometri.setEnabled(true);
 
                     tipoannunci=2;
-                    adozioniDataset.clear();
-                    adozioniAdapter = null;
+                    mDataset.clear();
+                    mAdapter= null;
                     mRecyclerView.setAdapter(null);
                     initDataAnnunci(tipoannunci);
                 }
@@ -451,8 +472,8 @@ public class adoptions_fragment extends Fragment {
 
 
 
-                    adozioniDataset.clear();
-                    adozioniAdapter =null;
+                    mDataset.clear();
+                    mAdapter=null;
                     mRecyclerView.setAdapter(null);
                     initDataAnnunci(tipoannunci);
                 }
@@ -471,8 +492,8 @@ public class adoptions_fragment extends Fragment {
                 else{
                     Log.d("ciao11","3");
                     tipoannunci=3;
-                    adozioniDataset.clear();
-                    adozioniAdapter =null;
+                    mDataset.clear();
+                    mAdapter=null;
                     mRecyclerView.setAdapter(null);
                     initDataAnnunci(tipoannunci);
                 }
@@ -494,7 +515,7 @@ public class adoptions_fragment extends Fragment {
         filteredlist = new ArrayList<Animale>();
 
         // running a for loop to compare elements.
-        for (Animale item : adozioniDataset) {
+        for (Animale item : mDataset) {
             // checking if the entered string matched with any item of our recycler view.
             if (item.getNome().toLowerCase().contains(text.toLowerCase())) {
                 // if the item is matched we are
@@ -509,7 +530,7 @@ public class adoptions_fragment extends Fragment {
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
-            adozioniAdapter.filterList(filteredlist);
+            mAdapter.filterList(filteredlist);
         }
     }
 
@@ -575,7 +596,7 @@ public class adoptions_fragment extends Fragment {
     {
 
 
-            adozioniAdapter.setOnClickListener(new AdozioniAdapter.OnClickListener() {
+            mAdapter.setOnClickListener(new AdozioniAdapter.OnClickListener() {
 
                 @SuppressLint("SuspiciousIndentation")
                 @Override
@@ -588,16 +609,16 @@ public class adoptions_fragment extends Fragment {
                     if(filteredlist.size()==0) {
 
                         //Ottengo l'oggetto dalla lista in posizione "position"
-                        animale = adozioniDataset.get(position);
+                        animale = mDataset.get(position);
                         closeSearchView();
-                        adozioniDataset.clear();
+                        mDataset.clear();
                         filteredlist.clear();
                     }else{
 
                         Log.e("filteredlist", filteredlist+"");
                         animale = filteredlist.get(position);}
                     closeSearchView();
-                    adozioniDataset.clear();
+                    mDataset.clear();
                     filteredlist.clear();
 
 
@@ -639,7 +660,7 @@ public class adoptions_fragment extends Fragment {
                    db= FirebaseFirestore.getInstance();
 
 
-                    Animale animale = adozioniDataset.get(position);
+                    Animale animale = mDataset.get(position);
 
 
                     int poszione_adozione = 0;
@@ -666,17 +687,17 @@ public class adoptions_fragment extends Fragment {
 
 
 
-                                 if(adozioniDataset.size()==1)
+                                 if(mDataset.size()==1)
                                  {
 
                                      mRecyclerView.setAdapter(null);
                                  }
                                  else
                                  {
-                                     adozioniDataset.remove(position);
+                                     mDataset.remove(position);
 
-                                    adozioniAdapter.aggiornadataset(adozioniDataset);
-                                    mRecyclerView.setAdapter(adozioniAdapter);
+                                    mAdapter.aggiornadataset(mDataset);
+                                    mRecyclerView.setAdapter(mAdapter);
                                  }
                                 }
                             });
