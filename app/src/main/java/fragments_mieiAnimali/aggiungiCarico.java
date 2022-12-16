@@ -53,6 +53,7 @@ public class aggiungiCarico extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private ColorStateList coloreDati;
+    private CodeScannerView scannerView;
 
     @Nullable
     @Override
@@ -66,14 +67,12 @@ public class aggiungiCarico extends Fragment {
         aggiungi = root.findViewById(R.id.aggiungi);
         coloreDati = dati.getTextColors();
 
-
-        CodeScannerView scannerView = root.findViewById(R.id.scanner_view);
+        scannerView = root.findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(activity, scannerView);
 
         scannerView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
-
                 dati.setText("Scannerizza un animale valido!");
                 dati.setAllCaps(false);
                 dati.setTextColor(coloreDati);
@@ -96,19 +95,21 @@ public class aggiungiCarico extends Fragment {
             }
         });
 
-        scannerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mCodeScanner.startPreview();
-            }
-        });
-
         aggiungi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // aggiungi il carico al db
-                db.collection("carichi").document(carico.getId()).set(carico);
-                // todo fare la intent
+                if(carico != null){
+                    db.collection("carichi").document(carico.getId()).set(carico).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Aggiunto!", Toast.LENGTH_SHORT).show();
+                            getActivity().onBackPressed();
+                        }
+                    });
+                }else{
+                    Toast.makeText(getActivity().getApplicationContext(), "Errore!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return root;
@@ -129,10 +130,6 @@ public class aggiungiCarico extends Fragment {
                     dati.setAllCaps(false);
                     dati.setTextColor(Color.RED);
                 }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
             }
         });
     }
