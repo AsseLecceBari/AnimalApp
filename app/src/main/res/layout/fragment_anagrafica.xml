@@ -132,9 +132,18 @@
             android:hint="Assistito"
             android:id="@+id/assistito"
             android:layout_marginTop="12dp"
-            android:layout_marginBottom="20dp"
             android:textSize="28dp">
         </com.google.android.material.textview.MaterialTextView>
+
+        <ImageView
+            android:id="@+id/idIVQrcode"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="qrCode"
+            android:layout_marginTop="19dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
     </LinearLayout>
 
     </ScrollView>
