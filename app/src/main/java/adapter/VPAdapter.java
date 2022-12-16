@@ -16,16 +16,14 @@ public class VPAdapter extends FragmentStateAdapter {
     public ArrayList<Fragment> getFragmentArrayList() {
         return fragmentArrayList;
     }
-    private final static myanimals_fragment myanimals_fragment= new myanimals_fragment();
-    private final static adoptions_fragment adoptions_fragmentt= new adoptions_fragment();
-    private final static reports_fragment reports_fragment= new reports_fragment();
-    private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
+
+    private ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
     public VPAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
-        fragmentArrayList.add(myanimals_fragment);
-        fragmentArrayList.add(adoptions_fragmentt);
-        fragmentArrayList.add(reports_fragment);
+        fragmentArrayList.add( new myanimals_fragment());
+        fragmentArrayList.add(new myanimals_fragment());
+        fragmentArrayList.add(new reports_fragment());
     }
     @NonNull
     @Override
