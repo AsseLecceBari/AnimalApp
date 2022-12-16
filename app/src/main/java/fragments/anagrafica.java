@@ -1,8 +1,19 @@
 package fragments;
 
-import android.content.Intent;
+import static android.content.Context.WINDOW_SERVICE;
+
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -10,22 +21,12 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
@@ -35,10 +36,12 @@ import com.google.firebase.storage.UploadTask;
 
 import java.net.InetAddress;
 
-import it.uniba.dib.sms2223_2.MainActivity;
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import it.uniba.dib.sms2223_2.R;
-import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
+
+
 
 public class anagrafica extends Fragment {
     private TextView nome, genere, specie,sesso, nascita, assistito;
@@ -53,12 +56,10 @@ public class anagrafica extends Fragment {
     private FirebaseStorage storage;
     private StorageReference storageRef;
     private Button selectImgButton;
-
-
-
-
-
-
+    private ImageView qrCodeIV;
+    private Button generateQrBtn;
+    private Bitmap bitmap;
+    private QRGEncoder qrgEncoder;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -74,7 +75,7 @@ public class anagrafica extends Fragment {
         sesso=rootView.findViewById(R.id.sessoAnimale);
         nascita = rootView.findViewById(R.id.nascita);
         assistito = rootView.findViewById(R.id.assistito);
-
+        qrCodeIV = rootView.findViewById(R.id.idIVQrcode);
         if(animale!= null){
             nome.setText(animale.getNome());
             genere.setText(animale.getGenere());
@@ -146,20 +147,39 @@ public class anagrafica extends Fragment {
         }*/
 
 
+        // setto il generatore
+        WindowManager manager = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE);
 
+        // initializing a variable for default display.
+        Display display = manager.getDefaultDisplay();
 
+        // creating a variable for point which
+        // is to be displayed in QR Code.
 
+        Point point = new Point();
+        display.getSize(point);
 
+        // getting width and
+        // height of a point
+        int width = point.x;
+        int height = point.y;
+
+        // generating dimension from width and height.
+        int dimen = width < height ? width : height;
+        dimen = dimen * 3 / 4;
+
+        // setting this dimensions inside our qr code
+        // encoder to generate our qr code.
+        qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT, dimen);
+        // getting our qrcode in the form of bitmap.
+        bitmap = qrgEncoder.getBitmap();
+        // the bitmap is set inside our image
+        // view using .setimagebitmap method.
+        qrCodeIV.setImageBitmap(bitmap);
+        if(qrgEncoder.getBitmap() != null)
+            qrCodeIV.setVisibility(View.VISIBLE);
 
         return rootView;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-
-
     }
 
     public void setAnimale(Animale a){

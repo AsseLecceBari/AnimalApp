@@ -106,7 +106,7 @@ public class info_animale extends Fragment {
        caricaInfoAnimale();
        initDataAnnunci();
 
-       dataPubblicazione.setText("Pubblicato" +differenzaDataPubblicazione(adozione.getDataPubblicazione()));
+//       dataPubblicazione.setText("Pubblicato" +differenzaDataPubblicazione(adozione.getDataPubblicazione()));
 
 
        // GetCoordinates coordinates= new GetCoordinates(proprietario.getIndirizzo());

@@ -39,6 +39,7 @@ import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.Associazione;
+import model.Carico;
 import model.Ente;
 import model.Persona;
 import model.Veterinario;
@@ -54,18 +55,20 @@ public class myanimals_fragment extends Fragment {
     private RecyclerView mRecyclerView;
 
 
-
     public ArrayList<Animale> getmDataset() {
         return mDataset;
     }
 
     private static ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
+
     private static AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
+
     private AnimaleDB animaleDAO;
     private MainActivity mainActivity;
     private Toolbar main_action_bar;
-
+    private String ruolo="";
+    private int countMyAnimals;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +79,7 @@ public class myanimals_fragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mDataset.clear();
+        countMyAnimals=0;
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         mostraSoloIncarico = rootView.findViewById(R.id.mostraInCarico);
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
@@ -87,21 +91,20 @@ public class myanimals_fragment extends Fragment {
         animaleDAO= new AnimaleDB();
 
 
+
         // controlli per la checkbox in carico
         CollectionReference reference=db.collection("utenti");
         if(auth.getCurrentUser()!=null) {
             Query query = reference.whereEqualTo("email", auth.getCurrentUser().getEmail());
-
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
-
-
                         for(QueryDocumentSnapshot document : task.getResult()){
                             if(!(document.get("ruolo").toString().equals("proprietario"))){
                                 // Nascondo la checkbox che mi mostra gli in carico
                                 mostraSoloIncarico.setVisibility(View.VISIBLE);
+                                ruolo="veterinario";
                                 break;
                             }else{
                                 //Todo: init dataset alternatvo ---------------------------------------------------
@@ -122,9 +125,11 @@ public class myanimals_fragment extends Fragment {
         if(!mostraSoloIncarico.isChecked()){
             addAnimale.setVisibility(View.VISIBLE);
             addIncarico.setVisibility(View.GONE);
+
         }else{
             addAnimale.setVisibility(View.GONE);
             addIncarico.setVisibility(View.VISIBLE);
+
         }
         mostraSoloIncarico.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -133,10 +138,16 @@ public class myanimals_fragment extends Fragment {
                 if(!mostraSoloIncarico.isChecked()){
                     addAnimale.setVisibility(View.VISIBLE);
                     addIncarico.setVisibility(View.GONE);
+                    if(caricoDataset.size()>0){
+                    filterMieiAnimali(caricoDataset);
+                    }
+
                 }else{
                     addAnimale.setVisibility(View.GONE);
                     addIncarico.setVisibility(View.VISIBLE);
+                    filterCarico(caricoDataset);
                 }
+
             }
         });
 
@@ -160,15 +171,55 @@ public class myanimals_fragment extends Fragment {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             //Salvare animale in un array con elementi oggetto animale
                             mDataset.add(document.toObject(Animale.class));
+                            countMyAnimals++;
                             Log.e("animale", document.getId() + " => " + document.getData());
                         }
-                    }//Passo i dati presi dal database all'adapter
-                    mAdapter = new AnimalAdapter(mDataset);
-                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                    mRecyclerView.setAdapter(mAdapter);
-                    //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                    }
+                    //Se siamo loggati con il veterinario aggiungiamo nel dataset anche gli animali in carico
+                    if(ruolo.equals("veterinario")){
+                        CollectionReference carichiReference = db.collection("carichi");
+                        CollectionReference animaliReference = db.collection("animali");
+                        Query queryCarichi = carichiReference.whereEqualTo("idProfessionista", auth.getCurrentUser().getEmail());
+                        queryCarichi.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    //Salvare animale in un array con elementi oggetto animale
+                                    Log.e("carico",document.toObject(Carico.class)+"");
+                                    caricoDataset.add(document.toObject(Carico.class));
+                                    Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale",document.toObject(Carico.class).getIdAnimale());
+                                    queryAnimaliInCarico.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    //Salvare animale in un array con elementi oggetto animale
+                                                    mDataset.add(document.toObject(Animale.class));
+                                                    Log.e("animale", document.getId() + " => " + document.getData());
+                                                }
+                                                Log.e("ehi","ehi");
+
+
+                                            }
+
+                                        }
+                                    });
+
+                                }
+//Passo i dati presi dal database all'adapter
+                                mAdapter = new AnimalAdapter(mDataset);
+                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                mRecyclerView.setAdapter(mAdapter);
+                                //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                                filterMieiAnimali(caricoDataset);
+                            }
+
+                        });
+
+                    }
 
                 }
+
             });
 
         }
@@ -230,8 +281,63 @@ public class myanimals_fragment extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
     }
+    public void filterMieiAnimali(ArrayList<Carico> caricoDataset) {
 
+        filteredlist=new ArrayList<>();
+        // running a for loop to compare elements.
+/*
+            for (Animale item : mDataset) {
+                for (Carico carico : caricoDataset) {
+                // checking if the entered string matched with any item of our recycler view.
+                    if (item.getIdAnimale().equals(carico.getIdAnimale())) {
+                        }else {
+                        if(filteredlist.size()!=0){
+                                for (Animale filter : filteredlist){
+                                    if (filter.getIdAnimale().equals(carico.getIdAnimale())){
+                                    }else{
+                                        Log.e("aggiunto","aggiunto");
+                                        filteredlist.add(item);
+                                        break;
+                                    }
+                                }
 
+                        }else{
+                            filteredlist.add(item);
+                        }
+                    }
+                    }
+                }
+*/
+        for(int i=0;i<countMyAnimals;i++){
+            filteredlist.add(mDataset.get(i));
+        }
+            mAdapter.filterList(filteredlist);
+    }
+
+    public void filterCarico(ArrayList<Carico> caricoDataset) {
+
+        filteredlist=new ArrayList<>();
+        // running a for loop to compare elements.
+            for (Carico animal : caricoDataset) {
+                for (Animale item : mDataset) {
+                    // checking if the entered string matched with any item of our recycler view.
+                    if (item.getIdAnimale().toLowerCase().contains(animal.getIdAnimale().toLowerCase())) {
+                        // if the item is matched we are
+                        // adding it to our filtered list.
+                        filteredlist.add(item);
+                    }
+                }
+            }
+        if (filteredlist.isEmpty()) {
+            // if no item is added in filtered list we are
+            // displaying a toast message as no data found.
+
+        } else {
+            // at last we are passing that filtered
+            // list to our adapter class.
+            mAdapter.filterList(filteredlist);
+        }
+    }
 
 
     public void filter(String text) {
