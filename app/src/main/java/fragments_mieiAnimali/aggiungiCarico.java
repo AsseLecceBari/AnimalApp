@@ -130,8 +130,7 @@ public class aggiungiCarico extends Fragment {
         // controlli per la checkbox in carico
         CollectionReference reference=db.collection("carichi");
         if(auth.getCurrentUser()!=null) {
-            Query query = reference.whereEqualTo("idProfessionista", auth.getCurrentUser().getEmail())
-                                   .whereEqualTo("idAnimale", idAnimale)
+            Query query = reference.whereEqualTo("idAnimale", idAnimale)
                                    .whereEqualTo("inCorso", true);
 
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
