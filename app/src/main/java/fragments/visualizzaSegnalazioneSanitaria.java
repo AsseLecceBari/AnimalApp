@@ -2,29 +2,21 @@ package fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.Objects;
+import java.util.Locale;
 
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
@@ -35,7 +27,7 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
 
     private SegnalazioneSanitaria s;
 
-    private TextView data, emailVet, motivoConsultazione, diagnosi, farmaci, trattamento, fattaDa;
+    private TextView data, emailVet, motivoConsultazione, diagnosi, farmaci, trattamento, fattaDa, note;
     private TextInputLayout diagnosiLayout, motivoConsultazioneLayout;
     private FloatingActionButton modifica;
 
@@ -44,7 +36,7 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
     private Animale animale;
     private Calendar cldr;
     private DatePickerDialog picker;
-
+    private View nonEsame;
 
 
     @Override
@@ -63,20 +55,39 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
         farmaci = rootView.findViewById(R.id.farmaciS);
         trattamento = rootView.findViewById(R.id.trattamentoS);
         fattaDa = rootView.findViewById(R.id.fattaDaS);
+        note = rootView.findViewById(R.id.considerazioni);
+        nonEsame = rootView.findViewById(R.id.nonEsame);
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
 
         startDatabase();
 
+        if(s.getIsEsameSpecifico()){
+            nonEsame.setVisibility(View.GONE);
 
+            if(s.getIsDiagnosiPositiva()){
+                note.setText("L'esame è andato a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+            }else{
+                note.setText("L'esame NON è andato a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+            }
 
-        //setFocusable(false);
+        }else{
+            diagnosi.setText("Diagnosi: ".toUpperCase(Locale.ROOT)+s.getDiagnosi());
+            farmaci.setText("Farmaci: ".toUpperCase(Locale.ROOT) + s.getFarmaci());
 
-        data.setText(s.getData());
-        motivoConsultazione.setText(s.getMotivoConsultazione());
-        diagnosi.setText(s.getDiagnosi());
-        farmaci.setText(s.getFarmaci());
-        trattamento.setText(s.getTrattamento());
+            nonEsame.setVisibility(View.VISIBLE);
+
+            if(s.getIsDiagnosiPositiva()){
+                note.setText("La visita è andata a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+            }else{
+                note.setText("La visita NON è andata a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+            }
+
+        }
+
+        trattamento.setText("Trattamento: ".toUpperCase(Locale.ROOT)+s.getTrattamento());
+        motivoConsultazione.setText("Motivo consultazione: ".toUpperCase(Locale.ROOT)+s.getMotivoConsultazione());
+        data.setText("Data: " +s.getData());
         if(s.getEmailVet().equals("proprietario"))
             fattaDa.setText("Segnalazione fatta dal proprietario e NON certificata");
         else
@@ -86,9 +97,9 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
             @Override
             public void onClick(View view) {
                 // Se la segnalazione è del veterinario è modificiacabile solo da quello specifico veterinario
-                if(!Objects.equals(s.getEmailVet(), "proprietario")){
+                if(!s.getEmailVet().equals("proprietario")){
                     FirebaseAuth auth = FirebaseAuth.getInstance();
-                    if(s.getEmailVet().equals(auth.getCurrentUser())){
+                    if(auth.getCurrentUser().getEmail().equals(s.getEmailVet())){
                         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaSegnalazioneSanitariaFragment(s)).commit();
                     }else{
                         Toast.makeText(getContext(), "Questa segnalazione è modificabile solo dal veterinario che l'ha fatta!", Toast.LENGTH_SHORT).show();

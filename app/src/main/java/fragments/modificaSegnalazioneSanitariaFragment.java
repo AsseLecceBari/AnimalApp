@@ -1,24 +1,23 @@
 package fragments;
 
-import static android.graphics.Color.blue;
-import static android.graphics.Color.red;
-
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +35,7 @@ import model.SegnalazioneSanitaria;
 public class modificaSegnalazioneSanitariaFragment extends Fragment {
 
     private SegnalazioneSanitaria s;
+    private View visita;
 
     public modificaSegnalazioneSanitariaFragment(SegnalazioneSanitaria s) {
         this.s = s;
@@ -51,6 +51,9 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
     private Calendar cldr;
     private DatePickerDialog picker;
 
+    private MaterialCheckBox isDiagnosiPositiva, isEsame;
+    private Spinner statoTrattamento;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_modifica_segnalazione_sanitaria, container, false);
@@ -61,9 +64,11 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
         diagnosi = rootView.findViewById(R.id.diagnosi);
         farmaci = rootView.findViewById(R.id.farmaci);
         trattamento = rootView.findViewById(R.id.trattamento);
+        isDiagnosiPositiva = rootView.findViewById(R.id.isDiagnosiPositiva);
+        isEsame = rootView.findViewById(R.id.isSpecifico);
+        statoTrattamento = rootView.findViewById(R.id.statoTrattamento);
+        visita = rootView.findViewById(R.id.visita);
 
-        diagnosiLayout = rootView.findViewById(R.id.diagnosiLayout);
-        motivoConsultazioneLayout = rootView.findViewById(R.id.motivoConsultazioneLayout);
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         cldr = Calendar.getInstance();
@@ -75,13 +80,39 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
         data.setInputType(InputType.TYPE_NULL);
         data.setFocusable(false);
 
-        //setFocusable(false);
+        isEsame.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(isEsame.isChecked()){
+                    visita.setVisibility(View.GONE);
+                }else{
+                    visita.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
+        // imposto i campi
         data.setText(s.getData());
         motivoConsultazione.setText(s.getMotivoConsultazione());
         diagnosi.setText(s.getDiagnosi());
         farmaci.setText(s.getFarmaci());
         trattamento.setText(s.getTrattamento());
+        isDiagnosiPositiva.setChecked(s.getIsDiagnosiPositiva());
+        isEsame.setChecked(s.getIsEsameSpecifico());
+
+        final String[] values = getResources().getStringArray(R.array.statoTrattamento);
+        if(values[0].equals(s.getStatoTrattamento())){
+            statoTrattamento.setSelection(0);
+        }else{
+            if(s.getStatoTrattamento().equals(values[1]))
+                statoTrattamento.setSelection(1);
+            else
+                if(values[2].equals(s.getStatoTrattamento()))
+                    statoTrattamento.setSelection(2);
+        }
+
+
+
 
         data.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,7 +136,14 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 SegnalazioneSanitaria segn;
-                segn = new SegnalazioneSanitaria(data.getText().toString(), s.getEmailVet(), motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(), s.getId(), s.getIdAnimale());
+
+                String statoT = statoTrattamento.getSelectedItem().toString();
+                if(isEsame.isChecked()){
+                    segn = new SegnalazioneSanitaria(data.getText().toString(), s.getEmailVet(), motivoConsultazione.getText().toString(), "", "", trattamento.getText().toString(), s.getId(), animale.getIdAnimale().toString(), true, isDiagnosiPositiva.isChecked(), statoT);
+                }else{
+                    segn = new SegnalazioneSanitaria(data.getText().toString(), s.getEmailVet(), motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),s.getId(), animale.getIdAnimale().toString(), false, isDiagnosiPositiva.isChecked(), statoT);
+                }
+
                 db.collection("segnalazioneSanitaria").document(s.getId()).set(segn).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

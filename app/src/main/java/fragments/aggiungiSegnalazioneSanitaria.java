@@ -2,22 +2,22 @@ package fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.InputType;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -28,13 +28,11 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.SegnalazioneSanitaria;
-import model.SpesaAnimale;
 
 public class aggiungiSegnalazioneSanitaria extends Fragment {
     private TextView data, motivoConsultazione, diagnosi, farmaci, trattamento;
@@ -45,6 +43,9 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
     private Animale animale;
     private Calendar cldr;
     private DatePickerDialog picker;
+    private MaterialCheckBox isSpecifico, isDiagnosiPositiva;
+    private View visita;
+    private Spinner statoTrattamento;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -56,11 +57,27 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
         diagnosi = rootView.findViewById(R.id.diagnosi);
         farmaci = rootView.findViewById(R.id.farmaci);
         trattamento = rootView.findViewById(R.id.trattamento);
+        isSpecifico = rootView.findViewById(R.id.isSpecifico);
+        visita = rootView.findViewById(R.id.visita);
+
+        isDiagnosiPositiva = rootView.findViewById(R.id.isDiagnosiPositiva);
+        statoTrattamento = rootView.findViewById(R.id.statoTrattamento);
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         cldr = Calendar.getInstance();
 
         startDatabase();
+
+        isSpecifico.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(isSpecifico.isChecked()){
+                    visita.setVisibility(View.GONE);
+                }else{
+                    visita.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
         // Al click nel campo Nascita si apre il date picker
         data.setText(new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString());
@@ -111,7 +128,13 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
                                     }
 
                                     //--------
-                                    SegnalazioneSanitaria s = new SegnalazioneSanitaria(data.getText().toString(), emailveterinario, motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString());
+                                    SegnalazioneSanitaria s;
+                                    String statoT = statoTrattamento.getSelectedItem().toString();
+                                    if(isSpecifico.isChecked()){
+                                        s = new SegnalazioneSanitaria(data.getText().toString(), emailveterinario, motivoConsultazione.getText().toString(), "", "", trattamento.getText().toString(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), true, isDiagnosiPositiva.isChecked(), statoT);
+                                    }else{
+                                        s = new SegnalazioneSanitaria(data.getText().toString(), emailveterinario, motivoConsultazione.getText().toString(), diagnosi.getText().toString(), farmaci.getText().toString(), trattamento.getText().toString(),new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), false, isDiagnosiPositiva.isChecked(), statoT);
+                                    }
                                     db.collection("segnalazioneSanitaria").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {

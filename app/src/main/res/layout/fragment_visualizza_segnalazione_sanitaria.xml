@@ -39,15 +39,10 @@
                 android:hint=""
                 android:id="@+id/dataS"
                 android:layout_marginTop="12dp"
-                android:textSize="28dp">
+                android:textSize="12dp"
+                android:fontFamily="@string/common_open_on_phone"> <!-- questo non fa uscire l'anteprima ma funziona-->
             </com.google.android.material.textview.MaterialTextView>
 
-            <com.google.android.material.divider.MaterialDivider
-                style="@style/AppTheme"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="15dp"
-                />
 
             <com.google.android.material.textview.MaterialTextView
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -55,11 +50,19 @@
                 android:layout_height="wrap_content"
                 android:hint=""
                 android:id="@+id/sintomiS"
-                android:layout_marginTop="12dp"
-                android:textSize="28dp">
+                android:layout_marginTop="30dp"
+                android:textSize="22dp">
             </com.google.android.material.textview.MaterialTextView>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:id="@+id/nonEsame">
+
+
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/bar1"
                 style="@style/AppTheme"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -73,10 +76,11 @@
                 android:hint=""
                 android:id="@+id/diagnosiS"
                 android:layout_marginTop="12dp"
-                android:textSize="28dp">
+                android:textSize="22dp">
             </com.google.android.material.textview.MaterialTextView>
 
             <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/bar2"
                 style="@style/AppTheme"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
@@ -90,7 +94,27 @@
                 android:hint=""
                 android:id="@+id/farmaciS"
                 android:layout_marginTop="12dp"
-                android:textSize="28dp">
+                android:textSize="22dp">
+            </com.google.android.material.textview.MaterialTextView>
+
+            </LinearLayout>
+
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/bar3"
+                style="@style/AppTheme"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="15dp"
+                />
+
+            <com.google.android.material.textview.MaterialTextView
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:id="@+id/trattamentoS"
+                android:layout_marginTop="12dp"
+                android:textSize="22dp">
             </com.google.android.material.textview.MaterialTextView>
 
             <com.google.android.material.divider.MaterialDivider
@@ -105,17 +129,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint=""
-                android:id="@+id/trattamentoS"
+                android:id="@+id/considerazioni"
                 android:layout_marginTop="12dp"
-                android:textSize="28dp">
+                android:textSize="22dp">
             </com.google.android.material.textview.MaterialTextView>
 
-            <com.google.android.material.divider.MaterialDivider
-                style="@style/AppTheme"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="15dp"
-                />
         </LinearLayout>
 
 

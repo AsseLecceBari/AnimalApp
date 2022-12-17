@@ -9,11 +9,13 @@ public class SegnalazioneSanitaria {
     private String trattamento;
     private String id;
     private String idAnimale;
+    private boolean isEsameSpecifico, isDiagnosiPositiva;
+    private String statoTrattamento;
 
     public SegnalazioneSanitaria() {
     }
 
-    public SegnalazioneSanitaria(String data, String emailVet, String motivoConsultazione, String diagnosi, String farmaci, String trattamento, String id, String idAnimale) {
+    public SegnalazioneSanitaria(String data, String emailVet, String motivoConsultazione, String diagnosi, String farmaci, String trattamento, String id, String idAnimale, boolean isEsameSpecifico, boolean isDiagnosiPositiva, String statoTrattamento) {
         this.data = data;
         this.emailVet = emailVet;
         this.motivoConsultazione = motivoConsultazione;
@@ -22,6 +24,21 @@ public class SegnalazioneSanitaria {
         this.trattamento = trattamento;
         this.id = id;
         this.idAnimale = idAnimale;
+        this.isEsameSpecifico = isEsameSpecifico;
+        this.isDiagnosiPositiva = isDiagnosiPositiva;
+        this.statoTrattamento = statoTrattamento;
+    }
+
+    public boolean getIsEsameSpecifico() {
+        return isEsameSpecifico;
+    }
+
+    public boolean getIsDiagnosiPositiva() {
+        return isDiagnosiPositiva;
+    }
+
+    public String getStatoTrattamento() {
+        return statoTrattamento;
     }
 
     public String getIdAnimale() {

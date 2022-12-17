@@ -28,8 +28,7 @@ xmlns:tools="http://schemas.android.com/tools">
         android:id="@+id/dataLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp">
+        android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/data"
@@ -38,8 +37,38 @@ xmlns:tools="http://schemas.android.com/tools">
             android:hint="Data segnalazione sanitaria" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dettagli visita "
+            android:textSize="18dp"
+            />
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+
+            />
+
+    </LinearLayout>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/isSpecifico"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:text="E' UN ESAME SPECIFICO \n(es. vaccinazione, sverminazione, ecc.)">
+
+    </com.google.android.material.checkbox.MaterialCheckBox>
+
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/motivoConsultazioneLayout"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,38 +78,47 @@ xmlns:tools="http://schemas.android.com/tools">
             android:id="@+id/motivoConsultazione"
             android:layout_width="match_parent"
             android:layout_height="101dp"
-            android:hint="Sintomi"
+            android:hint="Motivo consultazione"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/diagnosiLayout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/visita">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/diagnosi"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="101dp"
-            android:hint="Diagnosi"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/diagnosi"
+                android:layout_width="match_parent"
+                android:layout_height="101dp"
+                android:hint="Diagnosi"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/farmaci"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
-            android:layout_height="101dp"
-            android:hint="farmaci"
-            android:inputType="text" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/farmaci"
+                android:layout_width="match_parent"
+                android:layout_height="101dp"
+                android:hint="Farmaci"
+                android:inputType="text" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -97,6 +135,27 @@ xmlns:tools="http://schemas.android.com/tools">
     </com.google.android.material.textfield.TextInputLayout>
 
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginBottom="0dp">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="189dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"/>
+    </LinearLayout>
+
+
+
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
@@ -109,6 +168,49 @@ xmlns:tools="http://schemas.android.com/tools">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Note finali e stato trattamento "
+            android:textSize="18dp"
+            />
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="13dp"
+
+            />
+
+    </LinearLayout>
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/isDiagnosiPositiva"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="E' andato tutto a buon fine"
+        app:checkedState="checked"
+        android:layout_marginTop="0dp">
+    </com.google.android.material.checkbox.MaterialCheckBox>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp">
+        <Spinner
+            android:id="@+id/statoTrattamento"
+            android:layout_width="match_parent"
+            android:layout_height="54dp"
+            android:entries="@array/statoTrattamento"
+            tools:ignore="TouchTargetSizeCheck"/>
+    </androidx.cardview.widget.CardView>
+
 
 
 </LinearLayout>
