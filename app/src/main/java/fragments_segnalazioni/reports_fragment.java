@@ -56,9 +56,9 @@ public class reports_fragment extends Fragment  {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private RecyclerView mRecyclerView;
-    private static ReportAdapter mAdapter;
-    private static ArrayList<Segnalazione> mDataset= new ArrayList<>();
 
+    private  ArrayList<Segnalazione> mDataset= new ArrayList<>();
+    private  ReportAdapter mAdapter=new ReportAdapter(mDataset);
     private String id;
 
     private ArrayList<Segnalazione> filteredlist=new ArrayList<>();

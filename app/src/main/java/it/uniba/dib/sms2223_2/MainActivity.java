@@ -22,8 +22,12 @@ import com.google.android.material.color.DynamicColorsOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
+import adapter.AnimalAdapter;
 import adapter.VPAdapter;
 import class_general.GeolocationClass;
 import class_general.HttpDataHandler;
@@ -31,6 +35,8 @@ import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.myanimals_fragment;
 import fragments_segnalazioni.reports_fragment;
+import model.Animale;
+import model.Carico;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -129,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
+
                 VPAdapter adapter=null;
                 ViewPager2 viewPager2=null;
                 try {
@@ -141,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
                     Log.e("DOVESEI","SONOQUI");
+
                     myanimals_fragment = (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     myanimals_fragment.filter(newText);
                     Log.e("query", "animals");

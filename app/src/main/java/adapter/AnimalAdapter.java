@@ -24,7 +24,7 @@ import model.Animale;
 //Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
 public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder>{
     //Array con tutti i dati sugli animali da inserire nella view
-    private ArrayList<Animale> localDataSet;
+    private ArrayList<Animale> localDataSet=new ArrayList<>();
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -90,7 +90,9 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
     }
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public AnimalAdapter(ArrayList<Animale> dataSet){
-        localDataSet = dataSet;
+        localDataSet.clear();
+        localDataSet.addAll(dataSet);
+
     }
 
     @NonNull

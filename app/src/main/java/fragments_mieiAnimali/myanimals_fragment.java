@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,16 +61,22 @@ public class myanimals_fragment extends Fragment {
     public ArrayList<Animale> getmDataset() {
         return mDataset;
     }
+    private SearchView searchView;
 
-    private static ArrayList<Animale> mDataset= new ArrayList<>();
+    private  ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
-    private static AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
+    private  AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
 
     private AnimaleDB animaleDAO;
     private MainActivity mainActivity;
     private Toolbar main_action_bar;
     private String ruolo="";
     private int countMyAnimals;
+
+    public ArrayList<Carico> getCaricoDataset() {
+        return caricoDataset;
+    }
+
     private ArrayList<Carico> caricoDataset=new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +87,7 @@ public class myanimals_fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        ruolo="";
         mDataset.clear();
         countMyAnimals=0;
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
@@ -124,10 +132,10 @@ public class myanimals_fragment extends Fragment {
 
 
         //se la check box è premuta il bottone cambia
+
         if(!mostraSoloIncarico.isChecked()){
             addAnimale.setVisibility(View.VISIBLE);
             addIncarico.setVisibility(View.GONE);
-
         }else{
             addAnimale.setVisibility(View.GONE);
             addIncarico.setVisibility(View.VISIBLE);
@@ -137,12 +145,14 @@ public class myanimals_fragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //se la check box è premuta il bottone cambia
+
                 if(!mostraSoloIncarico.isChecked()){
                     addAnimale.setVisibility(View.VISIBLE);
                     addIncarico.setVisibility(View.GONE);
                     if(caricoDataset.size()>0){
                         filterMieiAnimali(caricoDataset);
                     }
+
 
                 }else{
                     addAnimale.setVisibility(View.GONE);
@@ -176,6 +186,7 @@ public class myanimals_fragment extends Fragment {
                             countMyAnimals++;
                             Log.e("animale", document.getId() + " => " + document.getData());
                         }
+
                     }
                     //Se siamo loggati con il veterinario aggiungiamo nel dataset anche gli animali in carico
                     if(ruolo.equals("veterinario")){
@@ -213,10 +224,17 @@ public class myanimals_fragment extends Fragment {
                                 // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                 mRecyclerView.setAdapter(mAdapter);
                                 //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                                filterMieiAnimali(caricoDataset);
+
                             }
 
                         });
+
+                    }else{
+                        //Passo i dati presi dal database all'adapter
+                        mAdapter = new AnimalAdapter(mDataset);
+                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                        mRecyclerView.setAdapter(mAdapter);
+                        //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
 
                     }
 

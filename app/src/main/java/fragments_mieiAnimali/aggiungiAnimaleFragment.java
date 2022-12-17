@@ -286,7 +286,8 @@ public class aggiungiAnimaleFragment extends Fragment {
                         storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                               getActivity().onBackPressed();
+                               Intent intent= new Intent(getContext(),MainActivity.class);
+                               startActivity(intent);
                             }
                         });
                     }else {

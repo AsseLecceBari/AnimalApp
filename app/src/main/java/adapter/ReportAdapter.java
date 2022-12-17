@@ -27,7 +27,7 @@ import model.Animale;
 import model.Segnalazione;
 
 public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder>{
-    private ArrayList<Segnalazione> localDataSet;
+    private ArrayList<Segnalazione> localDataSet=new ArrayList<>();
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private TextView dataReport,tipoReport,titoloReport;
@@ -74,8 +74,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public ReportAdapter(ArrayList<Segnalazione> dataSet) {
-
-        localDataSet = dataSet;
+        localDataSet.clear();
+        localDataSet.addAll(dataSet);
     }
 
 
@@ -119,7 +119,6 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
         return localDataSet.size();
     }
     public void filterList(ArrayList<Segnalazione> filterlist) {
-
         localDataSet.clear();
         localDataSet.addAll(filterlist);
         //notifica all'adapter che sono cambiati i dati nella recycle view
