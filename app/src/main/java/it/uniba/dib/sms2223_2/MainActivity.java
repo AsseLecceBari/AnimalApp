@@ -1,42 +1,24 @@
 package it.uniba.dib.sms2223_2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-
-import androidx.dynamicanimation.animation.DynamicAnimation;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.color.DynamicColors;
-import com.google.android.material.color.DynamicColorsOptions;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-import org.checkerframework.checker.units.qual.A;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-
-import adapter.AnimalAdapter;
 import adapter.VPAdapter;
-import class_general.GeolocationClass;
-import class_general.HttpDataHandler;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.myanimals_fragment;
 import fragments_segnalazioni.reports_fragment;
-import model.Animale;
-import model.Carico;
 import profiloUtente.ProfiloUtenteActivity;
 
 public class MainActivity extends AppCompatActivity {
@@ -229,5 +211,9 @@ public class MainActivity extends AppCompatActivity {
 
     public fragments_segnalazioni.reports_fragment getReports_fragment() {
         return reports_fragment;
+    }
+
+    public void scanQr(MenuItem item) {
+        getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale()).commit();
     }
 }

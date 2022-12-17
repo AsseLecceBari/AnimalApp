@@ -22,8 +22,7 @@
         <item
             android:icon="@drawable/qrcode"
             android:title="@string/scansione_qrcode"
-
-
+            android:onClick="scanQr"
            />
         <item
             android:title="Pokedex"
