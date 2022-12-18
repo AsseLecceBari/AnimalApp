@@ -31,7 +31,7 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     private int vistamieianimali;
     //Creo la classe View AnimalAdapter che contiene i riferimenti ai widget della recycleViewAnimal da popolare
     //Array con tutti i dati sugli animali da inserire nella view
-    private ArrayList<Animale> localDataSet;
+    private ArrayList<Animale> localDataSet=new ArrayList<>();
     private OnClickListener onClickListener;
     private ArrayList<Persona> utenteDataset;
 
@@ -96,12 +96,14 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
 
     //Funzione richiamata dal fragment myAnimals,il quale passa i dati degli animali
     public AdozioniAdapter(ArrayList<Animale> dataSet, int vista, ArrayList<Persona> utente) {
-        localDataSet = dataSet;
+        localDataSet.clear();
+        localDataSet.addAll(dataSet);
         vistamieianimali = vista;
         utenteDataset= utente;
     }
     public AdozioniAdapter(ArrayList<Animale> dataSet, int vista) {
-        localDataSet = dataSet;
+        localDataSet.clear();
+        localDataSet.addAll(dataSet);
         vistamieianimali = vista;
 
     }

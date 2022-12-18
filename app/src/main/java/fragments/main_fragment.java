@@ -111,7 +111,10 @@ public class main_fragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tabLayout.getTabAt(position).select();
+                if(position<=2){
+                tabLayout.getTabAt(position).select();}else{
+                    tabLayout.getTabAt(0).select();
+                }
 
             }
         });

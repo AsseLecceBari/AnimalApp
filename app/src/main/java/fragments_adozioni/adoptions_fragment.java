@@ -77,8 +77,8 @@ public class adoptions_fragment extends Fragment {
     private  RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
 
-    private static AdozioniAdapter mAdapter;
-    private static  ArrayList<Animale> mDataset = new ArrayList<>();
+    private  AdozioniAdapter mAdapter;
+    private  ArrayList<Animale> mDataset= new ArrayList<>();
 
 
     private LinearLayout paginalogin;

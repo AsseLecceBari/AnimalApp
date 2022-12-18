@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,7 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.CompoundButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +31,8 @@ import org.checkerframework.checker.units.qual.C;
 
 import java.util.ArrayList;
 
+import DB.CaricoDB;
+import DB.UtentiDB;
 import adapter.AnimalAdapter;
 import DB.AnimaleDB;
 import fragments.RecyclerItemClickListener;
@@ -41,47 +41,29 @@ import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
-import model.Associazione;
 import model.Carico;
-import model.Ente;
-import model.Persona;
-import model.Veterinario;
 
 public class myanimals_fragment extends Fragment {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private FloatingActionButton addAnimale, addIncarico;
-    private Animale a;
     private MaterialCheckBox mostraSoloIncarico;
-
     private RecyclerView mRecyclerView;
-
-
-    public ArrayList<Animale> getmDataset() {
-        return mDataset;
-    }
-    private SearchView searchView;
-
     private  ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
     private  AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
-
-    private AnimaleDB animaleDAO;
+    private AnimaleDB animaleDB;
+    private CaricoDB caricoDB;
+    private UtentiDB utentiDB;
     private MainActivity mainActivity;
     private Toolbar main_action_bar;
     private String ruolo="";
     private int countMyAnimals;
-
-    public ArrayList<Carico> getCaricoDataset() {
-        return caricoDataset;
-    }
-
     private ArrayList<Carico> caricoDataset=new ArrayList<>();
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -98,15 +80,15 @@ public class myanimals_fragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
-        animaleDAO= new AnimaleDB();
+        animaleDB = new AnimaleDB();
+        caricoDB= new CaricoDB();
+        utentiDB= new UtentiDB();
 
 
 
         // controlli per la checkbox in carico
-        CollectionReference reference=db.collection("utenti");
         if(auth.getCurrentUser()!=null) {
-            Query query = reference.whereEqualTo("email", auth.getCurrentUser().getEmail());
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+            utentiDB.getUtenti(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
@@ -114,14 +96,11 @@ public class myanimals_fragment extends Fragment {
                             if(!(document.get("ruolo").toString().equals("proprietario"))){
                                 // Nascondo la checkbox che mi mostra gli in carico
                                 mostraSoloIncarico.setVisibility(View.VISIBLE);
-                                ruolo="veterinario";
+                                ruolo="nonProprietario";
                                 break;
-                            }else{
-                                //Todo: init dataset alternatvo ---------------------------------------------------
                             }
                         }
                     }
-
                 }
             });
         }
@@ -176,29 +155,22 @@ public class myanimals_fragment extends Fragment {
 
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         if(auth.getCurrentUser()!=null) {
-            animaleDAO.getMieiAnimali(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            animaleDB.getMieiAnimali(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             //Salvare animale in un array con elementi oggetto animale
                             mDataset.add(document.toObject(Animale.class));
-                            countMyAnimals++;
-                            Log.e("animale", document.getId() + " => " + document.getData());
-                        }
-
-                    }
+                            countMyAnimals++;}}
                     //Se siamo loggati con il veterinario aggiungiamo nel dataset anche gli animali in carico
-                    if(ruolo.equals("veterinario")){
-                        CollectionReference carichiReference = db.collection("carichi");
+                    if(ruolo.equals("nonProprietario")){
                         CollectionReference animaliReference = db.collection("animali");
-                        Query queryCarichi = carichiReference.whereEqualTo("idProfessionista", auth.getCurrentUser().getEmail());
-                        queryCarichi.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        caricoDB.getVetCarichi(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     //Salvare animale in un array con elementi oggetto animale
-                                    Log.e("carico",document.toObject(Carico.class)+"");
                                     caricoDataset.add(document.toObject(Carico.class));
                                     Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale",document.toObject(Carico.class).getIdAnimale());
                                     queryAnimaliInCarico.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -207,45 +179,22 @@ public class myanimals_fragment extends Fragment {
                                             if (task.isSuccessful()) {
                                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                                     //Salvare animale in un array con elementi oggetto animale
-                                                    mDataset.add(document.toObject(Animale.class));
-                                                    Log.e("animale", document.getId() + " => " + document.getData());
-                                                }
-                                                Log.e("ehi","ehi");
-
-
-                                            }
-
-                                        }
-                                    });
-
-                                }
+                                                    mDataset.add(document.toObject(Animale.class));}}}});}
                                 //Passo i dati presi dal database all'adapter
                                 mAdapter = new AnimalAdapter(mDataset);
                                 // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                 mRecyclerView.setAdapter(mAdapter);
                                 //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-
-                            }
-
-                        });
-
-                    }else{
+                            }});}else{
                         //Passo i dati presi dal database all'adapter
                         mAdapter = new AnimalAdapter(mDataset);
                         // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                         mRecyclerView.setAdapter(mAdapter);
                         //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-
                     }
-
                 }
-
             });
-
         }
-
-
-
         addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
         auth=FirebaseAuth.getInstance();
 
