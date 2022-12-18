@@ -16,19 +16,16 @@ import fragments_adozioni.info_Proprietario;
 import fragments_adozioni.info_animale;
 
 public class VPAdapterAnimale extends FragmentStateAdapter {
-    private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
+    private  ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
     public VPAdapterAnimale(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, @NonNull boolean proprietario) {
         super(fragmentManager, lifecycle);
 
         if(!proprietario) {
 
-            fragmentArrayList.add(new info_animale());
+            fragmentArrayList.add(new anagrafica());
             fragmentArrayList.add(new info_Proprietario());
-
-
-
-
+            fragmentArrayList.add(new librettoSanitario());
         }
         else{
 

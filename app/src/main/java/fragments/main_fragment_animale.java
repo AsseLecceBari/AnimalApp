@@ -81,9 +81,10 @@ public class main_fragment_animale extends Fragment {
             activity  = getActivity();
             if(!getProprietario()) {
                 vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(),false);
-                tabLayout= getView().findViewById(R.id.tabLayout);
-                tabLayout.setVisibility(View.GONE);
                 tabLayout= getView().findViewById(R.id.tabLayout2);
+                tabLayout.setVisibility(View.GONE);
+                tabLayout= getView().findViewById(R.id.tabLayout);
+                tabLayout.getTabAt(1).setText("Proprietario");
             }
             else {
                 vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(), true);
