@@ -54,6 +54,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import adapter.AdozioniAdapter;
+import adapter.ReportAdapter;
 import class_general.OnSwipeListener;
 import class_general.RecyclerItemClickListener;
 import it.uniba.dib.sms2223_2.AdozioneActivity;
@@ -77,9 +78,8 @@ public class adoptions_fragment extends Fragment {
     private  RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
 
-    private  AdozioniAdapter mAdapter;
     private  ArrayList<Animale> mDataset= new ArrayList<>();
-
+    private  AdozioniAdapter mAdapter=new AdozioniAdapter(mDataset);
 
     private LinearLayout paginalogin;
     private View btnaccesso;

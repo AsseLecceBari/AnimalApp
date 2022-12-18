@@ -35,6 +35,10 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     private OnClickListener onClickListener;
     private ArrayList<Persona> utenteDataset;
 
+    public AdozioniAdapter(ArrayList<Animale> mDataset) {
+        localDataSet.clear();
+        localDataSet.addAll(mDataset);
+    }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
