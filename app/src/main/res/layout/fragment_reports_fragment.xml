@@ -34,7 +34,7 @@
                 android:layout_marginRight="15dp"
                 android:text="Filtri"
                 android:visibility="visible"
-                app:icon="@drawable/_492790985_3arrow_down_84192"
+                app:icon="@drawable/equalizer_filter_filtering_mixer_sorting_icon_123287__1_"
                 app:iconPadding="8dp"
 
                 tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
@@ -49,7 +49,7 @@
                 android:clickable="true"
                 android:text="Filtri"
                 android:visibility="gone"
-                app:icon="@drawable/_492790975_4arrow_right_84163"
+                app:icon="@drawable/equalizer_filter_filtering_mixer_sorting_icon_123287__1_"
                 app:iconPadding="8dp"
                 tools:ignore="SpeakableTextPresentCheck" />
 
@@ -127,11 +127,7 @@
                 android:orientation="horizontal"
                 android:visibility="gone"
                >
-                <com.google.android.material.button.MaterialButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="PROVA LOCALIZZAZIONE"
-                    android:id="@+id/prova"/>
+
 
                 <ImageView
                     android:id="@+id/imageSliderRep"
@@ -139,7 +135,8 @@
                     android:layout_height="30dp"
                     android:layout_gravity="center"
                     app:srcCompat="@android:drawable/ic_dialog_map" />
-                <!-- Discrete slider -->
+
+
                 <com.google.android.material.slider.Slider
                     android:id="@+id/sliderReport"
                     android:layout_width="match_parent"
