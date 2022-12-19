@@ -330,6 +330,7 @@ public class myanimals_fragment extends Fragment {
                 }
             }
         if (filteredlist.isEmpty()) {
+            mAdapter.filterList(filteredlist);
         } else {
             mAdapter.filterList(filteredlist);
         }
@@ -346,7 +347,7 @@ public class myanimals_fragment extends Fragment {
             }
         }
         if (filteredlist.isEmpty()) {
-
+            mAdapter.filterList(filteredlist);
         } else {
             mAdapter.filterList(filteredlist);
         }

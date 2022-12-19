@@ -475,8 +475,7 @@ public class reports_fragment extends Fragment  {
             }
         }
         if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
+            mAdapter.filterList(filteredlist);
 
         } else {
             // at last we are passing that filtered
@@ -507,8 +506,7 @@ public class reports_fragment extends Fragment  {
             }
         }
         if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
+            mAdapter.filterList(filteredlist);
 
         } else {
             // at last we are passing that filtered
