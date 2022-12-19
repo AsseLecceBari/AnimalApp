@@ -32,6 +32,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -250,16 +251,13 @@ public class animale_in_pericolo_fragments extends Fragment {
                 getChildFragmentManager().findFragmentById(R.id.autoCompleteFragment);
 
 
-        // Set the fields to specify which types of place data to
-        // return after the user has made a selection.
-        List<Place.Field> fields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
 
         // Start the autocomplete intent.
 
 
         // Specify the types of place data to return.
 
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -268,6 +266,9 @@ public class animale_in_pericolo_fragments extends Fragment {
                 // TODO: Get info about the selected place.
                 Log.i("place", "Place: " + place.getName() + ", " + place.getId());
                 address=place.getName();
+                LatLng latlng=place.getLatLng();
+                lat=latlng.latitude;
+                lng=latlng.longitude;
             }
 
 
@@ -294,16 +295,12 @@ public class animale_in_pericolo_fragments extends Fragment {
                 String data= dateFor.format(new Date());
 
 
-                //todo: da prendere la foto
+
                 String urlFoto="/imagesAnimaliInPericolo/"+idSegnalazione;
 
-                //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
-                GetCoordinates geocoder= new GetCoordinates(address);
-                //prendo le coordinate dalle variabili dell'oggetto
-                //lat=geocoder.getLat();
-                //lng=geocoder.getLng();
 
-                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,geocoder.getLat(),geocoder.getLng(),data,urlFoto," ");
+
+                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
                 db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

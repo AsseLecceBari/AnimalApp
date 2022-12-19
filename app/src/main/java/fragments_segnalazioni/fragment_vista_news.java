@@ -59,9 +59,6 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
 
     private UiSettings mUiSettings;
     private Toolbar main_action_bar;
-    public fragment_vista_news() {
-        // Required empty public constructor
-    }
 
     //FAB SPEED DIAL DECLARATION
     private static final String TRANSLATION_Y = "translationY";
@@ -71,6 +68,13 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
     private FloatingActionButton fabAction2;
     private float offset1;
     private float offset2;
+
+
+    public fragment_vista_news() {
+        // Required empty public constructor
+    }
+
+
 
 
     @Override
@@ -322,6 +326,8 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
             ((Animatable) drawable).start();
         }
     }*/
+
+
 
 
 }

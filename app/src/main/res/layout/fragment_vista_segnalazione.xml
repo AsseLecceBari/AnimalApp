@@ -151,32 +151,10 @@
             />
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     </LinearLayout>
 </ScrollView>
 
-
+<!--
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/buttonVistaSegnalazione"
             android:layout_width="wrap_content"
@@ -188,6 +166,10 @@
             android:src="@android:drawable/btn_dialog"
             tools:ignore="SpeakableTextPresentCheck"
            />
+-->
+
+        <include layout="@layout/fab" />
+
 
     </FrameLayout>
 
