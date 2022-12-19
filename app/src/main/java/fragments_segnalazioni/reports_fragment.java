@@ -124,11 +124,12 @@ public class reports_fragment extends Fragment {
 
 
 
-    Location mCurrentLocation;
+
     private boolean requestingLocationUpdates=true;
 
 
-
+    LocationRequest locationRequest;
+    LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationClient;
     private static final int Request_code= 101;
     double lat,lng;
@@ -351,7 +352,8 @@ public class reports_fragment extends Fragment {
             @SuppressLint("MissingPermission")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-                Toast.makeText(getContext(), "latitudine: "+lat+" longitudine: "+lng, Toast.LENGTH_SHORT).show();
+
+               filterCoordinates(lat,lng,slider.getValue());
 /*
               //  Log.d("provalatitudine2: " , prova++ +"");
 
@@ -455,6 +457,7 @@ public class reports_fragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        stopLocationUpdates();
 
     }
 
@@ -571,8 +574,8 @@ public class reports_fragment extends Fragment {
 
     }
 
-    //TODO: da trovare il modo per prendere coordinate di registrazione dell'utente
-    private void trovaUtente(double addLat1,double addLng1) {
+    //per usare coordinate di registrazione
+    private void trovaUtente(double raggio) {
 
 
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
@@ -600,7 +603,7 @@ public class reports_fragment extends Fragment {
                         double latitudine= Double.parseDouble(utente.getIndirizzo().get("latitudine"));
                         double longitudine= Double.parseDouble(utente.getIndirizzo().get("longitudine"));
                        //TODO inserire le coordinate della registrazione dell'utente
-                       filterCoordinates((latitudine + addLat1) ,(longitudine + addLng1),(latitudine - addLat1),(longitudine - addLng1));
+                       filterCoordinates(latitudine ,longitudine,raggio);
 
 
 
@@ -617,8 +620,8 @@ public class reports_fragment extends Fragment {
 
 
     //filtro per lo slider
-    public void filterCoordinates(double latitudinePiu, double longitudinePiu,double latitudineMeno, double longitudineMeno) {
-        Log.e("provaaaa","sono dentro");
+    public void filterCoordinates(double myLat,double myLng,double raggio) {
+
         // creating a new array list to filter our data.
         filteredlist = new ArrayList<>();
 
@@ -627,7 +630,7 @@ public class reports_fragment extends Fragment {
             // checking if the entered string matched with any item of our recycler view.
 
             //dove latitudine e longitudine è la mia posizione + i km scelti
-            if (item.getLatitudine()<=latitudinePiu && item.getLongitudine()<=longitudinePiu && item.getLatitudine()>=latitudineMeno && item.getLongitudine()>=longitudineMeno) {
+            if (distance(myLat,myLng, item.getLatitudine(), item.getLongitudine())<= raggio) {
                 // if the item is matched we are
                 // adding it to our filtered list.
                 filteredlist.add(item);
@@ -635,16 +638,14 @@ public class reports_fragment extends Fragment {
         }
         if (filteredlist.isEmpty()) {
             // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
+            mAdapter.filterList(filteredlist);
 
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
             mAdapter.filterList(filteredlist);
         }
-        for (Segnalazione item : filteredlist) {
-            Log.e("pippo2", item.getTipo() + " " + item.getTitolo());
-        }
+
     }
 
 
@@ -667,7 +668,7 @@ public class reports_fragment extends Fragment {
         }
         if (filteredlist.isEmpty()) {
             // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
+            mAdapter.filterList(filteredlist);
 
         } else {
             // at last we are passing that filtered
@@ -710,7 +711,7 @@ public class reports_fragment extends Fragment {
     }
 
     //gesitone permessi
-
+/*
     private void  getCurrentLocationPermission() {
 
 
@@ -732,10 +733,10 @@ public class reports_fragment extends Fragment {
 
         }
     }
+*/
 
 
-
-
+/*
     public void showAlertDialog() {
 
 
@@ -763,7 +764,8 @@ public class reports_fragment extends Fragment {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
-    }
+    }*/
+
 
 /*    protected LocationRequest createLocationRequest() {
         locationRequest = LocationRequest.create();
@@ -844,27 +846,27 @@ public class reports_fragment extends Fragment {
             return;
         }
 
-        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest = LocationRequest.create();
         locationRequest.setInterval(10000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
         putOnGPS(locationRequest);
 
-        LocationCallback locationCallback=new LocationCallback(){
+        locationCallback=new LocationCallback(){
 
 
             @Override
             public void onLocationResult(LocationResult locationResult) {
-                //Toast.makeText(getContext(), "location result is= ", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getContext(), "location result is= ", Toast.LENGTH_SHORT).show();
                 if(locationResult==null){
-                    Toast.makeText(getContext(),"Current location is null", Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getContext(),"Current location is null", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 for (Location location:locationResult.getLocations()){
                     if(locationResult!=null){
-                        Toast.makeText(getContext(),"Current location is : lng: "+location.getLongitude()+"/lat: "+location.getLatitude(), Toast.LENGTH_SHORT).show();
+                       // Toast.makeText(getContext(),"Current location is : lng: "+location.getLongitude()+"/lat: "+location.getLatitude(), Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -935,5 +937,11 @@ public class reports_fragment extends Fragment {
                 }
             }
         });
+    }
+
+
+
+    private void stopLocationUpdates(){
+        fusedLocationClient.removeLocationUpdates(new LocationCallback());
     }
 }
