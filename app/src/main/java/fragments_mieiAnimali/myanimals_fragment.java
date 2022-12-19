@@ -1,14 +1,22 @@
 package fragments_mieiAnimali;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -62,9 +70,43 @@ public class myanimals_fragment extends Fragment {
     private String ruolo="";
     private int countMyAnimals;
     private ArrayList<Carico> caricoDataset=new ArrayList<>();
+    private ActivityResultLauncher<String> requestPermissionLauncher;
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
+        alertDialogBuilder.setPositiveButton("Ho capito",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+                requestPermissionLauncher =
+                        registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                            if (isGranted) {
+                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).
+                                        replace(R.id.fragmentContainerView, new aggiungiCarico()).commit();
+                            } else {
+                                //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
+
+                            }
+                        });
     }
 
     @Override
@@ -134,8 +176,18 @@ public class myanimals_fragment extends Fragment {
             public void onClick(View view) {
                 // passo al fragment per leggere il qr code dell'animale
                 // e inserire la data di inizio carico
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiCarico()).commit();
+                if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) ==
+                        PackageManager.PERMISSION_GRANTED) {
 
+                    //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
+                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiCarico()).commit();
+                } else if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+                    showAlertDialog();
+                } else {
+                    // You can directly ask for the permission.
+                    // The registered ActivityResultCallback gets the result of this request.
+                    requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                }
             }
         });
 
@@ -166,7 +218,6 @@ public class myanimals_fragment extends Fragment {
                                 }
                                 Log.e("DOVESONO","GETRUOLO");
                                 if(ruolo.equals(RUOLOVETERINARIO)){
-
                                     CollectionReference animaliReference = db.collection("animali");
                                     caricoDB.getVetCarichi(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -261,30 +312,6 @@ public class myanimals_fragment extends Fragment {
     public void filterMieiAnimali(ArrayList<Carico> caricoDataset) {
 
         filteredlist=new ArrayList<>();
-        // running a for loop to compare elements.
-/*
-            for (Animale item : mDataset) {
-                for (Carico carico : caricoDataset) {
-                // checking if the entered string matched with any item of our recycler view.
-                    if (item.getIdAnimale().equals(carico.getIdAnimale())) {
-                        }else {
-                        if(filteredlist.size()!=0){
-                                for (Animale filter : filteredlist){
-                                    if (filter.getIdAnimale().equals(carico.getIdAnimale())){
-                                    }else{
-                                        Log.e("aggiunto","aggiunto");
-                                        filteredlist.add(item);
-                                        break;
-                                    }
-                                }
-
-                        }else{
-                            filteredlist.add(item);
-                        }
-                    }
-                    }
-                }
-*/
         for(int i=0;i<countMyAnimals;i++){
             filteredlist.add(mDataset.get(i));
         }
@@ -294,24 +321,16 @@ public class myanimals_fragment extends Fragment {
     public void filterCarico(ArrayList<Carico> caricoDataset) {
 
         filteredlist=new ArrayList<>();
-        // running a for loop to compare elements.
             for (Carico animal : caricoDataset) {
                 for (Animale item : mDataset) {
-                    // checking if the entered string matched with any item of our recycler view.
                     if (item.getIdAnimale().toLowerCase().contains(animal.getIdAnimale().toLowerCase())) {
-                        // if the item is matched we are
-                        // adding it to our filtered list.
+
                         filteredlist.add(item);
                     }
                 }
             }
         if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
-
         } else {
-            // at last we are passing that filtered
-            // list to our adapter class.
             mAdapter.filterList(filteredlist);
         }
     }
@@ -322,20 +341,13 @@ public class myanimals_fragment extends Fragment {
         filteredlist=new ArrayList<>();
         // running a for loop to compare elements.
         for (Animale item : mDataset) {
-            // checking if the entered string matched with any item of our recycler view.
             if (item.getNome().toLowerCase().contains(text.toLowerCase())) {
-                // if the item is matched we are
-                // adding it to our filtered list.
                 filteredlist.add(item);
             }
         }
         if (filteredlist.isEmpty()) {
-            // if no item is added in filtered list we are
-            // displaying a toast message as no data found.
 
         } else {
-            // at last we are passing that filtered
-            // list to our adapter class.
             mAdapter.filterList(filteredlist);
         }
     }

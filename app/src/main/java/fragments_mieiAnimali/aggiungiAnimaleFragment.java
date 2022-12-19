@@ -234,11 +234,9 @@ public class aggiungiAnimaleFragment extends Fragment {
                 if (file!=null){
                     fotoProfilo="images/"+file.getLastPathSegment();
                 }
-
                 Random r= new Random();
                 String idAnimale=r.nextInt()+""; ; //Stesso id del documento
                 Boolean assistito= isAssistito.isChecked();
-
                 // Controllo se gli input sono corretti
                 int flag = 0;
                 // Generali
@@ -278,7 +276,6 @@ public class aggiungiAnimaleFragment extends Fragment {
                     animaleDB.registraAnimale(a,db).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
-
                         }
                     });
                     StorageTask<UploadTask.TaskSnapshot> storageTask= animaleDB.uploadImageAnimale(storage,storageRef,file);
@@ -291,7 +288,8 @@ public class aggiungiAnimaleFragment extends Fragment {
                             }
                         });
                     }else {
-                        getActivity().onBackPressed();
+                        Intent intent= new Intent(getContext(),MainActivity.class);
+                        startActivity(intent);
                     }
                 }
             }
