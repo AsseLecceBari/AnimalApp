@@ -120,13 +120,18 @@
 
 
 
-            <androidx.appcompat.widget.LinearLayoutCompat
+            <LinearLayout
                 android:id="@+id/sliderLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:visibility="gone"
                >
+                <com.google.android.material.button.MaterialButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="PROVA LOCALIZZAZIONE"
+                    android:id="@+id/prova"/>
 
                 <ImageView
                     android:id="@+id/imageSliderRep"
@@ -147,7 +152,7 @@
                     tools:ignore="SpeakableTextPresentCheck" />
 
 
-            </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
 
 
 

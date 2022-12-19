@@ -1,23 +1,34 @@
 package fragments_segnalazioni;
 
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
+import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Looper;
+import android.os.StrictMode;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,42 +37,69 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.SeekBar;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import com.google.android.material.slider.LabelFormatter;
 import com.google.android.material.slider.Slider;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
+import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Executor;
+
+import class_general.GeolocationClass;
+import class_general.HttpDataHandler;
 import fragments.RecyclerItemClickListener;
+import fragments.main_fragment;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
+import model.Animale;
 import model.Segnalazione;
 import adapter.ReportAdapter;
+import model.Utente;
 
 
-public class reports_fragment extends Fragment  {
+public class reports_fragment extends Fragment {
 
+    private Utente utente;
+    private static final int REQUEST_CHECK_SETTINGS =0x1 ;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private RecyclerView mRecyclerView;
+    private static ReportAdapter mAdapter;
+    private static ArrayList<Segnalazione> mDataset= new ArrayList<>();
 
-    private  ArrayList<Segnalazione> mDataset= new ArrayList<>();
-    private  ReportAdapter mAdapter=new ReportAdapter(mDataset);
-    private String id;
 
     private ArrayList<Segnalazione> filteredlist=new ArrayList<>();
+    private ArrayList<Utente> utenteList=new ArrayList<>();
 
     private Slider sliderReport;
 
@@ -78,26 +116,38 @@ public class reports_fragment extends Fragment  {
 
 
 
-    private FusedLocationProviderClient fusedLocationClient;
+
 
     private   MainActivity mainActivity;
     private Toolbar main_action_bar;
-    private ActivityResultLauncher<String[]> locationPermissionRequest;
+    private Button prova;
 
+
+
+    Location mCurrentLocation;
+    private boolean requestingLocationUpdates=true;
+
+
+
+    private FusedLocationProviderClient fusedLocationClient;
+    private static final int Request_code= 101;
+    double lat,lng;
 
     //permessi posizione
 
+
+    private ActivityResultLauncher<String[]> locationPermissionRequest;
 
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         auth=FirebaseAuth.getInstance();
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        locationPermissionRequest= registerForActivityResult(new ActivityResultContracts
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
+
+       /* locationPermissionRequest= registerForActivityResult(new ActivityResultContracts
                                 .RequestMultiplePermissions(), result -> {
                             Boolean fineLocationGranted = result.getOrDefault(
                                     Manifest.permission.ACCESS_FINE_LOCATION, false);
@@ -106,17 +156,27 @@ public class reports_fragment extends Fragment  {
                             if (fineLocationGranted != null && fineLocationGranted) {
                                 // Precise location access granted.
 
+
                             } else if (coarseLocationGranted != null && coarseLocationGranted) {
                                 // Only approximate location access granted.
 
+
                             } else {
+
 
                             }
                         }
-                );
+                );*/
 
+     /*  locationCallback = new LocationCallback() {
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                if (locationResult == null) {
+                    return;
+                }
 
-
+            }
+        };*/
     }
 
 
@@ -140,15 +200,18 @@ public class reports_fragment extends Fragment  {
               getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
             }
         });
-
         filtri();
+
+
     }
 
    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         mDataset.clear();
         initDataset();
+
 
 
 
@@ -171,6 +234,37 @@ public class reports_fragment extends Fragment  {
         radioTueSegnalazioni= rootView.findViewById(R.id.radioTueSegnalazioni);
         radioTutti= rootView.findViewById(R.id.radioTutti);
         radioPreferiti= rootView.findViewById(R.id.radioPreferiti);
+
+        //PROVA PER VEDERE SE FUNZIONA LA LOCALIZZAZIONE
+        prova=rootView.findViewById(R.id.prova);
+        prova.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                getCurrentLocation();
+
+              /*  getCurrentLocationPermission();
+               // createLocationRequest();
+                @SuppressLint("MissingPermission") Task<Location> locationResult = fusedLocationClient.getLastLocation();
+                locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if(task.isSuccessful()){
+                            mCurrentLocation=task.getResult();
+
+                            if (mCurrentLocation !=null){
+
+                                Toast.makeText(getContext(), "Latitudine: "+mCurrentLocation.getLatitude()+"/nLongitudine: "+mCurrentLocation.getLongitude(), Toast.LENGTH_SHORT).show();
+
+                            }
+                        }
+                    }
+                });
+*/
+
+
+            }
+        });
 
         radioTutti.setChecked(true);
 
@@ -247,8 +341,8 @@ public class reports_fragment extends Fragment  {
                 // Before you perform the actual permission request, check whether your app
                 // already has the permissions, and whether your app needs to show a permission
                 // rationale dialog. For more details, see Request permissions.
-               getCurrentLocationPosition();
-
+             /*  getCurrentLocationPermission();
+               createLocationRequest();*/
 
 
             }
@@ -257,33 +351,45 @@ public class reports_fragment extends Fragment  {
             @SuppressLint("MissingPermission")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
+                Toast.makeText(getContext(), "latitudine: "+lat+" longitudine: "+lng, Toast.LENGTH_SHORT).show();
+/*
+              //  Log.d("provalatitudine2: " , prova++ +"");
 
                 //fare calcolo, 1/111.121 è 1l valore di 1 kilometro in latitudine mentre 1/111 è in longitudine
-                /*
                 double addLat=slider.getValue()*(1/111.121);
                 double addLng=(1/111.0)*slider.getValue();
 
                // getCurrentLocation(fusedLocationClient,addLat,addLng);
-
-                fusedLocationClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
+                Task<Location> locationResult = fusedLocationClient.getLastLocation();
+                locationResult.addOnCompleteListener(getActivity(), new OnCompleteListener<Location>() {
                     @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                            //passo la mia posizione piu i km selezionati
-                            filterCoordinates((location.getLatitude() + addLat) ,(location.getLongitude() + addLng),(location.getLatitude() - addLat),(location.getLongitude() - addLng));
+                    public void onComplete(@NonNull Task<Location> task) {
+                        if(task.isSuccessful()){
+                            mCurrentLocation=task.getResult();
 
-                        Log.e("ciao200",location.toString());
+                            if (mCurrentLocation !=null){
+
+                                filterCoordinates((mCurrentLocation.getLatitude() + addLat) ,(mCurrentLocation.getLongitude() + addLng),(mCurrentLocation.getLatitude() - addLat),(mCurrentLocation.getLongitude() - addLng));
+
+                                Log.d("provalatitudine:",mCurrentLocation.getLatitude()+"");
+                                Log.d("provalatitudine:",mCurrentLocation.getLongitude()+"");
+                            }else{
+
+
+                                Toast.makeText(getContext(), "Usiamo la posizione inserita in fase di registrazione", Toast.LENGTH_SHORT).show();
+                                trovaUtente(addLat,addLat);
+
+
+                            }
+                        }
                     }
-                }
-            });
-
-                 */
+                });
 
 
 
 
+
+*/
             }
         });
 
@@ -293,6 +399,7 @@ public class reports_fragment extends Fragment  {
             @SuppressLint("MissingPermission")
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
+
                 sliderReport.setLabelFormatter(new LabelFormatter() {
                     @NonNull
                     @Override
@@ -342,6 +449,13 @@ public class reports_fragment extends Fragment  {
 
         // Inflate the layout for this fragment
         return rootView;
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
     }
 
     //metodo per la chiusura della barra di ricerca
@@ -422,6 +536,8 @@ public class reports_fragment extends Fragment  {
 
     }
 
+
+
     private void initDatasetTueSegnalazioni() {
 
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
@@ -454,6 +570,49 @@ public class reports_fragment extends Fragment  {
          }
 
     }
+
+    //TODO: da trovare il modo per prendere coordinate di registrazione dell'utente
+    private void trovaUtente(double addLat1,double addLng1) {
+
+
+        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+        db=FirebaseFirestore.getInstance();
+
+       // auth=FirebaseAuth.getInstance();
+        CollectionReference segnalazioniRef=db.collection("utenti");
+
+        //tolto perche con questo non mostrava le segnalazioni se non sei loggato
+        if(auth.getCurrentUser()!=null) {
+
+            segnalazioniRef.whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+
+
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //Salvare animale in un array con elementi oggetto animale
+
+                            //Passo i dati presi dal database all'adapter
+                            utente=document.toObject(Utente.class);
+                        }
+
+                        double latitudine= Double.parseDouble(utente.getIndirizzo().get("latitudine"));
+                        double longitudine= Double.parseDouble(utente.getIndirizzo().get("longitudine"));
+                       //TODO inserire le coordinate della registrazione dell'utente
+                       filterCoordinates((latitudine + addLat1) ,(longitudine + addLng1),(latitudine - addLat1),(longitudine - addLng1));
+
+
+
+                    } else {
+                        Log.d("ERROR", "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+        }
+
+    }
+
 
 
 
@@ -517,14 +676,20 @@ public class reports_fragment extends Fragment  {
             mAdapter.filterList(filteredlist);
         }
     }
+
+
     public void filtri(){
+
         btnopenFiltri1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 layoutfiltri1.setVisibility(View.VISIBLE);
+
                 btnopenFiltri1.setVisibility(View.GONE);
                 bottonechiudifiltri1.setVisibility(View.VISIBLE);
                 resetButton.setVisibility(View.VISIBLE);
+
+
             }
         });
 
@@ -532,16 +697,21 @@ public class reports_fragment extends Fragment  {
             @Override
             public void onClick(View view) {
                 layoutfiltri1.setVisibility(View.GONE);
+
                 bottonechiudifiltri1.setVisibility(View.GONE);
                 btnopenFiltri1.setVisibility(View.VISIBLE);
                 resetButton.setVisibility(View.GONE);
+
+
             }
         });
+
+
     }
 
     //gesitone permessi
 
-    private void  getCurrentLocationPosition() {
+    private void  getCurrentLocationPermission() {
 
 
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
@@ -559,6 +729,7 @@ public class reports_fragment extends Fragment  {
                     Manifest.permission.ACCESS_COARSE_LOCATION
             });
 
+
         }
     }
 
@@ -568,20 +739,16 @@ public class reports_fragment extends Fragment  {
     public void showAlertDialog() {
 
 
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getView().getContext());
         alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
         alertDialogBuilder.setPositiveButton("Ho capito",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-                        try {
-                            locationPermissionRequest.launch(new String[]{
-                                    Manifest.permission.ACCESS_FINE_LOCATION,
-                                    Manifest.permission.ACCESS_COARSE_LOCATION
-                            });
-                        }catch (Exception e){
-                            Log.e("ERROREGRAVE",e.getMessage());
-                        }
+                        locationPermissionRequest.launch(new String[]{
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        });
 
 
                     }
@@ -598,10 +765,175 @@ public class reports_fragment extends Fragment  {
         alertDialog.show();
     }
 
+/*    protected LocationRequest createLocationRequest() {
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                // All location settings are satisfied. The client can initialize
+                // location requests here.
+                // ...
+            }
+        });
+
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(getActivity(),
+                                REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+
+        return locationRequest;
+    }
+*/
 
 
 
 
+    /** calculates the distance between two locations in Kilometer, with the HAVERSINE FORmULa*/
+    private double distance(double lat1, double lng1, double lat2, double lng2) {
+
+        double earthRadius = 6378;//raggio della terra
+
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+
+        double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        double dist = earthRadius * c;
+
+        return dist; // output distance, in KILOMETER
+    }
 
 
+
+    @SuppressLint("MissingPermission")
+    private  void getCurrentLocation(){
+
+
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},Request_code);
+
+            return;
+        }
+
+        LocationRequest locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(5000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        putOnGPS(locationRequest);
+
+        LocationCallback locationCallback=new LocationCallback(){
+
+
+            @Override
+            public void onLocationResult(LocationResult locationResult) {
+                //Toast.makeText(getContext(), "location result is= ", Toast.LENGTH_SHORT).show();
+                if(locationResult==null){
+                    Toast.makeText(getContext(),"Current location is null", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                for (Location location:locationResult.getLocations()){
+                    if(locationResult!=null){
+                        Toast.makeText(getContext(),"Current location is : lng: "+location.getLongitude()+"/lat: "+location.getLatitude(), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+            }
+        };
+
+        fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback,null);
+        Task<Location> task= fusedLocationClient.getLastLocation();
+        task.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+
+                if(location !=null){
+                    lat=location.getLatitude();
+                    lng=location.getLongitude();
+
+                }
+            }
+        });
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (Request_code){
+
+            case Request_code:
+                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
+                    getCurrentLocation();
+                }
+
+        }
+
+
+    }
+
+    public void putOnGPS(LocationRequest locationRequest){
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
+        SettingsClient client = LocationServices.getSettingsClient(getActivity());
+        Task<LocationSettingsResponse> task = client.checkLocationSettings(builder.build());
+        task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
+            @Override
+            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
+                // All location settings are satisfied. The client can initialize
+                // location requests here.
+                // ...
+            }
+        });
+
+        task.addOnFailureListener(getActivity(), new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if (e instanceof ResolvableApiException) {
+                    // Location settings are not satisfied, but this can be fixed
+                    // by showing the user a dialog.
+                    try {
+                        // Show the dialog by calling startResolutionForResult(),
+                        // and check the result in onActivityResult().
+                        ResolvableApiException resolvable = (ResolvableApiException) e;
+                        resolvable.startResolutionForResult(getActivity(),
+                                REQUEST_CHECK_SETTINGS);
+                    } catch (IntentSender.SendIntentException sendEx) {
+                        // Ignore the error.
+                    }
+                }
+            }
+        });
+    }
 }

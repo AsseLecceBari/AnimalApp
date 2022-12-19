@@ -84,7 +84,7 @@ tools:context="fragments_segnalazioni.fragment_vista_raccoltaFondi">
     </LinearLayout>
 
 </ScrollView>
-
+<!--
 <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/btnVaiAlLink"
     android:layout_width="wrap_content"
@@ -95,6 +95,8 @@ tools:context="fragments_segnalazioni.fragment_vista_raccoltaFondi">
     android:clickable="true"
     android:src="@android:drawable/btn_dialog"
     tools:ignore="SpeakableTextPresentCheck" />
+-->
 
+    <include layout="@layout/fab" />
 </FrameLayout>
 
