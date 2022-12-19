@@ -94,8 +94,8 @@ public class reports_fragment extends Fragment {
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private RecyclerView mRecyclerView;
-    private static ReportAdapter mAdapter;
-    private static ArrayList<Segnalazione> mDataset= new ArrayList<>();
+    private ReportAdapter mAdapter;
+    private ArrayList<Segnalazione> mDataset= new ArrayList<>();
 
 
     private ArrayList<Segnalazione> filteredlist=new ArrayList<>();
@@ -818,8 +818,10 @@ public class reports_fragment extends Fragment {
 
 
     private void stopLocationUpdates(){
-
-        fusedLocationClient.removeLocationUpdates(locationCallback);
+        if (locationCallback!=null) {
+            Log.d("prova123","sono in stop");
+            fusedLocationClient.removeLocationUpdates(locationCallback);
+        }
     }
 
 }

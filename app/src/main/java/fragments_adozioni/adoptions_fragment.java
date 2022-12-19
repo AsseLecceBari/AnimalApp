@@ -73,7 +73,7 @@ public class adoptions_fragment extends Fragment {
 
     private FirebaseAuth auth;
     private Preferenze preferenze;
-    private   SharedPreferences share;
+    private SharedPreferences share;
     private FirebaseFirestore db;
     private  RecyclerView mRecyclerView;
     protected RecyclerView recyclemieadozioni;
@@ -99,7 +99,7 @@ public class adoptions_fragment extends Fragment {
     private ArrayList <Adozione> adozione= new ArrayList<>();
     private ArrayList<Persona> proprietari = new ArrayList<>();
     private ArrayList<Animale> filteredlist =new ArrayList<>();
-    private   MainActivity mainActivity;
+    private MainActivity mainActivity;
     private Toolbar main_action_bar;
 
 
