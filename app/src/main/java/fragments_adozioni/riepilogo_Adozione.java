@@ -1,5 +1,7 @@
 package fragments_adozioni;
 
+import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,19 +10,46 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import org.checkerframework.common.subtyping.qual.Bottom;
 
 import fragments_segnalazioni.fragment_vista_news;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
 import model.Segnalazione;
+import model.Utente;
 
 
 public class riepilogo_Adozione extends Fragment {
 
 
-    private static final String ARG_PARAM1 = "obj";
+    private static final String ARG_PARAM1 = "adozione";
+    private static final String ARG_PARAM2 = "animale";
     private Adozione adozione;
+    private Animale animale;
+
+    private FirebaseFirestore db;
+
+    private ImageView immagineAnimale ;
+    private TextInputEditText descrizioneAnimale;
+    private TextView dettagliAnimale;
+    private View aggiungiAdozione;
+
+
+
 
 
     @Override
@@ -28,28 +57,84 @@ public class riepilogo_Adozione extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             adozione= (Adozione) getArguments().getSerializable(ARG_PARAM1);
+            animale= (Animale) getArguments().getSerializable(ARG_PARAM2);
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d("ciao123456", adozione.getEmailProprietario());
+
+        caricaInfoAnimale();
+aggiungiAdozione();
+
+
+
     }
 
-    public Fragment newInstance(Adozione param1) {
+    public Fragment newInstance(Adozione param1, Animale animale) {
         riepilogo_Adozione fragment = new riepilogo_Adozione();
         Bundle args = new Bundle();
-        args.putSerializable(ARG_PARAM1, param1);
+
+       args.putSerializable(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM2,animale);
 
         fragment.setArguments(args);
         return fragment;
     }
 
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_riepilogo__adozione, container, false);
+        View root =inflater.inflate(R.layout.fragment_riepilogo__adozione, container, false);
+        immagineAnimale=root.findViewById(R.id.imageAnimal);
+        descrizioneAnimale=root.findViewById(R.id.DescrizioneAnimale);
+        dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
+        aggiungiAdozione=root.findViewById(R.id.btnaggiungiadozioni);
+
+
+
+        return root;
+    }
+
+
+    public void caricaInfoAnimale()
+    {
+        // setto l'immagine dell'animale
+        FirebaseStorage storage;
+        StorageReference storageRef;
+        storage= FirebaseStorage.getInstance();
+        storageRef=storage.getReference();
+        storageRef.child(animale.getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(immagineAnimale.getContext())
+                        .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(immagineAnimale);
+            }
+        });
+
+        dettagliAnimale.setText("Dettagli"+"\n\n\n"+"Nome"+"       "+"Data Di Nascita"+"       "+"Specie"+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
+
+    }
+    public void aggiungiAdozione() {
+
+        aggiungiAdozione.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(descrizioneAnimale!= null)
+                {
+                    adozione.setDescrizione(descrizioneAnimale.getText().toString());
+                }
+                db= FirebaseFirestore.getInstance();
+                db.collection("adozioni").document(adozione.getIdAdozione()).set(adozione);
+                Toast.makeText(getActivity(), R.string.AnimaleAggiuntoInBachecaAdozioni, Toast.LENGTH_LONG).show();
+                getActivity().getSupportFragmentManager().popBackStack();
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
+
     }
 }

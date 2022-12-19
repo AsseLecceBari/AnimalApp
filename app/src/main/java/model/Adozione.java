@@ -7,10 +7,11 @@ public class Adozione  implements Serializable {
     private String idAdozione;
     private String emailProprietario;
     private String dataPubblicazione;
+    private String descrizione;
 
     public Adozione(){}
 
-    public Adozione(String idAnimale, String idAdozione, String emailProprietario, String dataPubblicazione) {
+    public Adozione(String idAnimale, String idAdozione, String emailProprietario, String dataPubblicazione,String descrizione) {
         this.idAnimale = idAnimale;
         this.idAdozione= idAdozione;
         this.emailProprietario=emailProprietario;
@@ -31,6 +32,12 @@ public class Adozione  implements Serializable {
 
     public String getDataPubblicazione() {
         return dataPubblicazione;
+    }
+    public String getDescrizione() {
+        return descrizione;
+    }
+    public void setDescrizione(String s) {
+         descrizione= s;
     }
 
 

@@ -17,7 +17,7 @@ public class VPAdapter extends FragmentStateAdapter {
         return fragmentArrayList;
 
     }
-    private final static ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
+    private final ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
     public VPAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);

@@ -637,7 +637,9 @@ public class reports_fragment extends Fragment {
             }
         }
         if (filteredlist.isEmpty()) {
+
             // if no item is added in filtered list we are
+
             mAdapter.filterList(filteredlist);
 
         } else {
@@ -667,7 +669,9 @@ public class reports_fragment extends Fragment {
             }
         }
         if (filteredlist.isEmpty()) {
+
             // if no item is added in filtered list we are
+
             mAdapter.filterList(filteredlist);
 
         } else {
