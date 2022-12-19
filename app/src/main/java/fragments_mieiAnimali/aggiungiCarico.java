@@ -112,7 +112,7 @@ public class aggiungiCarico extends Fragment {
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
+                if (task.isSuccessful()) { // todo ----------------------------- QUESTO IF E' SEMPRE FALSE
                     for (QueryDocumentSnapshot document : task.getResult()){
                         Animale a = document.toObject(Animale.class);
                         if(a!= null){
