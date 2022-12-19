@@ -232,10 +232,10 @@ public class aggiungi_adozione_fragment extends Fragment {
                 String id= String.valueOf(idAdozione.nextInt());
                 SimpleDateFormat dataFor= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
                 String data= dataFor.format(new Date());
-              Adozione adozione =new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data);
+              Adozione adozione =new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data,"");
 
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new riepilogo_Adozione().newInstance(adozione)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new riepilogo_Adozione().newInstance(adozione,mDataset.get(position))).addToBackStack(null).commit();
                 //checkbox= view.findViewById(R.id.checkBoxAggiungiadozioni);
 
                /* if(!checkbox.isChecked()){
@@ -291,7 +291,7 @@ public class aggiungi_adozione_fragment extends Fragment {
                     }
                     else
                     {
-                        Toast.makeText(getActivity(), R.string.AnimaleAggiuntoInBachecaAdozioni, Toast.LENGTH_LONG).show();
+
 
                     }
                     getActivity().onBackPressed();
