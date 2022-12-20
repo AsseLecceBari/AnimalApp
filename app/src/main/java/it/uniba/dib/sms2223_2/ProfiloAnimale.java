@@ -1,22 +1,18 @@
 package it.uniba.dib.sms2223_2;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
-import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-import adapter.VPAdapterAnimale;
-import fragments.anagrafica;
 import model.Animale;
 import model.SegnalazioneSanitaria;
 import profiloUtente.ProfiloUtenteActivity;
@@ -108,5 +104,9 @@ public class ProfiloAnimale extends AppCompatActivity {
 
     public void setS(SegnalazioneSanitaria s) {
         this.s = s;
+    }
+
+    public void scaricaAnimale(MenuItem item) {
+        Toast.makeText(getApplicationContext(), "scaricato", Toast.LENGTH_SHORT).show();
     }
 }

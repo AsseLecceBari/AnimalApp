@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="fragments_mieiAnimali.aggiungiCarico"
     android:id="@+id/aggiungiInCarico">
 >
@@ -16,7 +17,9 @@
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scanner_view"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="400dp"
+        app:autoFocusButtonVisible="true"
+        app:flashButtonVisible="true"/>
 
     <com.google.android.material.divider.MaterialDivider
         style="@style/AppTheme"

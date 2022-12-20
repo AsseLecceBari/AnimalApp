@@ -5,7 +5,8 @@
         <item
             android:icon="@drawable/download_icon"
             android:title="@string/download_dati"
-            app:showAsAction="ifRoom" />
+            app:showAsAction="ifRoom"
+            android:onClick="scaricaAnimale"/>
         <item
 
             android:icon="@drawable/uomocerchiato"
