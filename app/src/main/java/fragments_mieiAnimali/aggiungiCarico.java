@@ -28,6 +28,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.Result;
 
+import java.util.Objects;
 import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
@@ -69,12 +70,14 @@ public class aggiungiCarico extends Fragment {
                         // se l'idAnimale è appartenente ad un animale che non è in carico a nessuno allora passo alla fase di conferma presa in carico
                         esisteAnimale(result.getText());
 
-                        try{ toast.getView().isShown();     // true if visible
-                            toast.setText("Rilevazione!");
-                        } catch (Exception e) {         // invisible if exception
-                            toast = Toast.makeText(getActivity().getApplicationContext(), "Rilevazione", Toast.LENGTH_SHORT);
+                        if (toast != null) {
+                            toast.cancel();
+                            toast = null;
+                        }else{
+                            toast = Toast.makeText(getActivity().getApplicationContext(), "Rilevazione!", Toast.LENGTH_SHORT);
+                            toast.show();
                         }
-                        toast.show();  //finally display it
+
                     }
                 });
             }
@@ -103,7 +106,7 @@ public class aggiungiCarico extends Fragment {
     private void esisteAnimale(String idAnimale) {
         // mi riempio la field dati todo -------------------controllare se funziona se aggiungo il mio (non si deve poter fare) e se aggiungo un altro (si deve poter fare)
         CollectionReference docRef = db.collection("animali");
-        Query query = docRef.whereEqualTo("idAnimale", idAnimale);
+        Query query = docRef.whereEqualTo("idAnimale", idAnimale).whereNotEqualTo("emailProprietario", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -114,7 +117,7 @@ public class aggiungiCarico extends Fragment {
                         break;
                     }
                     if(task.getResult().isEmpty()){
-                        dati.setText("Impossibile aggiungere!");
+                        dati.setText("Impossibile aggiungere - empty set!");
                         aggiungi.setVisibility(View.GONE);
                         dati.setAllCaps(false);
                         dati.setTextColor(Color.RED);
@@ -122,8 +125,8 @@ public class aggiungiCarico extends Fragment {
 
                         mCodeScanner.startPreview();
                     }
-                }else{
-                    dati.setText("Impossibile aggiungere!");
+                }else{ // mi va in non successo se metto nella query quella condizione
+                    dati.setText("Impossibile aggiungere! - non successo");
                     aggiungi.setVisibility(View.GONE);
                     dati.setAllCaps(false);
                     dati.setTextColor(Color.RED);

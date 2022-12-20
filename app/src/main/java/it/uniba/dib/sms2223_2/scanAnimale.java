@@ -74,10 +74,12 @@ public class scanAnimale extends Fragment {
                 }else{
                     mCodeScanner.startPreview();
 
-                    try{ toast.getView().isShown();     // true if visible
-                        toast.setText("Animale non trovato!");
-                    } catch (Exception e) {         // invisible if exception
+                    if (toast != null) {
+                        toast.cancel();
+                        toast = null;
+                    }else{
                         toast = Toast.makeText(getActivity().getApplicationContext(), "Animale non trovato!", Toast.LENGTH_SHORT);
+                        toast.show();
                     }
                 }
             }
