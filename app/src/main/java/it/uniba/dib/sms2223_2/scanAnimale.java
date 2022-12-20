@@ -32,6 +32,7 @@ public class scanAnimale extends Fragment {
     private FirebaseFirestore db;
     private ColorStateList coloreDati;
     private CodeScannerView scannerView;
+    private Toast toast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -71,8 +72,13 @@ public class scanAnimale extends Fragment {
                     i.putExtra("animale", a);
                     startActivity(i);
                 }else{
-                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale()).commit();
-                    Toast.makeText(getActivity().getApplicationContext(), "Animale non trovato!", Toast.LENGTH_SHORT).show();
+                    mCodeScanner.startPreview();
+
+                    try{ toast.getView().isShown();     // true if visible
+                        toast.setText("Animale non trovato!");
+                    } catch (Exception e) {         // invisible if exception
+                        toast = Toast.makeText(getActivity().getApplicationContext(), "Animale non trovato!", Toast.LENGTH_SHORT);
+                    }
                 }
             }
         });
