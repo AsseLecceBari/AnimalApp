@@ -59,9 +59,9 @@ public class myanimals_fragment extends Fragment {
     private FloatingActionButton addAnimale, addIncarico;
     private MaterialCheckBox mostraSoloIncarico;
     private RecyclerView mRecyclerView;
-    private  ArrayList<Animale> mDataset= new ArrayList<>();
+    private ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
-    private  AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
+    private AnimalAdapter mAdapter=new AnimalAdapter(mDataset);
     private AnimaleDB animaleDB;
     private CaricoDB caricoDB;
     private UtentiDB utentiDB;
@@ -96,7 +96,6 @@ public class myanimals_fragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
                 requestPermissionLauncher =
                         registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                             if (isGranted) {
@@ -119,6 +118,7 @@ public class myanimals_fragment extends Fragment {
         countMyAnimals=0;
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         mostraSoloIncarico = rootView.findViewById(R.id.mostraInCarico);
+
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleMyAnimals);
         //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
@@ -303,6 +303,12 @@ public class myanimals_fragment extends Fragment {
         );
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mostraSoloIncarico.setChecked(false);
     }
 
     @Override
