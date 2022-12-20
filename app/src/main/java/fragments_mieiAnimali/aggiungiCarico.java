@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -44,6 +43,7 @@ public class aggiungiCarico extends Fragment {
     private FirebaseFirestore db;
     private ColorStateList coloreDati;
     private CodeScannerView scannerView;
+    private Toast toast;
 
     @Nullable
     @Override
@@ -60,16 +60,6 @@ public class aggiungiCarico extends Fragment {
         scannerView = root.findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(activity, scannerView);
 
-        scannerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                dati.setText("Scannerizza un animale!");
-                dati.setAllCaps(false);
-                dati.setTextColor(coloreDati);
-                return false;
-            }
-        });
-
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
@@ -79,7 +69,12 @@ public class aggiungiCarico extends Fragment {
                         // se l'idAnimale è appartenente ad un animale che non è in carico a nessuno allora passo alla fase di conferma presa in carico
                         esisteAnimale(result.getText());
 
-                        Toast.makeText(getActivity().getApplicationContext(), "Rilevazione", Toast.LENGTH_SHORT).show();
+                        try{ toast.getView().isShown();     // true if visible
+                            toast.setText("Rilevazione!");
+                        } catch (Exception e) {         // invisible if exception
+                            toast = Toast.makeText(getActivity().getApplicationContext(), "Rilevazione", Toast.LENGTH_SHORT);
+                        }
+                        toast.show();  //finally display it
                     }
                 });
             }
@@ -112,20 +107,20 @@ public class aggiungiCarico extends Fragment {
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) { // todo ----------------------------- QUESTO IF E' SEMPRE FALSE
+                if (task.isSuccessful()) {
                     for (QueryDocumentSnapshot document : task.getResult()){
                         Animale a = document.toObject(Animale.class);
-                        if(a!= null){
-                            controllo(idAnimale, a);
-                        }else{
-                            dati.setText("Non è un animale censito! \n\nTocca il QR SCANNER per riprovare!");
-                            aggiungi.setVisibility(View.GONE);
-                            dati.setAllCaps(false);
-                            dati.setTextColor(Color.RED);
-                            carico = null;
-                        }
+                        controllo(idAnimale, a);
                         break;
                     }
+                }else{
+                    dati.setText("Impossibile aggiungere!");
+                    aggiungi.setVisibility(View.GONE);
+                    dati.setAllCaps(false);
+                    dati.setTextColor(Color.RED);
+                    carico = null;
+
+                    mCodeScanner.startPreview();
                 }
             }
         });
@@ -151,13 +146,18 @@ public class aggiungiCarico extends Fragment {
                             dati.setText(a.getNome() + ",  " + a.getGenere() + "\nPuò essere preso in carico! \nPREMI IL PULSANTE  VERDE PER AGGIUNGERE");
                             dati.setAllCaps(true);
                             dati.setTextColor(coloreDati);
+
+
+                            mCodeScanner.startPreview();
                         }else{
                             // ce gia qualcuno in corso
                             aggiungi.setVisibility(View.GONE);
-                            dati.setText("Attualmente gia' in carico!\n\nTocca il QR SCANNER per riprovare!");
+                            dati.setText("Attualmente gia' in carico!");
                             dati.setAllCaps(false);
                             dati.setTextColor(Color.RED);
                             carico = null;
+
+                            mCodeScanner.startPreview();
                         }
                     }else {
                         aggiungi.setVisibility(View.GONE);
@@ -165,6 +165,8 @@ public class aggiungiCarico extends Fragment {
                         dati.setAllCaps(false);
                         dati.setTextColor(Color.RED);
                         carico = null;
+
+                        mCodeScanner.startPreview();
                     }
                 }
             });
