@@ -2,6 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/profiloAnimaleGroup">
+
+        <item
+
+            android:icon="@android:drawable/ic_menu_share"
+            android:title="condividiAnimaleBT"
+            app:showAsAction="ifRoom"
+            android:onClick="condividiAnimaleBT"/>
+
         <item
             android:icon="@drawable/download_icon"
             android:title="@string/download_dati"
@@ -13,6 +21,7 @@
             android:title="@string/profilo"
             app:showAsAction="ifRoom"
             android:onClick="mostraProfilo"/>
+
     </group>
 
 </menu>
