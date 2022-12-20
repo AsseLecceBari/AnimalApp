@@ -76,7 +76,6 @@ public class aggiungiCarico extends Fragment {
                             toast = Toast.makeText(getActivity().getApplicationContext(), "Rilevazione!", Toast.LENGTH_SHORT);
                             toast.show();
                         }
-
                     }
                 });
             }
@@ -106,6 +105,7 @@ public class aggiungiCarico extends Fragment {
         // mi riempio la field dati
         CollectionReference docRef = db.collection("animali");
         Query query = docRef.whereEqualTo("idAnimale", idAnimale);// todo --> DA ERRORE: .whereNotEqualTo("emailProprietario", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -132,6 +132,7 @@ public class aggiungiCarico extends Fragment {
                     carico = null;
 
                     //Toast.makeText(getActivity().getApplicationContext(), auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
+
                     mCodeScanner.startPreview();
                 }
             }

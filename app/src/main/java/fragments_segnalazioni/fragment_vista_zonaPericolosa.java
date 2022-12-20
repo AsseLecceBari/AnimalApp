@@ -3,6 +3,7 @@ package fragments_segnalazioni;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,13 +29,21 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
+import model.Utente;
 
 public class fragment_vista_zonaPericolosa extends Fragment implements OnMapReadyCallback {
     private TextView descrizioneZonaPericolosa;
@@ -47,6 +57,8 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
 
     private static final String ARG_PARAM1 = "obj";
     private Segnalazione s;
+    private static final String ARG_PARAM2 = "int";
+    private int x;//0 viene dalla radio tutti, 1 dal radio mie segnalazioni
 
     private MapView mapViewZonaPericolosa;
     private static final String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
@@ -62,8 +74,15 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
     private boolean expanded = false;
     private FloatingActionButton fabAction1;
     private FloatingActionButton fabAction2;
+    private FloatingActionButton fabAction3;
     private float offset1;
     private float offset2;
+    private float offset3;
+
+
+    Utente utente;
+    private FirebaseAuth auth;
+    private FirebaseFirestore db;
 
     public fragment_vista_zonaPericolosa() {
         // Required empty public constructor
@@ -73,8 +92,10 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             s= (Segnalazione) getArguments().getSerializable(ARG_PARAM1);
+            x=(int) getArguments().getInt(ARG_PARAM2);
         }
 
     }
@@ -83,7 +104,7 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView=inflater.inflate(R.layout.fragment_vista_zona_pericolosa, container, false);
-
+        auth= FirebaseAuth.getInstance();
         Bundle mapViewBundle=null;
         if(savedInstanceState!=null){
             mapViewBundle=savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -123,20 +144,62 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
         fabAction1 = rootView.findViewById(R.id.fab_action_1);
-        fabAction1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "Aggiungi ai preferiti", Toast.LENGTH_SHORT).show();
-            }
-        });
+
+        //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
+        if (x==0){
+            fabAction1.setImageResource(R.drawable.star);
+            fabAction1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getContext(), "Aggiungi ai preferiti", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else if(x==1){
+            fabAction1.setImageResource(android.R.drawable.ic_delete);
+            fabAction1.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getContext(), "Elimina Segnalazione", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
 
         fabAction2 = rootView.findViewById(R.id.fab_action_2);
-        fabAction2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "Contatta", Toast.LENGTH_SHORT).show();
-            }
-        });
+        //if per cambiare icona fab, se viene da radioTutti(x=0) ho il contatta, mentre da mie segnalazioni(x=1) ho il modifica
+        if (x==0){
+            fabAction2.setImageResource(android.R.drawable.stat_sys_phone_call);
+            fabAction2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    trovaNumeroDiTelefono(s);
+                }
+            });
+        }else if(x==1){
+            fabAction2.setImageResource(android.R.drawable.ic_menu_edit);
+            fabAction2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Toast.makeText(getContext(), "Modifica Segnalazione", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+
+        fabAction3 = rootView.findViewById(R.id.fab_action_3);
+        //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
+        if (x==0){
+            fabAction3.setVisibility(View.VISIBLE);
+            fabAction3.setImageResource(android.R.drawable.sym_action_email);
+            fabAction3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    composeEmail(auth.getCurrentUser().getEmail(),s.getEmailSegnalatore());
+                }
+            });
+        }else if(x==1){
+            //per ora non serve nella vista mieSegnalazioni
+        }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,6 +226,8 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
                 fabAction1.setTranslationY(offset1);
                 offset2 = fab.getY() - fabAction2.getY();
                 fabAction2.setTranslationY(offset2);
+                offset3 = fab.getY() - fabAction3.getY();
+                fabAction3.setTranslationY(offset3);
 
                 return true;
             }
@@ -235,10 +300,11 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         mapViewZonaPericolosa.onLowMemory();
     }
 
-    public Fragment newInstance(Segnalazione param1) {
+    public Fragment newInstance(Segnalazione param1,int a) {
         fragment_vista_zonaPericolosa fragment = new fragment_vista_zonaPericolosa();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
+        args.putInt(ARG_PARAM2,a);
         fragment.setArguments(args);
 
         return fragment;
@@ -286,7 +352,7 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
-                createCollapseAnimator(fabAction2, offset2));
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3));
         animatorSet.start();
         // animateFab();
     }
@@ -295,7 +361,7 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
-                createExpandAnimator(fabAction2, offset2));
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3));
         animatorSet.start();
         //animateFab();
     }
@@ -322,4 +388,59 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         }
     }*/
 
+
+    //per trovare il numero di telefono del segnalatore
+    private void trovaNumeroDiTelefono(Segnalazione s) {
+
+
+        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+        db= FirebaseFirestore.getInstance();
+
+        // auth=FirebaseAuth.getInstance();
+        CollectionReference segnalazioniRef=db.collection("utenti");
+
+
+        segnalazioniRef.whereEqualTo("email",s.getEmailSegnalatore()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //Salvare animale in un array con elementi oggetto animale
+
+                        //Passo i dati presi dal database all'adapter
+                        utente=document.toObject(Utente.class);
+                    }
+
+                    String telefono=utente.getTelefono();
+                    dialPhoneNumber(telefono);
+
+
+
+                } else {
+                    Log.d("ERROR", "Error getting documents: ", task.getException());
+                }
+            }
+        });
+
+
+    }
+
+    //intent per aprire l'app del telefono con il numero del segnalatore
+    public void dialPhoneNumber(String phoneNumber) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        intent.setData(Uri.parse("tel:" + phoneNumber));
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            startActivity(intent);
+        }
+    }
+
+    public void composeEmail(String addresses,String toAddress) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"+toAddress)); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_EMAIL, addresses);
+        startActivity(intent);
+
+    }
 }
