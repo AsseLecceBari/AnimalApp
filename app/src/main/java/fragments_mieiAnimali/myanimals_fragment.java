@@ -157,9 +157,8 @@ public class myanimals_fragment extends Fragment {
                 if(!mostraSoloIncarico.isChecked()){
                     addAnimale.setVisibility(View.VISIBLE);
                     addIncarico.setVisibility(View.GONE);
-                    if(caricoDataset.size()>0){
-                        filterMieiAnimali(caricoDataset);
-                    }
+                    filterMieiAnimali();
+
 
 
                 }else{
@@ -315,7 +314,7 @@ public class myanimals_fragment extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
     }
-    public void filterMieiAnimali(ArrayList<Carico> caricoDataset) {
+    public void filterMieiAnimali() {
 
         filteredlist=new ArrayList<>();
         for(int i=0;i<countMyAnimals;i++){

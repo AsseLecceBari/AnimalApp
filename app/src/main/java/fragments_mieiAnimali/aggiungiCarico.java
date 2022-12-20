@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,15 +18,13 @@ import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.Result;
 
@@ -46,6 +43,7 @@ public class aggiungiCarico extends Fragment {
     private FirebaseFirestore db;
     private ColorStateList coloreDati;
     private CodeScannerView scannerView;
+    private Toast toast;
 
     @Nullable
     @Override
@@ -62,16 +60,6 @@ public class aggiungiCarico extends Fragment {
         scannerView = root.findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(activity, scannerView);
 
-        scannerView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View view, MotionEvent motionEvent) {
-                dati.setText("Scannerizza un animale!");
-                dati.setAllCaps(false);
-                dati.setTextColor(coloreDati);
-                return false;
-            }
-        });
-
         mCodeScanner.setDecodeCallback(new DecodeCallback() {
             @Override
             public void onDecoded(@NonNull final Result result) {
@@ -81,7 +69,12 @@ public class aggiungiCarico extends Fragment {
                         // se l'idAnimale è appartenente ad un animale che non è in carico a nessuno allora passo alla fase di conferma presa in carico
                         esisteAnimale(result.getText());
 
-                        Toast.makeText(getActivity().getApplicationContext(), "Rilevazione", Toast.LENGTH_SHORT).show();
+                        try{ toast.getView().isShown();     // true if visible
+                            toast.setText("Rilevazione!");
+                        } catch (Exception e) {         // invisible if exception
+                            toast = Toast.makeText(getActivity().getApplicationContext(), "Rilevazione", Toast.LENGTH_SHORT);
+                        }
+                        toast.show();  //finally display it
                     }
                 });
             }
@@ -108,19 +101,26 @@ public class aggiungiCarico extends Fragment {
     }
 
     private void esisteAnimale(String idAnimale) {
-        // mi riempio la field dati
-        DocumentReference docRef = db.collection("animali").document(idAnimale);
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        // mi riempio la field dati todo -------------------controllare se funziona se aggiungo il mio (non si deve poter fare) e se aggiungo un altro (si deve poter fare)
+        CollectionReference docRef = db.collection("animali");
+        Query query = docRef.whereEqualTo("idAnimale", idAnimale).whereNotEqualTo("emailProprietario", auth.getCurrentUser().getEmail());
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                Animale a = documentSnapshot.toObject(Animale.class);
-                if(a!= null){
-                    controllo(idAnimale, a);
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    for (QueryDocumentSnapshot document : task.getResult()){
+                        Animale a = document.toObject(Animale.class);
+                        controllo(idAnimale, a);
+                        break;
+                    }
                 }else{
-                    dati.setText("Non è un animale censito! \n\nTocca il QR SCANNER per riprovare!");
+                    dati.setText("Impossibile aggiungere!");
                     aggiungi.setVisibility(View.GONE);
                     dati.setAllCaps(false);
                     dati.setTextColor(Color.RED);
+                    carico = null;
+
+                    mCodeScanner.startPreview();
                 }
             }
         });
@@ -146,18 +146,27 @@ public class aggiungiCarico extends Fragment {
                             dati.setText(a.getNome() + ",  " + a.getGenere() + "\nPuò essere preso in carico! \nPREMI IL PULSANTE  VERDE PER AGGIUNGERE");
                             dati.setAllCaps(true);
                             dati.setTextColor(coloreDati);
+
+
+                            mCodeScanner.startPreview();
                         }else{
                             // ce gia qualcuno in corso
                             aggiungi.setVisibility(View.GONE);
-                            dati.setText("Attualmente gia' in carico!\n\nTocca il QR SCANNER per riprovare!");
+                            dati.setText("Attualmente gia' in carico!");
                             dati.setAllCaps(false);
                             dati.setTextColor(Color.RED);
+                            carico = null;
+
+                            mCodeScanner.startPreview();
                         }
                     }else {
                         aggiungi.setVisibility(View.GONE);
                         dati.setText("Impossibile aggiungere!\n\nTocca il QR SCANNER per riprovare!");
                         dati.setAllCaps(false);
                         dati.setTextColor(Color.RED);
+                        carico = null;
+
+                        mCodeScanner.startPreview();
                     }
                 }
             });
