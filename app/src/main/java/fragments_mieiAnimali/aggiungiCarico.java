@@ -28,7 +28,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.Result;
 
-import java.util.Objects;
 import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
@@ -104,9 +103,9 @@ public class aggiungiCarico extends Fragment {
     }
 
     private void esisteAnimale(String idAnimale) {
-        // mi riempio la field dati todo -------------------controllare se funziona se aggiungo il mio (non si deve poter fare) e se aggiungo un altro (si deve poter fare)
+        // mi riempio la field dati
         CollectionReference docRef = db.collection("animali");
-        Query query = docRef.whereEqualTo("idAnimale", idAnimale).whereNotEqualTo("emailProprietario", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+        Query query = docRef.whereEqualTo("idAnimale", idAnimale);// todo --> DA ERRORE: .whereNotEqualTo("emailProprietario", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -117,7 +116,7 @@ public class aggiungiCarico extends Fragment {
                         break;
                     }
                     if(task.getResult().isEmpty()){
-                        dati.setText("Impossibile aggiungere - empty set!");
+                        dati.setText("Impossibile aggiungere - NESSUN RISULTATO!");
                         aggiungi.setVisibility(View.GONE);
                         dati.setAllCaps(false);
                         dati.setTextColor(Color.RED);
