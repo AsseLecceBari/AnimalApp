@@ -103,7 +103,7 @@ public class aggiungiCarico extends Fragment {
     private void esisteAnimale(String idAnimale) {
         // mi riempio la field dati todo -------------------controllare se funziona se aggiungo il mio (non si deve poter fare) e se aggiungo un altro (si deve poter fare)
         CollectionReference docRef = db.collection("animali");
-        Query query = docRef.whereEqualTo("idAnimale", idAnimale).whereNotEqualTo("emailProprietario", auth.getCurrentUser().getEmail());
+        Query query = docRef.whereEqualTo("idAnimale", idAnimale);
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -113,6 +113,15 @@ public class aggiungiCarico extends Fragment {
                         controllo(idAnimale, a);
                         break;
                     }
+                    if(task.getResult().isEmpty()){
+                        dati.setText("Impossibile aggiungere!");
+                        aggiungi.setVisibility(View.GONE);
+                        dati.setAllCaps(false);
+                        dati.setTextColor(Color.RED);
+                        carico = null;
+
+                        mCodeScanner.startPreview();
+                    }
                 }else{
                     dati.setText("Impossibile aggiungere!");
                     aggiungi.setVisibility(View.GONE);
@@ -120,6 +129,7 @@ public class aggiungiCarico extends Fragment {
                     dati.setTextColor(Color.RED);
                     carico = null;
 
+                    //Toast.makeText(getActivity().getApplicationContext(), auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
                     mCodeScanner.startPreview();
                 }
             }
