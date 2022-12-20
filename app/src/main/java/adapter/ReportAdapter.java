@@ -76,6 +76,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public ReportAdapter(ArrayList<Segnalazione> dataSet) {
         localDataSet.clear();
         localDataSet.addAll(dataSet);
+
     }
 
 
@@ -118,6 +119,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
     public int getItemCount() {
         return localDataSet.size();
     }
+
     public void filterList(ArrayList<Segnalazione> filterlist) {
         localDataSet.clear();
         localDataSet.addAll(filterlist);

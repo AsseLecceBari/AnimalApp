@@ -13,6 +13,24 @@
 
         <!-- Please note that the @id are defined the first time they're referenced from top to bottom -->
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_action_3"
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_action_2"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+
+            android:src="@android:drawable/stat_sys_phone_call"
+            android:visibility="gone" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_action_2"

@@ -134,6 +134,9 @@ public class reports_fragment extends Fragment {
     private static final int Request_code= 101;
     double lat,lng;
 
+
+    int a=0;//0 viene dalla radio tutti, 1 dal radio mie segnalazioni
+
     //permessi posizione
 
 
@@ -148,36 +151,9 @@ public class reports_fragment extends Fragment {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
 
-       /* locationPermissionRequest= registerForActivityResult(new ActivityResultContracts
-                                .RequestMultiplePermissions(), result -> {
-                            Boolean fineLocationGranted = result.getOrDefault(
-                                    Manifest.permission.ACCESS_FINE_LOCATION, false);
-                            Boolean coarseLocationGranted = result.getOrDefault(
-                                    Manifest.permission.ACCESS_COARSE_LOCATION,false);
-                            if (fineLocationGranted != null && fineLocationGranted) {
-                                // Precise location access granted.
 
 
-                            } else if (coarseLocationGranted != null && coarseLocationGranted) {
-                                // Only approximate location access granted.
 
-
-                            } else {
-
-
-                            }
-                        }
-                );*/
-
-     /*  locationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-
-            }
-        };*/
     }
 
 
@@ -250,11 +226,13 @@ public class reports_fragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
+                    a=0;
                     mDataset.clear();
                     filteredlist.clear();
                     initDataset();
                     attivaSlider.setChecked(false);
                     sliderReport.setValue(15.0F);
+                    Log.d("prova222", String.valueOf(a));
                 }
             }
         });
@@ -264,11 +242,14 @@ public class reports_fragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b){
+                    a=1;
                     mDataset.clear();
                     filteredlist.clear();
                     initDatasetTueSegnalazioni();
                     attivaSlider.setChecked(false);
                     sliderReport.setValue(15.0F);
+                    Log.d("prova222", String.valueOf(a));
+
                 }
             }
         });
@@ -311,7 +292,7 @@ public class reports_fragment extends Fragment {
         sliderReport.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
-
+                getCurrentLocation();
 
 
 
@@ -389,7 +370,7 @@ public class reports_fragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        stopLocationUpdates();
+            stopLocationUpdates();
 
     }
 
@@ -407,19 +388,19 @@ public class reports_fragment extends Fragment {
         closeSearchView();
         switch (s.getTipo()) {
             case "Smarrimento":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s,a)).addToBackStack(null).commit();
                 break;
             case "Animale Ferito":
                 //da cambiare con vistaAnimaleFerito
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s,a)).addToBackStack(null).commit();
                 break;
             case "Zona Pericolosa":
                 //da cambiare con vistaRitrovamento
-                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s)).addToBackStack(null).commit();
+                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s,a)).addToBackStack(null).commit();
                  break;
             case "News":
                 //da cambiare con vistaRitrovamento
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s,a)).addToBackStack(null).commit();
                 break;
             case "Raccolta Fondi":
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
@@ -729,7 +710,6 @@ public class reports_fragment extends Fragment {
 
         locationCallback=new LocationCallback(){
 
-
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 //Toast.makeText(getContext(), "location result is= ", Toast.LENGTH_SHORT).show();
@@ -819,7 +799,7 @@ public class reports_fragment extends Fragment {
 
     private void stopLocationUpdates(){
         if (locationCallback!=null) {
-            Log.d("prova123","sono in stop");
+
             fusedLocationClient.removeLocationUpdates(locationCallback);
         }
     }

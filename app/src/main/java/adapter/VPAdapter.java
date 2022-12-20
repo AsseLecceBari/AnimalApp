@@ -21,7 +21,7 @@ public class VPAdapter extends FragmentStateAdapter {
 
     public VPAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
         super(fragmentManager, lifecycle);
-        fragmentArrayList.clear();
+
         fragmentArrayList.add(new myanimals_fragment());
         fragmentArrayList.add(new adoptions_fragment());
         fragmentArrayList.add(new reports_fragment());
