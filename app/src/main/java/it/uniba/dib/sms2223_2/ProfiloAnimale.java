@@ -110,7 +110,11 @@ public class ProfiloAnimale extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "scaricato", Toast.LENGTH_SHORT).show();
     }
 
-    public void condividiAnimaleBT(MenuItem item) {
-        Toast.makeText(getApplicationContext(), "Avvio connessione bluetooth per " + animale.getNome(), Toast.LENGTH_SHORT).show();
+    public void condividiAnimale(MenuItem item) {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = animale.getIdAnimale();
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
     }
 }

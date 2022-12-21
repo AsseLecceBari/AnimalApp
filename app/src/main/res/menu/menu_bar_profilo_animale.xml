@@ -8,7 +8,7 @@
             android:icon="@android:drawable/ic_menu_share"
             android:title="condividiAnimaleBT"
             app:showAsAction="ifRoom"
-            android:onClick="condividiAnimaleBT"/>
+            android:onClick="condividiAnimale"/>
 
         <item
             android:icon="@drawable/download_icon"

@@ -1,9 +1,6 @@
 package model;
 
-import android.graphics.Bitmap;
-
 import java.io.Serializable;
-import java.util.Date;
 
 public class Animale implements Serializable{
     private String nome,genere,specie,emailProprietario;
@@ -67,5 +64,18 @@ public class Animale implements Serializable{
 
     public void setFotoProfilo(String fotoProfilo) {
         this.fotoProfilo = fotoProfilo;
+    }
+
+    @Override
+    public String toString() {
+        return "Animale{" +
+                "nome='" + nome + '\'' +
+                ", genere='" + genere + '\'' +
+                ", specie='" + specie + '\'' +
+                ", emailProprietario='" + emailProprietario + '\'' +
+                ", dataDiNascita='" + dataDiNascita + '\'' +
+                ", isAssistito=" + isAssistito +
+                ", sesso='" + sesso + '\'' +
+                '}';
     }
 }
