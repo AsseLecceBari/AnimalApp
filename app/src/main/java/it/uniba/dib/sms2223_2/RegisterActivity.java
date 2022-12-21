@@ -1,9 +1,5 @@
 package it.uniba.dib.sms2223_2;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -20,7 +16,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
@@ -46,12 +47,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
 
-import class_general.GetCoordinates;
 import model.Associazione;
 import model.Ente;
 import model.Persona;
@@ -134,10 +133,12 @@ public class RegisterActivity extends AppCompatActivity {
                 this.getSupportFragmentManager().findFragmentById(R.id.autoComplete);
 
         if (autocompleteFragment != null) {
-            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS));
+            autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.ADDRESS_COMPONENTS,Place.Field.LAT_LNG));
             autocompleteFragment.setTypeFilter(TypeFilter.ADDRESS);
 
         }
+
+
 
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -198,13 +199,13 @@ public class RegisterActivity extends AppCompatActivity {
                 indirizzo.put("provincia",provincia);
                 indirizzo.put("stato",stato);
 
-
+                address=place.getName();
+                LatLng latlng=place.getLatLng();
+                indirizzo.put("latitudine", String.valueOf(latlng.latitude));
+                indirizzo.put("longitudine", String.valueOf(latlng.longitude));
 
 
                 address = via+ ", " +civico +" "+CodicePostale+" " + città +", " + provincia +", "+ stato ;
-
-                Log.d("ciao123",address);
-
 
 
                 // todo remove focus from other fields -----------------------------
@@ -366,6 +367,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         tvLoginHere.setOnClickListener(view ->{
+            onBackPressed();
             startActivity(new Intent(RegisterActivity.this, LoginActivity.class));
         });
     }
@@ -385,19 +387,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void createUser(){
-        //creo l'oggetto per effettuare la geocodifica passandogli le variabili da riempire e l'indirizzo preso dall'autocomplet
-        GetCoordinates geocoder= new GetCoordinates(address);
-        //prendo le coordinate dalle variabili dell'oggetto
-        latitudine=geocoder.getLat();
-        longitudine=geocoder.getLng();
-
-        indirizzo.put("latitudine", String.valueOf(latitudine));
-        indirizzo.put("longitudine",String.valueOf(longitudine));
-
-        Log.d("lat", latitudine+"");
-        Log.d("long", longitudine+"");
-        Log.d("indirizzo", address+"");
-
         String email;
         String password;
         String confPassword;
@@ -411,8 +400,6 @@ public class RegisterActivity extends AppCompatActivity {
         password = etRegPassword.getText().toString();
         confPassword= etRegConfPass.getText().toString();
         telefono= etRegTelefono.getText().toString();
-        //indirizzo = etRegIndirizzo.getText().toString();
-        //citta = etRegCitta.getText().toString();
         name = nome.getText().toString();
         surname = cognome.getText().toString();
         dataNascita = data.getText().toString();
@@ -451,18 +438,6 @@ public class RegisterActivity extends AppCompatActivity {
             etRegTelefono.setError(getString(R.string.minimum11cifre));
             flag = 1;
         }
-        /*
-        if(TextUtils.isEmpty(indirizzo)){
-            etRegIndirizzo.setError(getString(R.string.addressRequired));
-            flag = 1;
-        }else if(indirizzoNonConforme(indirizzo)){
-            etRegIndirizzo.setError("Il formato deve rispettare: via xxxx, n");
-            flag = 1;
-
-        if(TextUtils.isEmpty(citta)){
-            etRegCitta.setError("Citta' obbligatoria");
-            flag = 1;
-        }}*/
 
         switch (ruolo){
             // Controlli
@@ -493,7 +468,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
                             Persona p =new Persona(email,telefono, ruolo, indirizzo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString());
                             db.collection("utenti").document(email+"").set(p);
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            onBackPressed();
                         }else{
                             Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
