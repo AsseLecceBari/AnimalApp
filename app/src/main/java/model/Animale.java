@@ -68,14 +68,15 @@ public class Animale implements Serializable{
 
     @Override
     public String toString() {
-        return "Animale{" +
+        return "Ecco le info del animale: \n" +
                 "nome='" + nome + '\'' +
                 ", genere='" + genere + '\'' +
                 ", specie='" + specie + '\'' +
                 ", emailProprietario='" + emailProprietario + '\'' +
                 ", dataDiNascita='" + dataDiNascita + '\'' +
+                ", fotoProfilo='" + fotoProfilo + '\'' +
+                ", idAnimale='" + idAnimale + '\'' +
                 ", isAssistito=" + isAssistito +
-                ", sesso='" + sesso + '\'' +
-                '}';
+                ", sesso='" + sesso + '\'';
     }
 }

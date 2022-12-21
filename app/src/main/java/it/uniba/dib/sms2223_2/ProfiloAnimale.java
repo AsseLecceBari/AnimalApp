@@ -113,7 +113,7 @@ public class ProfiloAnimale extends AppCompatActivity {
     public void condividiAnimale(MenuItem item) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = animale.getIdAnimale();
+        String shareBody = animale.toString();
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
     }
