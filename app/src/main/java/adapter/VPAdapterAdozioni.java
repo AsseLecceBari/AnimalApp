@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import fragments_adozioni.info_Proprietario;
 import fragments_adozioni.info_adozione;
+import fragments_adozioni.riepilogo_adozione;
 
 public class VPAdapterAdozioni extends FragmentStateAdapter {
 
@@ -27,7 +28,7 @@ public class VPAdapterAdozioni extends FragmentStateAdapter {
 
         }
         else{
-            fragmentArrayList.add(new info_adozione());
+            fragmentArrayList.add(new riepilogo_adozione());
 
 
 

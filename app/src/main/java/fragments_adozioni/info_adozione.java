@@ -78,7 +78,7 @@ public class info_adozione extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-     View root=inflater.inflate(R.layout.fragment_info_animale, container, false);
+     View root=inflater.inflate(R.layout.fragment_info_adozione, container, false);
 
         immagineAnimale=root.findViewById(R.id.imageAnimal);
         descrizioneAnimale=root.findViewById(R.id.DescrizioneAnimale);

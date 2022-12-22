@@ -13,7 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,13 +32,12 @@ import java.util.Objects;
 import java.util.Random;
 
 import adapter.AggiungiAdozioneAdapter;
-import class_general.RecyclerItemClickListener;
 import fragments_mieiAnimali.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
 
-public class aggiungi_adozione_fragment extends Fragment {
+public class lista_mieiAnimali extends Fragment {
 
     private FirebaseAuth auth;
     private FirebaseFirestore db;
@@ -76,7 +74,7 @@ public class aggiungi_adozione_fragment extends Fragment {
     @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.fragment_aggiungi_adozione_fragment, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_listamieianimali, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Aggiungi adozione");
         if(main_action_bar.getMenu()!=null) {
@@ -235,7 +233,7 @@ public class aggiungi_adozione_fragment extends Fragment {
               Adozione adozione =new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data,"");
 
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new riepilogo_Adozione().newInstance(adozione,mDataset.get(position))).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new aggiungi_annuncio_Adozione().newInstance(adozione,mDataset.get(position))).addToBackStack(null).commit();
                 //checkbox= view.findViewById(R.id.checkBoxAggiungiadozioni);
 
                /* if(!checkbox.isChecked()){
