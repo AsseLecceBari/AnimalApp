@@ -170,6 +170,10 @@ public class adoptions_fragment extends Fragment {
 
             initDataAnnunci(tipoannunci);
         }
+        else{
+            tipoannunci=4;
+            initDataAnnunci(tipoannunci);
+        }
 
 
 
@@ -306,7 +310,8 @@ public class adoptions_fragment extends Fragment {
 
                                                             return;
                                                         }
-                                                    case 3: if(auth.getCurrentUser()!=null) {
+                                                    case 3:
+                                                        if(auth.getCurrentUser()!=null) {
 
                                                         preferenze.whereEqualTo("emailUtente", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                             @Override
@@ -327,7 +332,8 @@ public class adoptions_fragment extends Fragment {
                                                                                         if(task.isSuccessful())
                                                                                         {
                                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
-                                                                                                proprietari.add( document.toObject(Persona.class));
+                                                                                                proprietari.add( document3.toObject(Persona.class));
+
 
                                                                                             }
 
@@ -341,6 +347,7 @@ public class adoptions_fragment extends Fragment {
                                                                                     onItemClick();
                                                                                 }
 
+
                                                                             }
                                                                         }
                                                                     }
@@ -351,6 +358,36 @@ public class adoptions_fragment extends Fragment {
                                                         });
                                                     }
                                                            return;
+
+
+                                                    case 4:
+                                                        mDataset.add(document.toObject(Animale.class));
+
+                                                        utenteref.whereEqualTo("email",mDataset.get(mDataset.size()-1).getEmailProprietario()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                                                if(task.isSuccessful())
+                                                                {
+                                                                    for (QueryDocumentSnapshot document3 : task.getResult()) {
+                                                                        proprietari.add( document3.toObject(Persona.class));
+                                                                        mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
+                                                                        mRecyclerView.setAdapter(mAdapter);
+                                                                        if (mAdapter != null) {
+                                                                            onItemClick();
+                                                                        }
+
+                                                                    }
+
+                                                                }
+
+                                                            }
+                                                        });
+
+                                                        return;
+
+
+
                                                            
                                                 }
                                             }
@@ -553,39 +590,36 @@ public class adoptions_fragment extends Fragment {
         CollectionReference adozioniref= db.collection("adozioni");
 
 
+if(auth.getCurrentUser()!= null) {
+    Query query = preferenzeRef.whereEqualTo("emailUtente", auth.getCurrentUser().getEmail());
 
-        Query query= preferenzeRef.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail());
-
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()) {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        preferenze = document.toObject(Preferenze.class);
-
-
-
-                    }
-
-
-                    if ( preferenze!= null ) {
-                        checkPreferenze(preferenze);
-
-
-
-                        } else {
-                            rdbannuncipreferiti.setEnabled(false);
-
-                            numeroAnnPreferiti.setText("0");
-
-                        }
-
-
+    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    preferenze = document.toObject(Preferenze.class);
 
 
                 }
+
+
+                if (preferenze != null) {
+                    checkPreferenze(preferenze);
+
+
+                } else {
+                    rdbannuncipreferiti.setEnabled(false);
+
+                    numeroAnnPreferiti.setText("0");
+
+                }
+
+
             }
-        });
+        }
+    });
+}
 
 
     }

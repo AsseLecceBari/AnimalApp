@@ -1,5 +1,4 @@
 package adapter;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -13,7 +12,6 @@ import fragments.anagrafica;
 import fragments.librettoSanitario;
 import fragments.spese;
 import fragments_adozioni.info_Proprietario;
-import fragments_adozioni.info_animale;
 
 public class VPAdapterAnimale extends FragmentStateAdapter {
     private  ArrayList<Fragment> fragmentArrayList= new ArrayList<>();

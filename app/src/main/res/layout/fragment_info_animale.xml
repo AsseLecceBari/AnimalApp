@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical"
-    tools:context="fragments_adozioni.info_animale">
+    tools:context="fragments_adozioni.info_adozione">
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

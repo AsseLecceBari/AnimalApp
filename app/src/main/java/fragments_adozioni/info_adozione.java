@@ -1,16 +1,13 @@
 package fragments_adozioni;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,26 +30,20 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
-import java.util.TimeZone;
-import java.util.concurrent.TimeUnit;
 
-import class_general.GetCoordinates;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
 import model.Persona;
 import model.Preferenze;
 
-public class info_animale extends Fragment {
+public class info_adozione extends Fragment {
     private Animale animale;
     private Adozione adozione;
     private Persona proprietario;
@@ -144,7 +135,7 @@ public class info_animale extends Fragment {
         });
 
         dettagliAnimale.setText("Dettagli"+"\n\n\n"+"Nome"+"       "+"Data Di Nascita"+"       "+"Specie"+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
-        descrizioneAnimale.setText("Descrizione");
+        descrizioneAnimale.setText(adozione.getDescrizione());
     }
 
 
@@ -215,51 +206,45 @@ public class info_animale extends Fragment {
         auth = FirebaseAuth.getInstance();
         CollectionReference preferenzeRef = firebaseStore.collection("preferenze");
         //CollectionReference animali = firebaseStore.collection("animali");
+if (auth.getCurrentUser()!= null) {
+    Query query = preferenzeRef.whereEqualTo("emailUtente", auth.getCurrentUser().getEmail());
 
-        Query query= preferenzeRef.whereEqualTo("emailUtente",auth.getCurrentUser().getEmail());
-
-        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful())
-                {
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        preferenze=document.toObject(Preferenze.class);
-
-                    }
-
-                    if(preferenze!= null) // controllo se l'annuncio sta gia nella lista preferiti
-                    {
-                        int cont=0;
-                        for(int a=0; a<preferenze.getAdozioni().size(); a++) {
-
-
-                            if(Objects.equals(preferenze.getAdozioni().get(a), adozione.getIdAdozione()))
-
-                            {
-                                cont++;
-
-                            }
-
-                        }
-
-                        if (cont==0)
-                        {
-                            btnaggiungiPreferiti.setVisibility(View.VISIBLE);
-                        }
-                        else {
-                            btineliminaPreferiti.setVisibility(View.VISIBLE);
-                        }
-                    }
-                    else
-                    {
-                        btnaggiungiPreferiti.setVisibility(View.VISIBLE);
-
-                    }
+    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        @Override
+        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+            if (task.isSuccessful()) {
+                for (QueryDocumentSnapshot document : task.getResult()) {
+                    preferenze = document.toObject(Preferenze.class);
 
                 }
+
+                if (preferenze != null) // controllo se l'annuncio sta gia nella lista preferiti
+                {
+                    int cont = 0;
+                    for (int a = 0; a < preferenze.getAdozioni().size(); a++) {
+
+
+                        if (Objects.equals(preferenze.getAdozioni().get(a), adozione.getIdAdozione())) {
+                            cont++;
+
+                        }
+
+                    }
+
+                    if (cont == 0) {
+                        btnaggiungiPreferiti.setVisibility(View.VISIBLE);
+                    } else {
+                        btineliminaPreferiti.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    btnaggiungiPreferiti.setVisibility(View.VISIBLE);
+
+                }
+
             }
-        });
+        }
+    });
+}
 
     }
 
