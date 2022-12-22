@@ -168,7 +168,6 @@ public class reports_fragment extends Fragment {
                                 // No location access granted.
                                // Toast.makeText(getActivity(), "uso loc reg", Toast.LENGTH_SHORT).show();
                                 Log.d("1omooioi","NO");
-
                             }
                         }
                 );
@@ -213,7 +212,6 @@ public class reports_fragment extends Fragment {
             }
         });
         filtri();
-
         attivaSlider.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -562,7 +560,7 @@ public class reports_fragment extends Fragment {
     }
 
     //per usare coordinate di registrazione
-    public void trovaUtente(double raggio) {
+    private void trovaUtente(double raggio) {
 
 
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
@@ -888,7 +886,7 @@ public class reports_fragment extends Fragment {
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
-/*
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
@@ -912,7 +910,7 @@ public class reports_fragment extends Fragment {
         }
         // Other 'case' lines to check for other
         // permissions this app might request.
-    }*/
+    }
 
     public void deniedPermissionDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
