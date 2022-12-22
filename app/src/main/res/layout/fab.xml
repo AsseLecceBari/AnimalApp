@@ -48,24 +48,24 @@
             android:contentDescription="@null"
 
             android:src="@android:drawable/stat_sys_phone_call"
-            android:visibility="visible" />
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@id/fab_action_1"
+            style="?attr/floatingActionButtonSmallStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
-            android:src="@drawable/star"
+            android:layout_height="wrap_content"
             android:layout_above="@id/fab"
             android:layout_alignEnd="@id/fab"
-            android:contentDescription="@null"
+            android:layout_marginBottom="10dp"
 
             android:width="24dp"
             android:height="24dp"
 
-            android:visibility="visible"
-            android:layout_marginBottom="10dp"
-            style="?attr/floatingActionButtonSmallStyle"/>
+            android:contentDescription="@null"
+            android:src="@drawable/star"
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

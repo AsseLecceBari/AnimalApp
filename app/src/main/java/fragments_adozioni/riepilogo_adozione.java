@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import class_general.fab;
 import it.uniba.dib.sms2223_2.R;
 
 
@@ -33,9 +34,25 @@ public class riepilogo_adozione extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_riepilogo_adozione, container, false);
+         View root =inflater.inflate(R.layout.fragment_riepilogo_adozione, container, false);
+
+
+        fab fab= new fab();
+
+        fab.iniziallizazioneFab(root);
+
+        fab.inizializzazioneFab2(root,1,getContext(),"ciao");
+
+        fab.FabContainerListner();
+         return root;
     }
 }
