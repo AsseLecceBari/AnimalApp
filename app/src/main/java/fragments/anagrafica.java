@@ -6,8 +6,10 @@ import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -20,12 +22,14 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -38,6 +42,7 @@ import java.net.InetAddress;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
@@ -57,17 +62,77 @@ public class anagrafica extends Fragment {
     private StorageReference storageRef;
     private Button selectImgButton;
     private ImageView qrCodeIV;
+    private ImageView pokeball;
     private Button generateQrBtn;
     private Bitmap bitmap;
     private QRGEncoder qrgEncoder;
-
-
+    private ProfiloAnimale profiloAnimale;
+    private float x,y;
+    private float dx,dy;
+    private float xCoOrdinate, yCoOrdinate;
+    private android.widget.RelativeLayout.LayoutParams layoutParams;
+    private ViewPager2 viewPager2;
+    private TabLayout tabLayout;
+    private main_fragment_animale main_fragment_animale;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
         db=FirebaseFirestore.getInstance();
-
+        profiloAnimale= new ProfiloAnimale();
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
+        pokeball=rootView.findViewById(R.id.pokeball);
+        ProfiloAnimale profiloAnimale=(ProfiloAnimale)  anagrafica.super.getActivity();
+        main_fragment_animale=profiloAnimale.getMain_fragment_animale();
+        viewPager2=main_fragment_animale.getViewPager2();
+        tabLayout= main_fragment_animale.getTabLayout();
 
+
+
+        pokeball.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {  switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    viewPager2.setUserInputEnabled(false);
+                    Log.e("motion","down");
+                    xCoOrdinate = v.getX() - event.getRawX();
+                    yCoOrdinate = v.getY() - event.getRawY();
+
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    tabLayout.setTabMode(TabLayout.MODE_FIXED);
+                    Log.e("motion","move");
+                    v.animate().x(event.getRawX() + xCoOrdinate).y(event.getRawY() + yCoOrdinate).setDuration(0).start();
+                    break;
+                default:
+                    viewPager2.setUserInputEnabled(true);
+                    Log.e("motion","default");
+
+
+                    return false;
+            }
+                return true;
+            }
+        });
+                /*
+       pokeball.setOnTouchListener(new View.OnTouchListener() {
+           @Override
+           public boolean onTouch(View view, MotionEvent motionEvent) {
+               if(motionEvent.getAction()==MotionEvent.ACTION_DOWN){
+                   x= motionEvent.getX();
+                   y=motionEvent.getY();
+               }
+               if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
+                   dx= motionEvent.getX()-x;
+                   dy=motionEvent.getY()-y;
+                   pokeball.setX(pokeball.getX()+dx);
+                   pokeball.setY(pokeball.getY()+dy);
+                   x=motionEvent.getX();
+                   y= motionEvent.getY();
+               }
+               return true;
+           }
+       });
+
+                 */
         imgAnimaleReg = rootView.findViewById(R.id.imgAnimaleReg);
         nome = rootView.findViewById(R.id.nome);
         genere = rootView.findViewById(R.id.genere);

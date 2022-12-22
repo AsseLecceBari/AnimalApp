@@ -283,7 +283,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                         storageTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                               getActivity().getSupportFragmentManager().popBackStack();
+                                getActivity().getSupportFragmentManager().popBackStack();
                             }
                         });
                     }else {

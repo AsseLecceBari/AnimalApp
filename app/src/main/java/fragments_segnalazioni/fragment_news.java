@@ -319,7 +319,7 @@ public class fragment_news extends Fragment {
                         //da attivare una volta salvata la foto
                         //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
 
-                        getActivity().startActivity(new Intent(getContext(), MainActivity.class).putExtra("posizione", 2));
+                        getActivity().getSupportFragmentManager().popBackStack();
 
                     }
                 });

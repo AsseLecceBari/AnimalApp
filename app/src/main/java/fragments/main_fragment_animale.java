@@ -23,7 +23,16 @@ import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
 public class main_fragment_animale extends Fragment {
+    public TabLayout getTabLayout() {
+        return tabLayout;
+    }
+
     private TabLayout tabLayout;
+
+    public ViewPager2 getViewPager2() {
+        return viewPager2;
+    }
+
     private ViewPager2 viewPager2;
     private TabItem spese;
     VPAdapterAnimale vpAdapter;
@@ -38,7 +47,6 @@ public class main_fragment_animale extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null)
             posizione = savedInstanceState.getInt("posizione");
-
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
         View root=inflater.inflate(R.layout.fragment_main_animale, container, false);
         return root;
@@ -85,6 +93,7 @@ public class main_fragment_animale extends Fragment {
                 tabLayout.setVisibility(View.GONE);
                 tabLayout= getView().findViewById(R.id.tabLayout);
                 tabLayout.getTabAt(1).setText("Proprietario");
+
             }
             else {
                 vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(), true);

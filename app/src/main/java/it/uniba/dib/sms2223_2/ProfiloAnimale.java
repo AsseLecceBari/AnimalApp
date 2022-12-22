@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +15,8 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import fragments.main_fragment;
+import fragments.main_fragment_animale;
 import model.Animale;
 import model.SegnalazioneSanitaria;
 import profiloUtente.ProfiloUtenteActivity;
@@ -23,8 +27,16 @@ public class ProfiloAnimale extends AppCompatActivity {
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
     private TabLayout tabLayout;
-    private fragments.main_fragment main_fragment_animale;
+
+    public main_fragment_animale getMain_fragment_animale() {
+        return main_fragment_animale;
+    }
+
+    private fragments.main_fragment_animale main_fragment_animale;
     private int posizione;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +61,7 @@ public class ProfiloAnimale extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        main_fragment_animale= (main_fragment_animale) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         // Imposto l'actionBar di questa activity
 
     }
@@ -74,7 +87,7 @@ public class ProfiloAnimale extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         try {
-            main_fragment_animale= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+            main_fragment_animale= (main_fragment_animale) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
         }catch (Exception e){
             super.onBackPressed();
         }

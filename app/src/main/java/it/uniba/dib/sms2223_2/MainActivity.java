@@ -2,6 +2,7 @@ package it.uniba.dib.sms2223_2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -34,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private main_fragment main_fragment;
 
     private MenuItem searchItem;
+    private MenuItem pokedex;
 
     public SearchView getSearchView() {
         return searchView;
@@ -44,7 +46,10 @@ public class MainActivity extends AppCompatActivity {
     private adoptions_fragment adoptions_fragment;
     private reports_fragment reports_fragment;
 
-
+    private void change() {
+        startActivity(new Intent(getApplicationContext(),Pokedex.class));
+        finish();
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +76,15 @@ public class MainActivity extends AppCompatActivity {
             searchItem= menu.findItem(R.id.action_search);
             searchView= (SearchView) searchItem.getActionView();
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
+            pokedex=menu.findItem(R.id.pokedex);
             searchFilterListener();
+            pokedex.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+                @Override
+                public boolean onMenuItemClick(MenuItem menuItem) {
+                    startActivity(new Intent(getApplicationContext(),Pokedex.class));
+                    return false;
+                }
+            });
         }catch (Exception e){
 
         }
