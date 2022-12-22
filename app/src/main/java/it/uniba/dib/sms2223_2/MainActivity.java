@@ -1,12 +1,15 @@
 package it.uniba.dib.sms2223_2;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -45,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     private myanimals_fragment myanimals_fragment;
     private adoptions_fragment adoptions_fragment;
     private reports_fragment reports_fragment;
+    private static final int PERMISSION_REQUEST_CODE = 101;
 
     private void change() {
         startActivity(new Intent(getApplicationContext(),Pokedex.class));
@@ -229,4 +233,8 @@ public class MainActivity extends AppCompatActivity {
     public void scanQr(MenuItem item) {
         getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale()).commit();
     }
+
+
+
+
 }

@@ -86,7 +86,7 @@
                 android:id="@+id/radioTueSegnalazioni"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Le tue Segnalazioni"
+                android:text="Le tue segnalazioni"
                 android:layout_marginLeft="0dp"
                 />
 
@@ -94,15 +94,10 @@
                 android:id="@+id/radioTutti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Tutti"
+                android:text="Seganalazioni altri utenti"
                 android:layout_marginLeft="20dp"/>
 
-            <com.google.android.material.radiobutton.MaterialRadioButton
-                android:id="@+id/radioPreferiti"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Preferiti"
-                android:layout_marginLeft="20dp"/>
+
 
 
 

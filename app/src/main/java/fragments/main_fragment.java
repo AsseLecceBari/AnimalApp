@@ -33,8 +33,8 @@ public class main_fragment extends Fragment {
         return viewPager2;
     }
 
-    private ViewPager2 viewPager2;
-    private VPAdapter vpAdapter;
+    private  ViewPager2 viewPager2;
+    private  VPAdapter vpAdapter;
     private FragmentActivity  activity;
     private int posizione =0;
     private int posizionePassata;
