@@ -317,7 +317,8 @@ public class fragment_zona_pericolosa extends Fragment {
                         Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                         //da attivare una volta salvata la foto
                         //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
-                        getActivity().startActivity(new Intent(getContext(), MainActivity.class).putExtra("posizione", 2));
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        getActivity().getSupportFragmentManager().popBackStack();
 
                     }
                 });

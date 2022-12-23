@@ -12,15 +12,32 @@
         android:layout_marginBottom="15dp">
 
         <!-- Please note that the @id are defined the first time they're referenced from top to bottom -->
-
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_action_3"
+            android:id="@+id/fab_mail"
             style="?attr/floatingActionButtonSmallStyle"
             android:layout_width="wrap_content"
 
 
             android:layout_height="wrap_content"
-            android:layout_above="@+id/fab_action_2"
+            android:layout_above="@+id/fab_telefono"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+
+            android:src="@drawable/outline_email_black_24"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_telefono"
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_elimina"
             android:layout_alignEnd="@id/fab"
             android:layout_marginBottom="10dp"
 
@@ -33,13 +50,13 @@
 
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_action_2"
+            android:id="@+id/fab_elimina"
             style="?attr/floatingActionButtonSmallStyle"
             android:layout_width="wrap_content"
 
 
             android:layout_height="wrap_content"
-            android:layout_above="@+id/fab_action_1"
+            android:layout_above="@+id/fab_modifica"
             android:layout_alignEnd="@id/fab"
             android:layout_marginBottom="10dp"
 
@@ -47,25 +64,80 @@
             android:height="24dp"
             android:contentDescription="@null"
 
-            android:src="@android:drawable/stat_sys_phone_call"
-            android:visibility="visible" />
+            android:src="@android:drawable/ic_menu_delete"
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@id/fab_action_1"
+            android:id="@+id/fab_modifica"
+            style="?attr/floatingActionButtonSmallStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
 
-            android:src="@drawable/star"
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_fine_modifica"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+
+            android:src="@android:drawable/ic_menu_edit"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_fine_modifica"
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_annulla_modifica"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+
+            android:src="?android:attr/textCheckMark"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab_annulla_modifica"
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_preferiti"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:visibility="gone" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@id/fab_preferiti"
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
             android:layout_above="@id/fab"
             android:layout_alignEnd="@id/fab"
-            android:contentDescription="@null"
+            android:layout_marginBottom="10dp"
 
             android:width="24dp"
             android:height="24dp"
 
-            android:visibility="visible"
-            android:layout_marginBottom="10dp"
-            style="?attr/floatingActionButtonSmallStyle"/>
+            android:contentDescription="@null"
+            android:src="@drawable/star"
+            android:visibility="gone" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
@@ -79,6 +151,7 @@
 
             android:layout_marginTop="8dp"
             android:src="@android:drawable/ic_menu_add"
+            android:visibility="visible"
             tools:ignore="ImageContrastCheck,SpeakableTextPresentCheck" />
 
     </RelativeLayout>

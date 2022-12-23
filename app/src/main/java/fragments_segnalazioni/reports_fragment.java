@@ -89,6 +89,7 @@ import model.Utente;
 
 public class reports_fragment extends Fragment {
 
+    private static final int PERMISSION_REQUEST_CODE = 101;
     private Utente utente;
     private static final int REQUEST_CHECK_SETTINGS =0x1 ;
     private FirebaseAuth auth;
@@ -112,7 +113,7 @@ public class reports_fragment extends Fragment {
 
     private MaterialSwitch attivaSlider;
 
-    private RadioButton radioTueSegnalazioni,radioTutti,radioPreferiti;
+    private RadioButton radioTueSegnalazioni,radioTutti;
 
 
 
@@ -120,7 +121,7 @@ public class reports_fragment extends Fragment {
 
     private   MainActivity mainActivity;
     private Toolbar main_action_bar;
-    private Button prova;
+
 
 
 
@@ -131,16 +132,16 @@ public class reports_fragment extends Fragment {
     LocationRequest locationRequest;
     LocationCallback locationCallback;
     private FusedLocationProviderClient fusedLocationClient;
-    private static final int Request_code= 101;
+
     double lat,lng;
 
 
     int a=0;//0 viene dalla radio tutti, 1 dal radio mie segnalazioni
 
-    //permessi posizione
+    private ActivityResultLauncher<String[]> locationPermissionRequest ;
 
 
-    private ActivityResultLauncher<String[]> locationPermissionRequest;
+
 
 
 
@@ -151,6 +152,39 @@ public class reports_fragment extends Fragment {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
 
+         locationPermissionRequest = registerForActivityResult(new ActivityResultContracts
+                                .RequestMultiplePermissions(), result -> {
+                            Boolean fineLocationGranted = result.getOrDefault(
+                                    Manifest.permission.ACCESS_FINE_LOCATION, false);
+                            Boolean coarseLocationGranted = result.getOrDefault(
+                                    Manifest.permission.ACCESS_COARSE_LOCATION,false);
+                            if (fineLocationGranted != null && fineLocationGranted) {
+                                // Precise location access granted.
+
+                            } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                                // Only approximate location access granted.
+
+                            } else {
+                                // No location access granted.
+                               // Toast.makeText(getActivity(), "uso loc reg", Toast.LENGTH_SHORT).show();
+                                Log.d("1omooioi","NO");
+                            }
+                        }
+                );
+
+       /* locationPermissionRequest= registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+            if (isGranted) {
+                // Permission is granted. Continue the action or workflow in your
+                // app.
+            } else {
+                // Explain to the user that the feature is unavailable because the
+                // feature requires a permission that the user has denied. At the
+                // same time, respect the user's decision. Don't link to system
+                // settings in an effort to convince the user to change their
+                // decision.
+                Log.d("prova2345","NO");
+            }
+        });*/
 
 
 
@@ -178,9 +212,27 @@ public class reports_fragment extends Fragment {
             }
         });
         filtri();
+        attivaSlider.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b){
+
+                    getCurrentLocation();
+                    sliderLayout.setVisibility(View.VISIBLE);
+                }else{
+                    stopLocationUpdates();
+                    sliderLayout.setVisibility(View.GONE);
+
+                }
+            }
+        });
 
 
     }
+
+
+
+
 
    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -210,7 +262,6 @@ public class reports_fragment extends Fragment {
         imageSliderRep= rootView.findViewById(R.id.imageSliderRep);
         radioTueSegnalazioni= rootView.findViewById(R.id.radioTueSegnalazioni);
         radioTutti= rootView.findViewById(R.id.radioTutti);
-        radioPreferiti= rootView.findViewById(R.id.radioPreferiti);
 
 
 
@@ -219,7 +270,7 @@ public class reports_fragment extends Fragment {
         //controllo se l'utente e loggato altrimenti non permetto la pressione dei radio pref e tuesegnalazioni
         if (auth.getCurrentUser()==null){
             radioTueSegnalazioni.setClickable(false);
-            radioPreferiti.setClickable(false);
+
         }
 
         radioTutti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -256,10 +307,11 @@ public class reports_fragment extends Fragment {
 
 
 
-        attivaSlider.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        /*attivaSlider.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b){
+
                     getCurrentLocation();
                     sliderLayout.setVisibility(View.VISIBLE);
                 }else{
@@ -268,7 +320,7 @@ public class reports_fragment extends Fragment {
 
                 }
             }
-        });
+        });*/
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,7 +344,7 @@ public class reports_fragment extends Fragment {
         sliderReport.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
-                getCurrentLocation();
+               // getCurrentLocation();
 
 
 
@@ -429,27 +481,47 @@ public class reports_fragment extends Fragment {
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
 
         //tolto perche con questo non mostrava le segnalazioni se non sei loggato
-       // if(auth.getCurrentUser()!=null){
+        if(auth.getCurrentUser()!=null) {
 
-        segnalazioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        //Salvare animale in un array con elementi oggetto animale
-                        mDataset.add(document.toObject(Segnalazione.class));
-                        //Passo i dati presi dal database all'adapter
+            segnalazioniRef.whereNotEqualTo("emailSegnalatore", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //Salvare animale in un array con elementi oggetto animale
+                            mDataset.add(document.toObject(Segnalazione.class));
+                            //Passo i dati presi dal database all'adapter
 
+                        }
+                        mAdapter = new ReportAdapter(mDataset);
+                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                        mRecyclerView.setAdapter(mAdapter);
+                    } else {
+                        Log.d("ERROR", "Error getting documents: ", task.getException());
                     }
-                    mAdapter = new ReportAdapter(mDataset);
-                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                    mRecyclerView.setAdapter(mAdapter);
-                }else {
-                    Log.d("ERROR", "Error getting documents: ", task.getException());
                 }
-            }
-        });
+            });
+        }else {
 
+            segnalazioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            //Salvare animale in un array con elementi oggetto animale
+                            mDataset.add(document.toObject(Segnalazione.class));
+                            //Passo i dati presi dal database all'adapter
+
+                        }
+                        mAdapter = new ReportAdapter(mDataset);
+                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                        mRecyclerView.setAdapter(mAdapter);
+                    } else {
+                        Log.d("ERROR", "Error getting documents: ", task.getException());
+                    }
+                }
+            });
+        }
     }
 
 
@@ -517,6 +589,7 @@ public class reports_fragment extends Fragment {
                         double longitudine= Double.parseDouble(utente.getIndirizzo().get("longitudine"));
                        //TODO inserire le coordinate della registrazione dell'utente
                        filterCoordinates(latitudine ,longitudine,raggio);
+                        Log.d("ciaooooo2232", "trova utente ");
 
 
 
@@ -631,35 +704,6 @@ public class reports_fragment extends Fragment {
 
 
 
-/*
-    public void showAlertDialog() {
-
-
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getView().getContext());
-        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
-        alertDialogBuilder.setPositiveButton("Ho capito",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        locationPermissionRequest.launch(new String[]{
-                                Manifest.permission.ACCESS_FINE_LOCATION,
-                                Manifest.permission.ACCESS_COARSE_LOCATION
-                        });
-
-
-                    }
-                });
-
-        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
-
-        AlertDialog alertDialog = alertDialogBuilder.create();
-        alertDialog.show();
-    }*/
 
 
 
@@ -693,74 +737,79 @@ public class reports_fragment extends Fragment {
     private  void getCurrentLocation(){
 
 
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},Request_code);
 
-            return;
-        }
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            Log.d("ciaooooo2232", "getCurrentLocation: ");
+            locationRequest = LocationRequest.create();
+            locationRequest.setInterval(10000);
+            locationRequest.setFastestInterval(5000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
-        locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+            putOnGPS(locationRequest);
 
-        putOnGPS(locationRequest);
+            locationCallback=new LocationCallback(){
 
-        locationCallback=new LocationCallback(){
-
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                //Toast.makeText(getContext(), "location result is= ", Toast.LENGTH_SHORT).show();
-                if(locationResult==null){
-                  //  Toast.makeText(getContext(),"Current location is null", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                for (Location location:locationResult.getLocations()){
-                    if(locationResult!=null){
-
-                       // Toast.makeText(getContext()," "+ locationResult, Toast.LENGTH_SHORT).show();
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    //Toast.makeText(getContext(), "location result is= ", Toast.LENGTH_SHORT).show();
+                    if(locationResult==null){
+                        //  Toast.makeText(getContext(),"Current location is null", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                }
 
-            }
-        };
+                    for (Location location:locationResult.getLocations()){
+                        if(locationResult!=null){
 
-
-        fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback,null);
-        Task<Location> task= fusedLocationClient.getLastLocation();
-        task.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-
-                if(location !=null){
-                    lat=location.getLatitude();
-                    lng=location.getLongitude();
+                            // Toast.makeText(getContext()," "+ locationResult, Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
 
                 }
-            }
-        });
+            };
 
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback,null);
+            Task<Location> task= fusedLocationClient.getLastLocation();
+            task.addOnSuccessListener(new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
 
-        switch (Request_code){
+                    if(location !=null){
+                        lat=location.getLatitude();
+                        lng=location.getLongitude();
 
-            case Request_code:
-                if(grantResults.length>0 && grantResults[0]== PackageManager.PERMISSION_GRANTED){
-                    getCurrentLocation();
+                    }
                 }
+            });
 
+
+        }else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)&&shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            // In an educational UI, explain to the user why your app requires this
+            // permission for a specific feature to behave as expected, and what
+            // features are disabled if it's declined. In this UI, include a
+            // "cancel" or "no thanks" button that lets the user continue
+            // using your app without granting the permission.
+            showAlertDialog(); // errore
+        } else {
+            // You can directly ask for the permission.
+            // The registered ActivityResultCallback gets the result of this request.
+            /*locationPermissionRequest.launch(new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            });*/
+            //locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+            locationPermissionRequest.launch(new String[] {
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            });
         }
 
-
     }
+
+
 
     public void putOnGPS(LocationRequest locationRequest){
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
@@ -804,4 +853,81 @@ public class reports_fragment extends Fragment {
         }
     }
 
+
+
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+
+        alertDialogBuilder.setMessage("Se vuoi utilizzare la ricerca tramite la tua posizione attuale dovresti accettare i permessi, altrimenti premendo No grazie utilizzeremo la posizione fornita in fase di registrazione");
+        alertDialogBuilder.setPositiveButton("Accetto",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                       /* locationPermissionRequest.launch(new String[] {
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        });*/
+                       // locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+                        locationPermissionRequest.launch(new String[] {
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                        });
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton("No grazie", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                trovaUtente(15);
+
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+
+                }  else {
+                    // Explain to the user that the feature is unavailable because
+                    // the feature requires a permission that the user has denied.
+                    // At the same time, respect the user's decision. Don't link to
+                    // system settings in an effort to convince the user to change
+                    // their decision.
+                    deniedPermissionDialog();
+
+                }
+                return;
+        }
+        // Other 'case' lines to check for other
+        // permissions this app might request.
+    }
+
+    public void deniedPermissionDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder alertDialogBuilder2 = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setMessage("A questo punto sarà utitlizzata la posizione che hai fornito in fase di registrazione");
+        alertDialogBuilder.setPositiveButton("Ho capito",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        trovaUtente(15);
+                    }
+                });
+
+
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 }
+

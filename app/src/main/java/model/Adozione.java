@@ -16,6 +16,7 @@ public class Adozione  implements Serializable {
         this.idAdozione= idAdozione;
         this.emailProprietario=emailProprietario;
         this.dataPubblicazione=dataPubblicazione;
+        this.descrizione= descrizione;
     }
 
     public String getIdAnimale() {

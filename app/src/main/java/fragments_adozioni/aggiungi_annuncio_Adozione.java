@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,17 +22,12 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import org.checkerframework.common.subtyping.qual.Bottom;
-
-import fragments_segnalazioni.fragment_vista_news;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
-import model.Segnalazione;
-import model.Utente;
 
 
-public class riepilogo_Adozione extends Fragment {
+public class aggiungi_annuncio_Adozione extends Fragment {
 
 
     private static final String ARG_PARAM1 = "adozione";
@@ -73,7 +67,7 @@ aggiungiAdozione();
     }
 
     public Fragment newInstance(Adozione param1, Animale animale) {
-        riepilogo_Adozione fragment = new riepilogo_Adozione();
+        aggiungi_annuncio_Adozione fragment = new aggiungi_annuncio_Adozione();
         Bundle args = new Bundle();
 
        args.putSerializable(ARG_PARAM1, param1);
@@ -88,7 +82,7 @@ aggiungiAdozione();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root =inflater.inflate(R.layout.fragment_riepilogo__adozione, container, false);
+        View root =inflater.inflate(R.layout.fragment_aggiungi_annuncio_adozione, container, false);
         immagineAnimale=root.findViewById(R.id.imageAnimal);
         descrizioneAnimale=root.findViewById(R.id.DescrizioneAnimale);
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
@@ -115,6 +109,8 @@ aggiungiAdozione();
                         .into(immagineAnimale);
             }
         });
+
+        descrizioneAnimale.setText(adozione.getDescrizione());
 
         dettagliAnimale.setText("Dettagli"+"\n\n\n"+"Nome"+"       "+"Data Di Nascita"+"       "+"Specie"+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
 

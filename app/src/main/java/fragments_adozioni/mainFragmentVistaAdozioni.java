@@ -72,16 +72,15 @@ public class mainFragmentVistaAdozioni extends Fragment {
         try {
             activity  = getActivity();
             if(!getProprietario()) {
-                Log.d("ciao1234","sonoproprietario");
+
                 vpAdapter = new VPAdapterAdozioni(getChildFragmentManager(), getLifecycle(),false);
 
             }
             else {
 
                 vpAdapter = new VPAdapterAdozioni(getChildFragmentManager(), getLifecycle(), true);
-                tabLayout= getView().findViewById(R.id.tabLayout2);
                 tabLayout.setVisibility(View.GONE);
-                tabLayout = getView().findViewById(R.id.tabLayout);
+
             }
             viewPager2.setAdapter(vpAdapter);
 
@@ -118,7 +117,11 @@ public class mainFragmentVistaAdozioni extends Fragment {
 
     public boolean getProprietario(){
         FirebaseAuth auth= FirebaseAuth.getInstance();
-        return Objects.equals(auth.getCurrentUser().getEmail(), animale.getEmailProprietario());
+        auth=FirebaseAuth.getInstance();
+        if(auth.getCurrentUser()!= null) {
+            return Objects.equals(auth.getCurrentUser().getEmail(), animale.getEmailProprietario());
+        }
+        else return false;
     }
     public int getPosition(){
         return posizione;

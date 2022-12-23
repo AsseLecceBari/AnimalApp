@@ -151,10 +151,11 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
 
-        fabAction1 = rootView.findViewById(R.id.fab_action_1);
+        fabAction1 = rootView.findViewById(R.id.fab_preferiti);
 
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
+            fabAction1.setVisibility(View.VISIBLE);
             fabAction1.setImageResource(R.drawable.star);
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -163,6 +164,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                 }
             });
         }else if(x==1){
+            fabAction1.setVisibility(View.VISIBLE);
             fabAction1.setImageResource(android.R.drawable.ic_delete);
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -173,9 +175,10 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         }
 
 
-        fabAction2 = rootView.findViewById(R.id.fab_action_2);
+        fabAction2 = rootView.findViewById(R.id.fab_elimina);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il contatta, mentre da mie segnalazioni(x=1) ho il modifica
         if (x==0){
+            fabAction2.setVisibility(View.VISIBLE);
             fabAction2.setImageResource(android.R.drawable.stat_sys_phone_call);
             fabAction2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -185,6 +188,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                 }
             });
         }else if(x==1){
+            fabAction2.setVisibility(View.VISIBLE);
             fabAction2.setImageResource(android.R.drawable.ic_menu_edit);
             fabAction2.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -195,7 +199,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             });
         }
 
-        fabAction3 = rootView.findViewById(R.id.fab_action_3);
+        fabAction3 = rootView.findViewById(R.id.fab_telefono);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
             fabAction3.setVisibility(View.VISIBLE);

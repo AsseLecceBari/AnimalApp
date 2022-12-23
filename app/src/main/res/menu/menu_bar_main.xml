@@ -25,6 +25,7 @@
             android:onClick="scanQr"
            />
         <item
+            android:id="@+id/pokedex"
             android:title="Pokedex"
 
 

@@ -56,7 +56,13 @@ public class myanimals_fragment extends Fragment {
     public static final String RUOLOVETERINARIO = "veterinario";
     private FirebaseAuth auth;
     private FirebaseFirestore db;
-    private FloatingActionButton addAnimale, addIncarico;
+    private FloatingActionButton addAnimale;
+
+    public FloatingActionButton getAddIncarico() {
+        return addIncarico;
+    }
+
+    private FloatingActionButton addIncarico;
     private MaterialCheckBox mostraSoloIncarico;
     private RecyclerView mRecyclerView;
     private ArrayList<Animale> mDataset= new ArrayList<>();
@@ -263,7 +269,7 @@ public class myanimals_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 closeSearchView();
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_anim,R.anim.exit_anim).addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
             }
         });
 

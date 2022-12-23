@@ -10,11 +10,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import java.util.ArrayList;
 
-import fragments.anagrafica;
-import fragments.librettoSanitario;
-import fragments.spese;
 import fragments_adozioni.info_Proprietario;
-import fragments_adozioni.info_animale;
+import fragments_adozioni.info_adozione;
+import fragments_adozioni.riepilogo_adozione;
 
 public class VPAdapterAdozioni extends FragmentStateAdapter {
 
@@ -24,13 +22,13 @@ public class VPAdapterAdozioni extends FragmentStateAdapter {
 
         if(!proprietario) {
 
-            fragmentArrayList.add(new info_animale());
+            fragmentArrayList.add(new info_adozione());
             fragmentArrayList.add(new info_Proprietario());
           Log.d("ciao1234", String.valueOf(fragmentArrayList.size()));
 
         }
         else{
-
+            fragmentArrayList.add(new riepilogo_adozione());
 
 
 

@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
 
     android:orientation="vertical"
-    tools:context="fragments_adozioni.info_animale">
+    tools:context="fragments_adozioni.info_adozione">
 
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -133,6 +133,7 @@
         app:pressedTranslationZ="0dp"
         app:tint="#E8B569"
         tools:ignore="SpeakableTextPresentCheck" />
+
 
 
 </FrameLayout>

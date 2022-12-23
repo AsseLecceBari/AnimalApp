@@ -1,5 +1,6 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/anagraficaLayout"
     android:layout_width="match_parent"
@@ -10,9 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:id="@+id/anagraficaLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -126,13 +125,14 @@
             />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/assistito"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Assistito"
-            android:id="@+id/assistito"
             android:layout_marginTop="12dp"
+            android:hint="Assistito"
             android:textSize="28dp">
+
         </com.google.android.material.textview.MaterialTextView>
 
         <ImageView
@@ -144,6 +144,7 @@
             android:layout_marginTop="19dp"
             android:layout_marginBottom="20dp"
             android:visibility="gone"/>
+
     </LinearLayout>
 
     </ScrollView>
@@ -162,5 +163,19 @@
 
     <include layout="@layout/fab"
         android:id="@+id/fab"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom|center"
+
+        >
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/pokeball"
+            android:layout_width="142dp"
+            android:layout_height="127dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/icon_logo" />
+    </RelativeLayout>
 
 </FrameLayout>
