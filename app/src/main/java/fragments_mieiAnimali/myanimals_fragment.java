@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.activity.OnBackPressedDispatcher;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -21,6 +23,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -64,6 +67,8 @@ public class myanimals_fragment extends Fragment {
 
     private FloatingActionButton addIncarico;
     private MaterialCheckBox mostraSoloIncarico;
+    private MaterialCheckBox checkBoxAnimal;
+
     private RecyclerView mRecyclerView;
     private ArrayList<Animale> mDataset= new ArrayList<>();
     private ArrayList<Animale> filteredlist=new ArrayList<>();
@@ -77,6 +82,8 @@ public class myanimals_fragment extends Fragment {
     private int countMyAnimals;
     private ArrayList<Carico> caricoDataset=new ArrayList<>();
     private ActivityResultLauncher<String> requestPermissionLauncher;
+    private boolean flagCheckBox;
+    nonSeiRegistrato_fragment nonSeiRegistrato_fragment;
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
@@ -192,7 +199,6 @@ public class myanimals_fragment extends Fragment {
             }
         });
 
-
        
 
         return rootView;
@@ -271,7 +277,11 @@ public class myanimals_fragment extends Fragment {
         auth=FirebaseAuth.getInstance();
 
         if(auth.getCurrentUser()==null){
-            getChildFragmentManager().beginTransaction().replace(R.id.myAnimalsFragment, new nonSeiRegistrato_fragment()).commit();
+            nonSeiRegistrato_fragment=new nonSeiRegistrato_fragment();
+            getChildFragmentManager().beginTransaction().replace(R.id.myAnimalsFragment,nonSeiRegistrato_fragment).commit();
+        }else{
+            if (nonSeiRegistrato_fragment!=null){
+            getChildFragmentManager().beginTransaction().remove(nonSeiRegistrato_fragment).commit();}
         }
         addAnimale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,7 +295,9 @@ public class myanimals_fragment extends Fragment {
         //Inizializzo l'ascoltatore al click dell'item
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
+
+                    @Override
+                    public void onItemClick(View view, int position) {
                         Animale a;
                         Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
                         Log.e("filtered",filteredlist.size()+"");
@@ -310,7 +322,11 @@ public class myanimals_fragment extends Fragment {
 
 
                     @Override public void onLongItemClick(View view, int position) {
-                        // TODO: menu rapido
+                        AnimalAdapter.ViewHolder holder = (AnimalAdapter.ViewHolder) mRecyclerView.getChildViewHolder(view);
+                        checkBoxAnimal= (MaterialCheckBox) holder.getCheckBox();
+                        checkBoxAnimal.setVisibility(View.VISIBLE);
+                        flagCheckBox=true;
+
                     }
                 })
         );

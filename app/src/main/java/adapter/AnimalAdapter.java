@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,6 +39,12 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         private  TextView dataNascitaAnimale;
         private  TextView codiceAnimale;
         private ImageView imageAnimal;
+        private CheckBox checkBox;
+        public CheckBox getCheckBox() {
+            return checkBox;
+        }
+
+
 
 
 
@@ -78,6 +85,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
             dataNascitaAnimale= (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
             codiceAnimale= (TextView) view.findViewById(R.id.codiceAnimaleView);
             imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
+            checkBox= view.findViewById(R.id.checkBoxAnimal);
         }
 
     }
@@ -124,6 +132,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
                         .into(holder.imageAnimal);
             }
         });
+
     }
 
     @Override
