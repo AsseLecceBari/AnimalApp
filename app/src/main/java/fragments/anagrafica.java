@@ -5,6 +5,7 @@ import static android.content.Context.WINDOW_SERVICE;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
@@ -14,8 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -226,6 +229,9 @@ public class anagrafica extends Fragment {
             @Override
             public void onClick(View view) {
                 Toast.makeText(getContext(), "fine carico", Toast.LENGTH_SHORT).show();
+
+                showCustomDialog();
+
             }
         });
 
@@ -352,4 +358,35 @@ public class anagrafica extends Fragment {
         }catch (Exception e){
         }
     }
+
+    //Function to display the custom dialog.
+    void showCustomDialog() {
+        final Dialog dialog = new Dialog(getActivity());
+        //We have added a title in the custom layout. So let's disable the default title.
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //The user will be able to cancel the dialog bu clicking anywhere outside the dialog.
+        dialog.setCancelable(true);
+        //Mention the name of the layout of your custom dialog.
+        dialog.setContentView(R.layout.custom_dialog);
+
+        //Initializing the views of the dialog.
+        final EditText ageEt = dialog.findViewById(R.id.costo);
+        Button submitButton = dialog.findViewById(R.id.submit_button);
+
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // se l'id del loggato è = a quella del professionista del carico in corso
+
+                // inserisco la spesa se il costo del carico è maggiore di 0
+
+                //aggiorno il carico mettendolo a completato
+            }
+        });
+
+        dialog.show();
+    }
+
 }
