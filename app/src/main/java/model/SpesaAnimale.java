@@ -2,11 +2,12 @@ package model;
 
 public class SpesaAnimale {
     private String categoria, data, descrizione, id, idAnimale;
-    private int costoUnitario, quantita;
+    private int quantita;
+    private float costoUnitario;
 
     public SpesaAnimale() {
     }
-    public SpesaAnimale(String categoria, String data, String descrizione, String id, String idAnimale, int costoUnitario, int quantita) {
+    public SpesaAnimale(String categoria, String data, String descrizione, String id, String idAnimale, float costoUnitario, int quantita) {
         this.categoria = categoria;
         this.data = data;
         this.descrizione = descrizione;
@@ -14,9 +15,6 @@ public class SpesaAnimale {
         this.idAnimale = idAnimale;
         this.costoUnitario = costoUnitario;
         this.quantita = quantita;
-    }
-
-    public SpesaAnimale(String toilettatura, String data, int i, int i1, String niente_da_aggiungere, int costoUnitario, String idAnimale) {
     }
 
     public String getId() {
@@ -43,7 +41,7 @@ public class SpesaAnimale {
         return descrizione;
     }
 
-    public int getCostoUnitario() {
+    public float getCostoUnitario() {
         return costoUnitario;
     }
 }

@@ -2,10 +2,6 @@ package fragments;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -26,7 +24,6 @@ import java.util.Date;
 import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
-import it.uniba.dib.sms2223_2.RegisterActivity;
 import model.Animale;
 import model.SpesaAnimale;
 
@@ -81,7 +78,7 @@ public class AggiungiSpesa extends Fragment {
         crea.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                SpesaAnimale s = new SpesaAnimale(categoria.getText().toString(), data.getText().toString(), descrizione.getText().toString(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), Integer.parseInt( costoUnitario.getText().toString()), Integer.parseInt(quantita.getText().toString()));
+                SpesaAnimale s = new SpesaAnimale(categoria.getText().toString(), data.getText().toString(), descrizione.getText().toString(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), Float.parseFloat( costoUnitario.getText().toString()), Integer.parseInt(quantita.getText().toString()));
                 db.collection("spese").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
