@@ -48,13 +48,17 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.Carico;
+import model.SpesaAnimale;
 
 
 public class anagrafica extends Fragment {
@@ -397,7 +401,7 @@ public class anagrafica extends Fragment {
                                     // Carico daaggiornare trovato
                                     Carico c = document.toObject(Carico.class);
                                     if(c != null){
-                                        Toast.makeText(getActivity().getApplicationContext(), c.getId()+"", Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(getActivity().getApplicationContext(), c.getId()+"", Toast.LENGTH_SHORT).show();
 
                                         aggiornaCarico(costo.getText().toString(), c);
                                     }else{
@@ -421,13 +425,29 @@ public class anagrafica extends Fragment {
 
 
     private void aggiornaCarico(String costo, Carico carico) {
-        Toast.makeText(getActivity().getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
+        float costoUnitario = Float.parseFloat(costo);
+        String data =  new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString();
 
         // inserisco la spesa se il costo del carico è maggiore di 0
+        if(costoUnitario>0){
+            SpesaAnimale s = new SpesaAnimale("Carico", data, "Prestazione lavorativa offerta da "+auth.getCurrentUser().getEmail(), new Random().nextInt(999999999)+"", animale.getIdAnimale().toString(), costoUnitario, 1);
+            db.collection("spese").document(s.getId()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    //Toast.makeText(getActivity().getApplicationContext(), "Spesa aggiunta!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
         //aggiorno il carico mettendolo a completato
-        //new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString()
-
+        Carico c = new Carico(carico.getId(), carico.getDataInizio(), data, carico.getIdAnimale(), carico.getIdProfessionista(), carico.getNote(), false);
+        db.collection("carichi").document(carico.getId()).set(c).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(getActivity().getApplicationContext(), "Carico Terminato!", Toast.LENGTH_SHORT).show();
+                getActivity().onBackPressed();
+            }
+        });
     }
 
 }
