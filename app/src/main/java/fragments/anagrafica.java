@@ -106,10 +106,12 @@ public class anagrafica extends Fragment {
     private ViewPager2 viewPager2;
     private TabLayout tabLayout;
     private main_fragment_animale main_fragment_animale;
-    
+    private Button cambiaImg;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
         db=FirebaseFirestore.getInstance();
+        auth=FirebaseAuth.getInstance();
         profiloAnimale= new ProfiloAnimale();
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         pokeball=rootView.findViewById(R.id.pokeball);
@@ -297,7 +299,7 @@ public class anagrafica extends Fragment {
          */
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
-        fabAction1 = rootView.findViewById(R.id.fab_action_1);
+        fabAction1 = rootView.findViewById(R.id.fab_annulla_modifica);
 
 
         fabAction1.setImageResource(R.drawable.back);
@@ -312,7 +314,7 @@ public class anagrafica extends Fragment {
 
 
 
-        fabAction2 = rootView.findViewById(R.id.fab_action_2);
+        fabAction2 = rootView.findViewById(R.id.fab_mail);
         fabAction2.setImageResource(android.R.drawable.ic_menu_edit);
         fabAction2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -322,7 +324,7 @@ public class anagrafica extends Fragment {
         });
 
 
-        fabAction3 = rootView.findViewById(R.id.fab_action_3);
+        fabAction3 = rootView.findViewById(R.id.fab_fine_modifica);
         fabAction3.setVisibility(View.GONE);/*
         fabAction3.setImageResource(android.R.drawable.sym_action_email);
         fabAction3.setOnClickListener(new View.OnClickListener() {
