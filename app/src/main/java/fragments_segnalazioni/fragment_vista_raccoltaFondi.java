@@ -70,7 +70,7 @@ public class fragment_vista_raccoltaFondi extends Fragment {
          */
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
-        fabAction1 = rootView.findViewById(R.id.fab_action_1);
+        fabAction1 = rootView.findViewById(R.id.fab_preferiti);
         fabAction1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -78,7 +78,7 @@ public class fragment_vista_raccoltaFondi extends Fragment {
             }
         });
 
-        fabAction2 = rootView.findViewById(R.id.fab_action_2);
+        fabAction2 = rootView.findViewById(R.id.fab_modifica);
         fabAction2.setImageResource(R.drawable.search_96701);
         fabAction2.setOnClickListener(new View.OnClickListener() {
             @Override

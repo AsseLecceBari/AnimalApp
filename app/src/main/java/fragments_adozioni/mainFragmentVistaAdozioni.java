@@ -79,6 +79,7 @@ public class mainFragmentVistaAdozioni extends Fragment {
             else {
 
                 vpAdapter = new VPAdapterAdozioni(getChildFragmentManager(), getLifecycle(), true);
+                tabLayout.setVisibility(View.GONE);
 
             }
             viewPager2.setAdapter(vpAdapter);

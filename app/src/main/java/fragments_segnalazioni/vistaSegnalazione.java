@@ -151,7 +151,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
 
-        fabAction1 = rootView.findViewById(R.id.fab_action_1);
+        fabAction1 = rootView.findViewById(R.id.fab_preferiti);
 
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
@@ -175,7 +175,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         }
 
 
-        fabAction2 = rootView.findViewById(R.id.fab_action_2);
+        fabAction2 = rootView.findViewById(R.id.fab_elimina);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il contatta, mentre da mie segnalazioni(x=1) ho il modifica
         if (x==0){
             fabAction2.setVisibility(View.VISIBLE);
@@ -199,7 +199,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             });
         }
 
-        fabAction3 = rootView.findViewById(R.id.fab_action_3);
+        fabAction3 = rootView.findViewById(R.id.fab_telefono);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
             fabAction3.setVisibility(View.VISIBLE);

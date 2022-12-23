@@ -82,7 +82,7 @@ aggiungiAdozione();
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View root =inflater.inflate(R.layout.fragment_conferma_annuncio_adozione, container, false);
+        View root =inflater.inflate(R.layout.fragment_aggiungi_annuncio_adozione, container, false);
         immagineAnimale=root.findViewById(R.id.imageAnimal);
         descrizioneAnimale=root.findViewById(R.id.DescrizioneAnimale);
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
@@ -109,12 +109,7 @@ aggiungiAdozione();
                         .into(immagineAnimale);
             }
         });
-        if(adozione.getDescrizione()!= null) {
-            Log.d("ciao1234", adozione.getDescrizione());
-        }
-        else{
-            Log.d("ciao1234", "nada");
-        }
+
         descrizioneAnimale.setText(adozione.getDescrizione());
 
         dettagliAnimale.setText("Dettagli"+"\n\n\n"+"Nome"+"       "+"Data Di Nascita"+"       "+"Specie"+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
