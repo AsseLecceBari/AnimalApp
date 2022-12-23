@@ -36,7 +36,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
@@ -50,7 +54,7 @@ import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
-
+import model.Carico;
 
 
 public class anagrafica extends Fragment {
@@ -228,7 +232,6 @@ public class anagrafica extends Fragment {
         fabAction1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "fine carico", Toast.LENGTH_SHORT).show();
 
                 showCustomDialog();
 
@@ -370,23 +373,61 @@ public class anagrafica extends Fragment {
         dialog.setContentView(R.layout.custom_dialog);
 
         //Initializing the views of the dialog.
-        final EditText ageEt = dialog.findViewById(R.id.costo);
+        final EditText costo = dialog.findViewById(R.id.costo);
         Button submitButton = dialog.findViewById(R.id.submit_button);
 
 
         submitButton.setOnClickListener(new View.OnClickListener() {
+
+
             @Override
             public void onClick(View v) {
-
                 // se l'id del loggato è = a quella del professionista del carico in corso
+                String emailCarico = null;
+                CollectionReference docRef = db.collection("carichi");
+                Query query = docRef.whereEqualTo("inCorso", true).whereEqualTo("idProfessionista", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).whereEqualTo("idAnimale", animale.getIdAnimale());
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if(task.getResult().size() == 0){
+                                Toast.makeText(getActivity().getApplicationContext(), "Non ci sono risultati", Toast.LENGTH_SHORT).show();
+                            }else{
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // Carico daaggiornare trovato
+                                    Carico c = document.toObject(Carico.class);
+                                    if(c != null){
+                                        Toast.makeText(getActivity().getApplicationContext(), c.getId()+"", Toast.LENGTH_SHORT).show();
 
-                // inserisco la spesa se il costo del carico è maggiore di 0
-
-                //aggiorno il carico mettendolo a completato
+                                        aggiornaCarico(costo.getText().toString(), c);
+                                    }else{
+                                        Toast.makeText(getActivity().getApplicationContext(), "Nessun risultato", Toast.LENGTH_SHORT).show();
+                                    }
+                                    break;
+                                }
+                            }
+                        }else{
+                            Toast.makeText(getActivity().getApplicationContext(), "Operazione negata", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
             }
+
+
         });
 
         dialog.show();
+    }
+
+
+    private void aggiornaCarico(String costo, Carico carico) {
+        Toast.makeText(getActivity().getApplicationContext(), "ok", Toast.LENGTH_SHORT).show();
+
+        // inserisco la spesa se il costo del carico è maggiore di 0
+
+        //aggiorno il carico mettendolo a completato
+        //new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString()
+
     }
 
 }

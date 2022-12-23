@@ -28,6 +28,8 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.zxing.Result;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
@@ -153,7 +155,7 @@ public class aggiungiCarico extends Fragment {
                         if (task.getResult().isEmpty()){
                             // non ce nessuno in corso
                             aggiungi.setVisibility(View.VISIBLE);
-                            carico = new Carico(new Random().nextInt(999999999)+"", java.time.LocalTime.now()+"", "datafine", idAnimale, auth.getCurrentUser().getEmail(), "nota prova", true);
+                            carico = new Carico(new Random().nextInt(999999999)+"", new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString()+"", "datafine", idAnimale, auth.getCurrentUser().getEmail(), "nota prova", true);
 
                             // mi riempio la field dati
                             dati.setText(a.getNome() + ",  " + a.getGenere() + "\nPuò essere preso in carico! \nPREMI IL PULSANTE  VERDE PER AGGIUNGERE");
