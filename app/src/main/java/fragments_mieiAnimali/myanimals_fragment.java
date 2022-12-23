@@ -5,6 +5,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -15,13 +20,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.provider.MediaStore;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -34,15 +32,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.ArrayList;
 
+import DB.AnimaleDB;
 import DB.CaricoDB;
 import DB.UtentiDB;
 import adapter.AnimalAdapter;
-import DB.AnimaleDB;
 import fragments.RecyclerItemClickListener;
 import fragments.nonSeiRegistrato_fragment;
 import it.uniba.dib.sms2223_2.MainActivity;
@@ -221,7 +216,7 @@ public class myanimals_fragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for(QueryDocumentSnapshot document : task.getResult()){
-                                    if((document.get("ruolo").toString().equals("veterinario"))){
+                                    if((document.get("ruolo").toString().equals("veterinario"))|| document.get("ruolo").toString().equals("ente")||document.get("ruolo").toString().equals("associazione")){
                                         // Nascondo la checkbox che mi mostra gli in carico
                                         mostraSoloIncarico.setVisibility(View.VISIBLE);
                                         ruolo=RUOLOVETERINARIO;

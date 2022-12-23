@@ -495,7 +495,10 @@ public class anagrafica extends Fragment {
 
 
     private void aggiornaCarico(String costo, Carico carico) {
-        float costoUnitario = Float.parseFloat(costo);
+        Float costoUnitario = Float.valueOf(0);
+        if(!costo.isEmpty()){
+            costoUnitario = Float.parseFloat(costo);
+        }
         String data =  new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString();
 
         // inserisco la spesa se il costo del carico è maggiore di 0

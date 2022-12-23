@@ -1,17 +1,16 @@
 package fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -23,18 +22,15 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Random;
+import java.util.Objects;
 
 import adapter.SegnalazioneSanitariaAdapter;
-import adapter.SpeseAdapter;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
+import model.Carico;
 import model.SegnalazioneSanitaria;
-import model.SpesaAnimale;
 
 public class librettoSanitario extends Fragment {
     private FirebaseAuth auth;
@@ -80,6 +76,60 @@ public class librettoSanitario extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiSegnalazioneSanitaria()).commit();
             }
         });
+
+        if(isProprietario()){
+            addSegnalazioneSanitaria.setVisibility(View.VISIBLE);
+        }else{
+            // se non è proprietario, SE è colui che ce lha attualmente in carico  && è veterinario allora visualizza il pulsante per aggiungere la segnalazione sanitaria
+            CollectionReference docRef = db.collection("carichi");
+            Query query = docRef.whereEqualTo("inCorso", true).whereEqualTo("idProfessionista", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).whereEqualTo("idAnimale", animale.getIdAnimale());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if(task.getResult().size() == 0){
+                            // nascondo
+                            addSegnalazioneSanitaria.setVisibility(View.GONE);
+                        }else{
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Carico  trovato
+                                Carico c = document.toObject(Carico.class);
+
+                                // se è veterianario vedo il pulsante
+                                CollectionReference animaliReference=db.collection("utenti");
+                                if(auth.getCurrentUser()!=null) {
+                                    Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+                                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                                        @SuppressLint("SetTextI18n")
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                            if (task.isSuccessful()) {
+                                                String ruolo = null;
+
+                                                for(QueryDocumentSnapshot document : task.getResult()){
+                                                    ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
+                                                    if(ruolo.equals("veterinario")){
+                                                        addSegnalazioneSanitaria.setVisibility(View.VISIBLE);
+                                                    }else{
+                                                        addSegnalazioneSanitaria.setVisibility(View.GONE);
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                        }
+                                    });
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         return rootView;
     }
 
@@ -109,5 +159,10 @@ public class librettoSanitario extends Fragment {
     private void startDatabase(){
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+    }
+
+    private boolean isProprietario() {
+        return animale.getEmailProprietario().equals(Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+
     }
 }
