@@ -20,6 +20,7 @@
         android:clickable="true"
         android:src="@android:drawable/ic_input_add"
         tools:ignore="SpeakableTextPresentCheck"
+        android:visibility="gone"
         />
 
 </FrameLayout>

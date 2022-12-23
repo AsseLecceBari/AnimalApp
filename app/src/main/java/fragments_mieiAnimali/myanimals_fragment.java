@@ -23,7 +23,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -199,6 +198,7 @@ public class myanimals_fragment extends Fragment {
             }
         });
 
+
        
 
         return rootView;
@@ -227,7 +227,7 @@ public class myanimals_fragment extends Fragment {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for(QueryDocumentSnapshot document : task.getResult()){
-                                    if((document.get("ruolo").toString().equals("veterinario"))){
+                                    if((document.get("ruolo").toString().equals("veterinario"))|| document.get("ruolo").toString().equals("ente")||document.get("ruolo").toString().equals("associazione")){
                                         // Nascondo la checkbox che mi mostra gli in carico
                                         mostraSoloIncarico.setVisibility(View.VISIBLE);
                                         ruolo=RUOLOVETERINARIO;
@@ -295,9 +295,7 @@ public class myanimals_fragment extends Fragment {
         //Inizializzo l'ascoltatore al click dell'item
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getActivity().getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(View view, int position) {
+                    @Override public void onItemClick(View view, int position) {
                         Animale a;
                         Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
                         Log.e("filtered",filteredlist.size()+"");
