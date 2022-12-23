@@ -117,11 +117,7 @@ public class myanimals_fragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        ruolo="";
-        mDataset.clear();
-        caricoDataset.clear();
-        filteredlist.clear();
-        countMyAnimals=0;
+
         View rootView = inflater.inflate(R.layout.fragment_myanimals_fragment, container, false);
         mostraSoloIncarico = rootView.findViewById(R.id.mostraInCarico);
 
@@ -197,6 +193,18 @@ public class myanimals_fragment extends Fragment {
         });
 
 
+       
+
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        ruolo="";
+        mDataset.clear();
+        caricoDataset.clear();
+        filteredlist.clear();
+        countMyAnimals=0;
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         if(auth.getCurrentUser()!=null) {
             animaleDB.getMieiAnimali(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -208,62 +216,62 @@ public class myanimals_fragment extends Fragment {
                             mDataset.add(document.toObject(Animale.class));
                             countMyAnimals++;}}
                     //Se siamo loggati con il veterinario aggiungiamo nel dataset anche gli animali in carico
-                        utentiDB.getUtenti(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    for(QueryDocumentSnapshot document : task.getResult()){
-                                        if((document.get("ruolo").toString().equals("veterinario"))){
-                                            // Nascondo la checkbox che mi mostra gli in carico
-                                            mostraSoloIncarico.setVisibility(View.VISIBLE);
-                                            ruolo=RUOLOVETERINARIO;
-                                            break;
-                                        }
+                    utentiDB.getUtenti(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for(QueryDocumentSnapshot document : task.getResult()){
+                                    if((document.get("ruolo").toString().equals("veterinario"))){
+                                        // Nascondo la checkbox che mi mostra gli in carico
+                                        mostraSoloIncarico.setVisibility(View.VISIBLE);
+                                        ruolo=RUOLOVETERINARIO;
+                                        break;
                                     }
                                 }
-                                Log.e("DOVESONO","GETRUOLO");
-                                if(ruolo.equals(RUOLOVETERINARIO)){
-                                    CollectionReference animaliReference = db.collection("animali");
-                                    caricoDB.getVetCarichi(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                //Salvare animale in un array con elementi oggetto animale
-                                                caricoDataset.add(document.toObject(Carico.class));
-                                                Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale",document.toObject(Carico.class).getIdAnimale());
-                                                queryAnimaliInCarico.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                        if (task.isSuccessful()) {
-                                                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                                                //Salvare animale in un array con elementi oggetto animale
-                                                                mDataset.add(document.toObject(Animale.class));}}}});}
-                                            //Passo i dati presi dal database all'adapter
-                                            mAdapter = new AnimalAdapter(mDataset);
-                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                            mRecyclerView.setAdapter(mAdapter);
-                                            //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                                        }});
-                                }
-                                else{
-                                    //Passo i dati presi dal database all'adapter
-                                    mAdapter = new AnimalAdapter(mDataset);
-                                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                    mRecyclerView.setAdapter(mAdapter);
-                                    //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                                }
                             }
-                        });
+                            Log.e("DOVESONO","GETRUOLO");
+                            if(ruolo.equals(RUOLOVETERINARIO)){
+                                CollectionReference animaliReference = db.collection("animali");
+                                caricoDB.getVetCarichi(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                            //Salvare animale in un array con elementi oggetto animale
+                                            caricoDataset.add(document.toObject(Carico.class));
+                                            Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale",document.toObject(Carico.class).getIdAnimale());
+                                            queryAnimaliInCarico.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if (task.isSuccessful()) {
+                                                        for (QueryDocumentSnapshot document : task.getResult()) {
+                                                            //Salvare animale in un array con elementi oggetto animale
+                                                            mDataset.add(document.toObject(Animale.class));}}}});}
+                                        //Passo i dati presi dal database all'adapter
+                                        mAdapter = new AnimalAdapter(mDataset);
+                                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                        mRecyclerView.setAdapter(mAdapter);
+                                        //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                                    }});
+                            }
+                            else{
+                                //Passo i dati presi dal database all'adapter
+                                mAdapter = new AnimalAdapter(mDataset);
+                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                mRecyclerView.setAdapter(mAdapter);
+                                //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                            }
+                        }
+                    });
 
 
                 }
             });
         }
-        addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
+        addAnimale=getView().findViewById(R.id.aggiungiAnimaliBtn);
         auth=FirebaseAuth.getInstance();
 
         if(auth.getCurrentUser()==null){
-              getChildFragmentManager().beginTransaction().replace(R.id.myAnimalsFragment, new nonSeiRegistrato_fragment()).commit();
+            getChildFragmentManager().beginTransaction().replace(R.id.myAnimalsFragment, new nonSeiRegistrato_fragment()).commit();
         }
         addAnimale.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -291,8 +299,8 @@ public class myanimals_fragment extends Fragment {
                         }else{
 
                             a = filteredlist.get(position);
-                           mDataset.clear();
-                           filteredlist.clear();
+                            mDataset.clear();
+                            filteredlist.clear();
                             closeSearchView();
                         }
                         //Inserisco l'oggetto nel bundle
@@ -306,12 +314,6 @@ public class myanimals_fragment extends Fragment {
                     }
                 })
         );
-
-        return rootView;
-    }
-
-    @Override
-    public void onResume() {
         super.onResume();
         mostraSoloIncarico.setChecked(false);
     }

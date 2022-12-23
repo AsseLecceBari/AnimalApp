@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_bar_main, menu);
         try {
-            main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+            getMainFragmentReference();
             searchItem= menu.findItem(R.id.action_search);
             searchView= (SearchView) searchItem.getActionView();
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
@@ -93,6 +93,11 @@ public class MainActivity extends AppCompatActivity {
 
         }
        return true;
+    }
+
+    public main_fragment getMainFragmentReference() {
+        main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        return main_fragment;
     }
 
     private void searchFilterListener() {
@@ -138,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
                 VPAdapter adapter=null;
                 ViewPager2 viewPager2=null;
                 try {
-                    main_fragment = (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
-                     viewPager2 = main_fragment.getViewPager2();
+                    getMainFragmentReference();
+                    viewPager2 = main_fragment.getViewPager2();
                     adapter = (VPAdapter) viewPager2.getAdapter();
                 }catch (Exception e){
 
@@ -203,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         try {
-            main_fragment= (fragments.main_fragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+            getMainFragmentReference();
         }catch (Exception e){
             super.onBackPressed();
             return;

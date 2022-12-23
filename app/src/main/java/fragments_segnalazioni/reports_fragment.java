@@ -138,8 +138,8 @@ public class reports_fragment extends Fragment {
 
     int a=0;//0 viene dalla radio tutti, 1 dal radio mie segnalazioni
 
-    private ActivityResultLauncher<String[]> locationPermissionRequest ;
-
+    //private ActivityResultLauncher<String[]> locationPermissionRequest ;
+    private ActivityResultLauncher<String> locationPermissionRequest ;
 
 
 
@@ -151,7 +151,7 @@ public class reports_fragment extends Fragment {
         auth=FirebaseAuth.getInstance();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity().getApplicationContext());
-
+/*
          locationPermissionRequest = registerForActivityResult(new ActivityResultContracts
                                 .RequestMultiplePermissions(), result -> {
                             Boolean fineLocationGranted = result.getOrDefault(
@@ -172,19 +172,16 @@ public class reports_fragment extends Fragment {
                         }
                 );
 
-       /* locationPermissionRequest= registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+ */
+
+        locationPermissionRequest= registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
             if (isGranted) {
                 // Permission is granted. Continue the action or workflow in your
                 // app.
             } else {
-                // Explain to the user that the feature is unavailable because the
-                // feature requires a permission that the user has denied. At the
-                // same time, respect the user's decision. Don't link to system
-                // settings in an effort to convince the user to change their
-                // decision.
                 Log.d("prova2345","NO");
             }
-        });*/
+        });
 
 
 
@@ -203,6 +200,8 @@ public class reports_fragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        mDataset.clear();
+        initDataset();
         //questo è il floating button
         View aggiungiSegnalazione = getView().findViewById(R.id.aggiungiSegnalazione);
         aggiungiSegnalazione.setOnClickListener(new View.OnClickListener() {
@@ -238,19 +237,12 @@ public class reports_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        mDataset.clear();
-        initDataset();
-
-
 
 
         View rootView = inflater.inflate(R.layout.fragment_reports_fragment, container, false);
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleReport);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mRecyclerView.setHasFixedSize(true);
-
-
-
         layoutfiltri1 = rootView.findViewById(R.id.layoutfiltri1);
         layoutopenfiltri1 = rootView.findViewById(R.id.layoutaprifiltri1);
         btnopenFiltri1 = rootView.findViewById(R.id.btnaprifiltri1);
@@ -800,11 +792,14 @@ public class reports_fragment extends Fragment {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             });*/
-            //locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+            locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+            /*
             locationPermissionRequest.launch(new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             });
+
+             */
         }
 
     }
@@ -867,11 +862,14 @@ public class reports_fragment extends Fragment {
                                 Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION
                         });*/
-                       // locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+                        locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
+                        /*
                         locationPermissionRequest.launch(new String[] {
                                 Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION
                         });
+
+                         */
                     }
                 });
 

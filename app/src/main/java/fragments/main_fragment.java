@@ -34,6 +34,11 @@ public class main_fragment extends Fragment {
     }
 
     private  ViewPager2 viewPager2;
+
+    public VPAdapter getVpAdapter() {
+        return vpAdapter;
+    }
+
     private  VPAdapter vpAdapter;
     private FragmentActivity  activity;
     private int posizione =0;
@@ -63,32 +68,33 @@ public class main_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (savedInstanceState != null)
             posizione = savedInstanceState.getInt("posizione");
-
-
+        View view= inflater.inflate(R.layout.fragment_main_fragment, container, false);
         // serve per francesco quando aggiunge segnalazione
         int pos = getActivity().getIntent().getIntExtra("posizione", 0);
         if(pos != 0){
             posizione = pos;
         }
 
-        return inflater.inflate(R.layout.fragment_main_fragment, container, false);
+        tabLayout= view.findViewById(R.id.tabLayout);
+        viewPager2=view.findViewById(R.id.viewPager);
+
+        //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
+        activity  = getActivity();
+        vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
+        viewPager2.setAdapter(vpAdapter);
+        return view;
     }
 
     @Override
     public void onResume() {
         super.onResume();
 
-        tabLayout= getView().findViewById(R.id.tabLayout);
-        viewPager2=getView().findViewById(R.id.viewPager);
 
-        //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
 
-        activity  = getActivity();
-        vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
-        viewPager2.setAdapter(vpAdapter);
 
         tabLayout.getTabAt(posizione).select();
         viewPager2.setCurrentItem(posizione);
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -129,5 +135,11 @@ public class main_fragment extends Fragment {
 
     public int getPosition() {
         return posizione;
+    }
+
+    @Override
+    public void onDestroyView() {
+
+        super.onDestroyView();
     }
 }
