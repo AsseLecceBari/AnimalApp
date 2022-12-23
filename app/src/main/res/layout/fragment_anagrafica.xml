@@ -149,15 +149,18 @@
     </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/aggiungiAnimaliBtn"
+    android:id="@+id/modificaAnimaliBtn"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|end"
     android:layout_marginEnd="15dp"
     android:layout_marginBottom="15dp"
     android:clickable="true"
-    android:src="@android:drawable/btn_dialog"
+    android:src="@android:drawable/ic_menu_edit"
     tools:ignore="SpeakableTextPresentCheck"
     android:onClick="modificaAnimale"/>
+
+    <include layout="@layout/fab"
+        android:id="@+id/fab"/>
 
 </FrameLayout>

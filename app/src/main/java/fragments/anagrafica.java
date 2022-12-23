@@ -2,6 +2,9 @@ package fragments;
 
 import static android.content.Context.WINDOW_SERVICE;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.net.Uri;
@@ -10,10 +13,12 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -26,6 +31,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,6 +41,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.net.InetAddress;
+import java.util.Objects;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -57,14 +64,26 @@ public class anagrafica extends Fragment {
     private StorageReference storageRef;
     private Button selectImgButton;
     private ImageView qrCodeIV;
-    private Button generateQrBtn;
+    private Button generateQrBtn, cambiaImg;
     private Bitmap bitmap;
     private QRGEncoder qrgEncoder;
 
 
+    //FAB SPEED DIAL DECLARATION
+    private static final String TRANSLATION_Y = "translationY";
+    private FloatingActionButton fab, modificaAnimaliBtn;
+    private boolean expanded = false;
+    private FloatingActionButton fabAction1;
+    private FloatingActionButton fabAction2;
+    private FloatingActionButton fabAction3;
+    private float offset1;
+    private float offset2;
+    private float offset3;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
         db=FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
 
@@ -76,6 +95,9 @@ public class anagrafica extends Fragment {
         nascita = rootView.findViewById(R.id.nascita);
         assistito = rootView.findViewById(R.id.assistito);
         qrCodeIV = rootView.findViewById(R.id.idIVQrcode);
+        cambiaImg = rootView.findViewById(R.id.selectImgButton);
+        modificaAnimaliBtn = rootView.findViewById(R.id.modificaAnimaliBtn);
+
         if(animale!= null){
             nome.setText(animale.getNome());
             genere.setText(animale.getGenere());
@@ -88,6 +110,8 @@ public class anagrafica extends Fragment {
             }else{
                 assistito.setText(R.string.noneassistito);
             }
+
+            fab(rootView);
 
             // setto l'immagine dell'animale
             FirebaseStorage storage;
@@ -135,16 +159,21 @@ public class anagrafica extends Fragment {
         });
 
 
-      /*  if(!proprietario)
-        {   bottoneMar.setVisibility(View.INVISIBLE);
-            inviaemail.setVisibility(View.VISIBLE);
+        if(isProprietario()){
+            cambiaImg.setVisibility(View.VISIBLE);
+            modificaAnimaliBtn.setVisibility(View.VISIBLE);
+            fab.setVisibility(View.GONE);
+            fabAction1.setVisibility(View.GONE);
+            fabAction2.setVisibility(View.GONE);
+            //fabAction3.setVisibility(View.GONE);
+        }else{
+            cambiaImg.setVisibility(View.GONE);
+            modificaAnimaliBtn.setVisibility(View.GONE);
+            fab.setVisibility(View.VISIBLE);
+            fabAction1.setVisibility(View.VISIBLE);
+            fabAction2.setVisibility(View.VISIBLE);
+            //fabAction3.setVisibility(View.VISIBLE);
         }
-        else
-        {
-         //   bottoneMar.setVisibility(View.VISIBLE);
-           // inviaemail.setVisibility(View.INVISIBLE);
-
-        }*/
 
 
         // setto il generatore
@@ -180,6 +209,116 @@ public class anagrafica extends Fragment {
             qrCodeIV.setVisibility(View.VISIBLE);
 
         return rootView;
+    }
+
+    private void fab(View rootView) {
+        /**
+         * FAB INIZIALIZZAZIONI
+         * ViewGroup serve per prendere il riferimento al layout dei FAB
+         */
+        final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
+        fab =  rootView.findViewById(R.id.fab);
+        fabAction1 = rootView.findViewById(R.id.fab_action_1);
+
+
+        fabAction1.setImageResource(R.drawable.back);
+        fabAction1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "fine carico", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+        fabAction2 = rootView.findViewById(R.id.fab_action_2);
+        fabAction2.setImageResource(android.R.drawable.ic_menu_edit);
+        fabAction2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getContext(), "modifica microchip", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        fabAction3 = rootView.findViewById(R.id.fab_action_3);
+        fabAction3.setVisibility(View.GONE);/*
+        fabAction3.setImageResource(android.R.drawable.sym_action_email);
+        fabAction3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });*/
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expanded = !expanded;
+                if (expanded) {
+                    expandFab();
+                } else {
+                    collapseFab();
+                }
+            }
+        });
+
+        /*
+        Restituisce ViewTreeObserver per la gerarchia di questa vista.
+         L'osservatore dell'albero di visualizzazione può essere utilizzato per ricevere notifiche
+         quando si verificano eventi globali, come il cambio del layout.
+         */
+        fabContainer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                fabContainer.getViewTreeObserver().removeOnPreDrawListener(this);
+                offset1 = fab.getY() - fabAction1.getY();
+                fabAction1.setTranslationY(offset1);
+                offset2 = fab.getY() - fabAction2.getY();
+                fabAction2.setTranslationY(offset2);
+                offset3 = fab.getY() - fabAction3.getY();
+                fabAction3.setTranslationY(offset3);
+
+                return true;
+            }
+        });
+    }
+
+    private void collapseFab() {
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3));
+        animatorSet.start();
+        // animateFab();
+    }
+
+    private void expandFab() {
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3));
+        animatorSet.start();
+        //animateFab();
+    }
+
+
+    private Animator createCollapseAnimator(View view, float offset) {
+        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, 0, offset)
+                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
+    }
+
+    /*
+    SERVONO PER CREARE I MOVIMENTI DELLE ANIMAZIONI CHE VENGONO POI CHIAMATI DAI VARI AnimatorSet
+     */
+    private Animator createExpandAnimator(View view, float offset) {
+        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, offset, 0)
+                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
+    }
+
+    private boolean isProprietario() {
+        return animale.getEmailProprietario().equals(Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+
     }
 
     public void setAnimale(Animale a){
