@@ -3,6 +3,7 @@ package class_general;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
@@ -11,9 +12,16 @@ import android.view.ViewTreeObserver;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import it.uniba.dib.sms2223_2.R;
 
@@ -21,10 +29,10 @@ public class fab {
     private FloatingActionButton fab;
     private FloatingActionButton fabAction1;
     private FloatingActionButton fabAction2;
-    private FloatingActionButton fabAction3;
-    private FloatingActionButton fabAction4;
+    private FloatingActionButton fabActionAnnullaModifica;
+    private FloatingActionButton fabActionSalvaModifiche;
     private FloatingActionButton fabAction5;
-    private FloatingActionButton fabAction6;
+    private FloatingActionButton fabAction3;
 
     private FloatingActionButton fabFineModifica;
 
@@ -76,11 +84,11 @@ public class fab {
          * ViewGroup serve per prendere il riferimento al layout dei FAB
          */
         context = con;
-        fabAction1 = rootView.findViewById(R.id.fab_preferiti);
+        fabAction5 = rootView.findViewById(R.id.fab_preferiti);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
 
 
-        fabAction1.setOnClickListener(new View.OnClickListener() {
+        fabAction5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Toast.makeText(context, "Aggiungi ai preferiti", Toast.LENGTH_SHORT).show();
@@ -89,31 +97,42 @@ public class fab {
     }
 
 
-        public void aggiungiFabElimina(View rootView, Context con) {
+        public void aggiungiFabElimina(View rootView, Context con, String collectiondb, String idDocumento,Activity activity) {
             context= con;
-            fabAction3 = rootView.findViewById(R.id.fab_elimina);
+            fabAction2 = rootView.findViewById(R.id.fab_elimina);
             //if per cambiare icona fab, se viene da radioTutti(x=0) ho il contatta, mentre da mie segnalazioni(x=1) ho il modifica
 
-                fabAction3.setVisibility(View.VISIBLE);
+                fabAction2.setVisibility(View.VISIBLE);
 
-                fabAction3.setOnClickListener(new View.OnClickListener() {
+                fabAction2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        //INTENT PER IL CONTATTA
-                        // trovaNumeroDiTelefono(numeroTelefono);
+                        FirebaseFirestore db;
+                        db = FirebaseFirestore.getInstance();
+                        db.collection(collectiondb).document(idDocumento)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                    @Override
+                                    public void onSuccess(Void unused) {
+
+                                        activity.onBackPressed();
+
+                                    }
+                                });
                     }
                 });
-
         }
+
 
     public void aggiungiFabtelefono(View rootView,  Context con, String numeroTelefonico) {
         context= con;
-        fabAction3 = rootView.findViewById(R.id.fab_telefono);
+        fabAction5 = rootView.findViewById(R.id.fab_telefono);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
 
-            fabAction3.setVisibility(View.VISIBLE);
+            fabAction5.setVisibility(View.VISIBLE);
 
-            fabAction3.setOnClickListener(new View.OnClickListener() {
+            fabAction5.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //composeEmail(auth.getCurrentUser().getEmail(), email);
@@ -136,17 +155,17 @@ public class fab {
         });
 
     }
-    public void aggiungiFabAnnulla(View rootView,  Context con) {
+    public void aggiungiFabAnnullaModifica(View rootView,  Context con) {
         context= con;
-        fabAction2 = rootView.findViewById(R.id.fab_annulla_modifica);
+        fabActionAnnullaModifica = rootView.findViewById(R.id.fab_annulla_modifica);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
 
-       fabAction2.setVisibility(View.VISIBLE);
+       fabActionAnnullaModifica.setVisibility(View.GONE);
 
-        fabAction2.setOnClickListener(new View.OnClickListener() {
+        fabActionAnnullaModifica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //composeEmail(auth.getCurrentUser().getEmail(), email);
+
             }
         });
 
@@ -163,17 +182,48 @@ public class fab {
             public void onClick(View view) {
              //   fab.setVisibility(View.GONE);
 
-                editModifica.setVisibility(View.VISIBLE);
-                testo.setVisibility(View.GONE);
-                nuovoTesto.setText(testo.getText());
+               LayoutModificaDescrizione(editModifica,testo,nuovoTesto);
                 setFabInvisibile();
-                fabAction2.setVisibility(View.VISIBLE);
-                expandFab();
+                setFabModificaVisibile();
+
+            }
+        });
+
+    }
+    public void aggiungiFabSalvaModifiche(View rootView, Context con, String collectiondb, String idDocumento,TextInputLayout editModifica, TextView testo, TextInputEditText nuovoTesto) {
+        context= con;
+        fabActionSalvaModifiche = rootView.findViewById(R.id.fab_fine_modifica);
+        //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
+
+        fabActionSalvaModifiche.setVisibility(View.GONE);
+
+        fabActionSalvaModifiche.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                FirebaseFirestore db;
+                db= FirebaseFirestore.getInstance();
+                DocumentReference washingtonRef = db.collection(collectiondb).document(idDocumento);
 
 
+                washingtonRef
 
+                        .update("descrizione",nuovoTesto.getText().toString())
+                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
 
+                                 setFabvisibile();
+                                 setFabModificaInVisibile();
+                                 LayoutLeggiDescrizione(editModifica,testo,nuovoTesto);
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
 
+                            }
+                        });
 
 
             }
@@ -188,7 +238,7 @@ public class fab {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
-                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3),createExpandAnimator(fabAction4, offset4),createExpandAnimator(fabAction5, offset5),createExpandAnimator(fabAction6, offset6))
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabActionAnnullaModifica, offset3))
         ;
         animatorSet.start();
         //animateFab();
@@ -203,7 +253,7 @@ public class fab {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
-                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3),createExpandAnimator(fabAction4, offset4),createExpandAnimator(fabAction5, offset5),createExpandAnimator(fabAction6, offset6));
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset5));
         animatorSet.start();
         // animateFab();
     }
@@ -226,27 +276,14 @@ public class fab {
 
                             fabAction1.setTranslationY(offset1);
                         }
-                        if(fabAction2!= null) {
+                        if(fabAction2 != null) {
                             offset2 = fab.getY() - fabAction2.getY();
                             fabAction2.setTranslationY(offset2);
                         }
-                        if(fabAction3!= null) {
+                        if(fabAction3 != null) {
                             offset3 = fab.getY() - fabAction3.getY();
                             fabAction3.setTranslationY(offset3);
                         }
-                        if(fabAction4!= null) {
-                            offset4 = fab.getY() - fabAction4.getY();
-                            fabAction4.setTranslationY(offset4);
-                        }
-                        if(fabAction5!= null) {
-                            offset5 = fab.getY() - fabAction5.getY();
-                            fabAction5.setTranslationY(offset5);
-                        }
-                        if(fabAction6!= null) {
-                            offset6 = fab.getY() - fabAction6.getY();
-                            fabAction6.setTranslationY(offset6);
-                        }
-
 
                         return true;
                     }
@@ -259,20 +296,71 @@ public class fab {
         if(fabAction1!= null) {
   fabAction1.setVisibility(View.GONE);
         }
-        if(fabAction2!= null) {
+        if(fabAction2 != null) {
   fabAction2.setVisibility(View.GONE);
         }
-        if(fabAction3!= null) {
-      fabAction3.setVisibility(View.GONE);
+        if(fabActionAnnullaModifica != null) {
+      fabActionAnnullaModifica.setVisibility(View.GONE);
         }
-        if(fabAction4!= null) {
-    fabAction4.setVisibility(View.GONE);
+        if(fabActionSalvaModifiche!= null) {
+    fabActionSalvaModifiche.setVisibility(View.GONE);
         }
         if(fabAction5!= null) {
      fabAction5.setVisibility(View.GONE);
         }
 
+
+
+
+
+    }
+    public void setFabvisibile() {
+
+        if (fabAction1 != null) {
+            fabAction1.setVisibility(View.VISIBLE);
+        }
+        if (fabAction2 != null) {
+            fabAction2.setVisibility(View.VISIBLE);
+        }
+        if (fabActionAnnullaModifica != null) {
+            fabActionAnnullaModifica.setVisibility(View.VISIBLE);
+        }
+        if (fabActionSalvaModifiche != null) {
+            fabActionSalvaModifiche.setVisibility(View.VISIBLE);
+        }
+        if (fabAction5 != null) {
+            fabAction5.setVisibility(View.VISIBLE);
+        }
+
         expandFab();
+    }
+
+    public void setFabModificaVisibile()
+    {
+        fabActionAnnullaModifica.setVisibility(View.VISIBLE);
+        fabActionSalvaModifiche.setVisibility(View.VISIBLE);
+    }
+    public void setFabModificaInVisibile()
+    {
+        fabActionAnnullaModifica.setVisibility(View.GONE);
+        fabActionSalvaModifiche.setVisibility(View.GONE);
+    }
+
+
+    public void LayoutModificaDescrizione(TextInputLayout editModifica, TextView testo, TextInputEditText nuovoTesto)
+    {
+        editModifica.setVisibility(View.VISIBLE);
+        testo.setVisibility(View.GONE);
+        nuovoTesto.setText(testo.getText());
+
+    }
+
+    public void LayoutLeggiDescrizione(TextInputLayout editModifica, TextView testo, TextInputEditText nuovoTesto)
+    {
+        editModifica.setVisibility(View.GONE);
+        testo.setText(nuovoTesto.getText().toString());
+        testo.setVisibility(View.VISIBLE);
+
 
     }
 

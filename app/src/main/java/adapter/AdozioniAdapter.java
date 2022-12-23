@@ -197,6 +197,15 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
     public void aggiornadataset(ArrayList<Animale> animali) {
         localDataSet = animali;
     }
+    public void aggiornadataset(String idAnimale) {
+
+     for(int i=0; i<localDataSet.size();i++)
+     {
+         if(Objects.equals(idAnimale, localDataSet.get(i).getIdAnimale())){
+             localDataSet.remove(i);
+         }
+     }
+    }
 
     public String setZona(int position)
     {

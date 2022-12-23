@@ -88,6 +88,29 @@ public class adoptions_fragment extends Fragment {
 
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Log.d("ciao99","sono in onstart");
+        mDataset.clear();
+        mRecyclerView.setAdapter(null);
+        auth = FirebaseAuth.getInstance();
+
+        if(auth.getCurrentUser()!= null) {
+
+            initDataAnnunci(tipoannunci);
+        }
+        else{
+            tipoannunci=4;
+            initDataAnnunci(tipoannunci);
+        }
+
+        if(auth.getCurrentUser()!=null) {
+            initDataPreferiti();
+        }
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onResume() {
@@ -98,6 +121,19 @@ public class adoptions_fragment extends Fragment {
         }catch(Exception e){
 
         }
+
+
+       /* mDataset.clear();
+        auth = FirebaseAuth.getInstance();
+
+        if(auth.getCurrentUser()!= null) {
+
+            initDataAnnunci(tipoannunci);
+        }
+        else{
+            tipoannunci=4;
+            initDataAnnunci(tipoannunci);
+        }*/
 
 
 
@@ -141,17 +177,7 @@ public class adoptions_fragment extends Fragment {
         }
 
         View rootView = inflater.inflate(R.layout.fragment_adoptions_fragment, container, false);
-        mDataset.clear();
-        auth = FirebaseAuth.getInstance();
 
-        if(auth.getCurrentUser()!= null) {
-
-            initDataAnnunci(tipoannunci);
-        }
-        else{
-            tipoannunci=4;
-            initDataAnnunci(tipoannunci);
-        }
 
 
 
@@ -169,9 +195,7 @@ public class adoptions_fragment extends Fragment {
 
         barrachilometri=rootView.findViewById(R.id.barrachilometri);
         numeroAnnPreferiti=rootView.findViewById(R.id.numeroannpref);
-        if(auth.getCurrentUser()!=null) {
-            initDataPreferiti();
-        }
+
 
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         recyclemieadozioni= rootView.findViewById(R.id.recyclemieadozioni);
@@ -242,6 +266,8 @@ public class adoptions_fragment extends Fragment {
                                                                 }
 
 
+
+
                                                             }
                                                             return;
                                                         }
@@ -286,6 +312,7 @@ public class adoptions_fragment extends Fragment {
                                                             }
 
 
+
                                                             return;
                                                         }
                                                     case 3:
@@ -327,6 +354,7 @@ public class adoptions_fragment extends Fragment {
 
 
                                                                             }
+
                                                                         }
                                                                     }
 
@@ -620,6 +648,8 @@ if(auth.getCurrentUser()!= null) {
                     if(filteredlist.size()==0) {
 
                         //Ottengo l'oggetto dalla lista in posizione "position"
+
+                       Log.d("123", String.valueOf(mDataset.size()));
                         animale = mDataset.get(position);
                         closeSearchView();
                         mDataset.clear();

@@ -19,6 +19,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.util.Objects;
+
 import class_general.fab;
 import fragments_adozioni.classiGeneriche.CaricamentoInfoAnimale;
 import it.uniba.dib.sms2223_2.R;
@@ -100,9 +102,10 @@ caricaInfoAnimale();
 
 
 fab.aggiungiFabModifica(root,getContext(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
-fab.aggiungiFabElimina(root,getContext());
-        fab.aggiungiFabAnnulla(root,getContext());
-fab.aggiungiFabtelefono(root,getContext(),"ciao");
+fab.aggiungiFabElimina(root,getContext(),"adozioni",adozione.getIdAdozione(),getActivity());
+fab.aggiungiFabAnnullaModifica(root,getContext());
+fab.aggiungiFabSalvaModifiche(root,getContext(), "adozioni",adozione.getIdAdozione(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
+
 
 
         fab.FabContainerListner();
