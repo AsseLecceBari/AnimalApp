@@ -8,10 +8,9 @@ public class Animale implements Serializable{
     private String fotoProfilo;  //Verificare che si usi Bitmap
     private String idAnimale; //Stesso id del documento
     private Boolean isAssistito;
-
-
-
     private String sesso;
+    private String box, dataRitrovamento, microChip;
+
     public String getSesso() {
         return sesso;
     }
@@ -48,7 +47,7 @@ public class Animale implements Serializable{
         return isAssistito;
     }
 
-    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito,String sesso) {
+    public Animale(String nome, String genere, String specie, String emailProprietario, String dataDiNascita, String fotoProfilo, String idAnimale, Boolean isAssistito, String sesso, String box, String dataRitrovamento, String microChip) {
         this.nome = nome;
         this.genere = genere;
         this.specie = specie;
@@ -57,7 +56,10 @@ public class Animale implements Serializable{
         this.fotoProfilo = fotoProfilo;
         this.idAnimale = idAnimale;
         this.isAssistito = isAssistito;
-        this.sesso=sesso;
+        this.sesso = sesso;
+        this.box = box;
+        this.dataRitrovamento = dataRitrovamento;
+        this.microChip = microChip;
     }
 
     public Animale(){}
@@ -78,5 +80,17 @@ public class Animale implements Serializable{
                 ", idAnimale='" + idAnimale + '\'' +
                 ", isAssistito=" + isAssistito +
                 ", sesso='" + sesso + '\'';
+    }
+
+    public String getBox() {
+        return box;
+    }
+
+    public String getDataRitrovamento() {
+        return dataRitrovamento;
+    }
+
+    public String getMicroChip() {
+        return microChip;
     }
 }

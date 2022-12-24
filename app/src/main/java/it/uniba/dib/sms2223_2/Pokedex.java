@@ -1,18 +1,14 @@
 package it.uniba.dib.sms2223_2;
 
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
 
 import java.util.ArrayList;
 
-import adapter.AnimalAdapter;
 import adapter.PokedexAdapter;
 import fragments.RecyclerItemClickListener;
 import fragments.pokedexListFragment;
@@ -37,9 +33,9 @@ public class Pokedex extends AppCompatActivity {
         super.onStart();
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclePokedex);
         //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
-        Animale a = new Animale("Charmander","Fuoco","Drago","io@gmail.com","29/10/89","ciao","83938",false,"maschio");
-        Animale a2 = new Animale("Charmaleon","Fuoco","Drago","io@gmail.com","29/10/89","ciao","83938",false,"maschio");
-        Animale a3 = new Animale("Charizard","Fuoco","Drago","io@gmail.com","29/10/89","ciao","83938",false,"maschio");
+        Animale a = new Animale("Charmander","Fuoco","Drago","io@gmail.com","29/10/89","ciao","83938",false,"maschio","","","");
+        Animale a2 = new Animale("Charmaleon","Fuoco","Drago","io@gmail.com","29/10/89","ciao","83938",false,"maschio","","","");
+        Animale a3 = new Animale("Charizard","Fuoco","Drago","io@gmail.com","29/10/89","ciao","83938",false,"maschio","","","");
         mDataset.add(a);
         mDataset.add(a2);
         mDataset.add(a3);

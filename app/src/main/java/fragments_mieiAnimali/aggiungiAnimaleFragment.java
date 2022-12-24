@@ -1,12 +1,20 @@
 package fragments_mieiAnimali;
-import android.annotation.SuppressLint;
+
 import android.Manifest;
-import android.app.DatePickerDialog;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.InputType;
+import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,17 +25,6 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
-import android.text.InputType;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Toast;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.checkbox.MaterialCheckBox;
@@ -36,7 +33,11 @@ import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClic
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
@@ -44,12 +45,12 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Objects;
 import java.util.Random;
 import java.util.TimeZone;
 
-import class_general.Utils;
 import DB.AnimaleDB;
-import it.uniba.dib.sms2223_2.MainActivity;
+import class_general.Utils;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 
@@ -74,6 +75,7 @@ public class aggiungiAnimaleFragment extends Fragment {
     private MaterialCheckBox isAssistito;
     private Utils utils;
     private AnimaleDB animaleDB;
+    private TextInputEditText dataRitrovamento, box, microChip;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -150,6 +152,12 @@ public class aggiungiAnimaleFragment extends Fragment {
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
+
+        // se è vet vede microchip,  se è professionista vede box
+        microChip = rootView.findViewById(R.id.microChip);
+        box = rootView.findViewById(R.id.etbox);
+        mostraInBaseAlProfilo();
+
         selectImgButton = rootView.findViewById(R.id.selectImgButton);
         imgAnimaleReg=rootView.findViewById(R.id.imgAnimaleReg);
         selectImgButton.setOnClickListener(new View.OnClickListener() {
@@ -178,48 +186,11 @@ public class aggiungiAnimaleFragment extends Fragment {
         dataLayout = rootView.findViewById(R.id.dataNascitaAnimaleIL);
         data=rootView.findViewById(R.id.dataNascitaAnimaleText);
         isAssistito = rootView.findViewById(R.id.isAssistito);
+        dataRitrovamento = rootView.findViewById(R.id.dataRitrovamentoAnimaleAnimaleText);
 
 
-
-        // Al click nel campo Nascita si apre il date picker
-        data.setInputType(InputType.TYPE_NULL);
-        data.setFocusable(false);
-
-        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
-
-        // now define the properties of the
-        // materialDateBuilder that is title text as SELECT A DATE
-        materialDateBuilder.setTitleText("SELECT A DATE");
-
-
-        // now create the instance of the material date
-        // picker
-        final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
-        data.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                materialDatePicker.show(getActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
-            }
-        });
-        materialDatePicker.addOnPositiveButtonClickListener(
-                new MaterialPickerOnPositiveButtonClickListener() {
-                    @SuppressLint("SetTextI18n")
-                    @Override
-                    public void onPositiveButtonClick(Object selection) {
-                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
-                        calendar.setTimeInMillis((Long) selection);
-                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-                        String formattedDate  = format.format(calendar.getTime());
-                        // if the user clicks on the positive
-                        // button that is ok button update the
-                        // selected date
-                       data.setText(formattedDate);
-                        // in the above statement, getHeaderText
-                        // is the selected date preview from the
-                        // dialog
-                    }
-                });
-
+        ascoltatorePulsanteData(data);
+        ascoltatorePulsanteData(dataRitrovamento);
 
         registraAnimaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,9 +240,11 @@ public class aggiungiAnimaleFragment extends Fragment {
                 if(flag == 1) {
 
                 }else{
+                    // SE SEI UN PROFESSIONISTA PUOI INSERIRE ANCHE IL BOX IN CUI LO TIENI, mentre la data di ritrovamento va inserita da tutti
+
                     registraAnimaleBtn.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();
-                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito,sesso);
+                    Animale a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito,sesso, box.getText().toString(),dataRitrovamento.getText().toString(),microChip.getText().toString());
                     utils= new Utils();
                     animaleDB.registraAnimale(a,db).addOnCompleteListener(new OnCompleteListener() {
                         @Override
@@ -293,6 +266,78 @@ public class aggiungiAnimaleFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    private void ascoltatorePulsanteData(TextInputEditText data) {
+        // Al click nel campo Nascita si apre il date picker
+        data.setInputType(InputType.TYPE_NULL);
+        data.setFocusable(false);
+
+        MaterialDatePicker.Builder materialDateBuilder = MaterialDatePicker.Builder.datePicker();
+
+        // now define the properties of the
+        // materialDateBuilder that is title text as SELECT A DATE
+        materialDateBuilder.setTitleText("Seleziona una data");
+
+
+        // now create the instance of the material date
+        // picker
+        final MaterialDatePicker materialDatePicker = materialDateBuilder.build();
+        data.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                materialDatePicker.show(getActivity().getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
+            }
+        });
+        materialDatePicker.addOnPositiveButtonClickListener(
+                new MaterialPickerOnPositiveButtonClickListener() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onPositiveButtonClick(Object selection) {
+                        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT+1"));
+                        calendar.setTimeInMillis((Long) selection);
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        String formattedDate  = format.format(calendar.getTime());
+                        // if the user clicks on the positive
+                        // button that is ok button update the
+                        // selected date
+                       data.setText(formattedDate);
+                        // in the above statement, getHeaderText
+                        // is the selected date preview from the
+                        // dialog
+                    }
+                });
+    }
+
+    private void mostraInBaseAlProfilo() {
+        // se è veterianario vedo il pulsante
+        CollectionReference animaliReference=db.collection("utenti");
+        if(auth.getCurrentUser()!=null) {
+            Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if (task.isSuccessful()) {
+                        String ruolo = null;
+
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
+                            if(!ruolo.equals("proprietario")){
+                                box.setVisibility(View.VISIBLE);
+                            }
+
+                            if(ruolo.equals("veterinario")){
+                                microChip.setVisibility(View.VISIBLE);
+                            }
+                            break;
+                        }
+                    }
+
+                }
+            });
+        }
     }
 
 
