@@ -5,6 +5,7 @@ import static android.content.Context.WINDOW_SERVICE;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Point;
@@ -253,7 +254,7 @@ public class anagrafica extends Fragment {
             fab.setVisibility(View.VISIBLE);
             fabAction1.setVisibility(View.VISIBLE);
             fabAction2.setVisibility(View.VISIBLE);
-            //fabAction3.setVisibility(View.VISIBLE);
+            fabAction3.setVisibility(View.VISIBLE);
         }
 
 
@@ -289,7 +290,64 @@ public class anagrafica extends Fragment {
         if(qrgEncoder.getBitmap() != null)
             qrCodeIV.setVisibility(View.VISIBLE);
 
+        // la modifica del microchip è permessa solo ai vet che hanno il carico
+        visibilitaModificaMicrochip();
+
         return rootView;
+    }
+
+    private void visibilitaModificaMicrochip() {
+        if(isProprietario()){
+        }else{
+            // se non è proprietario, SE è colui che ce lha attualmente in carico  && è veterinario allora visualizza il pulsante per aggiungere la segnalazione sanitaria
+            CollectionReference docRef = db.collection("carichi");
+            Query query = docRef.whereEqualTo("inCorso", true).whereEqualTo("idProfessionista", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).whereEqualTo("idAnimale", animale.getIdAnimale());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        if(task.getResult().size() == 0){
+                            // nascondo
+                            fabAction2.setVisibility(View.GONE);
+                        }else{
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                // Carico  trovato
+                                Carico c = document.toObject(Carico.class);
+
+                                // se è veterianario vedo il pulsante
+                                CollectionReference animaliReference=db.collection("utenti");
+                                if(auth.getCurrentUser()!=null) {
+                                    Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+                                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                                        @SuppressLint("SetTextI18n")
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                            if (task.isSuccessful()) {
+                                                String ruolo = null;
+
+                                                for(QueryDocumentSnapshot document : task.getResult()){
+                                                    ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
+                                                    if(ruolo.equals("veterinario")){
+                                                        fabAction2.setVisibility(View.VISIBLE);
+                                                    }else{
+                                                        fabAction2.setVisibility(View.GONE);
+                                                    }
+                                                    break;
+                                                }
+                                            }
+
+                                        }
+                                    });
+                                }
+
+                                break;
+                            }
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private void fab(View rootView) {
@@ -314,8 +372,9 @@ public class anagrafica extends Fragment {
 
 
 
-        fabAction2 = rootView.findViewById(R.id.fab_mail);
+        fabAction2 = rootView.findViewById(R.id.fab_fine_modifica);
         fabAction2.setImageResource(android.R.drawable.ic_menu_edit);
+        fabAction2.setVisibility(View.VISIBLE);
         fabAction2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -324,7 +383,7 @@ public class anagrafica extends Fragment {
         });
 
 
-        fabAction3 = rootView.findViewById(R.id.fab_fine_modifica);
+        fabAction3 = rootView.findViewById(R.id.fab_mail);
         fabAction3.setVisibility(View.GONE);/*
         fabAction3.setImageResource(android.R.drawable.sym_action_email);
         fabAction3.setOnClickListener(new View.OnClickListener() {

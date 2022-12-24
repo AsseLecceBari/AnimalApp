@@ -77,6 +77,8 @@ public class librettoSanitario extends Fragment {
             }
         });
 
+
+        // il pulsante per aggiungere la segnalazione sanitaria deve essere visibile solo in certi casi
         if(isProprietario()){
             addSegnalazioneSanitaria.setVisibility(View.VISIBLE);
         }else{
