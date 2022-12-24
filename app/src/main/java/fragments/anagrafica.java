@@ -68,7 +68,7 @@ import model.SpesaAnimale;
 
 
 public class anagrafica extends Fragment {
-    private TextView nome, genere, specie,sesso, nascita, assistito;
+    private TextView nome, genere, specie,sesso, nascita, assistito, microchip, box, dataRitrovamento;
     private Animale animale;
 
     private ImageView imgAnimaleReg;
@@ -180,12 +180,18 @@ public class anagrafica extends Fragment {
         cambiaImg = rootView.findViewById(R.id.selectImgButton);
         modificaAnimaliBtn = rootView.findViewById(R.id.modificaAnimaliBtn);
 
+        microchip = rootView.findViewById(R.id.microChip);
+        box = rootView.findViewById(R.id.box);
+        dataRitrovamento = rootView.findViewById(R.id.dataRitrovamento);
+
+        fab(rootView);
+
         if(animale!= null){
-            nome.setText(animale.getNome());
-            genere.setText(animale.getGenere());
-            specie.setText(animale.getSpecie());
-            nascita.setText(animale.getDataDiNascita());
-            sesso.setText(animale.getSesso());
+            nome.setText("Nome: "+animale.getNome());
+            genere.setText("Genere: "+animale.getGenere());
+            specie.setText("Specie: "+animale.getSpecie());
+            nascita.setText("Nascita: "+animale.getDataDiNascita());
+            sesso.setText("Sesso: "+animale.getSesso());
 
             if(animale.getIsAssistito()){
                 assistito.setText(R.string.eassistito);
@@ -193,7 +199,21 @@ public class anagrafica extends Fragment {
                 assistito.setText(R.string.noneassistito);
             }
 
-            fab(rootView);
+            try{
+                if(!animale.getMicroChip().equals(""))
+                    microchip.setText("Microchip: "+animale.getMicroChip());
+                if(!animale.getBox().equals(""))
+                    box.setText("Box: "+animale.getBox());
+                if(!animale.getDataRitrovamento().equals(""))
+                    dataRitrovamento.setText("Data di ritrovamento: "+animale.getDataRitrovamento());
+            }catch (Exception e){
+                Toast.makeText(getActivity().getApplicationContext(), "Animale da cancellare", Toast.LENGTH_SHORT).show();
+            }
+
+
+
+            // box deve essere visibile solo ai professionisti
+            vediBox();
 
             // setto l'immagine dell'animale
             FirebaseStorage storage;
@@ -294,6 +314,32 @@ public class anagrafica extends Fragment {
         visibilitaModificaMicrochip();
 
         return rootView;
+    }
+
+    private void vediBox() {
+        CollectionReference animaliReference=db.collection("utenti");
+        if(auth.getCurrentUser()!=null) {
+            Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if (task.isSuccessful()) {
+                        String ruolo = null;
+
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
+                            if(!ruolo.equals("proprietario")){
+                                box.setVisibility(View.VISIBLE);
+                            }
+                            break;
+                        }
+                    }
+
+                }
+            });
+        }
     }
 
     private void visibilitaModificaMicrochip() {

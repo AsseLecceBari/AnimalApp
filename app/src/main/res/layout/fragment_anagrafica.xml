@@ -48,7 +48,7 @@
             android:hint="@string/nome"
             android:id="@+id/nome"
             android:layout_marginTop="12dp"
-            android:textSize="28dp">
+            android:textSize="20dp">
         </com.google.android.material.textview.MaterialTextView>
 
         <com.google.android.material.divider.MaterialDivider
@@ -65,7 +65,7 @@
             android:hint="Genere"
             android:id="@+id/genere"
             android:layout_marginTop="12dp"
-            android:textSize="28dp">
+            android:textSize="20dp">
         </com.google.android.material.textview.MaterialTextView>
 
         <com.google.android.material.divider.MaterialDivider
@@ -82,7 +82,7 @@
             android:hint="Specie"
             android:id="@+id/specie"
             android:layout_marginTop="12dp"
-            android:textSize="28dp">
+            android:textSize="20dp">
         </com.google.android.material.textview.MaterialTextView>
         <com.google.android.material.divider.MaterialDivider
             style="@style/AppTheme"
@@ -97,7 +97,7 @@
             android:hint="Sesso"
             android:id="@+id/sessoAnimale"
             android:layout_marginTop="12dp"
-            android:textSize="28dp">
+            android:textSize="20dp">
         </com.google.android.material.textview.MaterialTextView>
 
         <com.google.android.material.divider.MaterialDivider
@@ -114,7 +114,7 @@
             android:hint="Nascita"
             android:id="@+id/nascita"
             android:layout_marginTop="12dp"
-            android:textSize="28dp">
+            android:textSize="20dp">
         </com.google.android.material.textview.MaterialTextView>
 
         <com.google.android.material.divider.MaterialDivider
@@ -131,9 +131,62 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:hint="Assistito"
-            android:textSize="28dp">
+            android:textSize="20dp">
 
         </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/dataRitrovamento"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Data di ritrovamento sconosciuta"
+            android:textSize="20dp">
+
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/microChip"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="MicroChip non presente"
+            android:textSize="20dp">
+
+        </com.google.android.material.textview.MaterialTextView>
+
+        <com.google.android.material.divider.MaterialDivider
+            style="@style/AppTheme"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/box"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Box non specificato"
+            android:visibility="gone"
+            android:textSize="20dp"/>
 
         <ImageView
             android:id="@+id/idIVQrcode"
@@ -141,7 +194,7 @@
             android:layout_height="300dp"
             android:layout_centerHorizontal="true"
             android:contentDescription="qrCode"
-            android:layout_marginTop="19dp"
+            android:layout_marginTop="25dp"
             android:layout_marginBottom="20dp"
             android:visibility="gone"/>
 
