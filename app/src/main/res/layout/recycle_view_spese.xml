@@ -25,7 +25,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="202dp"
+            android:layout_height="241dp"
 
             android:background="?attr/colorPrimaryContainer"
             android:clickable="true">
@@ -38,21 +38,21 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginEnd="52dp"
                 android:text="TextView"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/motivoConsultazioneView"
-                android:layout_width="205dp"
-                android:layout_height="23dp"
+                android:layout_width="220dp"
+                android:layout_height="48dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="52dp"
+                android:layout_marginEnd="36dp"
                 android:text="TextView"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dataView"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintTop_toBottomOf="@+id/dataView" />
 
             <TextView
                 android:id="@+id/data"
@@ -61,11 +61,11 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Data"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintEnd_toStartOf="@+id/dataView"
                 app:layout_constraintHorizontal_bias="0.258"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/motivoConsultazione"
@@ -74,11 +74,11 @@
                 android:layout_marginTop="24dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Descrizione"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
                 app:layout_constraintHorizontal_bias="0.51"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/data"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintTop_toBottomOf="@+id/data" />
 
             <TextView
                 android:id="@+id/spesaTotaleView"
@@ -86,25 +86,25 @@
                 android:layout_height="23dp"
                 android:layout_gravity="end"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="52dp"
+                android:layout_marginEnd="48dp"
                 android:text="TextView"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoriaView"
-                app:layout_constraintVertical_bias="0.045"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintVertical_bias="0.475" />
 
             <TextView
                 android:id="@+id/categoriaView"
                 android:layout_width="205dp"
                 android:layout_height="23dp"
                 android:layout_gravity="end"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="52dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="48dp"
                 android:text="TextView"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazioneView"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazioneView" />
 
             <TextView
                 android:id="@+id/spesaTotale"
@@ -112,26 +112,26 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
                 android:text="Spesa totale"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/spesaTotaleView"
-                app:layout_constraintHorizontal_bias="0.571"
+                app:layout_constraintHorizontal_bias="0.521"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoria"
-                app:layout_constraintVertical_bias="0.491"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintVertical_bias="0.632" />
 
             <TextView
                 android:id="@+id/categoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="48dp"
                 android:fontFamily="sans-serif-black"
                 android:text="Categoria"
+                android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintEnd_toStartOf="@+id/categoriaView"
                 app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazione"
-                android:textColor="?attr/colorOnPrimaryContainer"/>
+                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazione" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

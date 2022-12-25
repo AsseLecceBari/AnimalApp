@@ -9,7 +9,14 @@ public class Animale implements Serializable{
     private String idAnimale; //Stesso id del documento
     private Boolean isAssistito;
     private String sesso;
-    private String box, dataRitrovamento, microChip;
+    private String box;
+    private String dataRitrovamento;
+
+    public void setMicroChip(String microChip) {
+        this.microChip = microChip;
+    }
+
+    private String microChip;
 
     public String getSesso() {
         return sesso;

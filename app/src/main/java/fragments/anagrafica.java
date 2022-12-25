@@ -68,7 +68,7 @@ import model.SpesaAnimale;
 
 
 public class anagrafica extends Fragment {
-    private TextView nome, genere, specie,sesso, nascita, assistito, microchip, box, dataRitrovamento;
+    private TextView nome, genere, specie,sesso, nascita, assistito, microchip_, box, dataRitrovamento;
     private Animale animale;
 
     private ImageView imgAnimaleReg;
@@ -108,6 +108,8 @@ public class anagrafica extends Fragment {
     private TabLayout tabLayout;
     private main_fragment_animale main_fragment_animale;
     private Button cambiaImg;
+
+    private Dialog dialog;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
@@ -180,7 +182,7 @@ public class anagrafica extends Fragment {
         cambiaImg = rootView.findViewById(R.id.selectImgButton);
         modificaAnimaliBtn = rootView.findViewById(R.id.modificaAnimaliBtn);
 
-        microchip = rootView.findViewById(R.id.microChip);
+        microchip_ = rootView.findViewById(R.id.microChip);
         box = rootView.findViewById(R.id.box);
         dataRitrovamento = rootView.findViewById(R.id.dataRitrovamento);
 
@@ -201,7 +203,7 @@ public class anagrafica extends Fragment {
 
             try{
                 if(!animale.getMicroChip().equals(""))
-                    microchip.setText("Microchip: "+animale.getMicroChip());
+                    microchip_.setText("Microchip: "+animale.getMicroChip());
                 if(!animale.getBox().equals(""))
                     box.setText("Box: "+animale.getBox());
                 if(!animale.getDataRitrovamento().equals(""))
@@ -317,28 +319,38 @@ public class anagrafica extends Fragment {
     }
 
     private void vediBox() {
+        //se non sei il proprietario dell'animale non vedi il box, altrimenti lo vedi se sei un professionista
+
         CollectionReference animaliReference=db.collection("utenti");
-        if(auth.getCurrentUser()!=null) {
-            Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                    if (task.isSuccessful()) {
-                        String ruolo = null;
+        if(auth.getCurrentUser()!=null){
+            if (auth.getCurrentUser().getEmail().equals(animale.getEmailProprietario())) {
 
-                        for(QueryDocumentSnapshot document : task.getResult()){
-                            ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
-                            if(!ruolo.equals("proprietario")){
-                                box.setVisibility(View.VISIBLE);
+                Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+                            String ruolo = null;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
+                                if (!ruolo.equals("proprietario")) {
+                                    box.setVisibility(View.VISIBLE);
+                                }
+                                break;
                             }
-                            break;
                         }
-                    }
 
-                }
-            });
+                    }
+                });
+            }else{
+                //sei in visualizzazione esterna
+                box.setVisibility(View.GONE);
+                return;
+            }
         }
     }
 
@@ -376,6 +388,7 @@ public class anagrafica extends Fragment {
                                                     ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
                                                     if(ruolo.equals("veterinario")){
                                                         fabAction2.setVisibility(View.VISIBLE);
+
                                                     }else{
                                                         fabAction2.setVisibility(View.GONE);
                                                     }
@@ -424,7 +437,7 @@ public class anagrafica extends Fragment {
         fabAction2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "modifica microchip", Toast.LENGTH_SHORT).show();
+                showCustomDialogMicrochip();
             }
         });
 
@@ -593,6 +606,45 @@ public class anagrafica extends Fragment {
             }
 
 
+        });
+
+        dialog.show();
+    }
+
+    void showCustomDialogMicrochip() {
+        dialog = new Dialog(getActivity());
+        //We have added a title in the custom layout. So let's disable the default title.
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //The user will be able to cancel the dialog bu clicking anywhere outside the dialog.
+        dialog.setCancelable(true);
+        //Mention the name of the layout of your custom dialog.
+        dialog.setContentView(R.layout.custom_dialog_microchip);
+
+        //Initializing the views of the dialog.
+        final EditText microchip = dialog.findViewById(R.id.microchip);
+        Button submitButton = dialog.findViewById(R.id.submit_button);
+
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try{
+                    animale.setMicroChip(microchip.getText().toString());
+                    db.collection("animali").document(animale.getIdAnimale()).set(animale).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            Toast.makeText(getActivity().getApplicationContext(), "Microchip aggiornato!", Toast.LENGTH_SHORT).show();
+                            microchip_.setText("Microchip: "+animale.getMicroChip());
+                            dialog.cancel();
+                        }
+                    });
+                }catch (Exception e){
+                    getActivity().getSupportFragmentManager().popBackStack();
+                    Toast.makeText(getActivity().getApplicationContext(), "Animale da cancellare, funzione disabilitata a causa del model senza i campi", Toast.LENGTH_SHORT).show();
+                }
+
+            }
         });
 
         dialog.show();

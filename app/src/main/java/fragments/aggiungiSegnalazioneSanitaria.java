@@ -140,7 +140,7 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
                                         public void onComplete(@NonNull Task<Void> task) {
                                         }
                                     });
-                                    getActivity().onBackPressed();
+                                    getActivity().getSupportFragmentManager().popBackStackImmediate();
                                     //--------
 
                                     break;
