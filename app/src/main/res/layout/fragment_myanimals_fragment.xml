@@ -7,7 +7,10 @@
     tools:context="fragments_mieiAnimali.myanimals_fragment"
     >
 
-
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <com.google.android.material.checkbox.MaterialCheckBox
         android:id="@+id/mostraInCarico"
         android:layout_width="384dp"
@@ -27,7 +30,6 @@
         android:id="@+id/recycleMyAnimals"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +39,8 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
         />
+
+</LinearLayout>
 
 
 

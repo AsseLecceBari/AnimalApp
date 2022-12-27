@@ -488,7 +488,7 @@ public class myanimals_fragment extends Fragment {
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fabAnimals);
         CollectionReference collection = db.collection("richiestaCarico");
-        Query query = collection.whereEqualTo("idVeterinario", 4314143+"");
+        Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
         AggregateQuery countQuery = query.count();
         countQuery.get(AggregateSource.SERVER).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
@@ -500,9 +500,7 @@ public class myanimals_fragment extends Fragment {
                         setBadgeRichiesteFab(fab);
                         setBadgeRichiesteFabRichieste(fabAction3);
                     }
-
                 });
-
             }
         });
         fabAction1 = rootView.findViewById(R.id.aggiungiAnimaliBtn);

@@ -15,4 +15,10 @@ public class CaricoDB {
         return  queryCarichi.get();
     }
 
+    public Task<QuerySnapshot> getVetRichiesteCarichi(FirebaseAuth auth, FirebaseFirestore db) {
+
+        CollectionReference carichiReference = db.collection("richiestaCarico");
+        Query queryCarichi = carichiReference.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
+        return  queryCarichi.get();
+    }
 }

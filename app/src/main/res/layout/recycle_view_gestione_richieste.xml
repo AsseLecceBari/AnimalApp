@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <com.google.android.material.card.MaterialCardView
+
+        android:id="@+id/cardAnimal"
+        style="?attr/materialCardViewOutlinedStyle"
+        android:layout_width="250dp"
+        android:layout_height="350dp"
+        android:padding="10dp"
+        app:cardCornerRadius="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            >
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/sessoAnimaleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="56dp"
+                android:width="58dp"
+                android:text="TextView"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/imageAnimal"
+                android:layout_width="96dp"
+                android:layout_height="103dp"
+
+                android:layout_marginTop="40dp"
+                android:drawingCacheQuality="auto"
+                app:circularflow_angles="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/nomeAnimaleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="10dp"
+                android:text="TextView"
+                android:textSize="30dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageAnimal"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/genereAnimaleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="20dp"
+                android:width="58dp"
+                android:text="TextView"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/specieAnimaleView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/specieAnimaleView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="76dp"
+                android:layout_marginBottom="16dp"
+                android:width="58dp"
+                android:text="TextView"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/sessoAnimaleView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="0.978" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/genereAnimalField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Genere"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/specieAnimalField"
+                app:layout_constraintEnd_toStartOf="@+id/genereAnimaleView"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/specieAnimalField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="46dp"
+                android:layout_marginEnd="48dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Specie"
+                android:visibility="visible"
+                app:layout_constraintBottom_toTopOf="@+id/sessoAnimalField"
+                app:layout_constraintEnd_toStartOf="@+id/specieAnimaleView"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/sessoAnimalField"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="52dp"
+                android:layout_marginBottom="56dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Sesso"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/sessoAnimaleView"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="1.0" />
+
+            <ImageButton
+                android:id="@+id/btnRifiutaRichiesta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sessoAnimalField"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@android:drawable/ic_delete"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <ImageButton
+                android:id="@+id/btnAccettaRichiesta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="50dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btnRifiutaRichiesta"
+                app:layout_constraintTop_toBottomOf="@+id/sessoAnimaleView"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@android:drawable/ic_input_add"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

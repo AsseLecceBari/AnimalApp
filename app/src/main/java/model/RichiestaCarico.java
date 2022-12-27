@@ -2,11 +2,19 @@ package model;
 
 public class RichiestaCarico {
     private String idAnimale;
-public RichiestaCarico(){}
-    public RichiestaCarico(String idAnimale, String idVeterinario, String idProprietario) {
+
+    public String getStato() {
+        return stato;
+    }
+
+    private String stato;
+    public RichiestaCarico(){}
+
+    public RichiestaCarico(String idAnimale, String idVeterinario, String idProprietario,String stato) {
         this.idAnimale = idAnimale;
         this.idVeterinario = idVeterinario;
         this.idProprietario = idProprietario;
+        this.stato=stato;
     }
 
     public String getIdAnimale() {

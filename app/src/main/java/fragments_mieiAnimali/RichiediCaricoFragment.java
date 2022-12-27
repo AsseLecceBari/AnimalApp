@@ -104,7 +104,8 @@ public class RichiediCaricoFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 for(Animale animale: mParam1){
-                   richiestaCarico[0] =new RichiestaCarico(animale.getIdAnimale(),"4314143",auth.getCurrentUser().getEmail());
+                    //TODO METTERE VETERINARIO SCELTO DA LISTA
+                   richiestaCarico[0] =new RichiestaCarico(animale.getIdAnimale(),auth.getCurrentUser().getEmail(),auth.getCurrentUser().getEmail(),"in sospeso");
                     db.collection("richiestaCarico").document(animale.getIdAnimale()).set(richiestaCarico[0]).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
