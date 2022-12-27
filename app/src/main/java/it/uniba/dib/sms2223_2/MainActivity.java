@@ -13,11 +13,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
+import adapter.AnimalAdapter;
 import adapter.VPAdapter;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
@@ -48,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private myanimals_fragment myanimals_fragment;
     private adoptions_fragment adoptions_fragment;
     private reports_fragment reports_fragment;
+    private VPAdapter adapter=null;
+    private ViewPager2 viewPager2=null;
     private static final int PERMISSION_REQUEST_CODE = 101;
 
     private void change() {
@@ -66,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        getFragmentTagReference();
         super.onResume();
 
 
@@ -140,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                VPAdapter adapter=null;
-                ViewPager2 viewPager2=null;
                 try {
                     getMainFragmentReference();
                     viewPager2 = main_fragment.getViewPager2();
@@ -152,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
 
                     Log.e("DOVESEI","SONOQUI");
-
+resetSelectionCheckBox();
                     myanimals_fragment = (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     myanimals_fragment.filter(newText);
                     Log.e("query", "animals");
@@ -160,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 try {
+                    resetSelectionCheckBox();
                     adoptions_fragment = (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     adoptions_fragment.filter(newText);
                     Log.e("query", "adoptions");
@@ -167,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
                 try {
+                    resetSelectionCheckBox();
                     reports_fragment = (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     reports_fragment.filter(newText);
                     Log.e("query", "reports");
@@ -193,7 +198,39 @@ public class MainActivity extends AppCompatActivity {
 
         });
     }
+public void getFragmentTagReference(){
+    try {
+        getMainFragmentReference();
+        viewPager2 = main_fragment.getViewPager2();
+        adapter = (VPAdapter) viewPager2.getAdapter();
+    }catch (Exception e){
 
+    }
+    try {
+
+        Log.e("DOVESEI","SONOQUI");
+
+        myanimals_fragment = (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+
+        Log.e("query", "animals");
+    } catch (Exception e) {
+
+    }
+    try {
+        adoptions_fragment = (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+
+        Log.e("query", "adoptions");
+    } catch (Exception e) {
+
+    }
+    try {
+        reports_fragment = (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
+
+        Log.e("query", "reports");
+    } catch (Exception e) {
+
+    }
+}
     public void mostraProfilo(MenuItem item) {
         auth= FirebaseAuth.getInstance();
 
@@ -207,12 +244,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        if (resetSelectionCheckBox()){ return;}
+
         try {
             getMainFragmentReference();
         }catch (Exception e){
             super.onBackPressed();
             return;
         }
+
 
         // Quando clicchiamo back se posizione = 0 usciamo dall'applicazione, se no torniamo in i miei animali
         if(main_fragment!=null){
@@ -228,6 +268,20 @@ public class MainActivity extends AppCompatActivity {
                     break;
             }
         }
+    }
+
+    private boolean resetSelectionCheckBox() {
+        AnimalAdapter animalAdapter= myanimals_fragment.getmAdapter();
+        if(animalAdapter.isFlagCheckBox()){
+            animalAdapter.setFlagCheckBox(false);
+            animalAdapter.notifyDataSetChanged();
+            RecyclerView mRecyclerView=myanimals_fragment.getmRecyclerView();
+            myanimals_fragment.addRecycleListener(mRecyclerView);
+            Log.e("recycle",mRecyclerView+"");
+
+            return true;
+        }
+        return false;
     }
 
 

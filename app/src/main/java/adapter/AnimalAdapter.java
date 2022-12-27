@@ -1,10 +1,13 @@
 package adapter;
 
 import android.net.Uri;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -26,8 +30,22 @@ import model.Animale;
 public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder>{
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet=new ArrayList<>();
+    public boolean isFlagCheckBox() {
+        return flagCheckBox;
+    }
+
+    public void setFlagCheckBox(boolean flagCheckBox) {
+        this.flagCheckBox = flagCheckBox;
+    }
 
 
+    private boolean flagCheckBox=false;
+
+    public ArrayList<Integer> getPositionSelectedCB() {
+        return positionSelectedCB;
+    }
+
+    private  ArrayList<Integer> positionSelectedCB=new ArrayList<>();
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private  TextView nomeAnimale;
         private  TextView genereAnimale;
@@ -39,8 +57,10 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
         private  TextView dataNascitaAnimale;
         private  TextView codiceAnimale;
         private ImageView imageAnimal;
-        private CheckBox checkBox;
-        public CheckBox getCheckBox() {
+        private MaterialCheckBox checkBox;
+
+
+        public MaterialCheckBox getCheckBox() {
             return checkBox;
         }
 
@@ -85,7 +105,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
             dataNascitaAnimale= (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
             codiceAnimale= (TextView) view.findViewById(R.id.codiceAnimaleView);
             imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
-            checkBox= view.findViewById(R.id.checkBoxAnimal);
+            checkBox= (MaterialCheckBox) view.findViewById(R.id.checkBoxAnimal);
         }
 
     }
@@ -111,6 +131,7 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
 
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull AnimalAdapter.ViewHolder holder, int position) {
         //Vengono inseriti i dati degli animali negli item
@@ -132,6 +153,29 @@ public class AnimalAdapter extends RecyclerView.Adapter<AnimalAdapter.ViewHolder
                         .into(holder.imageAnimal);
             }
         });
+        Integer posizione=position;
+        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                        if( holder.checkBox.isChecked()){
+                            positionSelectedCB.add(posizione);
+                                Log.e("CB", posizione+"sel");
+                        }else {
+                            positionSelectedCB.remove(posizione);
+                            Log.e("CB", posizione+"rem");
+                        }
+            }
+        });
+        if(flagCheckBox==false){
+            positionSelectedCB.clear();
+            holder.checkBox.setVisibility(View.GONE);
+        }else{
+            holder.checkBox.setVisibility(View.VISIBLE);
+        }
+        if (holder.checkBox.isChecked()) {
+            holder.checkBox.setChecked(false);
+        }
+
 
     }
 

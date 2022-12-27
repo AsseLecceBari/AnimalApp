@@ -155,5 +155,65 @@
             android:visibility="visible"
             tools:ignore="ImageContrastCheck,SpeakableTextPresentCheck" />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/aggiungiAnimaliBtn"
+
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/fab_preferiti"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+            android:visibility="gone"
+            android:src="@android:drawable/ic_input_add"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/aggiungiAnimaliInCaricoBtn"
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/aggiungiAnimaliBtn"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+
+
+            android:visibility="gone"
+            android:src="@drawable/qrcode"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/richiesteAnimaliInCarico"
+            style="?attr/floatingActionButtonSmallStyle"
+            android:layout_width="wrap_content"
+
+
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/aggiungiAnimaliInCaricoBtn"
+            android:layout_alignEnd="@id/fab"
+            android:layout_marginBottom="10dp"
+
+            android:width="24dp"
+            android:height="24dp"
+            android:contentDescription="@null"
+
+
+            android:src="@android:drawable/ic_menu_help"
+
+            android:visibility="gone"
+            tools:ignore="SpeakableTextPresentCheck" />
+
     </RelativeLayout>
 </merge>

@@ -4,7 +4,8 @@
     android:id="@+id/myAnimalsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="fragments_mieiAnimali.myanimals_fragment">
+    tools:context="fragments_mieiAnimali.myanimals_fragment"
+    >
 
 
     <com.google.android.material.checkbox.MaterialCheckBox
@@ -34,31 +35,35 @@
         app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/recycle_view_animals"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:orientation="vertical"/>
+        android:orientation="vertical"
+        />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/aggiungiAnimaliBtn"
+
+
+
+
+        <include layout="@layout/fab" />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAnimals"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+
+            android:layout_marginTop="8dp"
+            android:src="@android:drawable/ic_menu_add"
+            android:visibility="visible"
+            tools:ignore="ImageContrastCheck,SpeakableTextPresentCheck" />
+
+    <Button
+        android:id="@+id/richiediCarico"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:visibility="gone"
-        android:src="@android:drawable/ic_input_add"
-        tools:ignore="SpeakableTextPresentCheck" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/aggiungiAnimaliInCaricoBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:visibility="gone"
-        android:src="@drawable/qrcode"
-        tools:ignore="SpeakableTextPresentCheck"
-        android:backgroundTint="@color/design_default_color_secondary_variant"/>
+        android:layout_gravity="end"
+        android:text="Richiedi Carico"
+        android:visibility="gone" />
 </FrameLayout>
