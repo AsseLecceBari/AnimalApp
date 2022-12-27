@@ -4,8 +4,9 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
-import android.util.Log;
+import android.content.DialogInterface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -13,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -107,19 +107,10 @@ public class fab {
                 fabAction2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        FirebaseFirestore db;
-                        db = FirebaseFirestore.getInstance();
-                        db.collection(collectiondb).document(idDocumento)
-                                .delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
 
-                                    @Override
-                                    public void onSuccess(Void unused) {
 
-                                        activity.onBackPressed();
+                       ConfermaEliminaAlertDialog(activity,collectiondb,idDocumento);
 
-                                    }
-                                });
                     }
                 });
         }
@@ -155,7 +146,7 @@ public class fab {
         });
 
     }
-    public void aggiungiFabAnnullaModifica(View rootView,  Context con) {
+    public void aggiungiFabAnnullaModifica(View rootView, Context con, String adozioni, String idAdozione, TextInputLayout editModifica, TextView testo, TextInputEditText nuovoTesto) {
         context= con;
         fabActionAnnullaModifica = rootView.findViewById(R.id.fab_annulla_modifica);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
@@ -362,6 +353,43 @@ public class fab {
         testo.setVisibility(View.VISIBLE);
 
 
+    }
+
+    public void ConfermaEliminaAlertDialog(Activity activity,String collectiondb,String idDocumento)
+    {
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        // 2. Chain together various setter methods to set the dialog characteristics
+        builder.setMessage(R.string.ConfermaEliminaAnnuncio)
+                .setTitle("Elimina Annuncio")
+                .setPositiveButton("si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    FirebaseFirestore db;
+                        db = FirebaseFirestore.getInstance();
+                        db.collection(collectiondb).document(idDocumento)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+
+                                    @Override
+                                    public void onSuccess(Void unused) {
+
+                                        activity.onBackPressed();
+
+                                    }
+                                });
+                    }
+                })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                builder.setCancelable(true);
+                            }
+                        });
+
+
+
+
+        builder.show();
     }
 
 
