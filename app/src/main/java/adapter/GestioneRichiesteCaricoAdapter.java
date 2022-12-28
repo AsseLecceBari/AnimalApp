@@ -6,27 +6,40 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Random;
 
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
+import model.Carico;
+import model.RichiestaCarico;
 
 public class GestioneRichiesteCaricoAdapter extends RecyclerView.Adapter<GestioneRichiesteCaricoAdapter.ViewHolder>{
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<Animale> localDataSet=new ArrayList<>();
+    private final FirebaseAuth auth=FirebaseAuth.getInstance();
+    private final FirebaseFirestore db=FirebaseFirestore.getInstance();
 
     private  ArrayList<Integer> positionSelectedCB=new ArrayList<>();
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -35,10 +48,20 @@ public class GestioneRichiesteCaricoAdapter extends RecyclerView.Adapter<Gestion
         private  TextView specieAnimale;
 
 
-
         private TextView sessoAnimale;
 
         private ImageView imageAnimal;
+
+        public ImageButton getBtnRifiutaRichiesta() {
+            return btnRifiutaRichiesta;
+        }
+
+        public ImageButton getBtnAccettaRichiesta() {
+            return btnAccettaRichiesta;
+        }
+
+        private ImageButton btnRifiutaRichiesta;
+        private ImageButton btnAccettaRichiesta;
 
         public TextView getSessoAnimale() {return sessoAnimale;}
 
@@ -68,6 +91,8 @@ public class GestioneRichiesteCaricoAdapter extends RecyclerView.Adapter<Gestion
             specieAnimale= (TextView) view.findViewById(R.id.specieAnimaleView);
             sessoAnimale=view.findViewById(R.id.sessoAnimaleView);
             imageAnimal=(ImageView) view.findViewById(R.id.imageAnimal);
+            btnAccettaRichiesta= view.findViewById(R.id.btnAccettaRichiesta);
+            btnRifiutaRichiesta=view.findViewById(R.id.btnRifiutaRichiesta);
 
         }
 
@@ -114,6 +139,34 @@ public class GestioneRichiesteCaricoAdapter extends RecyclerView.Adapter<Gestion
                 Glide.with(holder.itemView.getContext())
                         .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.imageAnimal);
+            }
+        });
+        holder.getBtnAccettaRichiesta().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RichiestaCarico richiestaCarico =new RichiestaCarico(localDataSet.get(position).getIdAnimale(),auth.getCurrentUser().getEmail(),auth.getCurrentUser().getEmail(),"accettato");
+                db.collection("richiestaCarico").document(localDataSet.get(position).getIdAnimale()).set(richiestaCarico);
+                Carico carico = new Carico(new Random().nextInt(999999999)+"", new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString()+"", "datafine", localDataSet.get(position).getIdAnimale(), auth.getCurrentUser().getEmail(), "nota prova", true);
+                db.collection("carichi").document(carico.getId()).set(carico).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        localDataSet.remove(localDataSet.get(position));
+                        notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+        holder.getBtnRifiutaRichiesta().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                RichiestaCarico richiestaCarico =new RichiestaCarico(localDataSet.get(position).getIdAnimale(),auth.getCurrentUser().getEmail(),auth.getCurrentUser().getEmail(),"rifiutato");
+                db.collection("richiestaCarico").document(localDataSet.get(position).getIdAnimale()).set(richiestaCarico).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        localDataSet.remove(localDataSet.get(position));
+                        notifyDataSetChanged();
+                    }
+                });
             }
         });
     }
