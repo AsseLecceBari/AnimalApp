@@ -4,6 +4,7 @@ import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -576,6 +577,7 @@ public class myanimals_fragment extends Fragment {
     BadgeDrawable badgeDrawableFabRichieste;
     private void setBadgeRichiesteFabRichieste(FloatingActionButton fab) {
         fab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("UnsafeOptInUsageError")
             @Override
             public void onGlobalLayout() {
 
