@@ -16,7 +16,7 @@
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/imageAnimal"
-                android:layout_width="200dp"
+                android:layout_width="400dp"
                 android:layout_height="200dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="30dp"

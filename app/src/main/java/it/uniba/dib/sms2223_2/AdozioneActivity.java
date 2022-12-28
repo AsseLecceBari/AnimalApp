@@ -44,6 +44,7 @@ public class AdozioneActivity extends AppCompatActivity {
                 }
             });
         }
+
     }
 
     @Override

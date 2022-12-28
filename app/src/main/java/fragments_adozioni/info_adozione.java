@@ -95,7 +95,7 @@ public class info_adozione extends Fragment {
     public void onResume() {
         super.onResume();
        caricaInfoAnimale();
-       initDataAnnunci();
+       initDataPreferiti();
 
 //       dataPubblicazione.setText("Pubblicato" +differenzaDataPubblicazione(adozione.getDataPubblicazione()));
 
@@ -108,7 +108,7 @@ public class info_adozione extends Fragment {
 
 
 
-       eliminadaPreferiti();
+      eliminadaPreferiti();
        aggiungiPreferiti();
 
 
@@ -198,8 +198,8 @@ public class info_adozione extends Fragment {
 
 
 
-    public void initDataAnnunci() {
-        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+    public void initDataPreferiti() {
+
         firebaseStore = FirebaseFirestore.getInstance();
 
         auth= FirebaseAuth.getInstance();
@@ -308,217 +308,9 @@ if (auth.getCurrentUser()!= null) {
 
     public String differenzaDataPubblicazione(String datadiPublicazione)
     {
-        String datafinale= "";
-        SimpleDateFormat dataFor= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
 
 
-        String data= dataFor.format(new Date());
-
-        int giornopub;
-        int mesepub;
-        int annopub;
-        int orapub;
-        int minutipub;
-
-
-        int giornoOd ;
-        int meseOd;
-        int annoOd;
-        int oraOd;
-        int minutiOd;
-
-
-        int annotot;
-        int meseTot;
-        int giornotot;
-        int orariotot;
-        int minutiTot;
-
-        String[] result = datadiPublicazione.split(" ");
-       String[] datapubblicazione = result[0].split("-");
-        String[] orariopubblicazione = result[1].split(":");
-
-
-
-        result= data.split(" ");
-        String[] dataOdierna = result[0].split("-");
-        String[] orarioOdierno = result[1].split(":");
-
-
-
-        annopub= Integer.parseInt(datapubblicazione[0]);
-        mesepub=Integer.parseInt(datapubblicazione[1]);
-        giornopub=Integer.parseInt(datapubblicazione[2]);
-
-        orapub=Integer.parseInt(orariopubblicazione[0]);
-        minutipub= Integer.parseInt(orariopubblicazione[1]);
-
-
-        annoOd=Integer.parseInt(dataOdierna[0]);
-        meseOd=Integer.parseInt(dataOdierna[1]);
-        giornoOd=Integer.parseInt(dataOdierna[2]);
-
-
-        oraOd=Integer.parseInt(orarioOdierno[0]);
-        minutiOd=Integer.parseInt(orarioOdierno[1]);
-
-   
-
-        if(annopub!= annoOd)
-        {
-
-            annotot=annoOd-annopub;
-            if(annotot>1) {
-
-                datafinale = datafinale + " " + annotot + " " + "anni fa ";
-            }
-
-
-            if(mesepub!= meseOd)
-            {
-                meseTot= meseOd-mesepub;
-
-
-                if(meseTot<0)
-                {
-                    meseTot= 12+(meseTot);
-                    if(annotot<2)// se negativo e minore di 2 inserisci solo i mesi vuol dire che non è passato un anno
-                    {
-                        datafinale= datafinale  + " " + meseTot+ " mesi fa ";
-                    }
-                    else{
-                        datafinale= datafinale +" e " + meseTot+ " mesi fa ";
-                    }
-
-                }
-                else{
-                    if(annotot<2)//se è maggiore ed è un anno allora inserisci un anno e mesi
-                    {
-                        datafinale= datafinale  + annotot +" anno e " + meseTot+ " mesi fa ";
-                    }
-                    else{
-                        datafinale= datafinale +" e " + meseTot+ " mesi fa ";
-                    }
-                }
-            }
-            else{// se è uguale il mese allora è passato solo un anno
-                if(annotot<2) {
-                    datafinale = datafinale + " " + annotot + " " + "anno fa ";
-                }
-
-            }
-        }
-        else if(mesepub!= meseOd)
-        {
-            meseTot= meseOd-mesepub;
-            if(meseTot>1) {
-                datafinale = datafinale + " " + meseTot + " " + "mesi";
-            }
-            if(giornopub!= giornoOd)
-            {
-                giornotot= giornoOd-giornopub;
-                if(giornotot<0)
-                {
-                    giornotot= 30+(giornotot);
-
-                    if(meseTot<2)
-                    {datafinale= datafinale  + " "+ giornotot + " giorni fa ";}
-                    else{datafinale= datafinale +" e " + giornotot + " giorni ";}
-                }
-                else{
-                    if(meseTot<2)
-                    {datafinale= datafinale  + meseTot+ " mese e "+ giornotot + " giorni fa ";}
-                    else{datafinale= datafinale +" e " + giornotot + " giorni ";}
-                }
-
-            }else if(meseTot<2) //se i giorni sono uguali allora è passato un mese
-            {datafinale= datafinale +meseTot + " mese fa ";
-
-            }
-        }
-
-        else if(giornopub!= giornoOd)
-
-        {
-            giornotot=giornoOd-giornopub;
-            if (giornotot>1) {
-
-                datafinale = datafinale + " " + giornotot + " " + " giorni ";
-            }
-
-            if(orapub!= oraOd)
-            {
-                orariotot=oraOd-orapub;
-                if (orariotot<0){
-                    orariotot=24+(orariotot);
-
-                    if(giornotot<2){ datafinale = datafinale + " "+ orariotot +" ore fa";}
-                    else{datafinale = datafinale + " e " + orariotot + " ore fa " ;}
-                }else{
-                    if(giornotot<2){ datafinale = datafinale + giornotot  +" giorno "+ " e "+ orariotot+" ore fa";}
-                    else{datafinale = datafinale + " e " + orariotot + " ore fa " ;}
-
-                }
-
-            }else
-            if(giornotot<2){ datafinale = datafinale + giornotot  +" giorno fa";}
-
-
-        }
-        else if(orapub!= oraOd)
-        {
-
-
-            orariotot=oraOd-orapub;
-
-            if(orariotot>1) {
-
-                datafinale = datafinale + " " + orariotot + " " + " ore ";
-            }
-
-            if(minutipub!= minutiOd)
-            {
-                minutiTot= minutiOd-minutipub;
-
-                if(minutiTot<0)
-                {
-                   minutiTot= 60+(minutiTot);
-
-                   if(orariotot<2)
-                   {
-                       datafinale = datafinale + " " + minutiTot + " " + " minuti fa ";
-                   }
-                   else{
-                       datafinale = datafinale + " e " + minutiTot  + " minuti fa ";
-                   }
-                }else{
-                    if(orariotot<2){ datafinale = datafinale + orariotot  +" ora fa";}
-                }
-
-
-
-            }
-
-        }
-
-        else if(minutipub!= minutiOd)
-        {
-            minutiTot= minutiOd-minutipub;
-            if(minutiTot==1)
-            {
-                datafinale= datafinale +" " + minutiTot +" " +" minuto fa ";
-            }
-            else {
-                datafinale = datafinale + " " + minutiTot + " " + " minuti fa ";
-            }
-
-        }
-
-        else{
-            datafinale=" meno di un minuto fa";
-        }
-
-        return datafinale;
+return null;
 
 
     }
