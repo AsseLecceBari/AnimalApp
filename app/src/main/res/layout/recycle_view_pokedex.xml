@@ -24,8 +24,7 @@
             android:layout_height="80dp"
             android:layout_gravity="center"
             android:layout_margin="5dp"
-            android:padding="4dp"
-            android:src="@mipmap/ic_launcher" />
+            android:padding="4dp" />
 
         <!--on below line we are creating
             a simple text view-->

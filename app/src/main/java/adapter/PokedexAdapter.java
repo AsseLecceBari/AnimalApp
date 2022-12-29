@@ -65,7 +65,6 @@ public class PokedexAdapter extends  RecyclerView.Adapter<adapter.PokedexAdapter
     @Override
     public void onBindViewHolder(@NonNull PokedexAdapter.ViewHolder holder, int position) {
         holder.getNomeAnimale().setText(localDataSet.get(position).getNome());
-        /*
         FirebaseStorage storage;
         StorageReference storageRef;
         storage= FirebaseStorage.getInstance();
@@ -78,7 +77,7 @@ public class PokedexAdapter extends  RecyclerView.Adapter<adapter.PokedexAdapter
                         .into(holder.imageAnimal);
             }
         });
-         */
+
 
     }
 

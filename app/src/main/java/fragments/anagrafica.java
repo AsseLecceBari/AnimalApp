@@ -61,6 +61,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
@@ -68,6 +69,7 @@ import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.Carico;
+import model.Pokedex;
 import model.SpesaAnimale;
 
 
@@ -114,7 +116,7 @@ public class anagrafica extends Fragment {
     private Button cambiaImg;
 
     private Dialog dialog;
-
+    private  int countPokedex = 0;
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
         db=FirebaseFirestore.getInstance();
@@ -122,6 +124,27 @@ public class anagrafica extends Fragment {
         profiloAnimale= new ProfiloAnimale();
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         pokeball=rootView.findViewById(R.id.pokeball);
+        CollectionReference pokedexReference = db.collection("pokedex");
+
+        pokedexReference.whereEqualTo("idAnimale",animale.getIdAnimale()+"").whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+               if(task.getResult().size()>0){
+                   for (QueryDocumentSnapshot document : task.getResult()) {
+                       countPokedex++;
+                       Log.e("countPokedex",countPokedex+"");
+                   }
+
+
+               }
+                if( countPokedex==0 && !(animale.getEmailProprietario().equals(auth.getCurrentUser().getEmail())) ){
+                    pokeball.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+
         ProfiloAnimale profiloAnimale=(ProfiloAnimale)  anagrafica.super.getActivity();
         main_fragment_animale=profiloAnimale.getMain_fragment_animale();
         viewPager2=main_fragment_animale.getViewPager2();
@@ -153,6 +176,32 @@ public class anagrafica extends Fragment {
                         anim.setDuration(700);
                         pokeball.startAnimation(anim);
                         imgAnimaleReg.setVisibility(View.INVISIBLE);
+                        anim.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,pokedexListFragment.newInstance(animale)).commit();
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+
+                            }
+                        });
+
+                        CollectionReference pokedexReference = db.collection("pokedex");
+                        Pokedex pokedex=new Pokedex(animale.getIdAnimale(),auth.getCurrentUser().getEmail());
+                        pokedexReference.document(auth.getCurrentUser().getEmail()).set(pokedex).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Toast.makeText(getActivity(),"Animale Aaggiunto al pokedex",Toast.LENGTH_LONG).show();
+                                pokeball.setVisibility(View.GONE);
+                            }
+                        });
                 }
                     break;
                 default:
