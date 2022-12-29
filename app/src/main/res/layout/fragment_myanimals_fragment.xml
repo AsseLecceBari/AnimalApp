@@ -43,11 +43,7 @@
 </LinearLayout>
 
 
-
-
-
-
-        <include layout="@layout/fab" />
+    <include layout="@layout/fab" />
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fabAnimals"
 
@@ -62,6 +58,7 @@
             android:src="@android:drawable/ic_menu_add"
             android:visibility="visible"
             tools:ignore="ImageContrastCheck,SpeakableTextPresentCheck" />
+
 
     <Button
         android:id="@+id/richiediCarico"

@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,6 +21,9 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -122,9 +126,7 @@ public class anagrafica extends Fragment {
         main_fragment_animale=profiloAnimale.getMain_fragment_animale();
         viewPager2=main_fragment_animale.getViewPager2();
         tabLayout= main_fragment_animale.getTabLayout();
-
-
-
+        imgAnimaleReg = rootView.findViewById(R.id.imgAnimaleReg);
         pokeball.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {  switch (event.getActionMasked()) {
@@ -136,9 +138,22 @@ public class anagrafica extends Fragment {
 
                     break;
                 case MotionEvent.ACTION_MOVE:
-                    tabLayout.setTabMode(TabLayout.MODE_FIXED);
-                    Log.e("motion","move");
+                    //tabLayout.setTabMode(TabLayout.MODE_FIXED);
                     v.animate().x(event.getRawX() + xCoOrdinate).y(event.getRawY() + yCoOrdinate).setDuration(0).start();
+                    Rect rc_img1 = new Rect();
+                    pokeball.getHitRect(rc_img1);
+                    Rect rc_img2 = new Rect();
+                    imgAnimaleReg.getHitRect(rc_img2);
+                    if (Rect.intersects(rc_img1, rc_img2)) {
+
+                        RotateAnimation anim =new RotateAnimation(-1.0f, 1.0f,
+                                RotateAnimation.RELATIVE_TO_SELF, 0.5f,
+                                RotateAnimation.RELATIVE_TO_SELF, 1f);
+                        anim.setRepeatCount(2);
+                        anim.setDuration(700);
+                        pokeball.startAnimation(anim);
+                        imgAnimaleReg.setVisibility(View.INVISIBLE);
+                }
                     break;
                 default:
                     viewPager2.setUserInputEnabled(true);
@@ -150,28 +165,6 @@ public class anagrafica extends Fragment {
                 return true;
             }
         });
-                /*
-       pokeball.setOnTouchListener(new View.OnTouchListener() {
-           @Override
-           public boolean onTouch(View view, MotionEvent motionEvent) {
-               if(motionEvent.getAction()==MotionEvent.ACTION_DOWN){
-                   x= motionEvent.getX();
-                   y=motionEvent.getY();
-               }
-               if(motionEvent.getAction()==MotionEvent.ACTION_MOVE){
-                   dx= motionEvent.getX()-x;
-                   dy=motionEvent.getY()-y;
-                   pokeball.setX(pokeball.getX()+dx);
-                   pokeball.setY(pokeball.getY()+dy);
-                   x=motionEvent.getX();
-                   y= motionEvent.getY();
-               }
-               return true;
-           }
-       });
-
-                 */
-        imgAnimaleReg = rootView.findViewById(R.id.imgAnimaleReg);
         nome = rootView.findViewById(R.id.nome);
         genere = rootView.findViewById(R.id.genere);
         specie = rootView.findViewById(R.id.specie);
@@ -269,7 +262,7 @@ public class anagrafica extends Fragment {
             fab.setVisibility(View.GONE);
             fabAction1.setVisibility(View.GONE);
             fabAction2.setVisibility(View.GONE);
-            //fabAction3.setVisibility(View.GONE);
+          //pokeball.setVisibility(View.GONE);
         }else{
             cambiaImg.setVisibility(View.GONE);
             modificaAnimaliBtn.setVisibility(View.GONE);

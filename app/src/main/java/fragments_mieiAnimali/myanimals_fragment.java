@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -168,7 +169,7 @@ public class myanimals_fragment extends Fragment {
         animaleDB = new AnimaleDB();
         caricoDB= new CaricoDB();
         utentiDB= new UtentiDB();
-        fab(rootView);
+
 
 
         // controlli per la checkbox in carico
@@ -177,33 +178,21 @@ public class myanimals_fragment extends Fragment {
         addAnimale=rootView.findViewById(R.id.aggiungiAnimaliBtn);
         addIncarico=rootView.findViewById(R.id.aggiungiAnimaliInCaricoBtn);
         richiediCarico= rootView.findViewById(R.id.richiediCarico);
+        fab =  rootView.findViewById(R.id.fabAnimals);
+        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_input_add));
+        FloatingActionButton fabInvisible= rootView.findViewById(R.id.fab);
+        fabInvisible.setVisibility(View.INVISIBLE);
+        
 
 
-        //se la check box è premuta il bottone cambia
-
-        if(!mostraSoloIncarico.isChecked()){
-           // addAnimale.setVisibility(View.VISIBLE);
-          //  addIncarico.setVisibility(View.GONE);
-        }else{
-            addAnimale.setVisibility(View.GONE);
-            addIncarico.setVisibility(View.VISIBLE);
-
-        }
         mostraSoloIncarico.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 //se la check box è premuta il bottone cambia
 
                 if(!mostraSoloIncarico.isChecked()){
-                    addAnimale.setVisibility(View.VISIBLE);
-                    addIncarico.setVisibility(View.GONE);
                     filterMieiAnimali();
-
-
-
                 }else{
-                    addAnimale.setVisibility(View.GONE);
-                    addIncarico.setVisibility(View.VISIBLE);
                     filterCarico(caricoDataset);
                 }
 
@@ -255,7 +244,7 @@ public class myanimals_fragment extends Fragment {
                         filteredlist.clear();
                     }
                     getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
-                   mAdapter.notifyDataSetChanged();
+                    mAdapter.notifyDataSetChanged();
                 }
 
             }
@@ -298,6 +287,7 @@ public class myanimals_fragment extends Fragment {
                             }
                             Log.e("DOVESONO","GETRUOLO");
                             if(ruolo.equals(RUOLOVETERINARIO)){
+                                fab(getView());
                                 CollectionReference animaliReference = db.collection("animali");
                                 caricoDB.getVetCarichi(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
@@ -322,6 +312,14 @@ public class myanimals_fragment extends Fragment {
                                     }});
                             }
                             else{
+                                fab.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        closeSearchView();
+                                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_anim,R.anim.exit_anim).addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
+                                    }
+                                });
+
                                 //Passo i dati presi dal database all'adapter
                                 mAdapter = new AnimalAdapter(mDataset);
                                 // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
@@ -487,7 +485,7 @@ public class myanimals_fragment extends Fragment {
 
 
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
-        fab =  rootView.findViewById(R.id.fabAnimals);
+        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_add));
         CollectionReference collection = db.collection("richiestaCarico");
         Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
         AggregateQuery countQuery = query.count();
@@ -506,25 +504,12 @@ public class myanimals_fragment extends Fragment {
         });
         fabAction1 = rootView.findViewById(R.id.aggiungiAnimaliBtn);
         fabAction1.setVisibility(View.VISIBLE);
-        fabAction1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                //showCustomDialog();
-
-            }
-        });
 
 
 
         fabAction2 = rootView.findViewById(R.id.aggiungiAnimaliInCaricoBtn);
         fabAction2.setVisibility(View.VISIBLE);
-        fabAction2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // showCustomDialogMicrochip();
-            }
-        });
+
 
 
         fabAction3 = rootView.findViewById(R.id.richiesteAnimaliInCarico);
