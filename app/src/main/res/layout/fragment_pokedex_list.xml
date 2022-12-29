@@ -89,7 +89,14 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="6dp"
                         android:layout_marginRight="10dp"
-                        android:layout_marginBottom="34dp"></FrameLayout>
+                        android:layout_marginBottom="34dp">
+
+                        <ImageView
+                            android:id="@+id/imageAnimalePokeView"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            tools:srcCompat="@tools:sample/avatars" />
+                    </FrameLayout>
 
                 </LinearLayout>
 
