@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -21,6 +22,7 @@ import com.google.firebase.storage.StorageReference;
 
 import class_general.fab;
 import it.uniba.dib.sms2223_2.R;
+import it.uniba.dib.sms2223_2.scanAnimale;
 import model.Adozione;
 import model.Animale;
 
@@ -32,6 +34,7 @@ public class riepilogo_adozione extends Fragment {
     private TextView descrizioneAnnuncio;
     private TextInputEditText aggiungiDescrizioneAnnuncio;
     private Button cediProprieta;
+    private View vista;
 
     Animale animale;
     Adozione adozione;
@@ -57,8 +60,7 @@ public class riepilogo_adozione extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-caricaInfoAnimale();
-
+        caricaInfoAnimale();
 
     }
     public void caricaInfoAnimale()
@@ -93,6 +95,7 @@ caricaInfoAnimale();
         descrizioneAnnuncio= root.findViewById(R.id.DescrizioneAnimale);
         aggiungiDescrizioneAnnuncio=root.findViewById(R.id.AggiungiDescrizioneAnimale);
         cediProprieta = root.findViewById(R.id.cedi);
+        vista = root.findViewById(R.id.vista);
 
         fab fab= new fab();
 
@@ -118,5 +121,8 @@ caricaInfoAnimale();
 
     private void cedi() {
         // todo scannerrizzo il qrCode cambio la proprieta dell'animale
+        Toast.makeText(getContext(), "qui si apre lo scanner del'acquirente", Toast.LENGTH_SHORT).show();
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale(1, animale)).commit();
+
     }
 }

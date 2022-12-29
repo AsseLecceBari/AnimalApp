@@ -33,6 +33,17 @@ public class scanAnimale extends Fragment {
     private ColorStateList coloreDati;
     private CodeScannerView scannerView;
     private Toast toast;
+    private int controllo = 0;
+    private Animale a = null;
+
+    public scanAnimale(int n, Animale a){
+        this.a = a;
+        controllo = 1;
+    }
+
+    public scanAnimale(){
+
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -51,13 +62,23 @@ public class scanAnimale extends Fragment {
                 activity.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        esisteAnimale(result.getText());
+                        if(controllo == 0)
+                            esisteAnimale(result.getText());
+                        if(controllo == 1)
+                            passaggioProprieta(result.getText());
                     }
                 });
             }
         });
 
         return rootView;
+    }
+
+    private void passaggioProprieta(String emailProprietario) {
+        // dialog conferma (se è emailProprietario esiste) -- l'oggetto animale da modificare è chiamato "a"
+
+
+        // toast di errore altrimenti
     }
 
     private void esisteAnimale(String idAnimale) {
