@@ -1,17 +1,21 @@
 package profiloUtente;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,6 +28,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Associazione;
@@ -36,7 +44,9 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private TextView tipoUtente, denominazione, cf, nome, cognome, data, email, telefono, indirizzo, citta, efnovi, partitaIva;
     private FloatingActionButton modificaProfilo;
-
+    private QRGEncoder qrgEncoder;
+    private ImageView qrCodeIV;
+    private Bitmap bitmap;
     private FirebaseFirestore db;
 
     @Override
@@ -45,6 +55,8 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profilo_utente);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
+
+        qr();
 
         //link
         tipoUtente = findViewById(R.id.tipoUtente);
@@ -67,6 +79,41 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void qr() {
+        qrCodeIV = findViewById(R.id.idIVQrcode);
+        // setto il generatore
+        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+        // initializing a variable for default display.
+        Display display = manager.getDefaultDisplay();
+
+        // creating a variable for point which
+        // is to be displayed in QR Code.
+
+        Point point = new Point();
+        display.getSize(point);
+
+        // getting width and
+        // height of a point
+        int width = point.x;
+        int height = point.y;
+
+        // generating dimension from width and height.
+        int dimen = width < height ? width : height;
+        dimen = dimen * 3 / 4;
+
+        // setting this dimensions inside our qr code
+        // encoder to generate our qr code.
+        qrgEncoder = new QRGEncoder(Objects.requireNonNull(auth.getCurrentUser()).getEmail(), null, QRGContents.Type.TEXT, dimen);
+        // getting our qrcode in the form of bitmap.
+        bitmap = qrgEncoder.getBitmap();
+        // the bitmap is set inside our image
+        // view using .setimagebitmap method.
+        qrCodeIV.setImageBitmap(bitmap);
+        if(qrgEncoder.getBitmap() != null)
+            qrCodeIV.setVisibility(View.VISIBLE);
     }
 
     @Override

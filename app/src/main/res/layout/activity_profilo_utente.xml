@@ -158,6 +158,16 @@ android:layout_height="match_parent"
             android:text="text"
             android:textSize="25dp">
         </com.google.android.material.textview.MaterialTextView>
+
+        <ImageView
+            android:id="@+id/idIVQrcode"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="qrCode"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="20dp"
+            android:visibility="gone"/>
     </LinearLayout>
     </LinearLayout>
 

@@ -4,10 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +11,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -30,9 +29,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -50,7 +47,6 @@ public class info_adozione extends Fragment {
     private ImageView immagineAnimale ;
     private TextView descrizioneAnimale;
     private TextView dettagliAnimale;
-    private TextView dataPubblicazione;
     private View btnaggiungiPreferiti;
     private View btineliminaPreferiti;
     private SharedPreferences share;
@@ -85,7 +81,6 @@ public class info_adozione extends Fragment {
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
         btnaggiungiPreferiti=root.findViewById(R.id.BtnaggiungiPreferiti);
         btineliminaPreferiti=root.findViewById(R.id.btneliminaPreferiti);
-        dataPubblicazione=root.findViewById(R.id.dataPubblicazione);
 
         return  root;
     }
@@ -94,26 +89,10 @@ public class info_adozione extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-       caricaInfoAnimale();
-       initDataPreferiti();
-
-//       dataPubblicazione.setText("Pubblicato" +differenzaDataPubblicazione(adozione.getDataPubblicazione()));
-
-
-       // GetCoordinates coordinates= new GetCoordinates(proprietario.getIndirizzo());
-
-      //  Log.d("ciao18",coordinates.getLat()+ " " +coordinates.getLng());
-
-
-
-
-
-      eliminadaPreferiti();
-       aggiungiPreferiti();
-
-
-
-
+        caricaInfoAnimale();
+        initDataPreferiti();
+        eliminadaPreferiti();
+        aggiungiPreferiti();
     }
 
 

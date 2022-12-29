@@ -2,14 +2,14 @@ package fragments_adozioni;
 
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -19,14 +19,10 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.Objects;
-
 import class_general.fab;
-import fragments_adozioni.classiGeneriche.CaricamentoInfoAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
-import model.Persona;
 
 
 public class riepilogo_adozione extends Fragment {
@@ -35,6 +31,7 @@ public class riepilogo_adozione extends Fragment {
     private TextView dettagliAnimale;
     private TextView descrizioneAnnuncio;
     private TextInputEditText aggiungiDescrizioneAnnuncio;
+    private Button cediProprieta;
 
     Animale animale;
     Adozione adozione;
@@ -95,24 +92,31 @@ caricaInfoAnimale();
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
         descrizioneAnnuncio= root.findViewById(R.id.DescrizioneAnimale);
         aggiungiDescrizioneAnnuncio=root.findViewById(R.id.AggiungiDescrizioneAnimale);
+        cediProprieta = root.findViewById(R.id.cedi);
 
         fab fab= new fab();
 
         fab.iniziallizazioneFab(root);
 
 
-fab.aggiungiFabModifica(root,getContext(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
-fab.aggiungiFabElimina(root,getContext(),"adozioni",adozione.getIdAdozione(),getActivity());
-fab.aggiungiFabAnnullaModifica(root,getContext(),"adozioni",adozione.getIdAdozione(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
-fab.aggiungiFabSalvaModifiche(root,getContext(), "adozioni",adozione.getIdAdozione(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
-
-
-
+        fab.aggiungiFabModifica(root,getContext(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
+        fab.aggiungiFabElimina(root,getContext(),"adozioni",adozione.getIdAdozione(),getActivity());
+        fab.aggiungiFabAnnullaModifica(root,getContext(),"adozioni",adozione.getIdAdozione(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
+        fab.aggiungiFabSalvaModifiche(root,getContext(), "adozioni",adozione.getIdAdozione(),aggiungidescrizioneAnnuncioLayout,descrizioneAnnuncio,aggiungiDescrizioneAnnuncio);
         fab.FabContainerListner();
 
-
-
+        // passare la proprietà a qualcuno 
+        cediProprieta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cedi();
+            }
+        });
 
          return root;
+    }
+
+    private void cedi() {
+        // todo scannerrizzo il qrCode cambio la proprieta dell'animale
     }
 }
