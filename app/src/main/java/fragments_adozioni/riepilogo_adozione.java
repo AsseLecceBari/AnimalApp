@@ -122,7 +122,7 @@ public class riepilogo_adozione extends Fragment {
     private void cedi() {
         // todo scannerrizzo il qrCode cambio la proprieta dell'animale
         Toast.makeText(getContext(), "qui si apre lo scanner del'acquirente", Toast.LENGTH_SHORT).show();
-        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale(1, animale)).commit();
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale(1, animale, adozione.getIdAdozione())).commit();
 
     }
 }

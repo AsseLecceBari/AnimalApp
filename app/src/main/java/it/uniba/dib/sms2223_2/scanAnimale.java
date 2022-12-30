@@ -1,9 +1,14 @@
 package it.uniba.dib.sms2223_2;
 
+import static android.content.ContentValues.TAG;
+
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +21,9 @@ import androidx.fragment.app.Fragment;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -35,10 +42,12 @@ public class scanAnimale extends Fragment {
     private Toast toast;
     private int controllo = 0;
     private Animale a = null;
+    private String idAdozione;
 
-    public scanAnimale(int n, Animale a){
+    public scanAnimale(int n, Animale a, String idAdozione){
         this.a = a;
         controllo = 1;
+        this.idAdozione = idAdozione;
     }
 
     public scanAnimale(){
@@ -75,10 +84,53 @@ public class scanAnimale extends Fragment {
     }
 
     private void passaggioProprieta(String emailProprietario) {
+        // todo richiedere permessi
         // dialog conferma (se è emailProprietario esiste) -- l'oggetto animale da modificare è chiamato "a"
 
+        FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
+        DocumentReference docIdRef = rootRef.collection("utenti").document(emailProprietario);
+        docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        Log.d(TAG, "Document exists!");
+                        a.setEmailProprietario(emailProprietario);
 
-        // toast di errore altrimenti
+                        new AlertDialog.Builder(getActivity())
+                                .setTitle("Cedi animale")
+                                .setMessage("Sei DAVVERO sicuro di voler cedere la proprità?")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        Toast.makeText(getActivity().getApplicationContext(), idAdozione+"L'animale ora ha un nuovo proprietario!", Toast.LENGTH_SHORT).show();
+                                        db.collection("animali").document(a.getIdAnimale()).set(a);
+
+                                        // elimino l'annuncio di adozione
+                                        db.collection("adozioni").document(idAdozione).delete();
+
+                                        // indietro
+                                        getActivity().onBackPressed();
+                                        getActivity().onBackPressed();
+                                        getActivity().recreate();
+                                    }})
+                                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        Toast.makeText(getActivity().getApplicationContext(), "Annullato!", Toast.LENGTH_SHORT).show();
+                                        getActivity().onBackPressed();
+                                    }}).show();
+
+                    } else {
+                        Log.d(TAG, "Document does not exist!");
+                        Toast.makeText(getActivity().getApplicationContext(), "Qr code non riconosciuto", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.d(TAG, "Failed with: ", task.getException());
+                    Toast.makeText(getActivity().getApplicationContext(), "Errore!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private void esisteAnimale(String idAnimale) {

@@ -100,4 +100,9 @@ public class Animale implements Serializable{
     public String getMicroChip() {
         return microChip;
     }
+
+    public void setEmailProprietario(String emailProprietario) {
+        this.emailProprietario = emailProprietario;
+        isAssistito = false;
+    }
 }
