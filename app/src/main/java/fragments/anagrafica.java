@@ -184,6 +184,16 @@ public class anagrafica extends Fragment {
 
                             @Override
                             public void onAnimationEnd(Animation animation) {
+                                CollectionReference pokedexReference = db.collection("pokedex");
+                                Pokedex pokedex=new Pokedex(animale.getIdAnimale(),auth.getCurrentUser().getEmail());
+                                pokedexReference.document().set(pokedex).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        Toast.makeText(getActivity(),"Animale Aaggiunto al pokedex",Toast.LENGTH_LONG).show();
+                                        pokeball.setVisibility(View.GONE);
+                                    }
+                                });
+
                                 getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,pokedexListFragment.newInstance(animale)).commit();
                             }
 
@@ -193,15 +203,7 @@ public class anagrafica extends Fragment {
                             }
                         });
 
-                        CollectionReference pokedexReference = db.collection("pokedex");
-                        Pokedex pokedex=new Pokedex(animale.getIdAnimale(),auth.getCurrentUser().getEmail());
-                        pokedexReference.document(auth.getCurrentUser().getEmail()).set(pokedex).addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                Toast.makeText(getActivity(),"Animale Aaggiunto al pokedex",Toast.LENGTH_LONG).show();
-                                pokeball.setVisibility(View.GONE);
-                            }
-                        });
+
                 }
                     break;
                 default:

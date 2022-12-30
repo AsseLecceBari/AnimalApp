@@ -9,10 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -34,6 +36,12 @@ public class pokedexListFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private Animale mParam1;
     private ImageView imageAnimalePokeView;
+    private TextView nomeAnimale;
+    private TextView genereAnimale;
+    private TextView specieAnimale;
+    private TextView sessoAnimale;
+    private TextView dataNascitaAnimale;
+
 
 
     public pokedexListFragment() {
@@ -65,6 +73,16 @@ public class pokedexListFragment extends Fragment {
                              Bundle savedInstanceState) {
       View view=inflater.inflate(R.layout.fragment_pokedex_list, container, false);
         imageAnimalePokeView=view.findViewById(R.id.imageAnimalePokeView);
+        nomeAnimale = (TextView) view.findViewById(R.id.nomeAnimaleViewPoke);
+        genereAnimale=(TextView) view.findViewById(R.id.genereAnimaleViewPoke);
+        specieAnimale= (TextView) view.findViewById(R.id.specieAnimaleViewPoke);
+        sessoAnimale=view.findViewById(R.id.sessoAnimaleViewPoke);
+       // dataNascitaAnimale= (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
+
+        nomeAnimale.setText(mParam1.getNome());
+        genereAnimale.setText(mParam1.getGenere());
+        specieAnimale.setText(mParam1.getSpecie());
+        sessoAnimale.setText(mParam1.getSesso());
         FirebaseStorage storage;
         StorageReference storageRef;
         storage= FirebaseStorage.getInstance();
