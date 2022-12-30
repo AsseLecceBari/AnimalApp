@@ -84,8 +84,8 @@ public class scanAnimale extends Fragment {
     }
 
     private void passaggioProprieta(String emailProprietario) {
-        // todo richiedere permessi
-        // dialog conferma (se è emailProprietario esiste) -- l'oggetto animale da modificare è chiamato "a"
+        // todo richiedere permessi -----------------------------------------------------------------------------------
+        // dialog conferma (se è emailProprietario esiste)
 
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         DocumentReference docIdRef = rootRef.collection("utenti").document(emailProprietario);
