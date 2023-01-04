@@ -167,18 +167,15 @@ public class fab {
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
 
         fabAction1.setVisibility(View.VISIBLE);
+  fabAction1.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View view) {
 
-        fabAction1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-             //   fab.setVisibility(View.GONE);
-
-               LayoutModificaDescrizione(editModifica,testo,nuovoTesto);
-                setFabInvisibile();
-                setFabModificaVisibile();
-
-            }
-        });
+          LayoutModificaDescrizione(editModifica,testo,nuovoTesto);
+          setFabInvisibile();
+          setFabModificaVisibile();
+      }
+  });
 
     }
     public void aggiungiFabSalvaModifiche(View rootView, Context con, String collectiondb, String idDocumento,TextInputLayout editModifica, TextView testo, TextInputEditText nuovoTesto) {

@@ -8,22 +8,21 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.activity.OnBackPressedCallback;
-import androidx.activity.OnBackPressedDispatcher;
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,15 +49,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.ArrayList;
 
 import DB.CaricoDB;
 import DB.UtentiDB;
 import adapter.AnimalAdapter;
 import DB.AnimaleDB;
+import class_general.Bluetooth;
 import fragments.RecyclerItemClickListener;
+import fragments.RicercaDispositiviBluetooth;
 import fragments.gestioneRichiesteCaricoFragment;
 import fragments.nonSeiRegistrato_fragment;
 import it.uniba.dib.sms2223_2.MainActivity;
@@ -116,6 +115,39 @@ public class myanimals_fragment extends Fragment {
     private float offset1;
     private float offset2;
     private float offset3;
+    Bluetooth bluetooth;
+
+
+
+
+    ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.d("ciao", String.valueOf(result.getResultCode()));
+
+                    if (result.getResultCode() == 0) {
+                Toast.makeText(getContext(),"Invio Annullato",Toast.LENGTH_SHORT).show();
+
+                    } else if (result.getResultCode() == -1) {
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragmentContainerView,  new RicercaDispositiviBluetooth()).addToBackStack(null).commit();
+
+
+
+
+                    } else if (result.getResultCode() == 120) {
+
+
+                    }
+                }
+            });
+
+
+
+
+
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
@@ -138,9 +170,16 @@ public class myanimals_fragment extends Fragment {
     }
 
 
+
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        bluetooth = new Bluetooth(getActivity(),activityResultLaunch);
+
+
+
                 requestPermissionLauncher =
                         registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                             if (isGranted) {
@@ -222,40 +261,65 @@ public class myanimals_fragment extends Fragment {
         richiediCarico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ArrayList<Integer> positionSelectedCB= mAdapter.getPositionSelectedCB();
-                if(positionSelectedCB.isEmpty()){
-                    Toast.makeText(getContext(),"Seleziona almeno un animale",Toast.LENGTH_SHORT).show();
-                }else{
-                    ArrayList <Animale> animaliPerCarico= new ArrayList<>();
-                    if (filteredlist.size() == 0) {
-                        //Ottengo l'oggetto dalla lista in posizione "position"
 
-                        for(int i=0;i<positionSelectedCB.size();i++){
-                            animaliPerCarico.add(mDataset.get(positionSelectedCB.get(i)));
-                        }
-                        mDataset.clear();
-                        filteredlist.clear();
-                    } else {
 
-                        for (int i = 0; i < positionSelectedCB.size(); i++) {
-                            animaliPerCarico.add(filteredlist.get(positionSelectedCB.get(i)));
+
+
+
+             ArrayList<Integer> positionSelectedCB= mAdapter.getPositionSelectedCB();
+
+                if(positionSelectedCB.isEmpty()) {
+                    Toast.makeText(getContext(), "Seleziona almeno un animale", Toast.LENGTH_SHORT).show();
+                }else {
+                    Bluetooth bluetooth = new Bluetooth(getActivity(),activityResultLaunch);
+                    //VERIFICO CHE IL BLUETOOTH E' SUPPORTATO
+                    if(!bluetooth.VerificaBtSupportato())
+                    {
+                        ArrayList <Animale> animaliPerCarico= new ArrayList<>();
+                        if (filteredlist.size() == 0) {
+                            //Ottengo l'oggetto dalla lista in posizione "position"
+
+                            for(int a=0;a<positionSelectedCB.size();a++){
+                                animaliPerCarico.add(mDataset.get(positionSelectedCB.get(a)));
+                            }
+                            mDataset.clear();
+                            filteredlist.clear();
+                        } else {
+
+                            for (int a = 0; a < positionSelectedCB.size(); a++) {
+                                animaliPerCarico.add(filteredlist.get(positionSelectedCB.get(a)));
+                            }
+                            mDataset.clear();
+                            filteredlist.clear();
                         }
-                        mDataset.clear();
-                        filteredlist.clear();
+                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                        mAdapter.notifyDataSetChanged();
                     }
-                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
-                    mAdapter.notifyDataSetChanged();
+                    else{
+                        showDialogBluetooth(positionSelectedCB);
+                    }
+
+
+
+
+
+
                 }
 
             }
         });
+
        
 
         return rootView;
     }
 
+
+
+
     @Override
     public void onResume() {
+
         ruolo="";
         mDataset.clear();
         caricoDataset.clear();
@@ -582,6 +646,7 @@ public class myanimals_fragment extends Fragment {
     BadgeDrawable badgeDrawableFab;
     private void setBadgeRichiesteFab(FloatingActionButton fab) {
         fab.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @SuppressLint("UnsafeOptInUsageError")
             @Override
             public void onGlobalLayout() {
 
@@ -632,6 +697,54 @@ public class myanimals_fragment extends Fragment {
     private Animator createExpandAnimator(View view, float offset) {
         return ObjectAnimator.ofFloat(view, TRANSLATION_Y, offset, 0)
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
+    }
+
+
+    private void  showDialogBluetooth(ArrayList<Integer> positionSelectedCB)
+    {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+
+        builder.setMessage("Se lo specialista si trova vicino a te è possibile inviare l'incarico tramite Bluetooth.\n" +
+                        "Seleziona la modalità di invio Incarico")
+                .setTitle("Modalità invio incarico")
+                .setPositiveButton("Continua senza bluetooth", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        ArrayList <Animale> animaliPerCarico= new ArrayList<>();
+                        if (filteredlist.size() == 0) {
+                            //Ottengo l'oggetto dalla lista in posizione "position"
+
+                            for(int a=0;a<positionSelectedCB.size();a++){
+                                animaliPerCarico.add(mDataset.get(positionSelectedCB.get(a)));
+                            }
+                            mDataset.clear();
+                            filteredlist.clear();
+                        } else {
+
+                            for (int a = 0; a < positionSelectedCB.size(); a++) {
+                                animaliPerCarico.add(filteredlist.get(positionSelectedCB.get(a)));
+                            }
+                            mDataset.clear();
+                            filteredlist.clear();
+                        }
+                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Invia con Bluetooth", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Bluetooth bluetooth= new Bluetooth((AppCompatActivity) getActivity(),activityResultLaunch);
+                       bluetooth.AbilitazioneBT();
+
+
+
+                    }
+                });
+
+        builder.show();
     }
 }
 

@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import adapter.AnimalAdapter;
 import adapter.VPAdapter;
+import class_general.Bluetooth;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.myanimals_fragment;
@@ -70,10 +71,24 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        getFragmentTagReference();
+
         super.onResume();
+        getFragmentTagReference();
 
 
+
+
+
+
+    }
+
+
+
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
 
