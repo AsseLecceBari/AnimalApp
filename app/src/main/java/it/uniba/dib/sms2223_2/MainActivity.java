@@ -1,15 +1,11 @@
 package it.uniba.dib.sms2223_2;
 
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
@@ -21,7 +17,6 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import adapter.AnimalAdapter;
 import adapter.VPAdapter;
-import class_general.Bluetooth;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.myanimals_fragment;

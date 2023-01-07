@@ -55,7 +55,7 @@ import DB.CaricoDB;
 import DB.UtentiDB;
 import adapter.AnimalAdapter;
 import DB.AnimaleDB;
-import class_general.Bluetooth;
+import class_general.Bluetooh.Bluetooth;
 import fragments.RecyclerItemClickListener;
 import fragments.RicercaDispositiviBluetooth;
 import fragments.gestioneRichiesteCaricoFragment;
@@ -123,6 +123,7 @@ public class myanimals_fragment extends Fragment {
     ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
             new ActivityResultCallback<ActivityResult>() {
+                @SuppressLint("NewApi")
                 @Override
                 public void onActivityResult(ActivityResult result) {
                     Log.d("ciao", String.valueOf(result.getResultCode()));
@@ -131,6 +132,11 @@ public class myanimals_fragment extends Fragment {
                 Toast.makeText(getContext(),"Invio Annullato",Toast.LENGTH_SHORT).show();
 
                     } else if (result.getResultCode() == -1) {
+
+
+
+
+
                         getActivity().getSupportFragmentManager().beginTransaction()
                                 .replace(R.id.fragmentContainerView,  new RicercaDispositiviBluetooth()).addToBackStack(null).commit();
 
