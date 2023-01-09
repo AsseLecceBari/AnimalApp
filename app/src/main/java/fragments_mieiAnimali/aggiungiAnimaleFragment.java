@@ -324,7 +324,7 @@ public class aggiungiAnimaleFragment extends Fragment {
 
                         for(QueryDocumentSnapshot document : task.getResult()){
                             ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
-                            if(!ruolo.equals("proprietario")){
+                            if(!ruolo.equals("proprietario") && !ruolo.equals("veterinario")){
                                 box.setVisibility(View.VISIBLE);
                             }
 

@@ -8,142 +8,161 @@
 
 
 
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
 
-    <androidx.gridlayout.widget.GridLayout
-        android:id="@+id/gridTipi"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:columnCount="2"
-        app:rowCount="3">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/smarrimento"
-                android:layout_width="205dp"
-                android:layout_height="205dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="smarrimento"
-                android:src="@drawable/ic_launcher_foreground" />
+        <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/gridTipi"
+            android:layout_width="299dp"
+            android:layout_height="600dp"
+            android:layout_gravity="center"
+            app:columnCount="2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:rowCount="3">
 
-            <TextView
-                android:id="@+id/textSmarrimento"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Smarrimento"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/smarrimento"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/roundcorner"
+                    android:contentDescription="smarrimento"
+                    android:src="@drawable/ic_launcher_foreground" />
+
+                <TextView
+                    android:id="@+id/textSmarrimento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="25dp"
+                    android:text="Smarrimento"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <ImageButton
-                android:id="@+id/animaleFerito"
-                android:layout_width="205dp"
-                android:layout_height="205dp"
-                android:background="@drawable/roundcorner"
-                android:src="@drawable/ic_launcher_foreground"
-
-                />
-
-            <TextView
-                android:id="@+id/textAnimaleFerito"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Animale Ferito"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/animaleFerito"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/roundcorner"
+                    android:src="@drawable/ic_launcher_foreground"
 
-            <ImageButton
-                android:id="@+id/pericolo"
-                android:layout_width="205dp"
-                android:layout_height="205dp"
-                android:background="@drawable/roundcorner"
-                android:src="@drawable/ic_launcher_foreground" />
+                    />
 
-            <TextView
-                android:id="@+id/textPericolo"
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textAnimaleFerito"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Animale Ferito"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pericolo"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/pericolo"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/roundcorner"
+                    android:src="@drawable/ic_launcher_foreground" />
 
-            <ImageButton
-                android:id="@+id/news"
-                android:layout_width="205dp"
-                android:layout_height="205dp"
-                android:background="@drawable/roundcorner"
-                android:src="@drawable/ic_launcher_foreground" />
+                <TextView
+                    android:id="@+id/textPericolo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pericolo"
+                    android:textAlignment="center"
+                    android:layout_marginBottom="25dp"/>
+            </LinearLayout>
 
-            <TextView
-                android:id="@+id/textNews"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="News"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/news"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/roundcorner"
+                    android:src="@drawable/ic_launcher_foreground" />
 
-            <ImageButton
-                android:id="@+id/raccoltaFondi"
-                android:layout_width="205dp"
-                android:layout_height="205dp"
-                android:background="@drawable/roundcorner"
-                android:src="@drawable/ic_launcher_foreground"
+                <TextView
+                    android:id="@+id/textNews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="News"
+                    android:textAlignment="center" />
+            </LinearLayout>
 
-                />
-
-            <TextView
-                android:id="@+id/textRaccoltaFondi"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Raccolta Fondi"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                <ImageButton
+                    android:id="@+id/raccoltaFondi"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/roundcorner"
+                    android:src="@drawable/ic_launcher_foreground"
 
-            <ImageButton
-                android:id="@+id/ritrovamento"
-                android:layout_width="205dp"
-                android:layout_height="205dp"
-                android:background="@drawable/roundcorner"
-                android:contentDescription="ritrovamento"
-                android:src="@drawable/ic_launcher_foreground" />
+                    />
 
-            <TextView
-                android:id="@+id/textRitrovamento"
-                android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/textRaccoltaFondi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Raccolta Fondi"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ritrovamento"
-                android:textAlignment="center" />
-        </LinearLayout>
+                android:orientation="vertical">
 
-    </androidx.gridlayout.widget.GridLayout>
+                <ImageButton
+                    android:id="@+id/ritrovamento"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:background="@drawable/roundcorner"
+                    android:contentDescription="ritrovamento"
+                    android:src="@drawable/ic_launcher_foreground" />
+
+                <TextView
+                    android:id="@+id/textRitrovamento"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ritrovamento"
+                    android:textAlignment="center" />
+            </LinearLayout>
+
+        </androidx.gridlayout.widget.GridLayout>
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </FrameLayout>

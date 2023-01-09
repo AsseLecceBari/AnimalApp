@@ -9,6 +9,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -22,15 +30,6 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -48,13 +47,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-
 import java.util.ArrayList;
 
+import DB.AnimaleDB;
 import DB.CaricoDB;
 import DB.UtentiDB;
 import adapter.AnimalAdapter;
-import DB.AnimaleDB;
 import class_general.Bluetooh.Bluetooth;
 import fragments.RecyclerItemClickListener;
 import fragments.RicercaDispositiviBluetooth;
@@ -597,7 +595,8 @@ public class myanimals_fragment extends Fragment {
             public void onClick(View v) {
                 expanded = !expanded;
                 if (expanded) {
-                    badgeDrawableFab.setVisible(false);
+                    if(badgeDrawableFab != null)
+                        badgeDrawableFab.setVisible(false);
                     expandFab();
 
                 } else {
