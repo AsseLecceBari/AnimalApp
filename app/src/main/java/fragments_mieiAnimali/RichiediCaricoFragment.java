@@ -68,7 +68,7 @@ public class RichiediCaricoFragment extends Fragment {
         if (getArguments() != null) {
             mParam1 = (ArrayList<Animale>) getArguments().getSerializable(ARG_PARAM1);
             for(Animale animale:mParam1){
-                Log.e("animale",animale.getNome());
+                Log.e("ciao123",animale.getNome());
             }
 
 

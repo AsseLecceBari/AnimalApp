@@ -62,12 +62,13 @@ public class Connection extends Thread {
         // Keep listening to the InputStream until an exception occurs.
         while (true) {
             try {
+                cancel();
                 // Read from the InputStream.
                 numBytes = mmInStream.read(mmBuffer);
                 //prendi i dati da mmbuffer a partire da 0 fino a numbytes
                 String readMessage = new String(mmBuffer, 0, numBytes);
-                Log.d("ciao33", String.valueOf(numBytes));
-                Log.d("ciao33",readMessage);
+                Log.d("ciao34", String.valueOf(numBytes));
+                Log.d("ciao34",readMessage);
 
 
 
@@ -77,13 +78,9 @@ public class Connection extends Thread {
                 readMsg.sendToTarget();
                 //mhandler.sendMessage(readMsg);
 
-                // Send the obtained bytes to the UI activity.
-                  /*  Message readMsg = handler.obtainMessage(
-                            MessageConstants.MESSAGE_READ, numBytes, -1,
-                            mmBuffer);
-                    readMsg.sendToTarget();*/
+
             } catch (IOException e) {
-                Log.d(TAG, "Input stream was disconnected", e);
+                Log.d("ciao33", "Input stream was disconnected", e);
                 break;
             }
         }
@@ -111,6 +108,11 @@ public class Connection extends Thread {
                 writeErrorMsg.setData(bundle);
                 handler.sendMessage(writeErrorMsg);*/
         }
+    }
+
+
+    public void cancel() throws IOException {
+        mmSocket.close();
     }
 }
 

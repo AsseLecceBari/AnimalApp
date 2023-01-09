@@ -10,17 +10,19 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.UUID;
 
-public class ServerSocket implements Runnable {
+public class ServerSocket extends Thread {
 
 
     private final BluetoothServerSocket mServerSoket;
     private BluetoothAdapter mBtAdapter;
     private Handler mHandler;
+    private String emailVeterinario;
 
     @SuppressLint("MissingPermission")
-    public ServerSocket(BluetoothAdapter adapter, Handler handler)  {
+    public ServerSocket(BluetoothAdapter adapter, Handler handler, String email)  {
         mBtAdapter= adapter;
         mHandler= handler;
+        emailVeterinario= email;
         BluetoothServerSocket tmp = null;
 
         try {
@@ -43,6 +45,7 @@ public class ServerSocket implements Runnable {
             try{
 
                 socket=mServerSoket.accept();
+
             } catch (IOException e) {
 
                 e.printStackTrace();
@@ -51,8 +54,11 @@ public class ServerSocket implements Runnable {
 
             if(socket!= null)
             {
-                ConnectionManager gestioneConnessione= new ConnectionManager(socket,mHandler);
-                gestioneConnessione.write("cio");
+                Log.d("ciao33","sono connesso s");
+               ConnectionManager connectionManager= new ConnectionManager(socket,mHandler);
+             //  connectionManager.write(emailVeterinario);
+
+
                 try {
                     mServerSoket.close();
                 } catch (IOException e) {

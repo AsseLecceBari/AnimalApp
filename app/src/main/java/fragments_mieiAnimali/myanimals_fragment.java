@@ -7,6 +7,7 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -48,7 +49,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONStringer;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import DB.AnimaleDB;
@@ -116,6 +124,7 @@ public class myanimals_fragment extends Fragment {
     private float offset2;
     private float offset3;
     Bluetooth bluetooth;
+    ArrayList <Animale> animaliPerCarico= new ArrayList<>();
 
 
 
@@ -134,11 +143,17 @@ public class myanimals_fragment extends Fragment {
                     } else if (result.getResultCode() == -1) {
 
 
+                        String a =animaliPerCarico.toString();
+                        try {
+                            JSONObject json = new JSONObject(a);
+                            getActivity().getSupportFragmentManager().beginTransaction()
+                                    .replace(R.id.fragmentContainerView,   RicercaDispositiviBluetooth.newInstance(animaliPerCarico)).addToBackStack(null).commit();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
 
 
-                        getActivity().getSupportFragmentManager().beginTransaction()
-                                .replace(R.id.fragmentContainerView,  new RicercaDispositiviBluetooth()).addToBackStack(null).commit();
 
 
 
@@ -277,7 +292,7 @@ public class myanimals_fragment extends Fragment {
                     //VERIFICO CHE IL BLUETOOTH E' SUPPORTATO
                     if(!bluetooth.VerificaBtSupportato())
                     {
-                        ArrayList <Animale> animaliPerCarico= new ArrayList<>();
+
                         if (filteredlist.size() == 0) {
                             //Ottengo l'oggetto dalla lista in posizione "position"
 
@@ -327,6 +342,13 @@ public class myanimals_fragment extends Fragment {
         caricoDataset.clear();
         filteredlist.clear();
         countMyAnimals=0;
+
+
+
+
+
+
+
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         if(auth.getCurrentUser()!=null) {
             animaleDB.getMieiAnimali(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -633,7 +655,7 @@ public class myanimals_fragment extends Fragment {
             @SuppressLint("UnsafeOptInUsageError")
             @Override
             public void onGlobalLayout() {
-
+                BadgeDrawable badgeDrawableFab;
                 try{
                     badgeDrawableFabRichieste = BadgeDrawable.create(getContext());
 
@@ -749,9 +771,30 @@ public class myanimals_fragment extends Fragment {
                 .setNegativeButton(R.string.invia_con_bluetooth, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Bluetooth bluetooth= new Bluetooth((AppCompatActivity) getActivity(),activityResultLaunch);
-                       bluetooth.AbilitazioneBT();
 
+                        ArrayList<Animale> animaliPerCarico = new ArrayList<>();
+
+                        if (filteredlist.size() == 0) {
+                            //Ottengo l'oggetto dalla lista in posizione "position"
+
+                            for (int a = 0; a < positionSelectedCB.size(); a++) {
+                                animaliPerCarico.add(mDataset.get(positionSelectedCB.get(a)));
+                            }
+                            mDataset.clear();
+                            filteredlist.clear();
+                        } else {
+
+                            for (int a = 0; a < positionSelectedCB.size(); a++) {
+                                animaliPerCarico.add(filteredlist.get(positionSelectedCB.get(a)));
+                            }
+                            mDataset.clear();
+                            filteredlist.clear();
+                        }
+                        Bluetooth bluetooth = new Bluetooth(getActivity(), activityResultLaunch);
+
+
+                          bluetooth.AbilitazioneBT(animaliPerCarico);
+                        mAdapter.notifyDataSetChanged();
 
 
                     }

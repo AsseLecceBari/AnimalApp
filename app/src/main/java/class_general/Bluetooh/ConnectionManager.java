@@ -13,6 +13,7 @@ public class ConnectionManager {
         mHandler= handler;
 
         connectedThread = new Connection(socket, handler);
+       //
         connectedThread.start();
 
     }

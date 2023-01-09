@@ -10,21 +10,19 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-import adapter.DispositiviDisponibiliBt;
 import fragments.RicercaDispositiviBluetooth;
 import it.uniba.dib.sms2223_2.R;
+import model.Animale;
 
 
 public class Bluetooth  {
@@ -32,7 +30,10 @@ public class Bluetooth  {
     private BluetoothAdapter mBtAdapter ;
     private final FragmentActivity mactivity;
     private static int REQUEST_ENABLE_BT=2;
-    ActivityResultLauncher<Intent> mactivityResultLaunch;
+   private ActivityResultLauncher<Intent> mactivityResultLaunch;
+    private ArrayList<Animale> listAnimali;
+    private  SingBroadcastReceiver mReceiver;
+
 
     public Bluetooth(FragmentActivity activity,   ActivityResultLauncher<Intent> activityResultLaunch )
     {
@@ -71,8 +72,12 @@ public class Bluetooth  {
 
 
 
-    @SuppressLint("NewApi")
-    public void AbilitazioneBT() {
+    @SuppressLint({"NewApi", "SuspiciousIndentation"})
+    public void AbilitazioneBT(ArrayList<Animale> animaliPerCarico) {
+
+
+
+
      if (!mBtAdapter.isEnabled()) {
             Intent enableBt = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
            if (android.os.Build.VERSION.SDK_INT > 30) {
@@ -83,11 +88,13 @@ public class Bluetooth  {
                            1
                    );
                } else {
+                   listAnimali= animaliPerCarico;
 
                    mactivityResultLaunch.launch(enableBt);
                    Log.d("ciao23", String.valueOf(REQUEST_ENABLE_BT));
                }
            }else {
+               listAnimali= animaliPerCarico;
 
                //con api minori di 30 non chiede il permesso BLUETOOTH_CONNECT ma richiede BLUETOOTH, che non viene chiesto a runTime
                mactivityResultLaunch.launch(enableBt);
@@ -95,8 +102,12 @@ public class Bluetooth  {
 
 
         }
-     else  mactivity.getSupportFragmentManager().beginTransaction()
-             .replace(R.id.fragmentContainerView,  new RicercaDispositiviBluetooth()).addToBackStack(null).commit();
+     else
+         listAnimali= animaliPerCarico;
+
+
+         mactivity.getSupportFragmentManager().beginTransaction()
+             .replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
 
     }
 
@@ -120,12 +131,11 @@ public class Bluetooth  {
 
 
     @SuppressLint("MissingPermission")
-    public void BtScanner(ArrayList<BluetoothDevice> listdevice, Handler mhandler, DispositiviDisponibiliBt dispositiviDisponibiliBtad, RecyclerView mRecyclerView) {
+    public void BtScanner(RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler mHandler) {
 
 
 
 
-            SingBroadcastReceiver mReceiver;
 
             if (mBtAdapter.isDiscovering()) {
                 mBtAdapter.cancelDiscovery();
@@ -133,12 +143,19 @@ public class Bluetooth  {
             mBtAdapter.startDiscovery();
 
 
-            mReceiver = new SingBroadcastReceiver(mBtAdapter, listdevice, mhandler, dispositiviDisponibiliBtad, mRecyclerView);
+            mReceiver = new SingBroadcastReceiver(mBtAdapter, mRecyclerView, listAnimali, mHandler);
             IntentFilter ifilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             mactivity.registerReceiver(mReceiver, ifilter);
 
 
 
+
+
+    }
+
+    public void unregistrerReceiver()
+    {
+mactivity.unregisterReceiver(mReceiver);
     }
 
 

@@ -8,32 +8,39 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
-import android.util.Log;
-import android.widget.Toast;
+import android.view.View;
+
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import adapter.DispositiviDisponibiliBt;
+import model.Animale;
 
 
 public  class SingBroadcastReceiver extends BroadcastReceiver {
 
     BluetoothAdapter mBtAdapter;
     Handler mhandler;
-    ArrayList<BluetoothDevice> mlistdevice = new ArrayList<>();
+    ArrayList<Animale > mlistAnimali;
+
     DispositiviDisponibiliBt  dispositiviDisponibiliBt= new DispositiviDisponibiliBt();
     RecyclerView mrecycleView;
 
 
-    public SingBroadcastReceiver(BluetoothAdapter adapter, ArrayList<BluetoothDevice> listdevice, Handler handler, DispositiviDisponibiliBt dispositiviDisponibiliBtad, RecyclerView mRecyclerView) {
-        mBtAdapter= adapter;
 
-        mhandler= handler;
+
+    public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler Handler) {
+        mBtAdapter= adapter;
+        mlistAnimali= listAnimali;
+        mhandler=Handler;
+
+
+
 
         mrecycleView= mRecyclerView;
+
 
 
     }
@@ -47,20 +54,25 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
             // Get the BluetoothDevice object from the Intent
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
 
-            Log.d("ciao3", device.getName());
-            mlistdevice.add(device);
-
-
-
       dispositiviDisponibiliBt.aggiornalista(device);
             mrecycleView.setAdapter(dispositiviDisponibiliBt);
 
+            mrecycleView.addOnItemTouchListener(new class_general.RecyclerItemClickListener(context, mrecycleView , new class_general.RecyclerItemClickListener.OnItemClickListener() {
+                @Override
+                public void onItemClick(View view, int position) {
 
+                    ClientSocket clientSocket= new ClientSocket(device,mBtAdapter, mhandler,mlistAnimali);
+                    clientSocket.start();
+                }
 
+                @Override
+                public void onLongItemClick(View view, int position) {
 
-
+                }
+            }));
 
 
         }
     }
+
 }

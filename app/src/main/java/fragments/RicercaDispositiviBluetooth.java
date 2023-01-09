@@ -5,12 +5,14 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
@@ -26,11 +28,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 import adapter.DispositiviDisponibiliBt;
 import class_general.Bluetooh.Bluetooth;
+import class_general.Bluetooh.ConnectionManager;
 import it.uniba.dib.sms2223_2.R;
+import model.Adozione;
+import model.Animale;
 
 
 @RequiresApi(api = Build.VERSION_CODES.S)
@@ -38,14 +50,19 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     private Toolbar main_action_bar;
     ArrayList<BluetoothDevice> mlistDevices= new ArrayList<>();
     DispositiviDisponibiliBt dispositiviDisponibiliBt;
-
+    private RecyclerItemClickListener recyclerItemClickListener;
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private ArrayList<Animale> mParam1;
+    private static final String ARG_PARAM1 = "listaAnimali";
     private Handler mHandler;
     private RecyclerView mRecyclerView;
     private View bottone;
+
+
+   private  Bluetooth bluetooth;
+
+
 
 
     public interface MessageConstants {
@@ -78,10 +95,10 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static RicercaDispositiviBluetooth newInstance(String param1, String param2) {
+    public static RicercaDispositiviBluetooth newInstance(ArrayList<Animale> param1) {
         RicercaDispositiviBluetooth fragment = new RicercaDispositiviBluetooth();
         Bundle args = new Bundle();
-
+        args.putSerializable(ARG_PARAM1, param1);
         fragment.setArguments(args);
         return fragment;
     }
@@ -90,6 +107,12 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+
+       mParam1= (ArrayList<Animale>) getArguments().getSerializable(ARG_PARAM1);
+            for(Animale animale:mParam1){
+                Log.e("ciao123",animale.getNome());
+            }
+
 
         }
     }
@@ -109,32 +132,82 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
         }
         else {
+
+
+
+
             mHandler = new Handler(Looper.getMainLooper()) {
 
                 @Override
                 public void handleMessage(@NonNull Message msg) {
                     super.handleMessage(msg);
+                    AlertDialog.Builder builder;
 
-                    if (msg.what == MessageConstants.MESSAGE_READ) {
+
+
+
+
                         byte[] mmBuffer = (byte[]) msg.obj;
 
                         String readMessage = new String(mmBuffer, 0, msg.arg1);
 
+
+                    builder = new AlertDialog.Builder(getActivity());
+
+
+
+                    builder.setMessage("Vuoi inviare l'incarico a " + readMessage+"?")
+                            .setTitle("Invio Incarico")
+                            .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    builder.setCancelable(true);
+                                }
+                            }).setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                  String a=  mParam1.toString();
+                                    try {
+                                        Animale mSampleObject = mParam1.get(0);
+                                        String jsonInString = new Gson().toJson(mSampleObject);
+                                        JSONObject mJSONObject = new JSONObject(jsonInString);
+                                        Log.d("ciao23", String.valueOf(mJSONObject));
+                                    } catch (JSONException e) {
+
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+
+
+
+
+
+
+                    builder.show();
+
+
+
                     }
 
 
-                }
+
             };
 
 
-            Bluetooth bluetooth = new Bluetooth(getActivity());
-            bluetooth.BtScanner(mlistDevices, mHandler, dispositiviDisponibiliBt, mRecyclerView);
-
+          bluetooth.BtScanner(mRecyclerView, mParam1, mHandler);
 
         }
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+           bluetooth.unregistrerReceiver();
+
+    }
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -148,14 +221,14 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             if(main_action_bar.getMenu()!=null) {
                 main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
             }
-            main_action_bar.setTitle(R.string.seleziona_dispositivo);
+            main_action_bar.setTitle("Seleziona Dispositivo ");
             main_action_bar.setNavigationIcon(R.drawable.back);
         }
 
-        mRecyclerView = (RecyclerView) rootview.findViewById(R.id.item_dispositiviNonAssociati);
+        mRecyclerView = rootview.findViewById(R.id.item_dispositiviNonAssociati);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
+        bluetooth= new Bluetooth(getActivity());
 
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         return rootview;
