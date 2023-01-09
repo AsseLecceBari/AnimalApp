@@ -60,16 +60,18 @@ public class ClientSocket extends Thread {
 
         try {
             mSocket.connect();
+            Log.d("ciao33","close");
         } catch (IOException e) {
+
 
             try {
                 mSocket.close();
+
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
         }
-Log.d("ciao33","sono connesso c");
 
         ConnectionManager gestioneConnessione = new ConnectionManager(mSocket, mhandler);
         ArrayList<JSONObject> arrayList = new ArrayList<>();
@@ -87,7 +89,7 @@ for(int i =0; i<mlistAnimali.size(); i++){
     }
 
 
-            gestioneConnessione.write(arrayList.toString());
+           gestioneConnessione.write(arrayList.toString());
 
 
 

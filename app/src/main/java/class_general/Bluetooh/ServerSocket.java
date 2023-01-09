@@ -56,7 +56,7 @@ public class ServerSocket extends Thread {
             {
                 Log.d("ciao33","sono connesso s");
                ConnectionManager connectionManager= new ConnectionManager(socket,mHandler);
-             //  connectionManager.write(emailVeterinario);
+              connectionManager.write(emailVeterinario);
 
 
                 try {
