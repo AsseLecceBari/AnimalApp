@@ -1,5 +1,7 @@
 package fragments_mieiAnimali;
 
+import static it.uniba.dib.sms2223_2.R.string.seleziona_almeno_un_animale;
+
 import android.Manifest;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -154,8 +156,8 @@ public class myanimals_fragment extends Fragment {
 
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
-        alertDialogBuilder.setPositiveButton("Ho capito",
+        alertDialogBuilder.setMessage(getString(R.string.consiglio_accettare_permessi));
+        alertDialogBuilder.setPositiveButton(getString(R.string.ho_capito),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -163,7 +165,7 @@ public class myanimals_fragment extends Fragment {
                     }
                 });
 
-        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(getString(R.string.magari_piu_tardi), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
@@ -269,7 +271,7 @@ public class myanimals_fragment extends Fragment {
              ArrayList<Integer> positionSelectedCB= mAdapter.getPositionSelectedCB();
 
                 if(positionSelectedCB.isEmpty()) {
-                    Toast.makeText(getContext(), "Seleziona almeno un animale", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), seleziona_almeno_un_animale, Toast.LENGTH_SHORT).show();
                 }else {
                     Bluetooth bluetooth = new Bluetooth(getActivity(),activityResultLaunch);
                     //VERIFICO CHE IL BLUETOOTH E' SUPPORTATO
@@ -707,10 +709,10 @@ public class myanimals_fragment extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
 
-        builder.setMessage("Se lo specialista si trova vicino a te è possibile inviare l'incarico tramite Bluetooth.\n" +
-                        "Seleziona la modalità di invio Incarico")
-                .setTitle("Modalità invio incarico")
-                .setPositiveButton("Continua senza bluetooth", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.se_lo_specialista_si_trova_vicino_a_te) +
+                        getString(R.string.seleziona_modalita_invio_carico))
+                .setTitle(R.string.modalita_invio_carico)
+                .setPositiveButton(R.string.continua_senza_bluetooth, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         ArrayList <Animale> animaliPerCarico= new ArrayList<>();
@@ -734,7 +736,7 @@ public class myanimals_fragment extends Fragment {
                         mAdapter.notifyDataSetChanged();
                     }
                 })
-                .setNegativeButton("Invia con Bluetooth", new DialogInterface.OnClickListener() {
+                .setNegativeButton(R.string.invia_con_bluetooth, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         Bluetooth bluetooth= new Bluetooth((AppCompatActivity) getActivity(),activityResultLaunch);

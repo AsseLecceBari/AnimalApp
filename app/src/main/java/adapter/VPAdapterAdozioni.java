@@ -24,7 +24,6 @@ public class VPAdapterAdozioni extends FragmentStateAdapter {
 
             fragmentArrayList.add(new info_adozione());
             fragmentArrayList.add(new info_Proprietario());
-          Log.d("ciao1234", String.valueOf(fragmentArrayList.size()));
 
         }
         else{

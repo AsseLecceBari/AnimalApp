@@ -109,9 +109,6 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
         }
         else {
-            Log.d("ciao3", "prova");
-
-
             mHandler = new Handler(Looper.getMainLooper()) {
 
                 @Override
@@ -123,7 +120,6 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
                         String readMessage = new String(mmBuffer, 0, msg.arg1);
 
-                        Log.d("ciao33", readMessage);
                     }
 
 
@@ -152,7 +148,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             if(main_action_bar.getMenu()!=null) {
                 main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
             }
-            main_action_bar.setTitle("Seleziona Dispositivo ");
+            main_action_bar.setTitle(R.string.seleziona_dispositivo);
             main_action_bar.setNavigationIcon(R.drawable.back);
         }
 

@@ -91,8 +91,6 @@ public class adoptions_fragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
-        Log.d("ciao99","sono in onstart");
         mDataset.clear();
         mRecyclerView.setAdapter(null);
         auth = FirebaseAuth.getInstance();

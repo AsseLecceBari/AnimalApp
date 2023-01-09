@@ -1,5 +1,8 @@
 package fragments_mieiAnimali;
 
+import static it.uniba.dib.sms2223_2.R.string.aggiunto;
+import static it.uniba.dib.sms2223_2.R.string.errore;
+
 import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -75,7 +78,7 @@ public class aggiungiCarico extends Fragment {
                             toast.cancel();
                             toast = null;
                         }else{
-                            toast = Toast.makeText(getActivity().getApplicationContext(), "Rilevazione!", Toast.LENGTH_SHORT);
+                            toast = Toast.makeText(getActivity().getApplicationContext(), R.string.rilevazione, Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     }
@@ -91,12 +94,12 @@ public class aggiungiCarico extends Fragment {
                     db.collection("carichi").document(carico.getId()).set(carico).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            Toast.makeText(getActivity().getApplicationContext(), "Aggiunto!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity().getApplicationContext(), aggiunto, Toast.LENGTH_SHORT).show();
                             getActivity().onBackPressed();
                         }
                     });
                 }else{
-                    Toast.makeText(getActivity().getApplicationContext(), "Errore!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity().getApplicationContext(), errore, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -118,7 +121,7 @@ public class aggiungiCarico extends Fragment {
                         break;
                     }
                     if(task.getResult().isEmpty()){
-                        dati.setText("Impossibile aggiungere - NESSUN RISULTATO!");
+                        dati.setText(R.string.impossibile_aggiungere_nessun_risultato);
                         aggiungi.setVisibility(View.GONE);
                         dati.setAllCaps(false);
                         dati.setTextColor(Color.RED);
@@ -127,7 +130,7 @@ public class aggiungiCarico extends Fragment {
                         mCodeScanner.startPreview();
                     }
                 }else{ // mi va in non successo se metto nella query quella condizione
-                    dati.setText("Impossibile aggiungere! - non successo");
+                    dati.setText(R.string.impossibile_aggiungere_non_successo);
                     aggiungi.setVisibility(View.GONE);
                     dati.setAllCaps(false);
                     dati.setTextColor(Color.RED);
@@ -158,7 +161,7 @@ public class aggiungiCarico extends Fragment {
                             carico = new Carico(new Random().nextInt(999999999)+"", new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString()+"", "datafine", idAnimale, auth.getCurrentUser().getEmail(), "nota prova", true);
 
                             // mi riempio la field dati
-                            dati.setText(a.getNome() + ",  " + a.getGenere() + "\nPuò essere preso in carico! \nPREMI IL PULSANTE  VERDE PER AGGIUNGERE");
+                            dati.setText(a.getNome() + ",  " + a.getGenere() + getString(R.string.puo_essere_preso_in_carico_premere_pulsante_verde));
                             dati.setAllCaps(true);
                             dati.setTextColor(coloreDati);
 
@@ -167,7 +170,7 @@ public class aggiungiCarico extends Fragment {
                         }else{
                             // ce gia qualcuno in corso
                             aggiungi.setVisibility(View.GONE);
-                            dati.setText("Attualmente gia' in carico!");
+                            dati.setText(R.string.attualmente_gia_in_carico);
                             dati.setAllCaps(false);
                             dati.setTextColor(Color.RED);
                             carico = null;
@@ -176,7 +179,7 @@ public class aggiungiCarico extends Fragment {
                         }
                     }else {
                         aggiungi.setVisibility(View.GONE);
-                        dati.setText("Impossibile aggiungere!\n\nTocca il QR SCANNER per riprovare!");
+                        dati.setText(R.string.impossibile_aggiungere_tocca_il_qr_Code);
                         dati.setAllCaps(false);
                         dati.setTextColor(Color.RED);
                         carico = null;

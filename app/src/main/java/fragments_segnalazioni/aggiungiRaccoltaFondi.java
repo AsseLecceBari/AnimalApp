@@ -57,7 +57,7 @@ public class aggiungiRaccoltaFondi extends Fragment {
         conferma = rootView.findViewById(R.id.conferma);
         imgAnimale = rootView.findViewById(R.id.imgAnimale);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle("Segnala raccolta fondi");
+        main_action_bar.setTitle(R.string.segnala_raccolta_fondi);
         conferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

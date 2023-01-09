@@ -66,32 +66,32 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
             nonEsame.setVisibility(View.GONE);
 
             if(s.getIsDiagnosiPositiva()){
-                note.setText("L'esame è andato a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+                note.setText(getString(R.string.l_esame_e_andato_a_buon_fine) + s.getStatoTrattamento());
             }else{
-                note.setText("L'esame NON è andato a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+                note.setText(getString(R.string.l_esame_non_e_andato_a_buon_fine) + s.getStatoTrattamento());
             }
 
         }else{
-            diagnosi.setText("Diagnosi: ".toUpperCase(Locale.ROOT)+s.getDiagnosi());
-            farmaci.setText("Farmaci: ".toUpperCase(Locale.ROOT) + s.getFarmaci());
+            diagnosi.setText(getString(R.string.diagnosi)+": ".toUpperCase(Locale.ROOT)+s.getDiagnosi());
+            farmaci.setText(getString(R.string.farmaci)+": ".toUpperCase(Locale.ROOT) + s.getFarmaci());
 
             nonEsame.setVisibility(View.VISIBLE);
 
             if(s.getIsDiagnosiPositiva()){
-                note.setText("La visita è andata a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+                note.setText(getString(R.string.la_visita_e_andata_a_buon_fine) + s.getStatoTrattamento());
             }else{
-                note.setText("La visita NON è andata a buon fine.\nLo stato trattamento è:\n" + s.getStatoTrattamento());
+                note.setText(getString(R.string.la_visita_non_e_andata_a_buon_fine) + s.getStatoTrattamento());
             }
 
         }
 
-        trattamento.setText("Trattamento: ".toUpperCase(Locale.ROOT)+s.getTrattamento());
-        motivoConsultazione.setText("Motivo consultazione: ".toUpperCase(Locale.ROOT)+s.getMotivoConsultazione());
-        data.setText("Data: " +s.getData());
+        trattamento.setText(getString(R.string.trattamento)+": ".toUpperCase(Locale.ROOT)+s.getTrattamento());
+        motivoConsultazione.setText(getString(R.string.motivo_consultazione)+": ".toUpperCase(Locale.ROOT)+s.getMotivoConsultazione());
+        data.setText(getString(R.string.data)+": " +s.getData());
         if(s.getEmailVet().equals("proprietario"))
-            fattaDa.setText("Segnalazione fatta dal proprietario e NON certificata");
+            fattaDa.setText(R.string.segnalazione_fatta_dal_proprietario);
         else
-            fattaDa.setText("Segnalazione fatta dal veterinario e CERTIFICATA");
+            fattaDa.setText(R.string.segnalazione_fatta_dal_veterinario);
 
         modifica.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +102,7 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
                     if(auth.getCurrentUser().getEmail().equals(s.getEmailVet())){
                         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaSegnalazioneSanitariaFragment(s)).commit();
                     }else{
-                        Toast.makeText(getContext(), "Questa segnalazione è modificabile solo dal veterinario che l'ha fatta!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), R.string.questa_segnalazione_è_modificabile_solo_dal_vet_che_l_ha_fatta, Toast.LENGTH_SHORT).show();
                     }
                 }else
                     getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaSegnalazioneSanitariaFragment(s)).commit();

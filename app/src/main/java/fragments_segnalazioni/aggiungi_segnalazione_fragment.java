@@ -33,7 +33,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
         View rootView =inflater.inflate(R.layout.fragment_aggiungi_segnalazione_fragment, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle("Aggiungi segnalazione");
+        main_action_bar.setTitle(R.string.aggiungi_segnalazione);
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
             main_action_bar.getMenu().clear();

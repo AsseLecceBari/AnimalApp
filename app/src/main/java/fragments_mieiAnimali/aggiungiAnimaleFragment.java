@@ -1,5 +1,7 @@
 package fragments_mieiAnimali;
 
+import static it.uniba.dib.sms2223_2.R.string.inserire_una_immagine_del_profilo;
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -106,8 +108,8 @@ public class aggiungiAnimaleFragment extends Fragment {
 
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
-                alertDialogBuilder.setPositiveButton("Ho capito",
+        alertDialogBuilder.setMessage(R.string.consiglio_accettare_permessi);
+                alertDialogBuilder.setPositiveButton(R.string.ho_capito,
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface arg0, int arg1) {
@@ -115,7 +117,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                             }
                         });
 
-        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.magari_piu_tardi, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
@@ -138,7 +140,7 @@ public class aggiungiAnimaleFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_animale, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle("Aggiungi Animale");
+        main_action_bar.setTitle(R.string.aggiungi_animale);
         animaleDB = new AnimaleDB();
         if(main_action_bar.getMenu()!=null) {
                 main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
@@ -224,11 +226,11 @@ public class aggiungiAnimaleFragment extends Fragment {
                     flag = 1;
                 }
                 if(TextUtils.isEmpty(sesso)){
-                    iLSessoAnimale.setError("Sesso obbligatorio");
+                    iLSessoAnimale.setError(getString(R.string.sesso_obbligatorio));
                     flag = 1;
                 }
                 if(TextUtils.isEmpty(fotoProfilo)){
-                    Toast.makeText(getContext(),"Inserire una immagine del profilo",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), inserire_una_immagine_del_profilo,Toast.LENGTH_LONG).show();
                     flag = 1;
                 }
                 if (TextUtils.isEmpty(dataDiNascita)){
@@ -277,7 +279,7 @@ public class aggiungiAnimaleFragment extends Fragment {
 
         // now define the properties of the
         // materialDateBuilder that is title text as SELECT A DATE
-        materialDateBuilder.setTitleText("Seleziona una data");
+        materialDateBuilder.setTitleText(R.string.seleziona_una_data);
 
 
         // now create the instance of the material date
