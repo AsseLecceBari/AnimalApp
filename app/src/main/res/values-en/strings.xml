@@ -2,8 +2,8 @@
 <resources>
     <string name="app_name">AnimalApp</string>
     <string name="myanimals">My animals</string>
-    <string name="adoptions">Adoption</string>
-    <string name="reports">Report</string>
+    <string name="adoptions">Adoptions</string>
+    <string name="reports">Reports</string>
     <string name="scansione_qrcode">QRcode scanner</string>
     <string name="profilo">Profile</string>
     <string name="logoutSuccess">Logout successful</string>
