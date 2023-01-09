@@ -166,8 +166,8 @@ public class ritrovamento extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(getActivity().getApplicationContext(),"Aggiunto",Toast.LENGTH_LONG).show();
-                        getActivity().onBackPressed();
-                        getActivity().onBackPressed();
+                        getActivity().getSupportFragmentManager().popBackStack();
+                        getActivity().getSupportFragmentManager().popBackStack();
                     }
                 });
                 uploadImage();

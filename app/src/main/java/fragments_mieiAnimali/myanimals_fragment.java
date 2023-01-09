@@ -633,16 +633,21 @@ public class myanimals_fragment extends Fragment {
             @Override
             public void onGlobalLayout() {
 
-                badgeDrawableFabRichieste = BadgeDrawable.create(getContext());
+                try{
+                    badgeDrawableFabRichieste = BadgeDrawable.create(getContext());
 
 
                     badgeDrawableFabRichieste.setBadgeGravity(BadgeDrawable.TOP_END);
                     Log.e("count2",countRichieste+"fab2");
                     badgeDrawableFabRichieste.setNumber(countRichieste);
 
-                //Important to change the position of the Badge
-                BadgeUtils.attachBadgeDrawable(badgeDrawableFabRichieste, fab, null);
+                    //Important to change the position of the Badge
+                    BadgeUtils.attachBadgeDrawable(badgeDrawableFabRichieste, fab, null);
 
+                }catch(Exception e){
+
+                }
+                
             }
         });
     }
@@ -652,15 +657,19 @@ public class myanimals_fragment extends Fragment {
             @SuppressLint("UnsafeOptInUsageError")
             @Override
             public void onGlobalLayout() {
-
-                badgeDrawableFab = BadgeDrawable.create(getContext());
+                try {
+                    badgeDrawableFab = BadgeDrawable.create(getContext());
 
                     badgeDrawableFab.setBadgeGravity(BadgeDrawable.TOP_END);
                     Log.e("count2",countRichieste+"fab");
                     badgeDrawableFab.setNumber(countRichieste);
 
-                //Important to change the position of the Badge
-                BadgeUtils.attachBadgeDrawable(badgeDrawableFab, fab, null);
+                    //Important to change the position of the Badge
+                    BadgeUtils.attachBadgeDrawable(badgeDrawableFab, fab, null);
+
+                }catch (Exception e){
+
+                }
 
             }
         });
