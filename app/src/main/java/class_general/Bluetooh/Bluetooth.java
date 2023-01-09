@@ -106,8 +106,7 @@ public class Bluetooth  {
          listAnimali= animaliPerCarico;
 
 
-         mactivity.getSupportFragmentManager().beginTransaction()
-             .replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
+         mactivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
 
     }
 

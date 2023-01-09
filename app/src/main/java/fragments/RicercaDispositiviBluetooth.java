@@ -109,9 +109,6 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
         if (getArguments() != null) {
 
        mParam1= (ArrayList<Animale>) getArguments().getSerializable(ARG_PARAM1);
-            for(Animale animale:mParam1){
-                Log.e("ciao123",animale.getNome());
-            }
 
 
         }
@@ -204,7 +201,12 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
 
+        }
            bluetooth.unregistrerReceiver();
 
     }
@@ -218,11 +220,20 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
         main_action_bar= getActivity().findViewById(R.id.main_action_bar);
         if(main_action_bar!= null)
         {
-            if(main_action_bar.getMenu()!=null) {
-                main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
-            }
+
             main_action_bar.setTitle("Seleziona Dispositivo ");
-            main_action_bar.setNavigationIcon(R.drawable.back);
+            if(main_action_bar.getMenu()!=null) {
+                main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+                main_action_bar.getMenu().clear();
+                main_action_bar.setNavigationIcon(R.drawable.back);
+                main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        getActivity().onBackPressed();
+                    }
+                });
+            }
         }
 
         mRecyclerView = rootview.findViewById(R.id.item_dispositiviNonAssociati);
@@ -233,4 +244,5 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         return rootview;
     }
+
 }
