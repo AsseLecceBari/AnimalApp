@@ -16,16 +16,17 @@
         tools:context="fragments.aggiungiAnimaleFragment">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="86dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="60dp"
             android:gravity="center"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="172dp"
-                android:layout_height="50dp"
-                android:text="Controlla se è presente una segnalazione in:"
+                android:layout_width="165dp"
+                android:layout_height="86dp"
+                android:text="Effettua la segnalazione SOLO se non hai trovato lo smarrimento in:"
                 android:textSize="16sp" />
 
             <TextView
@@ -50,13 +51,20 @@
             android:visibility="gone"
             tools:src="@tools:sample/avatars" />
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imgAnimale"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:visibility="gone"
+            tools:src="@tools:sample/avatars"
 
-            <Button
-                android:id="@+id/upImgRitrovamento"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Carica immagine animale"
-              />
+            />
+
+        <Button
+            android:id="@+id/upImgRitrovamento"
+            android:layout_width="353dp"
+            android:layout_height="wrap_content"
+            android:text="Carica immagine animale" />
 
 
 
@@ -75,29 +83,19 @@
                 android:hint="Descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
-
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:endIconMode="clear_text"
-            android:layout_marginTop="12dp">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/etIndirizzo"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+            <fragment
+                android:id="@+id/autoCompleteFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Indirizzo"
-                android:inputType="text"
-                android:layout_weight="0.7"/>
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                />
+        </androidx.cardview.widget.CardView>
 
-            <Button
-                android:id="@+id/gps"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Localizzami automaticamente"
-                android:layout_marginLeft="2dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
 
 
 
