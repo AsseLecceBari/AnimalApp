@@ -118,7 +118,7 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
         main_action_bar.setTitle(s.getTipo());
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
-            main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+            main_action_bar.getMenu().clear();
             main_action_bar.setNavigationIcon(R.drawable.back);
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -127,6 +127,7 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
                 }
             });
         }
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
 
 
         mapViewNews=(MapView) rootView.findViewById(R.id.mapViewNews);
@@ -314,6 +315,13 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
     public void onDestroy() {
         super.onDestroy();
         mapViewNews.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
+        }
     }
 
     @Override

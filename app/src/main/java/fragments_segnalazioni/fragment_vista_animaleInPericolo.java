@@ -126,7 +126,8 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         main_action_bar.setTitle(s.getTipo());
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
-            main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+            main_action_bar.getMenu().clear();
+
             main_action_bar.setNavigationIcon(R.drawable.back);
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,7 +137,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
                 }
             });
         }
-
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
 
         mapViewAnimaleInPericolo=(MapView) rootView.findViewById(R.id.mapViewAnimaleInPericolo);
         mapViewAnimaleInPericolo.onCreate(mapViewBundle);
@@ -364,6 +365,13 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
     public void onDestroy() {
         super.onDestroy();
         mapViewAnimaleInPericolo.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
+        }
     }
 
     @Override
@@ -399,16 +407,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         mUiSettings.setCompassEnabled(true);
         googleMap.setPadding(0,0,0,150);
     }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if(main_action_bar.getMenu()!=null) {
-            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
-            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
-            main_action_bar.setTitle("AnimalApp");
-            main_action_bar.setNavigationIcon(null);
-        }
-    }
+
 
     //metodi per le animazioni del FAB SPEED DIAL
     /*
@@ -671,6 +670,5 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         });
 
     }
-
 
 }

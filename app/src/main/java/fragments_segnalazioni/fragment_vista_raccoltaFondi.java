@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +39,7 @@ public class fragment_vista_raccoltaFondi extends Fragment {
     private FirebaseFirestore db;
     private Segnalazione segnalazione;
     private FloatingActionButton vai;
-
+    private Toolbar main_action_bar;
 
     //FAB SPEED DIAL DECLARATION
     private static final String TRANSLATION_Y = "translationY";
@@ -65,7 +66,20 @@ public class fragment_vista_raccoltaFondi extends Fragment {
         data = rootView.findViewById(R.id.data);
         imgAnimale = rootView.findViewById(R.id.immagine);
         vai = rootView.findViewById(R.id.btnVaiAlLink);
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(segnalazione.getTipo());
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+            main_action_bar.getMenu().clear();
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().onBackPressed();
+                }
+            });
+        }
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
 
         /**
          * FAB INIZIALIZZAZIONI
@@ -239,7 +253,17 @@ public class fragment_vista_raccoltaFondi extends Fragment {
             }
         });
 
-
-
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
+        }
+    }
+
 }

@@ -115,7 +115,7 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         main_action_bar.setTitle(s.getTipo());
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
-            main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
+            main_action_bar.getMenu().clear();
             main_action_bar.setNavigationIcon(R.drawable.back);
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,7 +124,7 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
                 }
             });
         }
-
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
 
         mapViewZonaPericolosa=(MapView) rootView.findViewById(R.id.mapViewZonaPericolosa);
         mapViewZonaPericolosa.onCreate(mapViewBundle);
@@ -309,6 +309,13 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
     public void onDestroy() {
         super.onDestroy();
         mapViewZonaPericolosa.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
+        }
     }
 
     @Override
