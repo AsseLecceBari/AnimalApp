@@ -1,14 +1,21 @@
 package it.uniba.dib.sms2223_2;
 
+import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -19,6 +26,7 @@ import adapter.AnimalAdapter;
 import adapter.VPAdapter;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
+import fragments_mieiAnimali.aggiungiCarico;
 import fragments_mieiAnimali.myanimals_fragment;
 import fragments_segnalazioni.reports_fragment;
 import profiloUtente.ProfiloUtenteActivity;
@@ -49,11 +57,33 @@ public class MainActivity extends AppCompatActivity {
     private VPAdapter adapter=null;
     private ViewPager2 viewPager2=null;
     private static final int PERMISSION_REQUEST_CODE = 101;
-
+    private ActivityResultLauncher<String> requestPermissionLauncher;
     private void change() {
         startActivity(new Intent(getApplicationContext(),Pokedex.class));
         finish();
     }
+
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
+        alertDialogBuilder.setMessage(getString(R.string.consiglio_accettare_permessi));
+        alertDialogBuilder.setPositiveButton(getString(R.string.ho_capito),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton(getString(R.string.magari_piu_tardi), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +92,17 @@ public class MainActivity extends AppCompatActivity {
         main_action_bar=findViewById(R.id.main_action_bar);
         main_action_bar.setNavigationIcon(null);
         setSupportActionBar(main_action_bar);
+        requestPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale()).commit();
+                    } else {
+                        //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
+
+                    }
+                });
     }
+
 
     @Override
     protected void onResume() {
@@ -296,7 +336,20 @@ public void getFragmentTagReference(){
     }
 
     public void scanQr(MenuItem item) {
-        getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale()).commit();
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED) {
+
+            //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
+            getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale()).commit();
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            showAlertDialog();
+        } else {
+            // You can directly ask for the permission.
+            // The registered ActivityResultCallback gets the result of this request.
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+
+
     }
 
 

@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.budiyev.android.codescanner.CodeScanner;
@@ -30,6 +31,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.Result;
 
+import DB.AnimaleDB;
 import model.Animale;
 
 public class scanAnimale extends Fragment {
@@ -43,6 +45,7 @@ public class scanAnimale extends Fragment {
     private int controllo = 0;
     private Animale a = null;
     private String idAdozione;
+    private Toolbar main_action_bar;
 
     public scanAnimale(int n, Animale a, String idAdozione){
         this.a = a;
@@ -61,7 +64,20 @@ public class scanAnimale extends Fragment {
 
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Scan QrCode");
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+            main_action_bar.getMenu().clear();
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    getActivity().onBackPressed();
+                }
+            });
+        }
         scannerView = rootView.findViewById(R.id.scanner_view);
         mCodeScanner = new CodeScanner(activity, scannerView);
 
@@ -169,5 +185,17 @@ public class scanAnimale extends Fragment {
     public void onPause() {
         mCodeScanner.releaseResources();
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
+        }
     }
 }

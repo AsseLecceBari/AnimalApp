@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.budiyev.android.codescanner.CodeScanner;
@@ -49,6 +50,7 @@ public class aggiungiCarico extends Fragment {
     private ColorStateList coloreDati;
     private CodeScannerView scannerView;
     private Toast toast;
+    private Toolbar main_action_bar;
 
     @Nullable
     @Override
@@ -57,7 +59,20 @@ public class aggiungiCarico extends Fragment {
         View root = inflater.inflate(R.layout.fragment_aggiungi_carico, container, false);
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Scan QrCode");
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+            main_action_bar.getMenu().clear();
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    getActivity().onBackPressed();
+                }
+            });
+        }
         dati = root.findViewById(R.id.datiAnimale);
         aggiungi = root.findViewById(R.id.aggiungi);
         coloreDati = dati.getTextColors();
@@ -201,5 +216,16 @@ public class aggiungiCarico extends Fragment {
     public void onPause() {
         mCodeScanner.releaseResources();
         super.onPause();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
+        }
     }
 }
