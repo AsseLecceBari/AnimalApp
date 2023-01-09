@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.divider.MaterialDivider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -57,9 +58,10 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
     private TextView descrizioneAnimaleInPericolo;
     private TextView titoloReportAnimaleInPericolo;
     private ImageView immagineAnimaleInPericolo;
-    private TextView dataAnimaleInPericolo;
+    private TextView dataAnimaleInPericolo,textViewMappa;
     private TextInputLayout updateTitoloLayout,updateDescrizioneLayout;
     private TextInputEditText updateTitoloText,updateDescrizioneText;
+    private MaterialDivider dividerMappa1,dividerMappa2;
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -148,6 +150,9 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         updateDescrizioneText=rootView.findViewById(R.id.updateDescrizioneText);
         updateTitoloLayout=rootView.findViewById(R.id.updateTitoloLayout);
         updateTitoloText=rootView.findViewById(R.id.updateTitoloText);
+        textViewMappa=rootView.findViewById(R.id.textViewMappa);
+        dividerMappa1=rootView.findViewById(R.id.dividerMappa1);
+        dividerMappa2=rootView.findViewById(R.id.dividerMappa2);
 
         descrizioneAnimaleInPericolo.setText(s.getDescrizione());
         titoloReportAnimaleInPericolo.setText(s.getTitolo());
@@ -212,6 +217,10 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
                     descrizioneAnimaleInPericolo.setVisibility(View.GONE);
                     titoloReportAnimaleInPericolo.setVisibility(View.GONE);
                     mapViewAnimaleInPericolo.setVisibility(View.GONE);
+                    dividerMappa1.setVisibility(View.GONE);
+                    dividerMappa2.setVisibility(View.GONE);
+                    textViewMappa.setVisibility(View.GONE);
+
 
 
                     updateTitoloLayout.setVisibility(View.VISIBLE);
@@ -583,10 +592,15 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
 
                 updateTitoloLayout.setVisibility(View.GONE);
                 updateDescrizioneLayout.setVisibility(View.GONE);
+                fabAction4.setVisibility(View.GONE);
 
                 mapViewAnimaleInPericolo.setVisibility(View.VISIBLE);
+                dividerMappa1.setVisibility(View.VISIBLE);
+                dividerMappa2.setVisibility(View.VISIBLE);
+                textViewMappa.setVisibility(View.VISIBLE);
+
                 fabAction2.setVisibility(View.VISIBLE);
-                fabAction4.setVisibility(View.GONE);
+
 
                 updateTitoloText.getText().clear();
                 updateDescrizioneText.getText().clear();

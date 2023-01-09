@@ -44,7 +44,8 @@
                 android:id="@+id/titoloZonaPericolosa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/titolo" />
+                android:hint="@string/titolo"
+                android:text="Attenzione!!" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +59,8 @@
                 android:id="@+id/descrzioneZonaPericolosa"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/descrizione" />
+                android:hint="@string/descrizione"
+                android:text="C'è un pericolo in questa zona" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView
