@@ -67,7 +67,11 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:src="@drawable/ic_launcher_foreground"
+                    android:src="@drawable/injury"
+                    android:scaleType="fitXY"
+                    android:maxHeight="100dp"
+                    android:maxWidth="100dp"
+                    android:adjustViewBounds="true"
 
                     />
 
@@ -89,7 +93,11 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:src="@drawable/ic_launcher_foreground" />
+                    android:src="@drawable/warning"
+                    android:scaleType="fitXY"
+                    android:maxHeight="100dp"
+                    android:maxWidth="100dp"
+                    android:adjustViewBounds="true"/>
 
                 <TextView
                     android:id="@+id/textPericolo"
@@ -110,7 +118,11 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:src="@drawable/ic_launcher_foreground" />
+                    android:src="@drawable/newspaper"
+                    android:scaleType="fitXY"
+                    android:maxHeight="100dp"
+                    android:maxWidth="100dp"
+                    android:adjustViewBounds="true"/>
 
                 <TextView
                     android:id="@+id/textNews"
@@ -130,7 +142,11 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:src="@drawable/ic_launcher_foreground"
+                    android:src="@drawable/fundraising"
+                    android:scaleType="fitXY"
+                    android:maxHeight="100dp"
+                    android:maxWidth="100dp"
+                    android:adjustViewBounds="true"
 
                     />
 
@@ -153,7 +169,11 @@
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
                     android:contentDescription="@string/ritrovamento"
-                    android:src="@drawable/ic_launcher_foreground" />
+                    android:src="@drawable/finding"
+                    android:scaleType="fitXY"
+                    android:maxHeight="100dp"
+                    android:maxWidth="100dp"
+                    android:adjustViewBounds="true"/>
 
                 <TextView
                     android:id="@+id/textRitrovamento"
