@@ -28,7 +28,7 @@
                 android:id="@+id/fattaDaS"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Segnalazione fatta da"
+                android:text="@string/segnalazione_fatta_da"
                 android:textColor="@color/design_default_color_primary_dark">
             </com.google.android.material.textview.MaterialTextView>
 

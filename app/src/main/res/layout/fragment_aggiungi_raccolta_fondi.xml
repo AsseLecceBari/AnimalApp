@@ -39,7 +39,7 @@ tools:context="fragments_segnalazioni.aggiungiRaccoltaFondi">
                 android:id="@+id/titolo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Titolo" />
+                android:hint="@string/titolo" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -53,7 +53,7 @@ tools:context="fragments_segnalazioni.aggiungiRaccoltaFondi">
                 android:id="@+id/etDescrizione"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descrizione" />
+                android:hint="@string/descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -67,7 +67,7 @@ tools:context="fragments_segnalazioni.aggiungiRaccoltaFondi">
                 android:id="@+id/etLink"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Link" />
+                android:hint="@string/link" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
 

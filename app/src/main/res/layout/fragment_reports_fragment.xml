@@ -32,7 +32,7 @@
                 android:layout_gravity="right"
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="15dp"
-                android:text="Filtri"
+                android:text="@string/filtri"
                 android:visibility="visible"
                 app:icon="@drawable/equalizer_filter_filtering_mixer_sorting_icon_123287__1_"
                 app:iconPadding="8dp"
@@ -47,7 +47,7 @@
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="15dp"
                 android:clickable="true"
-                android:text="Filtri"
+                android:text="@string/filtri"
                 android:visibility="gone"
                 app:icon="@drawable/equalizer_filter_filtering_mixer_sorting_icon_123287__1_"
                 app:iconPadding="8dp"
@@ -57,7 +57,7 @@
                 android:id="@+id/resetButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Reset"
+                android:text="@string/reset"
                 android:layout_gravity="left"
                 android:layout_marginTop="3dp"
                 android:layout_marginRight="15dp"
@@ -86,7 +86,7 @@
                 android:id="@+id/radioTueSegnalazioni"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Le tue segnalazioni"
+                android:text="@string/le_tue_segnalazioni"
                 android:layout_marginLeft="0dp"
                 />
 
@@ -94,7 +94,7 @@
                 android:id="@+id/radioTutti"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Seganalazioni altri utenti"
+                android:text="@string/seganalazioni_altri_utenti"
                 android:layout_marginLeft="20dp"/>
 
 

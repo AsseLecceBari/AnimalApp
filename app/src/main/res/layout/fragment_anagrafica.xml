@@ -39,7 +39,7 @@
             android:id="@+id/selectImgButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Cambia immagine"/>
+            android:text="@string/cambia_immagine"/>
 
         <com.google.android.material.textview.MaterialTextView
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -62,7 +62,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Genere"
+            android:hint="@string/genere"
             android:id="@+id/genere"
             android:layout_marginTop="12dp"
             android:textSize="20dp">
@@ -79,7 +79,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Specie"
+            android:hint="@string/specie"
             android:id="@+id/specie"
             android:layout_marginTop="12dp"
             android:textSize="20dp">
@@ -94,7 +94,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Sesso"
+            android:hint="@string/sesso"
             android:id="@+id/sessoAnimale"
             android:layout_marginTop="12dp"
             android:textSize="20dp">
@@ -111,7 +111,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nascita"
+            android:hint="@string/nascita"
             android:id="@+id/nascita"
             android:layout_marginTop="12dp"
             android:textSize="20dp">
@@ -130,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Assistito"
+            android:hint="@string/assistito"
             android:textSize="20dp">
 
         </com.google.android.material.textview.MaterialTextView>
@@ -148,7 +148,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Data di ritrovamento sconosciuta"
+            android:hint="@string/data_di_ritrovamento_sconosciuta"
             android:textSize="20dp">
 
         </com.google.android.material.textview.MaterialTextView>
@@ -166,7 +166,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="MicroChip non presente"
+            android:hint="@string/microchip_non_presente"
             android:textSize="20dp">
 
         </com.google.android.material.textview.MaterialTextView>
@@ -184,7 +184,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:hint="Box non specificato"
+            android:hint="@string/box_non_specificato"
             android:visibility="gone"
             android:textSize="20dp"/>
 
@@ -193,7 +193,7 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:layout_centerHorizontal="true"
-            android:contentDescription="qrCode"
+            android:contentDescription="@string/qrcode"
             android:layout_marginTop="25dp"
             android:layout_marginBottom="20dp"
             android:visibility="gone"/>

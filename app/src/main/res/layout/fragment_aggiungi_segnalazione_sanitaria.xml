@@ -25,7 +25,7 @@
                 android:id="@+id/data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Data segnalazione sanitaria" />
+                android:hint="@string/data_segnalazione_sanitaria" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
@@ -37,7 +37,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dettagli visita "
+                android:text="@string/dettagli_visita"
                 android:textSize="18dp"
                 />
             <com.google.android.material.divider.MaterialDivider
@@ -55,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp"
-            android:text="E' UN ESAME SPECIFICO \n(es. vaccinazione, sverminazione, ecc.)">
+            android:text="@string/e_un_esame_specifico_n_es_vaccinazione_sverminazione_ecc">
 
         </com.google.android.material.checkbox.MaterialCheckBox>
 
@@ -69,7 +69,7 @@
                 android:id="@+id/motivoConsultazione"
                 android:layout_width="match_parent"
                 android:layout_height="101dp"
-                android:hint="Motivo consultazione"
+                android:hint="@string/motivo_consultazione"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -89,7 +89,7 @@
                     android:id="@+id/diagnosi"
                     android:layout_width="match_parent"
                     android:layout_height="101dp"
-                    android:hint="Diagnosi"
+                    android:hint="@string/diagnosi"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -103,7 +103,7 @@
                     android:id="@+id/farmaci"
                     android:layout_width="match_parent"
                     android:layout_height="101dp"
-                    android:hint="Farmaci"
+                    android:hint="@string/farmaci"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -121,7 +121,7 @@
                 android:id="@+id/trattamento"
                 android:layout_width="match_parent"
                 android:layout_height="101dp"
-                android:hint="Trattamento"
+                android:hint="@string/trattamento"
                 android:inputType="text" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -168,7 +168,7 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Note finali e stato trattamento "
+                android:text="@string/note_finali_e_stato_trattamento"
                 android:textSize="18dp"
                 />
             <com.google.android.material.divider.MaterialDivider
@@ -185,7 +185,7 @@
             android:id="@+id/isDiagnosiPositiva"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="E' andato tutto a buon fine"
+            android:text="@string/e_andato_tutto_a_buon_fine"
             app:checkedState="checked"
             android:layout_marginTop="0dp">
         </com.google.android.material.checkbox.MaterialCheckBox>
@@ -209,7 +209,7 @@
             android:layout_width="wrap_content"
             android:layout_height="63dp"
             android:layout_marginTop="12dp"
-            android:text="Registra Segnalazione sanitaria" />
+            android:text="@string/registra_segnalazione_sanitaria" />
 
     </LinearLayout>
 </ScrollView>

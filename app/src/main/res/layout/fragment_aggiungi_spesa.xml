@@ -26,7 +26,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Data della spesa" />
+            android:hint="@string/data_della_spesa" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -40,7 +40,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/categoria"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Categoria" />
+            android:hint="@string/categoria" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -53,7 +53,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/descrizione"
             android:layout_width="match_parent"
             android:layout_height="101dp"
-            android:hint="Descrizione"
+            android:hint="@string/descrizione"
             android:inputType="text" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +72,7 @@ xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/quantita"
                 android:layout_width="158dp"
                 android:layout_height="wrap_content"
-                android:hint="Quantità"
+                android:hint="@string/quantit"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -86,7 +86,7 @@ xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/costoUnitario"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Costo Unitario"
+                android:hint="@string/costo_unitario"
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
@@ -111,7 +111,7 @@ xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="wrap_content"
         android:layout_height="63dp"
         android:layout_marginTop="12dp"
-        android:text="Registra spesa" />
+        android:text="@string/registra_spesa" />
 
 </LinearLayout>
 </ScrollView>

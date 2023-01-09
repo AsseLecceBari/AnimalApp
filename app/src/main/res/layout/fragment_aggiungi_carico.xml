@@ -34,7 +34,7 @@
         android:layout_height="200dp"
         android:layout_marginTop="15dp"
         android:padding="10dp"
-        android:text="Scannerrizza un animale!"
+        android:text="@string/scannerrizza_un_animale"
         android:textSize="30dp"></com.google.android.material.textview.MaterialTextView>
 
     <com.google.android.material.divider.MaterialDivider

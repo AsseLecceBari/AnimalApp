@@ -25,7 +25,7 @@
             <TextView
                 android:layout_width="172dp"
                 android:layout_height="50dp"
-                android:text="Controlla se è presente una segnalazione in:"
+                android:text="@string/controlla_se_presente_una_segnalazione_in"
                 android:textSize="16sp" />
 
             <TextView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:background="?attr/selectableItemBackground"
-                android:text="Smarrimenti"
+                android:text="@string/smarrimenti"
 
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -55,7 +55,7 @@
                 android:id="@+id/upImgRitrovamento"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Carica immagine animale"
+                android:text="@string/carica_immagine_animale"
               />
 
 
@@ -72,7 +72,7 @@
                 android:id="@+id/etDescrizione"
                 android:layout_width="match_parent"
                 android:layout_height="104dp"
-                android:hint="Descrizione" />
+                android:hint="@string/descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -87,7 +87,7 @@
                 android:id="@+id/etIndirizzo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Indirizzo"
+                android:hint="@string/indirizzo"
                 android:inputType="text"
                 android:layout_weight="0.7"/>
 
@@ -95,7 +95,7 @@
                 android:id="@+id/gps"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Localizzami automaticamente"
+                android:text="@string/localizzami_automaticamente"
                 android:layout_marginLeft="2dp"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -119,7 +119,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Crea segnalazione" />
+            android:text="@string/crea_segnalazione" />
 
     </LinearLayout>
 </ScrollView>
