@@ -492,6 +492,7 @@ public class myanimals_fragment extends Fragment {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
     }
+
     public void filterMieiAnimali() {
 
         filteredlist=new ArrayList<>();

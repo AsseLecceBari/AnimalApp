@@ -30,11 +30,16 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -51,6 +56,8 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
     private TextView titoloReportAnimaleInPericolo;
     private ImageView immagineAnimaleInPericolo;
     private TextView dataAnimaleInPericolo;
+    private TextInputLayout updateTitoloLayout,updateDescrizioneLayout;
+    private TextInputEditText updateTitoloText,updateDescrizioneText;
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -75,6 +82,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
     private FloatingActionButton fabAction1;
     private FloatingActionButton fabAction2;
     private FloatingActionButton fabAction3;
+    private FloatingActionButton fabAction4;
     private float offset1;
     private float offset2;
     private float offset3;
@@ -130,13 +138,19 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         mapViewAnimaleInPericolo.getMapAsync(this);//imposta un oggeto di callback che verrà attivato quando l'istanza di google map è pronta per essere utilizzata
         descrizioneAnimaleInPericolo=rootView.findViewById(R.id.DescrizioneAnimaleInPericolo);
         titoloReportAnimaleInPericolo=rootView.findViewById(R.id.titoloReportAnimaleInPericolo);
+        dataAnimaleInPericolo=rootView.findViewById(R.id.dataAnimaleInPericolo);
+        immagineAnimaleInPericolo=rootView.findViewById(R.id.ImmagineAnimaleInPericolo);
+        //editText per l'update della segnalazione
+        updateDescrizioneLayout=rootView.findViewById(R.id.updateDescrizioneLayout);
+        updateDescrizioneText=rootView.findViewById(R.id.updateDescrizioneText);
+        updateTitoloLayout=rootView.findViewById(R.id.updateTitoloLayout);
+        updateTitoloText=rootView.findViewById(R.id.updateTitoloText);
+
         descrizioneAnimaleInPericolo.setText(s.getDescrizione());
         titoloReportAnimaleInPericolo.setText(s.getTitolo());
-
-        dataAnimaleInPericolo=rootView.findViewById(R.id.dataAnimaleInPericolo);
         dataAnimaleInPericolo.setText("pubblicata il:"+s.getData());
 
-        immagineAnimaleInPericolo=rootView.findViewById(R.id.ImmagineAnimaleInPericolo);
+
 
         /**
          * FAB INIZIALIZZAZIONI
@@ -144,25 +158,26 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
          */
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
+        fabAction4= rootView.findViewById(R.id.fab_fine_modifica);
         fabAction1 = rootView.findViewById(R.id.fab_preferiti);
 
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
             fabAction1.setVisibility(View.VISIBLE);
-            fabAction1.setImageResource(R.drawable.star);
+            fabAction1.setImageResource(android.R.drawable.ic_menu_share);
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Aggiungi ai preferiti", Toast.LENGTH_SHORT).show();
+                    condividiSegnalazione();
                 }
             });
         }else if(x==1){
             fabAction1.setVisibility(View.VISIBLE);
-            fabAction1.setImageResource(android.R.drawable.ic_delete);
+            fabAction1.setImageResource(android.R.drawable.ic_menu_share);
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Elimina Segnalazione", Toast.LENGTH_SHORT).show();
+                    condividiSegnalazione();
                 }
             });
         }
@@ -188,6 +203,31 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
                 @Override
                 public void onClick(View view) {
                     Toast.makeText(getContext(), "Modifica Segnalazione", Toast.LENGTH_SHORT).show();
+                    fabAction2.setVisibility(View.GONE);
+                    //todo: da modificare la via mettendo gone la mappa e visibile l'autocompleate
+                    //Rendo a GONE le textView e a VISIBLE le editText
+                    descrizioneAnimaleInPericolo.setVisibility(View.GONE);
+                    titoloReportAnimaleInPericolo.setVisibility(View.GONE);
+                    mapViewAnimaleInPericolo.setVisibility(View.GONE);
+
+
+                    updateTitoloLayout.setVisibility(View.VISIBLE);
+                    updateDescrizioneLayout.setVisibility(View.VISIBLE);
+
+
+
+                    fabAction4.setVisibility(View.VISIBLE);
+                    fabAction4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+
+                            updateSegnalazione(s);
+
+                        }
+                    });
+
+
                 }
             });
         }
@@ -206,6 +246,16 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
             });
         }else if(x==1){
             //per ora non serve nella vista mieSegnalazioni
+            //per ora non serve nella vista mieSegnalazioni
+            fabAction3.setVisibility(View.VISIBLE);
+            fabAction3.setImageResource(android.R.drawable.ic_menu_delete);
+            fabAction3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                  //  Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
+                    deleteReports(s);
+                }
+            });
         }
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -451,4 +501,100 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         startActivity(intent);
 
     }
+
+    public void condividiSegnalazione() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = s.toString();
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
+    }
+
+    public void deleteReports(Segnalazione s){
+        db=FirebaseFirestore.getInstance();
+        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+
+        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
+                //prova per far tornare indietro al fragment che contiene la lista dei report
+                getActivity().onBackPressed();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
+
+    public void updateSegnalazione(Segnalazione s){
+        db=FirebaseFirestore.getInstance();
+        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+        String titolo,descrizione;
+
+        titolo = updateTitoloText.getText().toString();
+        if (titolo.equals("")){
+            titolo=s.getTitolo();
+        }
+
+
+        descrizione = updateDescrizioneText.getText().toString();
+        if (descrizione.equals("")){
+             descrizione=s.getDescrizione();
+          }
+
+        segnalazioniRef.document(s.getIdSegnalazione()).update("titolo",titolo,"descrizione",descrizione).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(getContext(), "Modifica effettuata", Toast.LENGTH_SHORT).show();
+                descrizioneAnimaleInPericolo.setVisibility(View.VISIBLE);
+                titoloReportAnimaleInPericolo.setVisibility(View.VISIBLE);
+
+                updateTitoloLayout.setVisibility(View.GONE);
+                updateDescrizioneLayout.setVisibility(View.GONE);
+
+                mapViewAnimaleInPericolo.setVisibility(View.VISIBLE);
+                fabAction2.setVisibility(View.VISIBLE);
+                fabAction4.setVisibility(View.GONE);
+
+                updateTitoloText.getText().clear();
+                updateDescrizioneText.getText().clear();
+
+                //RECUPERO LA SEGNALAZIONE APPENA MODIFICATA PER POPOLARE LE TEXTVIEW
+                DocumentReference docRef = db.collection("segnalazioni").document(s.getIdSegnalazione());
+                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Segnalazione s1 = documentSnapshot.toObject(Segnalazione.class);
+                        descrizioneAnimaleInPericolo.setText(s1.getDescrizione());
+                        titoloReportAnimaleInPericolo.setText(s1.getTitolo());
+
+                    }
+                });
+
+
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Errore nella modifica", Toast.LENGTH_SHORT).show();
+                descrizioneAnimaleInPericolo.setVisibility(View.VISIBLE);
+                titoloReportAnimaleInPericolo.setVisibility(View.VISIBLE);
+                updateTitoloLayout.setVisibility(View.GONE);
+                updateDescrizioneLayout.setVisibility(View.GONE);
+                fabAction2.setVisibility(View.VISIBLE);
+                fabAction4.setVisibility(View.GONE);
+            }
+        });
+
+
+    }
+
+
 }

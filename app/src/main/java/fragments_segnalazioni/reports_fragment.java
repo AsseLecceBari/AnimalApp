@@ -139,8 +139,6 @@ public class reports_fragment extends Fragment {
     int a=0;//0 viene dalla radio tutti, 1 dal radio mie segnalazioni
 
     private ActivityResultLauncher<String[]> locationPermissionRequest ;
-    //private ActivityResultLauncher<String> locationPermissionRequest ;
-
 
 
 
@@ -174,14 +172,7 @@ public class reports_fragment extends Fragment {
 
 
 
-      /*  locationPermissionRequest= registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
-            if (isGranted) {
-                // Permission is granted. Continue the action or workflow in your
-                // app.
-            } else {
-                Log.d("prova2345","NO");
-            }
-        });*/
+
 
 
 
@@ -408,6 +399,9 @@ public class reports_fragment extends Fragment {
     public void onPause() {
         super.onPause();
         stopLocationUpdates();
+        attivaSlider.setChecked(false);
+        sliderReport.setValue(15F);
+        radioTutti.setChecked(true);
 
     }
 
@@ -684,14 +678,6 @@ public class reports_fragment extends Fragment {
 
 
     }
-
-    //gesitone permessi
-
-
-
-
-
-
 
 
 

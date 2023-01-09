@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -30,6 +31,7 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -148,20 +150,20 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
             fabAction1.setVisibility(View.VISIBLE);
-            fabAction1.setImageResource(R.drawable.star);
+            fabAction1.setImageResource(android.R.drawable.ic_menu_share);
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Aggiungi ai preferiti", Toast.LENGTH_SHORT).show();
+                    condividiSegnalazione();
                 }
             });
         }else if(x==1){
             fabAction1.setVisibility(View.VISIBLE);
-            fabAction1.setImageResource(android.R.drawable.ic_delete);
+            fabAction1.setImageResource(android.R.drawable.ic_menu_share);
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Elimina Segnalazione", Toast.LENGTH_SHORT).show();
+                    condividiSegnalazione();
                 }
             });
         }
@@ -205,6 +207,15 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
             });
         }else if(x==1){
             //per ora non serve nella vista mieSegnalazioni
+            //per ora non serve nella vista mieSegnalazioni
+            fabAction3.setVisibility(View.VISIBLE);
+            fabAction3.setImageResource(android.R.drawable.ic_menu_delete);
+            fabAction3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                //  Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
+                    deleteReports(s);                }
+            });
         }
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -447,6 +458,36 @@ public class fragment_vista_zonaPericolosa extends Fragment implements OnMapRead
         intent.setData(Uri.parse("mailto:"+toAddress)); // only email apps should handle this
         intent.putExtra(Intent.EXTRA_EMAIL, addresses);
         startActivity(intent);
+
+    }
+
+    public void condividiSegnalazione() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = s.toString();
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
+    }
+
+    public void deleteReports(Segnalazione s){
+        db=FirebaseFirestore.getInstance();
+        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+
+        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
+                //prova per far tornare indietro al fragment che contiene la lista dei report
+                getActivity().onBackPressed();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
     }
 }

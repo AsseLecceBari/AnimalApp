@@ -11,12 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -59,7 +62,6 @@ public class fragment_vista_raccoltaFondi extends Fragment {
         titolo = rootView.findViewById(R.id.titolo);
         descrizione = rootView.findViewById(R.id.descrizione);
         data = rootView.findViewById(R.id.data);
-       // vai = rootView.findViewById(R.id.btnVaiAlLink);
         imgAnimale = rootView.findViewById(R.id.immagine);
         vai = rootView.findViewById(R.id.btnVaiAlLink);
 
@@ -71,10 +73,11 @@ public class fragment_vista_raccoltaFondi extends Fragment {
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
         fabAction1 = rootView.findViewById(R.id.fab_preferiti);
+        fabAction1.setImageResource(android.R.drawable.ic_menu_share);
         fabAction1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Aggiungi ai preferiti", Toast.LENGTH_SHORT).show();
+                condividiSegnalazione();
             }
         });
 
@@ -209,4 +212,33 @@ public class fragment_vista_raccoltaFondi extends Fragment {
             ((Animatable) drawable).start();
         }
     }*/
+    public void condividiSegnalazione() {
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBody = segnalazione.toString();
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
+        startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
+    }
+
+    public void deleteReports(Segnalazione s){
+        db=FirebaseFirestore.getInstance();
+        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+
+        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
+                //prova per far tornare indietro al fragment che contiene la lista dei report
+                getActivity().onBackPressed();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+    }
 }

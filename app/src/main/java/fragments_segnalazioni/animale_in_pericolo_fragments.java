@@ -243,23 +243,14 @@ public class animale_in_pericolo_fragments extends Fragment {
         });
 
         //Autocomplete Indirizzo
-
         if (!Places.isInitialized()) {
             Places.initialize(getActivity().getApplicationContext(), "AIzaSyDlX6obgKqLyk_7MU5HD6hKzZeWQo0xEaA", Locale.US);
         }
 
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.autoCompleteFragment);
-
-
-
-        // Start the autocomplete intent.
-
-
         // Specify the types of place data to return.
-
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME,Place.Field.LAT_LNG));
-
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
