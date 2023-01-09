@@ -6,15 +6,12 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -36,6 +33,7 @@ public class fragment_vista_raccoltaFondi extends Fragment {
     private CircleImageView imgAnimale;
     private FirebaseFirestore db;
     private Segnalazione segnalazione;
+    private FloatingActionButton vai;
 
 
     //FAB SPEED DIAL DECLARATION
@@ -63,11 +61,13 @@ public class fragment_vista_raccoltaFondi extends Fragment {
         data = rootView.findViewById(R.id.data);
        // vai = rootView.findViewById(R.id.btnVaiAlLink);
         imgAnimale = rootView.findViewById(R.id.immagine);
+        vai = rootView.findViewById(R.id.btnVaiAlLink);
+
 
         /**
          * FAB INIZIALIZZAZIONI
          * ViewGroup serve per prendere il riferimento al layout dei FAB
-         */
+         *
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
         fabAction1 = rootView.findViewById(R.id.fab_preferiti);
@@ -83,7 +83,6 @@ public class fragment_vista_raccoltaFondi extends Fragment {
         fabAction2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), "Contatta", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse("http://" + segnalazione.getLink()));
                 startActivity(i);
@@ -106,7 +105,7 @@ public class fragment_vista_raccoltaFondi extends Fragment {
         Restituisce ViewTreeObserver per la gerarchia di questa vista.
          L'osservatore dell'albero di visualizzazione può essere utilizzato per ricevere notifiche
          quando si verificano eventi globali, come il cambio del layout.
-         */
+
         fabContainer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -119,7 +118,7 @@ public class fragment_vista_raccoltaFondi extends Fragment {
                 return true;
             }
         });
-
+        */
 
 
         if (segnalazione != null){
@@ -146,14 +145,15 @@ public class fragment_vista_raccoltaFondi extends Fragment {
         }
 
 
-       /* vai.setOnClickListener(new View.OnClickListener() {
+        //non va il fab, quindi metto il pulsante
+        vai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse("http://" + segnalazione.getLink()));
                 startActivity(i);
             }
-        });*/
+        });
 
         return rootView;
     }

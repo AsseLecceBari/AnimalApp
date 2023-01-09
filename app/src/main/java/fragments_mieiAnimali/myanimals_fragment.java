@@ -551,7 +551,7 @@ public class myanimals_fragment extends Fragment {
 
 
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
-        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_add));
+        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.arrow_up_float));
         CollectionReference collection = db.collection("richiestaCarico");
         Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
         AggregateQuery countQuery = query.count();
