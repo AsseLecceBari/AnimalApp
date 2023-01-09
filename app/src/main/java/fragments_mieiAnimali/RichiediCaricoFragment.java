@@ -67,11 +67,6 @@ public class RichiediCaricoFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             mParam1 = (ArrayList<Animale>) getArguments().getSerializable(ARG_PARAM1);
-            for(Animale animale:mParam1){
-                Log.e("ciao123",animale.getNome());
-            }
-
-
         }
     }
 

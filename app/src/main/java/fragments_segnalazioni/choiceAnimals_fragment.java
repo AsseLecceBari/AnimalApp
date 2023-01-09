@@ -70,7 +70,7 @@ public class choiceAnimals_fragment extends Fragment {
         initDataset();
         View rootView = inflater.inflate(R.layout.fragment_choice_animals_fragment, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle("Seleziona animale smarrito");
+        main_action_bar.setTitle("Seleziona un animale");
 
         //da implementare la parte dei non loggati con il fragment creata da enrico
         auth=FirebaseAuth.getInstance();

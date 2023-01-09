@@ -752,20 +752,45 @@ public class myanimals_fragment extends Fragment {
                             //Ottengo l'oggetto dalla lista in posizione "position"
 
                             for(int a=0;a<positionSelectedCB.size();a++){
-                                animaliPerCarico.add(mDataset.get(positionSelectedCB.get(a)));
-                            }
-                            mDataset.clear();
-                            filteredlist.clear();
-                        } else {
+                                int finalA = a;
+                                caricoDB.checkAnimaleCarico(auth,db,mDataset.get(positionSelectedCB.get(a))).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if(task.getResult().size()==0){
+                                                Log.e("carico",mDataset.get(positionSelectedCB.get(finalA))+"");
+                                                animaliPerCarico.add(mDataset.get(positionSelectedCB.get(finalA)));
+                                            }else{
+                                                Toast.makeText(getContext(),mDataset.get(positionSelectedCB.get(finalA)).getNome()+" è già in carico",Toast.LENGTH_SHORT).show();
+                                            }
+                                            if(finalA==positionSelectedCB.size()-1){
+                                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                            }
+                                    }
+                                });
 
-                            for (int a = 0; a < positionSelectedCB.size(); a++) {
-                                animaliPerCarico.add(filteredlist.get(positionSelectedCB.get(a)));
                             }
-                            mDataset.clear();
-                            filteredlist.clear();
+
+                        } else {
+                            for (int a = 0; a < positionSelectedCB.size(); a++) {
+                                int finalA = a;
+                                caricoDB.checkAnimaleCarico(auth, db, filteredlist.get(positionSelectedCB.get(a))).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.getResult().size() == 0) {
+                                            animaliPerCarico.add(filteredlist.get(positionSelectedCB.get(finalA)));
+                                        } else {
+                                            Toast.makeText(getContext(), filteredlist.get(positionSelectedCB.get(finalA)).getNome() + " è già in carico", Toast.LENGTH_SHORT).show();
+                                        }
+                                        if (finalA == positionSelectedCB.size() - 1) {
+                                            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                        }
+                                    }
+                                });
+
+                            }
+
                         }
-                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
-                        mAdapter.notifyDataSetChanged();
+
                     }
                 })
                 .setNegativeButton(R.string.invia_con_bluetooth, new DialogInterface.OnClickListener() {
