@@ -3,6 +3,7 @@ package fragments_mieiAnimali;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -43,6 +44,7 @@ public class RichiediCaricoFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private ListView lvRichiestaCarichi;
     private Button btnInviaRichiesta;
+    private Toolbar main_action_bar;
 
     // TODO: Rename and change types of parameters
     private ArrayList<Animale> mParam1;
@@ -81,6 +83,20 @@ public class RichiediCaricoFragment extends Fragment {
         lvRichiestaCarichi.setAdapter(arrayAdapter);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(R.string.invia_richieste_di_carico);
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+            main_action_bar.getMenu().clear();
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    getActivity().onBackPressed();
+                }
+            });
+        }
         CollectionReference utentiReference=db.collection("utenti");
         Query query = utentiReference.whereEqualTo("ruolo", "veterinario");
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -113,5 +129,15 @@ public class RichiediCaricoFragment extends Fragment {
         });
 
         return view;
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
+        }
     }
 }

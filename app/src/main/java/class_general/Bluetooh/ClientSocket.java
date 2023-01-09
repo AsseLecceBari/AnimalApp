@@ -18,7 +18,7 @@ import java.util.UUID;
 
 import model.Animale;
 
-public class ClientSocket extends Thread {
+public class ClientSocket implements Runnable {
     private final BluetoothSocket mSocket;
     private final BluetoothDevice mDevice;
     private final ArrayList<Animale> mlistAnimali;

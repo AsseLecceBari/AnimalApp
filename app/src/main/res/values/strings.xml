@@ -204,6 +204,8 @@
     <string name="segnala_raccolta_fondi">Segnala raccolta fondi</string>
     <string name="segnala_animale_ferito">Segnala animale ferito</string>
     <string name="ConfermaEliminaSegnalazione">Sei sicuro di voler eliminare la segnalazione?</string>
+    <string name="gestisci_richieste_di_carico">Gestisci richieste di carico</string>
+    <string name="invia_richieste_di_carico">Invia richieste di carico</string>
 
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>

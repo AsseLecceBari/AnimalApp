@@ -62,7 +62,7 @@ public class Connection extends Thread {
         // Keep listening to the InputStream until an exception occurs.
         while (true) {
             try {
-                cancel();
+
                 // Read from the InputStream.
                 numBytes = mmInStream.read(mmBuffer);
                 //prendi i dati da mmbuffer a partire da 0 fino a numbytes

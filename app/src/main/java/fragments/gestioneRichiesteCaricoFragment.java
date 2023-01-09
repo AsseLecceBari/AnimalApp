@@ -12,6 +12,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -64,7 +65,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
     private GestioneRichiesteCaricoAdapter mAdapter = new GestioneRichiesteCaricoAdapter(mDataset);
     FirebaseAuth firebaseAuth;
 
-
+    private Toolbar main_action_bar;
 
     private AlertDialog.Builder builder;
 
@@ -74,7 +75,8 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                 @SuppressLint({"NewApi", "SuspiciousIndentation"})
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                 if (result.getResultCode() == 2000) {
+                    Log.d("ciao33", String.valueOf(result.getResultCode()));
+                 if (result.getResultCode() == 200) {
                      firebaseAuth= FirebaseAuth.getInstance();
 
                      builder = new AlertDialog.Builder(getActivity());
@@ -98,7 +100,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                         builder.show();
                      BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                      ServerSocket serverSoket= new ServerSocket(mBluetoothAdapter,mHandler,firebaseAuth.getCurrentUser().getEmail());
-                     serverSoket.start();
+                     serverSoket.run();
 
 
                     }
@@ -131,7 +133,20 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
         auth = FirebaseAuth.getInstance();
         animaleDB = new AnimaleDB();
         caricoDB= new CaricoDB();
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(R.string.gestisci_richieste_di_carico);
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+            main_action_bar.getMenu().clear();
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    getActivity().onBackPressed();
+                }
+            });
+        }
         return view;
     }
 
@@ -148,7 +163,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
 
                     Intent abilitavisibilità = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-                    abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 2000);
+                    abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
 
                     activityResultLaunch.launch(abilitavisibilità);
 
@@ -224,6 +239,17 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                 }
 
             });
+        }
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
         }
     }
 }

@@ -47,14 +47,14 @@ public class ServerSocket extends Thread {
                 socket=mServerSoket.accept();
 
             } catch (IOException e) {
-
+                Log.d("ciao33","sono connesso s");
                 e.printStackTrace();
                 break;
             }
 
             if(socket!= null)
             {
-                Log.d("ciao33","sono connesso s");
+
                ConnectionManager connectionManager= new ConnectionManager(socket,mHandler);
               connectionManager.write(emailVeterinario);
 

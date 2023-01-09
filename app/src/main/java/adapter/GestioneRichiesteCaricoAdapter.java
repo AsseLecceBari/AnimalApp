@@ -1,5 +1,6 @@
 package adapter;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 
 import android.view.LayoutInflater;
@@ -123,7 +124,7 @@ public class GestioneRichiesteCaricoAdapter extends RecyclerView.Adapter<Gestion
 
 
     @Override
-    public void onBindViewHolder(@NonNull GestioneRichiesteCaricoAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull GestioneRichiesteCaricoAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         //Vengono inseriti i dati degli animali negli item
         FirebaseStorage storage;
         StorageReference storageRef;
