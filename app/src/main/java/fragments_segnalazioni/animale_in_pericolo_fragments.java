@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -77,7 +78,7 @@ public class animale_in_pericolo_fragments extends Fragment {
     TextInputEditText etDescrizioneAnimaleFerito;
     FloatingActionButton confermaAnimaleFerito;
     TextInputEditText titoloAnimaleInPericolo;
-
+    private Toolbar main_action_bar;
     private FirebaseFirestore db;
 
     private File file;
@@ -217,8 +218,8 @@ public class animale_in_pericolo_fragments extends Fragment {
         etDescrizioneAnimaleFerito=rootView.findViewById(R.id.etDescrizioneAnimaleFerito);
         titoloAnimaleInPericolo=rootView.findViewById(R.id.titoloAnimaleInPericolo);
         confermaAnimaleFerito=rootView.findViewById((R.id.confermaAnimaleFerito));
-
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Segnala animale ferito");
 
         //Intent per poter avviare la fotocamera nell'app
         scattaFotoButton.setOnClickListener(new View.OnClickListener() {

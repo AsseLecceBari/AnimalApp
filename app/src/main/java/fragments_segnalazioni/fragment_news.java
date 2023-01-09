@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -77,7 +78,7 @@ public class fragment_news extends Fragment {
     TextInputEditText descrzioneNews;
     TextInputEditText titoloNews;
     FloatingActionButton confermaNews;
-
+    private Toolbar main_action_bar;
     private FirebaseFirestore db;
 
 
@@ -218,7 +219,8 @@ public class fragment_news extends Fragment {
 
         db=FirebaseFirestore.getInstance();
 
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Segnala una news nella tua zona");
 
 
         db=FirebaseFirestore.getInstance();

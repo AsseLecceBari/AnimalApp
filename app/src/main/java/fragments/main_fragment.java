@@ -4,6 +4,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
@@ -44,7 +45,7 @@ public class main_fragment extends Fragment {
     private int posizione =0;
     private int posizionePassata;
     double lat,lng;
-
+    private Toolbar main_action_bar;
 
     public main_fragment(int a){
         this.posizione=a;
@@ -82,6 +83,11 @@ public class main_fragment extends Fragment {
         activity  = getActivity();
         vpAdapter= new VPAdapter(getChildFragmentManager(),getLifecycle());
         viewPager2.setAdapter(vpAdapter);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+        main_action_bar.setNavigationIcon(null);
+        main_action_bar.setTitle("AnimalApp");
+        main_action_bar.inflateMenu(R.menu.menu_bar_main);
         return view;
     }
 

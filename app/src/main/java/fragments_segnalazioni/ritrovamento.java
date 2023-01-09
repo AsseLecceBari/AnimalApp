@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -38,7 +39,7 @@ public class ritrovamento extends Fragment {
     private Segnalazione s;
     private FirebaseFirestore db;
     private FirebaseAuth auth;
-
+    private Toolbar main_action_bar;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +56,8 @@ public class ritrovamento extends Fragment {
         upImgRitrovamento= rootView.findViewById(R.id.upImgRitrovamento);
         creaSegnalazione=rootView.findViewById(R.id.creaSegnalazioneBtn);
         vaiSmarrimento=rootView.findViewById(R.id.vaiSmarrimento);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Segnala ritrovamento");
         gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -40,7 +41,7 @@ public class aggiungiRaccoltaFondi extends Fragment {
     private StorageReference storageRef;
     private CircleImageView imgAnimale;
     private FirebaseFirestore db;
-
+    private Toolbar main_action_bar;
     public aggiungiRaccoltaFondi(Animale a) {
         animale = a;
     }
@@ -55,7 +56,8 @@ public class aggiungiRaccoltaFondi extends Fragment {
         link = rootView.findViewById(R.id.etLink);
         conferma = rootView.findViewById(R.id.conferma);
         imgAnimale = rootView.findViewById(R.id.imgAnimale);
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Segnala raccolta fondi");
         conferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
