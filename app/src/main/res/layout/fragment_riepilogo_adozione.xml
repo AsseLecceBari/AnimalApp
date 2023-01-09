@@ -83,7 +83,7 @@
                     android:id="@+id/AggiungiDescrizioneAnimale"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Descrizione" />
+                    android:hint="@string/descrizione" />
             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -104,7 +104,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="70dp"
                 android:layout_marginRight="70dp"
-                android:text="Cedi proprietà animale">
+                android:text="@string/cedi_propriet_animale">
             </Button>
 
         </LinearLayout>

@@ -26,7 +26,7 @@
             android:id="@+id/selectImgButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scegli immagine animale" />
+            android:text="@string/scegli_immagine_animale" />
 
         <com.google.android.material.checkbox.MaterialCheckBox
             android:id="@+id/isAssistito"
@@ -79,7 +79,7 @@
                 android:id="@+id/etRegGenereAnimale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Genere"
+                android:hint="@string/genere"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -93,7 +93,7 @@
                 android:id="@+id/etRegSpecieAnimale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Specie"
+                android:hint="@string/specie"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,7 +122,7 @@
                 android:id="@+id/dataRitrovamentoAnimaleAnimaleText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Data Ritrovamento" />
+                android:hint="@string/data_ritrovamento" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -135,7 +135,7 @@
                 android:id="@+id/etbox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Box dell'animale"
+                android:hint="@string/box_dell_animale"
                 android:visibility="gone"/>
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -149,7 +149,7 @@
                 android:id="@+id/microChip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Microchip"
+                android:hint="@string/microchip"
                 android:visibility="gone"/>
         </com.google.android.material.textfield.TextInputLayout>
 

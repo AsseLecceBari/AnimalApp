@@ -17,7 +17,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="16dp"
         android:layout_marginLeft="8dp"
-        android:text="GESTIONE ANIMALI IN CARICO"
+        android:text="@string/gestione_animali_in_carico"
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.481"
@@ -65,6 +65,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="Richiedi Carico"
+        android:text="@string/richiedi_carico"
         android:visibility="gone" />
 </FrameLayout>

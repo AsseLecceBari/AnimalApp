@@ -31,7 +31,7 @@
             android:id="@+id/scattaFotoButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Scatta Foto" />
+            android:text="@string/scatta_foto" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -44,7 +44,7 @@
                 android:id="@+id/titoloAnimaleInPericolo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Titolo" />
+                android:hint="@string/titolo" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +58,7 @@
                 android:id="@+id/etDescrizioneAnimaleFerito"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descrizione" />
+                android:hint="@string/descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView

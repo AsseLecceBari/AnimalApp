@@ -233,11 +233,11 @@ public class anagrafica extends Fragment {
         fab(rootView);
 
         if(animale!= null){
-            nome.setText("Nome: "+animale.getNome());
-            genere.setText("Genere: "+animale.getGenere());
-            specie.setText("Specie: "+animale.getSpecie());
-            nascita.setText("Nascita: "+animale.getDataDiNascita());
-            sesso.setText("Sesso: "+animale.getSesso());
+            nome.setText(getString(R.string.nome)+": "+animale.getNome());
+            genere.setText(getString(R.string.genere)+": "+animale.getGenere());
+            specie.setText(getString(R.string.specie)+": "+animale.getSpecie());
+            nascita.setText(getString(R.string.nascita)+": "+animale.getDataDiNascita());
+            sesso.setText(getString(R.string.sesso)+": "+animale.getSesso());
 
             if(animale.getIsAssistito()){
                 assistito.setText(R.string.eassistito);
@@ -247,11 +247,11 @@ public class anagrafica extends Fragment {
 
             try{
                 if(!animale.getMicroChip().equals(""))
-                    microchip_.setText("Microchip: "+animale.getMicroChip());
+                    microchip_.setText(getString(R.string.microchip)+": "+animale.getMicroChip());
                 if(!animale.getBox().equals(""))
-                    box.setText("Box: "+animale.getBox());
+                    box.setText(getString(R.string.box)+": "+animale.getBox());
                 if(!animale.getDataRitrovamento().equals(""))
-                    dataRitrovamento.setText("Data di ritrovamento: "+animale.getDataRitrovamento());
+                    dataRitrovamento.setText(getString(R.string.data_ritrovamento)+": "+animale.getDataRitrovamento());
             }catch (Exception e){
                 Toast.makeText(getActivity().getApplicationContext(), "Animale da cancellare", Toast.LENGTH_SHORT).show();
             }

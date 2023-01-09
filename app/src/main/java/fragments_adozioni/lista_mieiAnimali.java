@@ -76,7 +76,7 @@ public class lista_mieiAnimali extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_listamieianimali, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle("Aggiungi adozione");
+        main_action_bar.setTitle(R.string.aggiungi_adozione);
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
             main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);

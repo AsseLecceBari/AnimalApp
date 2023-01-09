@@ -3,6 +3,11 @@ package fragments_segnalazioni;
 import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +54,7 @@ public class aggiungiRaccoltaFondi extends Fragment {
     private StorageReference storageRef;
     private CircleImageView imgAnimale;
     private FirebaseFirestore db;
-
+    private Toolbar main_action_bar;
     public aggiungiRaccoltaFondi(Animale a) {
         animale = a;
     }
@@ -65,9 +70,13 @@ public class aggiungiRaccoltaFondi extends Fragment {
         conferma = rootView.findViewById(R.id.conferma);
         imgAnimale = rootView.findViewById(R.id.imgAnimale);
 
+
         //default
         titolo.setText("Ho bisogno di voi per aiutare "+ animale.getNome());
         descrizione.setText("Se avete la possibilità, aiutate il mio animale con una donazione!");
+
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(R.string.segnala_raccolta_fondi);
 
         conferma.setOnClickListener(new View.OnClickListener() {
             @Override

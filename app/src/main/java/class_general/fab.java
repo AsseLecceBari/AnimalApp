@@ -1,5 +1,7 @@
 package class_general;
 
+import static it.uniba.dib.sms2223_2.R.string.aggiungi_ai_preferiti;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -91,7 +93,7 @@ public class fab {
         fabAction5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context, "Aggiungi ai preferiti", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, aggiungi_ai_preferiti, Toast.LENGTH_SHORT).show();
             }
         });
     }

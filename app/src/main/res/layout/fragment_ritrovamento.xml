@@ -27,6 +27,7 @@
                 android:layout_width="165dp"
                 android:layout_height="86dp"
                 android:text="Effettua la segnalazione SOLO se non hai trovato lo smarrimento in:"
+
                 android:textSize="16sp" />
 
             <TextView
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:background="?attr/selectableItemBackground"
-                android:text="Smarrimenti"
+                android:text="@string/smarrimenti"
 
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -64,7 +65,8 @@
             android:id="@+id/upImgRitrovamento"
             android:layout_width="353dp"
             android:layout_height="wrap_content"
-            android:text="Carica immagine animale" />
+            android:text="@string/carica_immagine_animale" />
+
 
 
 
@@ -80,7 +82,7 @@
                 android:id="@+id/etDescrizione"
                 android:layout_width="match_parent"
                 android:layout_height="104dp"
-                android:hint="Descrizione" />
+                android:hint="@string/descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView
@@ -92,6 +94,7 @@
                 android:id="@+id/autoCompleteFragment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
                 />
         </androidx.cardview.widget.CardView>
@@ -117,7 +120,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:text="Crea segnalazione" />
+            android:text="@string/crea_segnalazione" />
 
     </LinearLayout>
 </ScrollView>

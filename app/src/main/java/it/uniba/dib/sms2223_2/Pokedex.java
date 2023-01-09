@@ -6,6 +6,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,13 +33,24 @@ public class Pokedex extends AppCompatActivity {
     private PokedexAdapter mAdapter=new PokedexAdapter(mDataset);
     private FirebaseFirestore db;
     private FirebaseAuth auth;
+    private Toolbar main_action_bar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pokedex);
-
-        //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
+        main_action_bar=findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Pokedex");
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.groupItemMain);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onBackPressed();
+                }
+            });
+        }
 
     }
 

@@ -43,7 +43,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Titolo "
+                    android:text="@string/titolo"
                     android:textSize="18dp"
                     />
                 <com.google.android.material.divider.MaterialDivider
@@ -60,7 +60,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Titolo"
+                android:hint="@string/titolo"
                 android:id="@+id/titoloReportAnimaleInPericolo"
                 android:layout_marginTop="12dp"
                 android:textSize="28dp">
@@ -81,7 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Descrizione "
+                    android:text="@string/descrizione"
                     android:textSize="18dp"
                     />
                 <com.google.android.material.divider.MaterialDivider
@@ -98,7 +98,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descrizione"
+                android:hint="@string/descrizione"
                 android:id="@+id/DescrizioneAnimaleInPericolo"
                 android:layout_marginTop="12dp"
                 android:textSize="28dp">
@@ -119,7 +119,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text=" Mappa "
+                    android:text="@string/mappa"
                     android:textSize="18dp"
                     />
                 <com.google.android.material.divider.MaterialDivider
@@ -147,7 +147,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:hint="data"
+                android:hint="@string/data"
                 android:textSize="12dp"
                 android:gravity="right"
                 />

@@ -27,7 +27,7 @@
                 android:layout_marginLeft="10dp"
 
                 android:gravity="center|right"
-                android:text="FILTRI"
+                android:text="@string/filtri"
                 android:textSize="23dp" />
 
             <ImageView
@@ -113,7 +113,7 @@
                         android:id="@+id/radioImieiannunci"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="I miei annunci" />
+                        android:text="@string/i_miei_annunci" />
 
                     <RadioButton
                         android:id="@+id/radioannunciesterni"
@@ -121,7 +121,7 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginLeft="18dp"
-                        android:text="Generali"
+                        android:text="@string/generali"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <RadioButton
@@ -131,7 +131,7 @@
 
                         android:layout_marginLeft="18dp"
                         android:layout_marginRight="1dp"
-                        android:text="Preferiti" />
+                        android:text="@string/preferiti" />
 
                     <FrameLayout
                         android:id="@+id/notificapreferiti"

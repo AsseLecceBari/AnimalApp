@@ -7,14 +7,14 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fine Carico"
+        android:text="@string/fine_carico"
         android:textSize="24sp"
         android:layout_marginBottom="16dp"/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Costo Carico"
+        android:hint="@string/costo_carico"
         android:inputType="number"
         android:imeOptions="actionNext"
         android:id="@+id/costo"/>
@@ -23,6 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:text="Conferma"
+        android:text="@string/conferma"
         android:id="@+id/submit_button"/>
 </LinearLayout>

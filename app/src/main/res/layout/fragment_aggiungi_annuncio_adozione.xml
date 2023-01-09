@@ -67,7 +67,7 @@
                 android:id="@+id/DescrizioneAnimale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Descrizione" />
+                android:hint="@string/descrizione" />
         </com.google.android.material.textfield.TextInputLayout>
 
 

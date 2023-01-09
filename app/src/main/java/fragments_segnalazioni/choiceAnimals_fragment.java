@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +46,7 @@ public class choiceAnimals_fragment extends Fragment {
     protected AnimalAdapter mAdapter;
 
     protected ArrayList<Animale> mDataset= new ArrayList<>();
-
+    private Toolbar main_action_bar;
     public choiceAnimals_fragment() {
         // Required empty public constructor
     }
@@ -68,11 +69,11 @@ public class choiceAnimals_fragment extends Fragment {
         mDataset.clear();
         initDataset();
         View rootView = inflater.inflate(R.layout.fragment_choice_animals_fragment, container, false);
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Seleziona animale smarrito");
 
         //da implementare la parte dei non loggati con il fragment creata da enrico
         auth=FirebaseAuth.getInstance();
-
 
 
 

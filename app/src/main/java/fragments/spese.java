@@ -93,7 +93,6 @@ public class spese extends Fragment {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             mDataset.add(document.toObject(SpesaAnimale.class));
-                            Log.e("animale", document.getId() + " => " + document.getData());
                         }
                         //Passo i dati presi dal database all'adapter
                         mAdapter = new SpeseAdapter(mDataset);

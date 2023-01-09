@@ -40,7 +40,7 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:contentDescription="smarrimento"
+                    android:contentDescription="@string/smarrimento"
                     android:src="@drawable/ic_launcher_foreground" />
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="25dp"
-                    android:text="Smarrimento"
+                    android:text="@string/smarrimento"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -71,7 +71,7 @@
                     android:id="@+id/textAnimaleFerito"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Animale Ferito"
+                    android:text="@string/animale_ferito"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -91,7 +91,7 @@
                     android:id="@+id/textPericolo"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Pericolo"
+                    android:text="@string/pericolo"
                     android:textAlignment="center"
                     android:layout_marginBottom="25dp"/>
             </LinearLayout>
@@ -112,7 +112,7 @@
                     android:id="@+id/textNews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="News"
+                    android:text="@string/news"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -134,7 +134,7 @@
                     android:id="@+id/textRaccoltaFondi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Raccolta Fondi"
+                    android:text="@string/raccolta_fondi"
                     android:textAlignment="center" />
             </LinearLayout>
 
@@ -148,14 +148,14 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:contentDescription="ritrovamento"
+                    android:contentDescription="@string/ritrovamento"
                     android:src="@drawable/ic_launcher_foreground" />
 
                 <TextView
                     android:id="@+id/textRitrovamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ritrovamento"
+                    android:text="@string/ritrovamento"
                     android:textAlignment="center" />
             </LinearLayout>
 

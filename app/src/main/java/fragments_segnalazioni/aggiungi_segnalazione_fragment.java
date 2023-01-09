@@ -33,9 +33,10 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
         View rootView =inflater.inflate(R.layout.fragment_aggiungi_segnalazione_fragment, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle("Aggiungi segnalazione");
+        main_action_bar.setTitle(R.string.aggiungi_segnalazione);
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+            main_action_bar.getMenu().clear();
             main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
             main_action_bar.setNavigationIcon(R.drawable.back);
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -137,8 +138,8 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
             main_action_bar.setNavigationIcon(null);

@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -76,7 +77,7 @@ public class fragment_zona_pericolosa extends Fragment {
     TextInputEditText descrzioneZonaPericolosa;
     TextInputEditText titoloZonaPericolosa;
     FloatingActionButton confermaZonaPericolosa;
-
+    private Toolbar main_action_bar;
     private FirebaseFirestore db;
 
     private File file;
@@ -217,7 +218,8 @@ public class fragment_zona_pericolosa extends Fragment {
 
 
         db=FirebaseFirestore.getInstance();
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Segnala pericolo");
         imgZonaPericolosa=rootView.findViewById(R.id.imgZonaPericolosa);
         scattaFotoZona=rootView.findViewById(R.id.scattaFotoZona);
         descrzioneZonaPericolosa=rootView.findViewById(R.id.descrzioneZonaPericolosa);

@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -77,7 +78,7 @@ public class animale_in_pericolo_fragments extends Fragment {
     TextInputEditText etDescrizioneAnimaleFerito;
     FloatingActionButton confermaAnimaleFerito;
     TextInputEditText titoloAnimaleInPericolo;
-
+    private Toolbar main_action_bar;
     private FirebaseFirestore db;
 
     private File file;
@@ -177,8 +178,8 @@ public class animale_in_pericolo_fragments extends Fragment {
             });
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-        alertDialogBuilder.setMessage("Per poter utilizzare questa applicazione con tutte le sue funzionalità, è consigliato accettare i permessi");
-        alertDialogBuilder.setPositiveButton("Ho capito",
+        alertDialogBuilder.setMessage(getString(R.string.consiglio_accettare_permessi));
+        alertDialogBuilder.setPositiveButton(getString(R.string.ho_capito),
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
@@ -186,7 +187,7 @@ public class animale_in_pericolo_fragments extends Fragment {
                     }
                 });
 
-        alertDialogBuilder.setNegativeButton("Magari più tardi", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(getString(R.string.magari_piu_tardi), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
             }
@@ -217,8 +218,8 @@ public class animale_in_pericolo_fragments extends Fragment {
         etDescrizioneAnimaleFerito=rootView.findViewById(R.id.etDescrizioneAnimaleFerito);
         titoloAnimaleInPericolo=rootView.findViewById(R.id.titoloAnimaleInPericolo);
         confermaAnimaleFerito=rootView.findViewById((R.id.confermaAnimaleFerito));
-
-
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(R.string.segnala_animale_ferito);
 
         //Intent per poter avviare la fotocamera nell'app
         scattaFotoButton.setOnClickListener(new View.OnClickListener() {

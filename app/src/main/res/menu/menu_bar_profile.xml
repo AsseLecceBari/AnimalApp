@@ -6,12 +6,6 @@
         android:id="@+id/groupItemProfile">
 
         <item
-            android:id="@+id/scanItemMenu"
-            android:icon="@drawable/qrcode"
-
-            android:title="@string/scansione_qrcode"
-            app:showAsAction="ifRoom" />
-        <item
 
 
             android:icon="@drawable/iconslogout"
