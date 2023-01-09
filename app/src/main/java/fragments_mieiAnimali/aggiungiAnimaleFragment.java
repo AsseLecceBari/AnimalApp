@@ -143,13 +143,16 @@ public class aggiungiAnimaleFragment extends Fragment {
         main_action_bar.setTitle(R.string.aggiungi_animale);
         animaleDB = new AnimaleDB();
         if(main_action_bar.getMenu()!=null) {
-                main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
-                main_action_bar.setNavigationIcon(R.drawable.back);
-                main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        getActivity().onBackPressed();}
-                });
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
+            main_action_bar.getMenu().clear();
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    getActivity().onBackPressed();
+                }
+            });
         }
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         auth=FirebaseAuth.getInstance();
@@ -344,13 +347,14 @@ public class aggiungiAnimaleFragment extends Fragment {
 
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onDestroy() {
+        super.onDestroy();
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
-            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
-            main_action_bar.setTitle("AnimalApp");
             main_action_bar.setNavigationIcon(null);
+            main_action_bar.setTitle("AnimalApp");
+            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
+
         }
     }
 }
