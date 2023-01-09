@@ -3,11 +3,14 @@ package fragments;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -40,7 +43,7 @@ public class pokedexListFragment extends Fragment {
     private TextView genereAnimale;
     private TextView specieAnimale;
     private TextView sessoAnimale;
-    private TextView dataNascitaAnimale;
+    private ImageButton turnOffPokedex;
 
 
 
@@ -68,6 +71,8 @@ public class pokedexListFragment extends Fragment {
 
     }
 
+  
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,6 +82,13 @@ public class pokedexListFragment extends Fragment {
         genereAnimale=(TextView) view.findViewById(R.id.genereAnimaleViewPoke);
         specieAnimale= (TextView) view.findViewById(R.id.specieAnimaleViewPoke);
         sessoAnimale=view.findViewById(R.id.sessoAnimaleViewPoke);
+        turnOffPokedex=view.findViewById(R.id.turnOffPokedex);
+        turnOffPokedex.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getActivity().getSupportFragmentManager().popBackStack();
+            }
+        });
        // dataNascitaAnimale= (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
 
         nomeAnimale.setText(mParam1.getNome());

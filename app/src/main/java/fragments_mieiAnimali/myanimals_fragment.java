@@ -266,10 +266,6 @@ public class myanimals_fragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-
-
-
-
              ArrayList<Integer> positionSelectedCB= mAdapter.getPositionSelectedCB();
 
                 if(positionSelectedCB.isEmpty()) {
