@@ -8,13 +8,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +24,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -138,12 +132,7 @@ public class ritrovamento extends Fragment {
 
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Segnala ritrovamento");
-        gps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                aggiornaTextviewConCordinate();
-            }
-        });
+
 
         upImgRitrovamento.setOnClickListener(new View.OnClickListener() {
             @Override
