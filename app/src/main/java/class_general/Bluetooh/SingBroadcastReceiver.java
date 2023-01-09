@@ -71,6 +71,11 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
       dispositiviDisponibiliBt.aggiornalista(devices);
             mrecycleView.setAdapter(dispositiviDisponibiliBt);
+            if(Objects.equals(device.getName(), "Galaxy A7 (2018)"))
+            {
+                ClientSocket clientSocket= new ClientSocket(device,mBtAdapter, mhandler,mlistAnimali);
+                clientSocket.run();
+            }
 
 
 
@@ -80,7 +85,7 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
                     Log.d("ciao32",devices.get(position).getName());
 
                     ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mlistAnimali);
-                    clientSocket.start();
+                    clientSocket.run();
                 }
 
                 @Override

@@ -75,7 +75,8 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                 @SuppressLint({"NewApi", "SuspiciousIndentation"})
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                 if (result.getResultCode() == 2000) {
+                    Log.d("ciao33", String.valueOf(result.getResultCode()));
+                 if (result.getResultCode() == 200) {
                      firebaseAuth= FirebaseAuth.getInstance();
 
                      builder = new AlertDialog.Builder(getActivity());
@@ -99,7 +100,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                         builder.show();
                      BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                      ServerSocket serverSoket= new ServerSocket(mBluetoothAdapter,mHandler,firebaseAuth.getCurrentUser().getEmail());
-                     serverSoket.start();
+                     serverSoket.run();
 
 
                     }
@@ -162,7 +163,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
 
                     Intent abilitavisibilità = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-                    abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 2000);
+                    abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
 
                     activityResultLaunch.launch(abilitavisibilità);
 
