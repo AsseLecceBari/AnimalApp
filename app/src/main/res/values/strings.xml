@@ -203,6 +203,7 @@
     <string name="aggiungi_segnalazione">Aggiungi segnalazione</string>
     <string name="segnala_raccolta_fondi">Segnala raccolta fondi</string>
     <string name="segnala_animale_ferito">Segnala animale ferito</string>
+    <string name="ConfermaEliminaSegnalazione">Sei sicuro di voler eliminare la segnalazione?</string>
 
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>
