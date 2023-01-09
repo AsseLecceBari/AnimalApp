@@ -3,6 +3,8 @@ package fragments_segnalazioni;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -202,7 +204,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
             fabAction2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Modifica Segnalazione", Toast.LENGTH_SHORT).show();
+
                     fabAction2.setVisibility(View.GONE);
                     //todo: da modificare la via mettendo gone la mappa e visibile l'autocompleate
                     //Rendo a GONE le textView e a VISIBLE le editText
@@ -252,7 +254,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
             fabAction3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                  //  Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
                     deleteReports(s);
                 }
             });
@@ -511,22 +513,37 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
     }
 
     public void deleteReports(Segnalazione s){
-        db=FirebaseFirestore.getInstance();
-        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+        Log.d("provaelimina","sono dentro");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(R.string.ConfermaEliminaSegnalazione)
+                .setTitle("Elimina Segnalazione").setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("provaelimina","sono dentro");
+                        db=FirebaseFirestore.getInstance();
+                        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+                        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
+                                //prova per far tornare indietro al fragment che contiene la lista dei report
+                                getActivity().onBackPressed();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        builder.setCancelable(true);
+                    }
+                });
 
-        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
-                //prova per far tornare indietro al fragment che contiene la lista dei report
-                getActivity().onBackPressed();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
-            }
-        });
+
 
 
 
