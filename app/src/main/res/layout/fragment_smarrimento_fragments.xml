@@ -123,7 +123,8 @@
                 android:id="@+id/titoloSmarrimento"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/titolo" />
+                android:hint="@string/titolo"
+                android:text="Aiuto!!" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.divider.MaterialDivider
@@ -142,11 +143,12 @@
 
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/descrizioneEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/descrizioneEditText"
 
-                android:hint="@string/descrizione" />
+                android:hint="@string/descrizione"
+                android:text="Aiutatemi a ritrovare il mio animale!!" />
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.divider.MaterialDivider
             style="@style/AppTheme"

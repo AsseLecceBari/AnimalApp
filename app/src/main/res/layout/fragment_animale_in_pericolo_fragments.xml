@@ -44,7 +44,8 @@
                 android:id="@+id/titoloAnimaleInPericolo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/titolo" />
+                android:hint="@string/titolo"
+                android:text="Aiutate questo animale!!" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -58,7 +59,8 @@
                 android:id="@+id/etDescrizioneAnimaleFerito"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/descrizione" />
+                android:hint="@string/descrizione"
+                android:text="Vi prego di prestare soccorso per questo animale!!" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.cardview.widget.CardView

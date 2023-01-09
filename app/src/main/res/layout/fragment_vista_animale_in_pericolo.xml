@@ -76,6 +76,7 @@
                     android:id="@+id/updateTitoloText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="@string/titolo"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -128,6 +129,7 @@
                     android:id="@+id/updateDescrizioneText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:hint="Descrizione"
                     />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -138,6 +140,7 @@
                 android:orientation="horizontal"
                 >
                 <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/dividerMappa1"
                     style="@style/AppTheme"
                     android:layout_width="140dp"
                     android:layout_height="1dp"
@@ -145,12 +148,14 @@
 
                     />
                 <TextView
+                    android:id="@+id/textViewMappa"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/mappa"
                     android:textSize="18dp"
                     />
                 <com.google.android.material.divider.MaterialDivider
+                    android:id="@+id/dividerMappa2"
                     style="@style/AppTheme"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
@@ -167,21 +172,7 @@
                 android:layout_marginTop="25dp"
                 />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/updateVia"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp"
-                android:visibility="gone">
-                <fragment
-                    android:id="@+id/autoCompleteFragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
 
-                    />
-            </androidx.cardview.widget.CardView>
 
 
 

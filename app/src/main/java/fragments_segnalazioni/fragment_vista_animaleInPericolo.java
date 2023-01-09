@@ -35,6 +35,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.divider.MaterialDivider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -57,9 +58,10 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
     private TextView descrizioneAnimaleInPericolo;
     private TextView titoloReportAnimaleInPericolo;
     private ImageView immagineAnimaleInPericolo;
-    private TextView dataAnimaleInPericolo;
+    private TextView dataAnimaleInPericolo,textViewMappa;
     private TextInputLayout updateTitoloLayout,updateDescrizioneLayout;
     private TextInputEditText updateTitoloText,updateDescrizioneText;
+    private MaterialDivider dividerMappa1,dividerMappa2;
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -106,6 +108,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             s= (Segnalazione) getArguments().getSerializable(ARG_PARAM1);
+
             x=(int) getArguments().getInt(ARG_PARAM2);
         }
     }
@@ -147,6 +150,9 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         updateDescrizioneText=rootView.findViewById(R.id.updateDescrizioneText);
         updateTitoloLayout=rootView.findViewById(R.id.updateTitoloLayout);
         updateTitoloText=rootView.findViewById(R.id.updateTitoloText);
+        textViewMappa=rootView.findViewById(R.id.textViewMappa);
+        dividerMappa1=rootView.findViewById(R.id.dividerMappa1);
+        dividerMappa2=rootView.findViewById(R.id.dividerMappa2);
 
         descrizioneAnimaleInPericolo.setText(s.getDescrizione());
         titoloReportAnimaleInPericolo.setText(s.getTitolo());
@@ -206,15 +212,21 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
                 public void onClick(View view) {
 
                     fabAction2.setVisibility(View.GONE);
-                    //todo: da modificare la via mettendo gone la mappa e visibile l'autocompleate
+
                     //Rendo a GONE le textView e a VISIBLE le editText
                     descrizioneAnimaleInPericolo.setVisibility(View.GONE);
                     titoloReportAnimaleInPericolo.setVisibility(View.GONE);
                     mapViewAnimaleInPericolo.setVisibility(View.GONE);
+                    dividerMappa1.setVisibility(View.GONE);
+                    dividerMappa2.setVisibility(View.GONE);
+                    textViewMappa.setVisibility(View.GONE);
+
 
 
                     updateTitoloLayout.setVisibility(View.VISIBLE);
                     updateDescrizioneLayout.setVisibility(View.VISIBLE);
+                    updateTitoloText.setText(s.getTitolo());
+                    updateDescrizioneText.setText(s.getDescrizione());
 
 
 
@@ -553,9 +565,10 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
     public void updateSegnalazione(Segnalazione s){
         db=FirebaseFirestore.getInstance();
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
+
         String titolo,descrizione;
 
-        titolo = updateTitoloText.getText().toString();
+       /* titolo = updateTitoloText.getText().toString();
         if (titolo.equals("")){
             titolo=s.getTitolo();
         }
@@ -564,7 +577,11 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
         descrizione = updateDescrizioneText.getText().toString();
         if (descrizione.equals("")){
              descrizione=s.getDescrizione();
-          }
+          }*/
+
+
+        titolo = updateTitoloText.getText().toString();
+        descrizione = updateDescrizioneText.getText().toString();
 
         segnalazioniRef.document(s.getIdSegnalazione()).update("titolo",titolo,"descrizione",descrizione).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
@@ -575,10 +592,15 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
 
                 updateTitoloLayout.setVisibility(View.GONE);
                 updateDescrizioneLayout.setVisibility(View.GONE);
+                fabAction4.setVisibility(View.GONE);
 
                 mapViewAnimaleInPericolo.setVisibility(View.VISIBLE);
+                dividerMappa1.setVisibility(View.VISIBLE);
+                dividerMappa2.setVisibility(View.VISIBLE);
+                textViewMappa.setVisibility(View.VISIBLE);
+
                 fabAction2.setVisibility(View.VISIBLE);
-                fabAction4.setVisibility(View.GONE);
+
 
                 updateTitoloText.getText().clear();
                 updateDescrizioneText.getText().clear();
@@ -591,6 +613,9 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
                         Segnalazione s1 = documentSnapshot.toObject(Segnalazione.class);
                         descrizioneAnimaleInPericolo.setText(s1.getDescrizione());
                         titoloReportAnimaleInPericolo.setText(s1.getTitolo());
+                        aggiornaSegnalazione(s);
+
+
 
                     }
                 });
@@ -611,6 +636,39 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
             }
         });
 
+
+    }
+
+    public void aggiornaSegnalazione(Segnalazione s1){
+
+        db= FirebaseFirestore.getInstance();
+
+        // auth=FirebaseAuth.getInstance();
+        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+
+
+        segnalazioniRef.whereEqualTo("idSegnalazione",s1.getIdSegnalazione()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //Salvare animale in un array con elementi oggetto animale
+
+                        //Passo i dati presi dal database all'adapter
+                        s=document.toObject(Segnalazione.class);
+                    }
+
+
+
+
+
+                } else {
+                    Log.d("ERROR", "Error getting documents: ", task.getException());
+                }
+            }
+        });
 
     }
 
