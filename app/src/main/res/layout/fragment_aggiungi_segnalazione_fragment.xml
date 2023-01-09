@@ -41,7 +41,11 @@
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
                     android:contentDescription="@string/smarrimento"
-                    android:src="@drawable/ic_launcher_foreground" />
+                    android:src="@drawable/missing"
+                    android:scaleType="fitXY"
+                    android:maxHeight="100dp"
+                    android:maxWidth="100dp"
+                    android:adjustViewBounds="true"/>
 
                 <TextView
                     android:id="@+id/textSmarrimento"
