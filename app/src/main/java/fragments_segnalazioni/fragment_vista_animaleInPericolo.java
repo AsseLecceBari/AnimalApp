@@ -170,7 +170,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    condividiSegnalazione();
+                    condividiSegnalazione(s);
                 }
             });
         }else if(x==1){
@@ -179,7 +179,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    condividiSegnalazione();
+                    condividiSegnalazione(s);
                 }
             });
         }
@@ -504,10 +504,10 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
 
     }
 
-    public void condividiSegnalazione() {
+    public void condividiSegnalazione(Segnalazione s) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = s.toString();
+        String shareBody = "Puoi raggiungere il luogo di questa segnalazione in questo punto: http://www.google.com/maps/place/"+s.getLatitudine()+","+s.getLongitudine();
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
     }
@@ -543,7 +543,8 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
                     }
                 });
 
-
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
 
 
 
