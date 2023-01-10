@@ -25,6 +25,7 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
     BluetoothAdapter mBtAdapter;
     Handler mhandler;
+    ConnectionManager mconnectionManager;
     ArrayList<Animale > mlistAnimali;
    ArrayList< BluetoothDevice> devices = new ArrayList<>();
 
@@ -34,10 +35,11 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
 
 
-    public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler Handler) {
+    public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler Handler, ConnectionManager connectionManager) {
         mBtAdapter= adapter;
         mlistAnimali= listAnimali;
         mhandler=Handler;
+        mconnectionManager= connectionManager;
 
 
 
@@ -71,11 +73,8 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
       dispositiviDisponibiliBt.aggiornalista(devices);
             mrecycleView.setAdapter(dispositiviDisponibiliBt);
-            if(Objects.equals(device.getName(), "Galaxy A7 (2018)"))
-            {
-                ClientSocket clientSocket= new ClientSocket(device,mBtAdapter, mhandler,mlistAnimali);
-                clientSocket.run();
-            }
+
+
 
 
 
@@ -84,7 +83,7 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
                 public void onItemClick(View view, int position) {
                     Log.d("ciao32",devices.get(position).getName());
 
-                    ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mlistAnimali);
+                    ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mlistAnimali,mconnectionManager);
                     clientSocket.run();
                 }
 

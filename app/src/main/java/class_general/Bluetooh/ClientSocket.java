@@ -24,16 +24,18 @@ public class ClientSocket implements Runnable {
     private final ArrayList<Animale> mlistAnimali;
     private BluetoothAdapter mBtAdapter;
     private Handler mhandler;
+    private ConnectionManager mconnectionManager;
 
 
     @SuppressLint("MissingPermission")
-    public ClientSocket(BluetoothDevice device, BluetoothAdapter adapter, Handler handler, ArrayList<Animale> listAnimali) {
+    public ClientSocket(BluetoothDevice device, BluetoothAdapter adapter, Handler handler, ArrayList<Animale> listAnimali, ConnectionManager connectionManager) {
 
         mBtAdapter= adapter;
         BluetoothSocket tmp = null;
         this.mDevice = device;
         mhandler= handler;
         mlistAnimali = listAnimali;
+        mconnectionManager=connectionManager;
 
 
 
@@ -89,7 +91,7 @@ for(int i =0; i<mlistAnimali.size(); i++){
     }
 
 
-           gestioneConnessione.write(arrayList.toString());
+      gestioneConnessione.write("ciao");
 
 
 

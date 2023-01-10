@@ -91,11 +91,9 @@ public class Connection extends Thread {
 
         try {
             mmOutStream.write(bytes);
-
-              /*  // Share the sent message with the UI activity.
-                Message writtenMsg = handler.obtainMessage(
-                        MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
-                writtenMsg.sendToTarget();*/
+           /* Message writtenMsg = mhandler.obtainMessage(
+                    MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
+            writtenMsg.sendToTarget();*/
         } catch (IOException e) {
             Log.e(TAG, "Error occurred when sending data", e);
 
@@ -109,6 +107,8 @@ public class Connection extends Thread {
                 handler.sendMessage(writeErrorMsg);*/
         }
     }
+
+
 
 
     public void cancel() throws IOException {

@@ -106,7 +106,8 @@ public class Bluetooth  {
          listAnimali= animaliPerCarico;
 
 
-         mactivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
+        ConnectionManager connectionManager = null;
+        mactivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali,connectionManager)).commit();
 
     }
 
@@ -130,7 +131,7 @@ public class Bluetooth  {
 
 
     @SuppressLint("MissingPermission")
-    public void BtScanner(RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler mHandler) {
+    public void BtScanner(RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler mHandler, ConnectionManager mconnectionManager) {
 
 
 
@@ -142,7 +143,7 @@ public class Bluetooth  {
             mBtAdapter.startDiscovery();
 
 
-            mReceiver = new SingBroadcastReceiver(mBtAdapter, mRecyclerView, listAnimali, mHandler);
+            mReceiver = new SingBroadcastReceiver(mBtAdapter, mRecyclerView, listAnimali, mHandler,mconnectionManager);
             IntentFilter ifilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             mactivity.registerReceiver(mReceiver, ifilter);
 

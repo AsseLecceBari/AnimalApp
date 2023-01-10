@@ -3,7 +3,9 @@ package class_general.Bluetooh;
 import android.bluetooth.BluetoothSocket;
 import android.os.Handler;
 
-public class ConnectionManager {
+import java.io.Serializable;
+
+public class ConnectionManager implements Serializable {
     BluetoothSocket msocket;
     Connection connectedThread;
     Handler mHandler;

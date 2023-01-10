@@ -16,7 +16,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,19 +28,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import adapter.DispositiviDisponibiliBt;
 import class_general.Bluetooh.Bluetooth;
 import class_general.Bluetooh.ConnectionManager;
 import it.uniba.dib.sms2223_2.R;
-import model.Adozione;
 import model.Animale;
 
 
@@ -55,8 +52,10 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     // TODO: Rename and change types of parameters
     private ArrayList<Animale> mParam1;
     private static final String ARG_PARAM1 = "listaAnimali";
+    private static String Arg_Param2= "manager";
     private Handler mHandler;
     private RecyclerView mRecyclerView;
+    private ConnectionManager mconnectionManager;
     private View bottone;
 
 
@@ -95,10 +94,12 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static RicercaDispositiviBluetooth newInstance(ArrayList<Animale> param1) {
+    public static RicercaDispositiviBluetooth newInstance(ArrayList<Animale> param1, ConnectionManager connectionManager) {
         RicercaDispositiviBluetooth fragment = new RicercaDispositiviBluetooth();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
+
+        args.putSerializable(Arg_Param2,  connectionManager);
         fragment.setArguments(args);
         return fragment;
     }
@@ -109,6 +110,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
         if (getArguments() != null) {
 
        mParam1= (ArrayList<Animale>) getArguments().getSerializable(ARG_PARAM1);
+       mconnectionManager= (ConnectionManager) getArguments().getSerializable(Arg_Param2);
 
 
         }
@@ -126,6 +128,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
                     PERMISSIONS_LOCATION,
                     1);
+            Log.d("ciao32","ciao9");
 
         }
         else {
@@ -140,59 +143,56 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
                     super.handleMessage(msg);
                     AlertDialog.Builder builder;
 
-
-
-
-
                         byte[] mmBuffer = (byte[]) msg.obj;
 
                         String readMessage = new String(mmBuffer, 0, msg.arg1);
 
 
-                    builder = new AlertDialog.Builder(getActivity());
+                        builder = new AlertDialog.Builder(getActivity());
 
 
-
-                    builder.setMessage("Vuoi inviare l'incarico a " + readMessage+"?")
-                            .setTitle("Invio Incarico")
-                            .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    builder.setCancelable(true);
-                                }
-                            }).setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                  String a=  mParam1.toString();
-                                    try {
-                                        Animale mSampleObject = mParam1.get(0);
-                                        String jsonInString = new Gson().toJson(mSampleObject);
-                                        JSONObject mJSONObject = new JSONObject(jsonInString);
-                                        Log.d("ciao23", String.valueOf(mJSONObject));
-                                    } catch (JSONException e) {
-
-                                        e.printStackTrace();
+                        builder.setMessage("Vuoi inviare l'incarico a " + readMessage + "?")
+                                .setTitle("Invio Incarico")
+                                .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        builder.setCancelable(true);
                                     }
-                                }
-                            });
+                                }).setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        String a = mParam1.toString();
+                                        try {
+                                            Animale mSampleObject = mParam1.get(0);
+                                            String jsonInString = new Gson().toJson(mSampleObject);
+                                            JSONObject mJSONObject = new JSONObject(jsonInString);
+                                            Log.d("ciao26", String.valueOf(mconnectionManager));
+                                            if (mconnectionManager != null) {
+                                                Log.d("ciao26", String.valueOf(mconnectionManager));
+                                              //  mconnectionManager.write(mJSONObject.toString());
+                                            }
 
 
+                                        } catch (JSONException e) {
+
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                });
 
 
-
-
-                    builder.show();
-
+                        builder.show();
 
 
                     }
 
 
 
+
             };
 
 
-          bluetooth.BtScanner(mRecyclerView, mParam1, mHandler);
+          bluetooth.BtScanner(mRecyclerView, mParam1, mHandler, mconnectionManager);
 
         }
 

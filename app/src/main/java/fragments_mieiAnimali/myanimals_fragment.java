@@ -7,7 +7,6 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -27,7 +26,6 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -49,14 +47,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.gson.JsonArray;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONStringer;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import DB.AnimaleDB;
@@ -64,6 +58,7 @@ import DB.CaricoDB;
 import DB.UtentiDB;
 import adapter.AnimalAdapter;
 import class_general.Bluetooh.Bluetooth;
+import class_general.Bluetooh.ConnectionManager;
 import fragments.RecyclerItemClickListener;
 import fragments.RicercaDispositiviBluetooth;
 import fragments.gestioneRichiesteCaricoFragment;
@@ -146,8 +141,9 @@ public class myanimals_fragment extends Fragment {
                         String a =animaliPerCarico.toString();
                         try {
                             JSONObject json = new JSONObject(a);
+                            ConnectionManager connectionManager = null;
                             getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragmentContainerView,   RicercaDispositiviBluetooth.newInstance(animaliPerCarico)).addToBackStack(null).commit();
+                                    .replace(R.id.fragmentContainerView,   RicercaDispositiviBluetooth.newInstance(animaliPerCarico, connectionManager)).addToBackStack(null).commit();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -121,30 +121,7 @@ public class adoptions_fragment extends Fragment {
         }
 
 
-       /* mDataset.clear();
-        auth = FirebaseAuth.getInstance();
 
-        if(auth.getCurrentUser()!= null) {
-
-            initDataAnnunci(tipoannunci);
-        }
-        else{
-            tipoannunci=4;
-            initDataAnnunci(tipoannunci);
-        }*/
-
-
-
-   /*    mRecyclerView.setOnTouchListener(new OnSwipeListener(getContext()) {
-
-
-            @SuppressLint("ClickableViewAccessibility")
-            public void onSwipeBottom() {
-                mDataset.clear();
-                initDataAnnunci(tipoannunci);
-            }
-
-        });*/
 
 
 
