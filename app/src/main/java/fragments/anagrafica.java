@@ -10,6 +10,7 @@ import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -125,7 +126,7 @@ public class anagrafica extends Fragment {
         profiloAnimale= new ProfiloAnimale();
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         pokeball=rootView.findViewById(R.id.pokeball);
-
+        MediaPlayer mediaPlayer = MediaPlayer.create(getContext(), R.raw.pokeballsoundeffect);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.setNavigationIcon(R.drawable.back);
@@ -193,12 +194,13 @@ public class anagrafica extends Fragment {
                                 RotateAnimation.RELATIVE_TO_SELF, 0.5f,
                                 RotateAnimation.RELATIVE_TO_SELF, 1f);
                         anim.setRepeatCount(2);
-                        anim.setDuration(700);
+                        anim.setDuration(1500);
                         pokeball.startAnimation(anim);
                         imgAnimaleReg.setVisibility(View.INVISIBLE);
                         anim.setAnimationListener(new Animation.AnimationListener() {
                             @Override
                             public void onAnimationStart(Animation animation) {
+                                mediaPlayer.start();
 
                             }
 
@@ -219,7 +221,7 @@ public class anagrafica extends Fragment {
 
                             @Override
                             public void onAnimationRepeat(Animation animation) {
-
+                                mediaPlayer.start();
                             }
                         });
 
