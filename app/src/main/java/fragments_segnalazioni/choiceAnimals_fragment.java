@@ -24,6 +24,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 import adapter.AnimalAdapter;
@@ -69,7 +70,11 @@ public class choiceAnimals_fragment extends Fragment {
                              Bundle savedInstanceState) {
 
         mDataset.clear();
-        initDataset();
+        if(flag == 2){
+            InitData();
+        }else{
+            initDataset();
+        }
         View rootView = inflater.inflate(R.layout.fragment_choice_animals_fragment, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
         main_action_bar.setTitle("Seleziona un animale");
@@ -158,6 +163,63 @@ public class choiceAnimals_fragment extends Fragment {
         }
     }
 
+    public void InitData() {
+        db= FirebaseFirestore.getInstance();
+        auth= FirebaseAuth.getInstance();
 
+        CollectionReference animali=db.collection("animali");
+        CollectionReference adozioni=db.collection("adozioni");
+
+        if(auth.getCurrentUser()!=null) {
+            Query query = animali.whereEqualTo("emailProprietario", auth.getCurrentUser().getEmail());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+
+                            Animale temporaneo= document.toObject(Animale.class);
+
+                            Query query = adozioni.whereEqualTo("idAnimale", document.getId());
+
+                            adozioni.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        int contatore=0;
+                                        for (QueryDocumentSnapshot document1 : task.getResult()) {
+                                            Adozione a= document1.toObject(Adozione.class);
+                                            if(Objects.equals(a.getIdAnimale(), document.getId()))
+                                            {
+                                                contatore++;
+
+
+                                            }
+
+
+                                        }
+                                        if(contatore==0)
+                                        {
+                                            mDataset.add(document.toObject(Animale.class));
+                                            Log.d("ciao", String.valueOf(mDataset.size()));
+                                            mAdapter = new AnimalAdapter(mDataset);
+                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                            mRecyclerView.setAdapter(mAdapter);
+                                        }
+
+                                    }
+                                }
+                            });
+
+
+
+                        }
+                    }
+                }
+            });
+        }
+
+    }
 
 }

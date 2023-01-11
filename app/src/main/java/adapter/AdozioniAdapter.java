@@ -2,7 +2,6 @@ package adapter;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import java.util.Objects;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.Persona;
-import model.Utente;
 
 public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapter.ViewHolder> {
 
@@ -93,7 +91,6 @@ public class AdozioniAdapter extends RecyclerView.Adapter<adapter.AdozioniAdapte
             dataNascitaAnimale = (TextView) view.findViewById(R.id.dateNascitaAnimaleView);
             zona = (TextView) view.findViewById(R.id.zona);
             imageAnimal = (ImageView) view.findViewById(R.id.imageAnimal);
-            elimina = view.findViewById(R.id.button2);
             viewtot = view;
         }
     }

@@ -24,7 +24,7 @@
             <ImageView
                 android:id="@+id/imageAnimal"
 
-
+                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 tools:srcCompat="@tools:sample/avatars" />
