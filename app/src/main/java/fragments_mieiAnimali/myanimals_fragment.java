@@ -446,9 +446,13 @@ public class myanimals_fragment extends Fragment {
         if(auth.getCurrentUser()==null){
             nonSeiRegistrato_fragment=new nonSeiRegistrato_fragment();
             getChildFragmentManager().beginTransaction().replace(R.id.myAnimalsFragment,nonSeiRegistrato_fragment).commit();
+            addAnimale.setVisibility(View.GONE);
+            fab.setVisibility(View.GONE);
         }else{
             if (nonSeiRegistrato_fragment!=null){
-            getChildFragmentManager().beginTransaction().remove(nonSeiRegistrato_fragment).commit();}
+            getChildFragmentManager().beginTransaction().remove(nonSeiRegistrato_fragment).commit();
+            }
+            fab.setVisibility(View.VISIBLE);
         }
         addAnimale.setOnClickListener(new View.OnClickListener() {
             @Override

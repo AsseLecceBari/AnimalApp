@@ -120,16 +120,11 @@ public class adoptions_fragment extends Fragment {
         }
 
 
-
-
-
-
-
-
-
-
-
         View aggiungiAdozione = getView().findViewById(R.id.aggiungiAdozione);
+        if(auth.getCurrentUser() == null){
+            aggiungiAdozione.setVisibility(View.GONE);
+        }
+
         aggiungiAdozione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
