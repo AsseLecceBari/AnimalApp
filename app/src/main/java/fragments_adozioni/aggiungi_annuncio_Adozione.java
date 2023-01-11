@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -42,7 +43,7 @@ public class aggiungi_annuncio_Adozione extends Fragment {
     private TextView dettagliAnimale;
     private View aggiungiAdozione;
 
-
+    private Toolbar main_action_bar;
 
 
 
@@ -87,6 +88,7 @@ aggiungiAdozione();
         descrizioneAnimale=root.findViewById(R.id.DescrizioneAnimale);
         dettagliAnimale=root.findViewById(R.id.dettagliAnimale);
         aggiungiAdozione=root.findViewById(R.id.btnaggiungiadozioni);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
 
 
 

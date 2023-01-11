@@ -12,8 +12,9 @@
         android:id="@+id/main_action_bar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="@color/seed"
         app:navigationIcon="?attr/actionModeCloseDrawable"
-    />
+        app:titleTextColor="?attr/colorOnPrimary" />
 
 
 
