@@ -1,10 +1,16 @@
 package fragments_adozioni;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,7 +18,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.AggregateQuery;
+import com.google.firebase.firestore.AggregateQuerySnapshot;
+import com.google.firebase.firestore.AggregateSource;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -35,6 +45,19 @@ public class info_Proprietario extends Fragment {
     private FirebaseAuth auth;
     private TextView tipoUtente, denominazione, cf, nome, cognome, data, email, telefono, indirizzo, citta, efnovi, partitaIva;
 
+    private String email1, telefono1;
+
+    //FAB SPEED DIAL DECLARATION
+    private static final String TRANSLATION_Y = "translationY";
+    private FloatingActionButton fab, modificaAnimaliBtn;
+    private boolean expanded = false;
+    private FloatingActionButton fabAction1;
+    private FloatingActionButton fabAction2;
+    private FloatingActionButton fabAction3;
+    private float offset1;
+    private float offset2;
+    private float offset3;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +72,8 @@ public class info_Proprietario extends Fragment {
                              Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_info__proprietario, container, false);
+
+        fab =  rootView.findViewById(R.id.fabAnimals);
 
         //link
         tipoUtente = rootView.findViewById(R.id.tipoUtente);
@@ -90,7 +115,8 @@ public class info_Proprietario extends Fragment {
                             switch(ruolo){
                                 case "proprietario":
                                     Persona p = document.toObject(Persona.class);
-
+                                    email1 = p.getEmail();
+                                    telefono1 =  p.getTelefono();
                                     tipoUtente.setText(p.getRuolo());
                                     nome.setText(NOME +p.getNome());
                                     cognome.setText(COGNOME +p.getCognome());
@@ -115,7 +141,8 @@ public class info_Proprietario extends Fragment {
 
                                 case "ente":
                                     Ente e = document.toObject(Ente.class);
-
+                                    email1 = e.getEmail();
+                                    telefono1 =  e.getTelefono();
                                     if(e.isPrivato())
                                         tipoUtente.setText(e.getRuolo() + getString(R.string.priv));
                                     else
@@ -144,6 +171,8 @@ public class info_Proprietario extends Fragment {
                                 case "associazione":
                                     Associazione a = document.toObject(Associazione.class);
 
+                                    email1 = a.getEmail();
+                                    telefono1 =  a.getTelefono();
                                     tipoUtente.setText(a.getRuolo());
                                     email.setText(EMAIL +a.getEmail());
                                     telefono.setText(TELEFONO +a.getTelefono());
@@ -169,6 +198,8 @@ public class info_Proprietario extends Fragment {
                                 case "veterinario":
                                     Veterinario v = document.toObject(Veterinario.class);
 
+                                    email1 = v.getEmail();
+                                    telefono1 =  v.getTelefono();
                                     tipoUtente.setText(v.getRuolo());
                                     nome.setText(NOME +v.getNome());
                                     cognome.setText(COGNOME +v.getCognome());
@@ -203,6 +234,127 @@ public class info_Proprietario extends Fragment {
         }
 
 
+        // fab per contattare
+        fab(rootView);
+
         return rootView;
+    }
+
+    private void fab(View rootView) {
+        /**
+         * FAB INIZIALIZZAZIONI
+         * ViewGroup serve per prendere il riferimento al layout dei FAB
+         */
+
+
+
+        final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
+        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_add));
+        CollectionReference collection = db.collection("richiestaCarico");
+        Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
+        AggregateQuery countQuery = query.count();
+        countQuery.get(AggregateSource.SERVER).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                task.addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
+                        AggregateQuerySnapshot snapshot = task.getResult();
+                    }
+                });
+            }
+        });
+        fabAction1 = rootView.findViewById(R.id.aggiungiAnimaliBtn);
+        fabAction1.setVisibility(View.VISIBLE);
+        fabAction1.setImageDrawable(getResources().getDrawable(android.R.drawable.sym_action_email));
+        fabAction1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_SENDTO);
+                intent.setData(Uri.parse("mailto:"+ email1)); // only email apps should handle this
+                intent.putExtra(Intent.EXTRA_EMAIL, auth.getCurrentUser().getEmail());
+                startActivity(intent);
+            }
+        });
+
+
+        fabAction2 = rootView.findViewById(R.id.aggiungiAnimaliInCaricoBtn);
+        fabAction2.setVisibility(View.VISIBLE);
+        fabAction2.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_call));
+        fabAction2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Intent.ACTION_DIAL);
+                intent.setData(Uri.parse("tel:" + telefono1));
+                if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+                    startActivity(intent);
+                }
+            }
+        });
+
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                expanded = !expanded;
+                if (expanded) {
+                    expandFab();
+
+                } else {
+                    collapseFab();
+                }
+            }
+        });
+
+        /*
+        Restituisce ViewTreeObserver per la gerarchia di questa vista.
+         L'osservatore dell'albero di visualizzazione può essere utilizzato per ricevere notifiche
+         quando si verificano eventi globali, come il cambio del layout.
+         */
+        fabContainer.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                fabContainer.getViewTreeObserver().removeOnPreDrawListener(this);
+                offset1 = fab.getY() - fabAction1.getY();
+                fabAction1.setTranslationY(offset1);
+                offset2 = fab.getY() - fabAction2.getY();
+                fabAction2.setTranslationY(offset2);
+
+                return true;
+            }
+        });
+    }
+
+
+
+    private void collapseFab() {
+
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3));
+        animatorSet.start();
+
+        // animateFab();
+    }
+
+    private void expandFab() {
+
+        AnimatorSet animatorSet = new AnimatorSet();
+
+        animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3));
+        animatorSet.start();
+
+        //animateFab();
+    }
+
+    private Animator createCollapseAnimator(View view, float offset) {
+        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, 0, offset)
+                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
+    }
+
+    private Animator createExpandAnimator(View view, float offset) {
+        return ObjectAnimator.ofFloat(view, TRANSLATION_Y, offset, 0)
+                .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
 }
