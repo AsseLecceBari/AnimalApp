@@ -24,6 +24,7 @@
             android:layout_width="200dp"
             android:layout_height="200dp"
             tools:src="@tools:sample/avatars"
+            android:visibility="gone"
 
             />
 
@@ -38,14 +39,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:endIconMode="clear_text"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="10dp"
+            >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/titoloAnimaleInPericolo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/titolo"
-                android:text="Aiutate questo animale!!" />
+                android:text="Aiutate questo animale!!"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

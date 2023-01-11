@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -231,6 +232,7 @@ public class animale_in_pericolo_fragments extends Fragment {
                     Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
                     photoResult.launch(photoIntent);
+                    imgAnimaleInPericolo.setVisibility(View.VISIBLE);
                 } else if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                     showAlertDialog();
                 } else {
@@ -276,37 +278,49 @@ public class animale_in_pericolo_fragments extends Fragment {
         confermaAnimaleFerito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String tipo="Animale Ferito";
 
+                int i=0;
+
+
+                String tipo="Animale Ferito";
                 Random rand=new Random();
                 String descrizione=etDescrizioneAnimaleFerito.getText().toString();
                 String titolo=titoloAnimaleInPericolo.getText().toString();
                 String idSegnalazione=rand.nextInt()+"";
-
                 SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy");
                 String data= dateFor.format(new Date());
-
-
-
                 String urlFoto="/imagesAnimaliInPericolo/"+idSegnalazione;
 
+                if (TextUtils.isEmpty(descrizione)){
+                    etDescrizioneAnimaleFerito.setError("Inserire una descrizione");
+                    i=1;
+                }
+                if (TextUtils.isEmpty(titolo)){
+                    titoloAnimaleInPericolo.setError("Inserire un Titolo");
+                    i=1;
+                }
+                if (TextUtils.isEmpty(address)){
+                    Toast.makeText(getContext(), "Inserire un indirizzo di ritrovamento", Toast.LENGTH_SHORT).show();
+                    i=1;
+                }
+                if (i==0) {
+                    s1 = new Segnalazione(auth.getCurrentUser().getEmail(), titolo, tipo, "", idSegnalazione, descrizione, lat, lng, data, urlFoto, " ");
+                    db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                            //da attivare una volta salvata la foto
 
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            getActivity().getSupportFragmentManager().popBackStack();
 
-                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
-                db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                        //da attivare una volta salvata la foto
-                         //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
-                        // startActivity(new Intent(getContext(),MainActivity.class).putExtra("posizione", 2));
-                        getActivity().getSupportFragmentManager().popBackStack();
-                        getActivity().getSupportFragmentManager().popBackStack();
+                        }
+                    });
 
-                    }
-                });
-                uploadImage();
-
+                    uploadImage();
+                }else{
+                    Toast.makeText(getContext(), "Controllare di aver inserito tutti i campi e riprovare", Toast.LENGTH_SHORT).show();
+                }
 
 
             }

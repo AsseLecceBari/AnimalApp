@@ -3,6 +3,8 @@ package fragments_segnalazioni;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,9 +34,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.divider.MaterialDivider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,7 +56,10 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
     private TextView descrizioneZonaPericolosa;
     private TextView titoloReportZonaPericolosa;
     private ImageView immagineZonaPericolosa;
-    private TextView dataZonaPericolosa;
+    private TextView dataZonaPericolosa,textViewMappa;
+    private TextInputLayout updateTitoloLayout,updateDescrizioneLayout;
+    private TextInputEditText updateTitoloText,updateDescrizioneText;
+    private MaterialDivider dividerMappa1,dividerMappa2;
 
     private FirebaseStorage storage;
     private StorageReference storageRef;
@@ -75,6 +85,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
     private FloatingActionButton fabAction1;
     private FloatingActionButton fabAction2;
     private FloatingActionButton fabAction3;
+    private FloatingActionButton fabAction4;
     private float offset1;
     private float offset2;
     private float offset3;
@@ -131,6 +142,14 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
         titoloReportZonaPericolosa=rootView.findViewById(R.id.titoloReportZonaPericolosa);
         descrizioneZonaPericolosa.setText(s.getDescrizione());
         titoloReportZonaPericolosa.setText(s.getTitolo());
+        //editText per l'update della segnalazione
+        updateDescrizioneLayout=rootView.findViewById(R.id.updateDescrizioneLayout);
+        updateDescrizioneText=rootView.findViewById(R.id.updateDescrizioneText);
+        updateTitoloLayout=rootView.findViewById(R.id.updateTitoloLayout);
+        updateTitoloText=rootView.findViewById(R.id.updateTitoloText);
+        textViewMappa=rootView.findViewById(R.id.textViewMappa);
+        dividerMappa1=rootView.findViewById(R.id.dividerMappa1);
+        dividerMappa2=rootView.findViewById(R.id.dividerMappa2);
 
         dataZonaPericolosa=rootView.findViewById(R.id.dataZonaPericolosa);
         dataZonaPericolosa.setText("pubblicata il:"+s.getData());
@@ -143,6 +162,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
          */
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab =  rootView.findViewById(R.id.fab);
+        fabAction4= rootView.findViewById(R.id.fab_fine_modifica);
         fabAction1 = rootView.findViewById(R.id.fab_preferiti);
 
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
@@ -152,7 +172,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    condividiSegnalazione();
+                    condividiSegnalazione(s);
                 }
             });
         }else if(x==1){
@@ -161,7 +181,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    condividiSegnalazione();
+                    condividiSegnalazione(s);
                 }
             });
         }
@@ -186,7 +206,38 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
             fabAction2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Toast.makeText(getContext(), "Modifica Segnalazione", Toast.LENGTH_SHORT).show();
+
+                    fabAction2.setVisibility(View.GONE);
+
+                    //Rendo a GONE le textView e a VISIBLE le editText
+                    descrizioneZonaPericolosa.setVisibility(View.GONE);
+                    titoloReportZonaPericolosa.setVisibility(View.GONE);
+                    mapViewZonaPericolosa.setVisibility(View.GONE);
+                    dividerMappa1.setVisibility(View.GONE);
+                    dividerMappa2.setVisibility(View.GONE);
+                    textViewMappa.setVisibility(View.GONE);
+
+
+
+                    updateTitoloLayout.setVisibility(View.VISIBLE);
+                    updateDescrizioneLayout.setVisibility(View.VISIBLE);
+                    updateTitoloText.setText(s.getTitolo());
+                    updateDescrizioneText.setText(s.getDescrizione());
+
+
+
+                    fabAction4.setVisibility(View.VISIBLE);
+                    fabAction4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+
+                            updateSegnalazione(s);
+
+                        }
+                    });
+
+
                 }
             });
         }
@@ -211,11 +262,11 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
             fabAction3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //  Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
-                    deleteReports(s);                }
+                    Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
+                    deleteReports(s);
+                }
             });
         }
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -241,6 +292,9 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
                 fabAction1.setTranslationY(offset1);
                 offset2 = fab.getY() - fabAction2.getY();
                 fabAction2.setTranslationY(offset2);
+                if (x==1) {
+                    fabAction4.setTranslationY(offset2);
+                }
                 offset3 = fab.getY() - fabAction3.getY();
                 fabAction3.setTranslationY(offset3);
 
@@ -375,7 +429,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
-                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3));
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3),createCollapseAnimator(fabAction4, offset2));
         animatorSet.start();
         // animateFab();
     }
@@ -384,7 +438,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
-                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3));
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3),createExpandAnimator(fabAction4, offset2));
         animatorSet.start();
         //animateFab();
     }
@@ -459,6 +513,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
         }
     }
 
+
     public void composeEmail(String addresses,String toAddress) {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
         intent.setData(Uri.parse("mailto:"+toAddress)); // only email apps should handle this
@@ -467,7 +522,7 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
 
     }
 
-    public void condividiSegnalazione() {
+    public void condividiSegnalazione(Segnalazione s) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
         String shareBody = "Puoi raggiungere il luogo di questa segnalazione in questo punto: http://www.google.com/maps/place/"+s.getLatitudine()+","+s.getLongitudine();
@@ -476,24 +531,150 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
     }
 
     public void deleteReports(Segnalazione s){
+        Log.d("provaelimina","sono dentro");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(R.string.ConfermaEliminaSegnalazione)
+                .setTitle("Elimina Segnalazione").setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("provaelimina","sono dentro");
+                        db=FirebaseFirestore.getInstance();
+                        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+                        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
+                                //prova per far tornare indietro al fragment che contiene la lista dei report
+                                getActivity().onBackPressed();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        builder.setCancelable(true);
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+
+    }
+
+    public void updateSegnalazione(Segnalazione s){
         db=FirebaseFirestore.getInstance();
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
 
-        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        String titolo,descrizione;
+
+       /* titolo = updateTitoloText.getText().toString();
+        if (titolo.equals("")){
+            titolo=s.getTitolo();
+        }
+
+
+        descrizione = updateDescrizioneText.getText().toString();
+        if (descrizione.equals("")){
+             descrizione=s.getDescrizione();
+          }*/
+
+
+        titolo = updateTitoloText.getText().toString();
+        descrizione = updateDescrizioneText.getText().toString();
+
+        segnalazioniRef.document(s.getIdSegnalazione()).update("titolo",titolo,"descrizione",descrizione).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
-                //prova per far tornare indietro al fragment che contiene la lista dei report
-                getActivity().onBackPressed();
+                Toast.makeText(getContext(), "Modifica effettuata", Toast.LENGTH_SHORT).show();
+                descrizioneZonaPericolosa.setVisibility(View.VISIBLE);
+                titoloReportZonaPericolosa.setVisibility(View.VISIBLE);
+
+                updateTitoloLayout.setVisibility(View.GONE);
+                updateDescrizioneLayout.setVisibility(View.GONE);
+                fabAction4.setVisibility(View.GONE);
+
+                mapViewZonaPericolosa.setVisibility(View.VISIBLE);
+                dividerMappa1.setVisibility(View.VISIBLE);
+                dividerMappa2.setVisibility(View.VISIBLE);
+                textViewMappa.setVisibility(View.VISIBLE);
+
+                fabAction2.setVisibility(View.VISIBLE);
+
+
+                updateTitoloText.getText().clear();
+                updateDescrizioneText.getText().clear();
+
+                //RECUPERO LA SEGNALAZIONE APPENA MODIFICATA PER POPOLARE LE TEXTVIEW
+                DocumentReference docRef = db.collection("segnalazioni").document(s.getIdSegnalazione());
+                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Segnalazione s1 = documentSnapshot.toObject(Segnalazione.class);
+                        descrizioneZonaPericolosa.setText(s1.getDescrizione());
+                        titoloReportZonaPericolosa.setText(s1.getTitolo());
+                        aggiornaSegnalazione(s);
+
+
+
+                    }
+                });
+
+
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Errore nella modifica", Toast.LENGTH_SHORT).show();
+                descrizioneZonaPericolosa.setVisibility(View.VISIBLE);
+                titoloReportZonaPericolosa.setVisibility(View.VISIBLE);
+                updateTitoloLayout.setVisibility(View.GONE);
+                updateDescrizioneLayout.setVisibility(View.GONE);
+                fabAction2.setVisibility(View.VISIBLE);
+                fabAction4.setVisibility(View.GONE);
             }
         });
 
 
+    }
+
+    public void aggiornaSegnalazione(Segnalazione s1){
+
+        db= FirebaseFirestore.getInstance();
+
+        // auth=FirebaseAuth.getInstance();
+        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+
+
+        segnalazioniRef.whereEqualTo("idSegnalazione",s1.getIdSegnalazione()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //Salvare animale in un array con elementi oggetto animale
+
+                        //Passo i dati presi dal database all'adapter
+                        s=document.toObject(Segnalazione.class);
+                    }
+
+
+
+
+
+                } else {
+                    Log.d("ERROR", "Error getting documents: ", task.getException());
+                }
+            }
+        });
 
     }
 }

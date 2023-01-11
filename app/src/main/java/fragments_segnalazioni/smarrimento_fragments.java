@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.loader.content.AsyncTaskLoader;
 
 import android.os.StrictMode;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -267,6 +268,7 @@ public class smarrimento_fragments extends Fragment {
             confermaSmarrimento.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    int i=0;
                      String tipo="Smarrimento";
 
                      Random idSegnalazione = new Random();
@@ -281,18 +283,34 @@ public class smarrimento_fragments extends Fragment {
 
 
 
-                    Log.e("email",auth.getCurrentUser().getEmail());
-                     Segnalazione s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,a.getIdAnimale(),idSegnalazione.nextInt()+"",descrizione,lat,lng,data,urlFoto," ");
-                    db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
+                    if (TextUtils.isEmpty(descrizione)){
+                        descrizioneEditText.setError("Inserire una descrizione");
+                        i=1;
+                    }
+                    if (TextUtils.isEmpty(titolo)){
+                        titoloSmarrimento.setError("Inserire un Titolo");
+                        i=1;
+                    }
+                    if (TextUtils.isEmpty(address)){
+                        Toast.makeText(getContext(), "Inserire un indirizzo di ritrovamento", Toast.LENGTH_SHORT).show();
+                        i=1;
+                    }
+                    if (i==0) {
+                        Segnalazione s1 = new Segnalazione(auth.getCurrentUser().getEmail(), titolo, tipo, a.getIdAnimale(), idSegnalazione.nextInt() + "", descrizione, lat, lng, data, urlFoto, " ");
+                        db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
 
-                            Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                            getActivity().getSupportFragmentManager().popBackStack();
-                            getActivity().getSupportFragmentManager().popBackStack();
-                            getActivity().getSupportFragmentManager().popBackStack();
-                        }
-                    });
+                                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                                getActivity().getSupportFragmentManager().popBackStack();
+                                getActivity().getSupportFragmentManager().popBackStack();
+                                getActivity().getSupportFragmentManager().popBackStack();
+                            }
+                        });
+                    }else{
+                        Toast.makeText(getContext(), "Controllare di aver inserito tutti i campi e riprovare", Toast.LENGTH_SHORT).show();
+
+                    }
                 }
             });
         }

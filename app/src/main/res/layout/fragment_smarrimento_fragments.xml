@@ -23,7 +23,8 @@
             android:id="@+id/imgAnimaleSmarrito"
             android:layout_width="200dp"
             android:layout_height="200dp"
-            tools:src="@tools:sample/avatars" />
+            tools:src="@tools:sample/avatars"
+           />
 
         <com.google.android.material.divider.MaterialDivider
             style="@style/AppTheme"

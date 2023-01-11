@@ -195,8 +195,7 @@ public class ritrovamento extends Fragment {
 
 
 
-        // Start the autocomplete intent.
-
+       
 
         // Specify the types of place data to return.
 

@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -238,6 +239,7 @@ public class fragment_zona_pericolosa extends Fragment {
                     Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
                     photoResult1.launch(photoIntent);
+                    imgZonaPericolosa.setVisibility(View.VISIBLE);
                 } else if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                     showAlertDialog();
                 } else {
@@ -296,6 +298,8 @@ public class fragment_zona_pericolosa extends Fragment {
         confermaZonaPericolosa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int i=0;
+
                 String tipo="Zona Pericolosa";
 
                 Random rand=new Random();
@@ -310,22 +314,36 @@ public class fragment_zona_pericolosa extends Fragment {
 
                 String urlFoto="/imagesZonaPericolosa/"+idSegnalazione;
 
+                if (TextUtils.isEmpty(descrizione)){
+                    descrzioneZonaPericolosa.setError("Inserire una descrizione");
+                    i=1;
+                }
+                if (TextUtils.isEmpty(titolo)){
+                    titoloZonaPericolosa.setError("Inserire un Titolo");
+                    i=1;
+                }
+                if (TextUtils.isEmpty(address)){
+                    Toast.makeText(getContext(), "Inserire un indirizzo di ritrovamento", Toast.LENGTH_SHORT).show();
+                    i=1;
+                }
 
+                if(i==0) {
+                    s1 = new Segnalazione(auth.getCurrentUser().getEmail(), titolo, tipo, "", idSegnalazione, descrizione, lat, lng, data, urlFoto, " ");
+                    db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
+                            //da attivare una volta salvata la foto
+                            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
+                            getActivity().getSupportFragmentManager().popBackStack();
+                            getActivity().getSupportFragmentManager().popBackStack();
 
-                s1=new Segnalazione(auth.getCurrentUser().getEmail(),titolo,tipo,"",idSegnalazione,descrizione,lat,lng,data,urlFoto," ");
-                db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
-                        //da attivare una volta salvata la foto
-                        //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
-                        getActivity().getSupportFragmentManager().popBackStack();
-                        getActivity().getSupportFragmentManager().popBackStack();
-
-                    }
-                });
-                uploadImage();
-
+                        }
+                    });
+                    uploadImage();
+                }else{
+                    Toast.makeText(getContext(), "Controllare di aver inserito tutti i campi e riprovare", Toast.LENGTH_SHORT).show();
+                }
 
 
             }

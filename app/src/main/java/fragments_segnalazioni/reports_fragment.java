@@ -798,6 +798,7 @@ public class reports_fragment extends Fragment {
 
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setCancelable(false);
 
         alertDialogBuilder.setMessage("Se vuoi utilizzare la ricerca tramite la tua posizione attuale dovresti accettare i permessi, altrimenti premendo No grazie utilizzeremo la posizione fornita in fase di registrazione");
         alertDialogBuilder.setPositiveButton("Accetto",

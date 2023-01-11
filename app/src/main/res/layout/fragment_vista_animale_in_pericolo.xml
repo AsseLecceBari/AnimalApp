@@ -189,19 +189,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!--
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonVistaSegnalazioneAnimaleInPericolo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:clickable="true"
-        android:src="@android:drawable/btn_dialog"
-        tools:ignore="SpeakableTextPresentCheck"
-        />
-    -->
+
 
 
     <include layout="@layout/fab" />

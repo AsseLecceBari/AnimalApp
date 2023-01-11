@@ -297,6 +297,9 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
                 fabAction1.setTranslationY(offset1);
                 offset2 = fab.getY() - fabAction2.getY();
                 fabAction2.setTranslationY(offset2);
+                if (x==1) {
+                    fabAction4.setTranslationY(offset2);
+                }
                 offset3 = fab.getY() - fabAction3.getY();
                 fabAction3.setTranslationY(offset3);
 
@@ -423,7 +426,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
-                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3));
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3),createCollapseAnimator(fabAction4, offset2));
         animatorSet.start();
         // animateFab();
     }
@@ -432,7 +435,7 @@ public class fragment_vista_animaleInPericolo extends Fragment implements OnMapR
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
-                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3));
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3),createExpandAnimator(fabAction4, offset2));
         animatorSet.start();
         //animateFab();
     }

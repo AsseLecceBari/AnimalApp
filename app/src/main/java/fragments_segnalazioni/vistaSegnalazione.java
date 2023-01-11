@@ -3,6 +3,8 @@ package fragments_segnalazioni;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -33,9 +35,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.divider.MaterialDivider;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -59,7 +66,10 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     private TextView descrizioneReport;
     private TextView titoloReport;
     private ImageView immagineSegnalazione;
-    private TextView dataVistaReport;
+    private TextView dataVistaReport,textViewMappa;
+    private TextInputLayout updateTitoloLayout,updateDescrizioneLayout;
+    private TextInputEditText updateTitoloText,updateDescrizioneText;
+    private MaterialDivider dividerMappa1,dividerMappa2;
 
     private Uri file;
     Utente utente;
@@ -91,6 +101,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     private FloatingActionButton fabAction1;
     private FloatingActionButton fabAction2;
     private FloatingActionButton fabAction3;
+    private FloatingActionButton fabAction4;
     private float offset1;
     private float offset2;
     private float offset3;
@@ -139,6 +150,14 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         titoloReport=rootView.findViewById(R.id.titoloReportVista);
         descrizioneReport.setText(s.getDescrizione());
         titoloReport.setText(s.getTitolo());
+        //editText per l'update della segnalazione
+        updateDescrizioneLayout=rootView.findViewById(R.id.updateDescrizioneLayout);
+        updateDescrizioneText=rootView.findViewById(R.id.updateDescrizioneText);
+        updateTitoloLayout=rootView.findViewById(R.id.updateTitoloLayout);
+        updateTitoloText=rootView.findViewById(R.id.updateTitoloText);
+        textViewMappa=rootView.findViewById(R.id.textViewMappa);
+        dividerMappa1=rootView.findViewById(R.id.dividerMappa1);
+        dividerMappa2=rootView.findViewById(R.id.dividerMappa2);
 
         dataVistaReport=rootView.findViewById(R.id.dataVistaReport);
         dataVistaReport.setText("pubblicata il:"+s.getData());
@@ -153,6 +172,8 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         fab =  rootView.findViewById(R.id.fab);
 
         fabAction1 = rootView.findViewById(R.id.fab_preferiti);
+        fabAction4= rootView.findViewById(R.id.fab_fine_modifica);
+
 
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
@@ -161,7 +182,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    condividiSegnalazione()   ;
+                    condividiSegnalazione(s)   ;
                 }
             });
         }else if(x==1){
@@ -170,13 +191,13 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             fabAction1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    condividiSegnalazione();
+                    condividiSegnalazione(s);
                 }
             });
         }
 
 
-        fabAction2 = rootView.findViewById(R.id.fab_elimina);
+        fabAction2 = rootView.findViewById(R.id.fab_modifica);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il contatta, mentre da mie segnalazioni(x=1) ho il modifica
         if (x==0){
             fabAction2.setVisibility(View.VISIBLE);
@@ -184,7 +205,6 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
             fabAction2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //INTENT PER IL CONTATTA
                     trovaNumeroDiTelefono(s);
                 }
             });
@@ -195,12 +215,43 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                 @Override
                 public void onClick(View view) {
 
-                    Toast.makeText(getContext(), "Modifica Segnalazione", Toast.LENGTH_SHORT).show();
+                    fabAction2.setVisibility(View.GONE);
+
+                    //Rendo a GONE le textView e a VISIBLE le editText
+                    descrizioneReport.setVisibility(View.GONE);
+                    titoloReport.setVisibility(View.GONE);
+                    mapView.setVisibility(View.GONE);
+                    dividerMappa1.setVisibility(View.GONE);
+                    dividerMappa2.setVisibility(View.GONE);
+                    textViewMappa.setVisibility(View.GONE);
+
+
+
+                    updateTitoloLayout.setVisibility(View.VISIBLE);
+                    updateDescrizioneLayout.setVisibility(View.VISIBLE);
+                    updateTitoloText.setText(s.getTitolo());
+                    updateDescrizioneText.setText(s.getDescrizione());
+
+
+
+                    fabAction4.setVisibility(View.VISIBLE);
+                    fabAction4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+
+                            updateSegnalazione(s);
+
+                        }
+                    });
+
+
                 }
             });
         }
 
-        fabAction3 = rootView.findViewById(R.id.fab_telefono);
+
+        fabAction3 = rootView.findViewById(R.id.fab_elimina);
         //if per cambiare icona fab, se viene da radioTutti(x=0) ho il preferiti, mentre da mie segnalazioni(x=1) ho il elimina
         if (x==0){
             fabAction3.setVisibility(View.VISIBLE);
@@ -212,18 +263,18 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                 }
             });
         }else if(x==1){
-           //per ora non serve nella vista mieSegnalazioni
+            //per ora non serve nella vista mieSegnalazioni
+            //per ora non serve nella vista mieSegnalazioni
             fabAction3.setVisibility(View.VISIBLE);
             fabAction3.setImageResource(android.R.drawable.ic_menu_delete);
             fabAction3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //  Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "elimina", Toast.LENGTH_SHORT).show();
                     deleteReports(s);
                 }
             });
         }
-
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -249,6 +300,9 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                 fabAction1.setTranslationY(offset1);
                 offset2 = fab.getY() - fabAction2.getY();
                 fabAction2.setTranslationY(offset2);
+                if (x==1) {
+                    fabAction4.setTranslationY(offset2);
+                }
                 offset3 = fab.getY() - fabAction3.getY();
                 fabAction3.setTranslationY(offset3);
 
@@ -379,7 +433,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
-                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3));
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3),createCollapseAnimator(fabAction4, offset2));
         animatorSet.start();
         // animateFab();
     }
@@ -388,8 +442,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
-                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3))
-        ;
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3),createExpandAnimator(fabAction4, offset2));
         animatorSet.start();
         //animateFab();
     }
@@ -421,35 +474,35 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
 
 
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
-        db=FirebaseFirestore.getInstance();
+        db= FirebaseFirestore.getInstance();
 
         // auth=FirebaseAuth.getInstance();
         CollectionReference segnalazioniRef=db.collection("utenti");
 
 
-            segnalazioniRef.whereEqualTo("email",s.getEmailSegnalatore()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
+        segnalazioniRef.whereEqualTo("email",s.getEmailSegnalatore()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
 
 
-                        for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Salvare animale in un array con elementi oggetto animale
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //Salvare animale in un array con elementi oggetto animale
 
-                            //Passo i dati presi dal database all'adapter
-                             utente=document.toObject(Utente.class);
-                        }
-
-                       String telefono=utente.getTelefono();
-                        dialPhoneNumber(telefono);
-
-
-
-                    } else {
-                        Log.d("ERROR", "Error getting documents: ", task.getException());
+                        //Passo i dati presi dal database all'adapter
+                        utente=document.toObject(Utente.class);
                     }
+
+                    String telefono=utente.getTelefono();
+                    dialPhoneNumber(telefono);
+
+
+
+                } else {
+                    Log.d("ERROR", "Error getting documents: ", task.getException());
                 }
-            });
+            }
+        });
 
 
     }
@@ -461,9 +514,6 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
             startActivity(intent);
         }
-
-
-
     }
 
 
@@ -475,33 +525,159 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void condividiSegnalazione() {
+    public void condividiSegnalazione(Segnalazione s) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("text/plain");
-        String shareBody = s.toString();
+        String shareBody = "Puoi raggiungere il luogo di questa segnalazione in questo punto: http://www.google.com/maps/place/"+s.getLatitudine()+","+s.getLongitudine();
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
     }
 
     public void deleteReports(Segnalazione s){
+        Log.d("provaelimina","sono dentro");
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage(R.string.ConfermaEliminaSegnalazione)
+                .setTitle("Elimina Segnalazione").setPositiveButton("SI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Log.d("provaelimina","sono dentro");
+                        db=FirebaseFirestore.getInstance();
+                        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+                        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
+                                //prova per far tornare indietro al fragment che contiene la lista dei report
+                                getActivity().onBackPressed();
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }).setNegativeButton("no", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        builder.setCancelable(true);
+                    }
+                });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+
+
+    }
+
+    public void updateSegnalazione(Segnalazione s){
         db=FirebaseFirestore.getInstance();
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
 
-        segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+        String titolo,descrizione;
+
+       /* titolo = updateTitoloText.getText().toString();
+        if (titolo.equals("")){
+            titolo=s.getTitolo();
+        }
+
+
+        descrizione = updateDescrizioneText.getText().toString();
+        if (descrizione.equals("")){
+             descrizione=s.getDescrizione();
+          }*/
+
+
+        titolo = updateTitoloText.getText().toString();
+        descrizione = updateDescrizioneText.getText().toString();
+
+        segnalazioniRef.document(s.getIdSegnalazione()).update("titolo",titolo,"descrizione",descrizione).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
-                Toast.makeText(getContext(), "Segnalazione eliminata correttamente", Toast.LENGTH_SHORT).show();
-                //prova per far tornare indietro al fragment che contiene la lista dei report
-                getActivity().onBackPressed();
+                Toast.makeText(getContext(), "Modifica effettuata", Toast.LENGTH_SHORT).show();
+                descrizioneReport.setVisibility(View.VISIBLE);
+                titoloReport.setVisibility(View.VISIBLE);
+
+                updateTitoloLayout.setVisibility(View.GONE);
+                updateDescrizioneLayout.setVisibility(View.GONE);
+                fabAction4.setVisibility(View.GONE);
+
+                mapView.setVisibility(View.VISIBLE);
+                dividerMappa1.setVisibility(View.VISIBLE);
+                dividerMappa2.setVisibility(View.VISIBLE);
+                textViewMappa.setVisibility(View.VISIBLE);
+
+                fabAction2.setVisibility(View.VISIBLE);
+
+
+                updateTitoloText.getText().clear();
+                updateDescrizioneText.getText().clear();
+
+                //RECUPERO LA SEGNALAZIONE APPENA MODIFICATA PER POPOLARE LE TEXTVIEW
+                DocumentReference docRef = db.collection("segnalazioni").document(s.getIdSegnalazione());
+                docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Segnalazione s1 = documentSnapshot.toObject(Segnalazione.class);
+                        descrizioneReport.setText(s1.getDescrizione());
+                        titoloReport.setText(s1.getTitolo());
+                        aggiornaSegnalazione(s);
+
+
+
+                    }
+                });
+
+
+
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getContext(), "Errore nell'eliminazione", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Errore nella modifica", Toast.LENGTH_SHORT).show();
+                descrizioneReport.setVisibility(View.VISIBLE);
+                titoloReport.setVisibility(View.VISIBLE);
+                updateTitoloLayout.setVisibility(View.GONE);
+                updateDescrizioneLayout.setVisibility(View.GONE);
+                fabAction2.setVisibility(View.VISIBLE);
+                fabAction4.setVisibility(View.GONE);
             }
         });
 
 
+    }
+
+    public void aggiornaSegnalazione(Segnalazione s1){
+
+        db= FirebaseFirestore.getInstance();
+
+        // auth=FirebaseAuth.getInstance();
+        CollectionReference segnalazioniRef=db.collection("segnalazioni");
+
+
+        segnalazioniRef.whereEqualTo("idSegnalazione",s1.getIdSegnalazione()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+
+
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        //Salvare animale in un array con elementi oggetto animale
+
+                        //Passo i dati presi dal database all'adapter
+                        s=document.toObject(Segnalazione.class);
+                    }
+
+
+
+
+
+                } else {
+                    Log.d("ERROR", "Error getting documents: ", task.getException());
+                }
+            }
+        });
 
     }
 
