@@ -1,21 +1,25 @@
 package fragments_segnalazioni;
 
 import android.os.Bundle;
-
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import it.uniba.dib.sms2223_2.R;
 
 public class aggiungi_segnalazione_fragment extends Fragment {
 
     ImageButton smarrimento,animaleFerito,pericolo,news,raccoltaFondi,ritrovamento;
+    private TextView raccolta, smar;
     private Toolbar main_action_bar;
+    private FirebaseAuth auth;
 
     public aggiungi_segnalazione_fragment(){}
 
@@ -31,6 +35,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
                              Bundle savedInstanceState) {
 
 
+        auth= FirebaseAuth.getInstance();
         View rootView =inflater.inflate(R.layout.fragment_aggiungi_segnalazione_fragment, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
         main_action_bar.setTitle(R.string.aggiungi_segnalazione);
@@ -56,10 +61,19 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         news=rootView.findViewById(R.id.news);
         raccoltaFondi=rootView.findViewById(R.id.raccoltaFondi);
         ritrovamento=rootView.findViewById(R.id.ritrovamento);
+        raccolta = rootView.findViewById(R.id.textRaccoltaFondi);
+        smar = rootView.findViewById(R.id.textSmarrimento);
 
 
 
 
+        // se non è loggato non puo fare due segnalazioni
+        if(auth.getCurrentUser() == null){
+            raccolta.setVisibility(View.GONE);
+            raccoltaFondi.setVisibility(View.GONE);
+            smarrimento.setVisibility(View.GONE);
+            smar.setVisibility(View.GONE);
+        }
 
 
 

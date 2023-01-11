@@ -36,24 +36,24 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/smarrimento"
+                    android:id="@+id/ritrovamento"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:contentDescription="@string/smarrimento"
-                    android:src="@drawable/missing"
+                    android:contentDescription="@string/ritrovamento"
+                    android:src="@drawable/finding"
                     android:scaleType="fitXY"
                     android:maxHeight="100dp"
                     android:maxWidth="100dp"
                     android:adjustViewBounds="true"/>
 
                 <TextView
-                    android:id="@+id/textSmarrimento"
+                    android:id="@+id/textRitrovamento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="25dp"
-                    android:text="@string/smarrimento"
+                    android:text="@string/ritrovamento"
                     android:textAlignment="center" />
+
             </LinearLayout>
 
 
@@ -164,22 +164,23 @@
                 android:orientation="vertical">
 
                 <ImageButton
-                    android:id="@+id/ritrovamento"
+                    android:id="@+id/smarrimento"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:background="@drawable/roundcorner"
-                    android:contentDescription="@string/ritrovamento"
-                    android:src="@drawable/finding"
+                    android:contentDescription="@string/smarrimento"
+                    android:src="@drawable/missing"
                     android:scaleType="fitXY"
                     android:maxHeight="100dp"
                     android:maxWidth="100dp"
                     android:adjustViewBounds="true"/>
 
                 <TextView
-                    android:id="@+id/textRitrovamento"
+                    android:id="@+id/textSmarrimento"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/ritrovamento"
+                    android:layout_marginBottom="25dp"
+                    android:text="@string/smarrimento"
                     android:textAlignment="center" />
             </LinearLayout>
 
