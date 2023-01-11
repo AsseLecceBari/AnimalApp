@@ -143,7 +143,7 @@ public class myanimals_fragment extends Fragment {
                             JSONObject json = new JSONObject(a);
                             ConnectionManager connectionManager = null;
                             getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragmentContainerView,   RicercaDispositiviBluetooth.newInstance(animaliPerCarico, connectionManager)).addToBackStack(null).commit();
+                                    .replace(R.id.fragmentContainerView,   RicercaDispositiviBluetooth.newInstance(animaliPerCarico)).addToBackStack(null).commit();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

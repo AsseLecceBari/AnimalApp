@@ -104,6 +104,7 @@
 
             android:src="@android:drawable/ic_menu_delete"
             android:visibility="gone" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_fine_modifica"
             style="?attr/floatingActionButtonSmallStyle"

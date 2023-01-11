@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -190,6 +191,7 @@ public class fab {
         fabActionSalvaModifiche.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.d("ciao26","ciao");
 
                 FirebaseFirestore db;
                 db= FirebaseFirestore.getInstance();
@@ -228,7 +230,7 @@ public class fab {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
-                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabActionAnnullaModifica, offset3))
+                createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabActionAnnullaModifica, offset5))
         ;
         animatorSet.start();
         //animateFab();
@@ -243,7 +245,7 @@ public class fab {
 
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
-                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset5));
+                createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3));
         animatorSet.start();
         // animateFab();
     }

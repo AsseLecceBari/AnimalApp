@@ -83,6 +83,7 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
                 public void onItemClick(View view, int position) {
                     Log.d("ciao32",devices.get(position).getName());
 
+
                     ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mlistAnimali,mconnectionManager);
                     clientSocket.run();
                 }

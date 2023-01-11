@@ -9,17 +9,21 @@ public class ConnectionManager implements Serializable {
     BluetoothSocket msocket;
     Connection connectedThread;
     Handler mHandler;
-    public ConnectionManager(BluetoothSocket socket, Handler handler)
+    public ConnectionManager( Handler handler)
     {
-        msocket=socket;
+
         mHandler= handler;
 
-        connectedThread = new Connection(socket, handler);
-       //
-        connectedThread.start();
+
 
     }
 
+    public void setSocket(BluetoothSocket socket)
+
+    {
+        connectedThread = new Connection(socket, mHandler);
+        connectedThread.start();
+    }
 
 
     public void write(String stringa)

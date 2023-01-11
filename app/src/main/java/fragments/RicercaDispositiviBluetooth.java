@@ -94,12 +94,12 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static RicercaDispositiviBluetooth newInstance(ArrayList<Animale> param1, ConnectionManager connectionManager) {
+    public static RicercaDispositiviBluetooth newInstance(ArrayList<Animale> param1) {
         RicercaDispositiviBluetooth fragment = new RicercaDispositiviBluetooth();
         Bundle args = new Bundle();
         args.putSerializable(ARG_PARAM1, param1);
 
-        args.putSerializable(Arg_Param2,  connectionManager);
+
         fragment.setArguments(args);
         return fragment;
     }
@@ -110,7 +110,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
         if (getArguments() != null) {
 
        mParam1= (ArrayList<Animale>) getArguments().getSerializable(ARG_PARAM1);
-       mconnectionManager= (ConnectionManager) getArguments().getSerializable(Arg_Param2);
+
 
 
         }
@@ -161,22 +161,18 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
                                 }).setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        String a = mParam1.toString();
-                                        try {
-                                            Animale mSampleObject = mParam1.get(0);
-                                            String jsonInString = new Gson().toJson(mSampleObject);
-                                            JSONObject mJSONObject = new JSONObject(jsonInString);
-                                            Log.d("ciao26", String.valueOf(mconnectionManager));
-                                            if (mconnectionManager != null) {
-                                                Log.d("ciao26", String.valueOf(mconnectionManager));
-                                              //  mconnectionManager.write(mJSONObject.toString());
-                                            }
+                                        Gson gson = new Gson();
+
+                                        for(int a=0; a<mParam1.size();a++) {
+                                            String jsonString = gson.toJson(mParam1.get(a));
 
 
-                                        } catch (JSONException e) {
-
-                                            e.printStackTrace();
+                                            mconnectionManager.write(jsonString);
                                         }
+
+
+
+
                                     }
                                 });
 
@@ -190,6 +186,8 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
 
             };
+
+            mconnectionManager= new ConnectionManager(mHandler);
 
 
           bluetooth.BtScanner(mRecyclerView, mParam1, mHandler, mconnectionManager);

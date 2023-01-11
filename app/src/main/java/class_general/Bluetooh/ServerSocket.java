@@ -55,7 +55,8 @@ public class ServerSocket extends Thread {
             if(socket!= null)
             {
 
-               ConnectionManager connectionManager= new ConnectionManager(socket,mHandler);
+               ConnectionManager connectionManager= new ConnectionManager(mHandler);
+               connectionManager.setSocket(socket);
               connectionManager.write(emailVeterinario);
 
 

@@ -74,8 +74,9 @@ public class ClientSocket implements Runnable {
             }
 
         }
+        Log.d("ciao26","s" + " "+ mconnectionManager);
 
-        ConnectionManager gestioneConnessione = new ConnectionManager(mSocket, mhandler);
+        mconnectionManager.setSocket(mSocket);
         ArrayList<JSONObject> arrayList = new ArrayList<>();
 
 for(int i =0; i<mlistAnimali.size(); i++){
@@ -88,16 +89,8 @@ for(int i =0; i<mlistAnimali.size(); i++){
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    //mconnectionManager.write(animale.toString());
     }
-
-
-      gestioneConnessione.write("ciao");
-
-
-
-
-
-
 
 
     }

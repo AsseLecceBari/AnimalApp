@@ -58,6 +58,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
     private AnimaleDB animaleDB;
     private CaricoDB caricoDB;
     private RecyclerView mRecyclerView;
+   private ArrayList< Animale> richiesteIncaricoBt = new ArrayList<>();
     private ArrayList<Animale> mDataset = new ArrayList<>();
     private ArrayList<RichiestaCarico> richiesteDataset = new ArrayList<>();
     private ArrayList<Animale> filteredlist = new ArrayList<>();
@@ -90,7 +91,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         builder.setCancelable(true);
                                     }
-                                });
+                                }).setCancelable(true);
 
 
 
@@ -98,6 +99,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
 
                         builder.show();
+
                      BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                      ServerSocket serverSoket= new ServerSocket(mBluetoothAdapter,mHandler,firebaseAuth.getCurrentUser().getEmail());
                      serverSoket.run();
@@ -185,19 +187,41 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                     byte[] mmBuffer = (byte[]) msg.obj;
 
                     String readMessage = new String(mmBuffer, 0, msg.arg1);
-                    String[] arrayList;
+                    //traformo il messaggio ricevuto in json e poi in arraylist
 
-                    arrayList = readMessage.split(" ");
+                    Gson gson = new Gson();
+                    richiesteIncaricoBt.add(gson.fromJson(readMessage , Animale.class));
+                    mDataset.add(gson.fromJson(readMessage , Animale.class));
+                    mAdapter = new GestioneRichiesteCaricoAdapter(mDataset);
+                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                    mRecyclerView.setItemViewCacheSize(mDataset.size());
+                    mRecyclerView.setAdapter(mAdapter);
 
 
 
-                    if (arrayList.length > 1) {
-                        builder.setMessage("Stai per ricevere " + arrayList.length + " incarichi...");
+
+                    if (richiesteIncaricoBt.size() > 1) {
+                        builder.setCancelable(true);
+
+
+                        builder.setMessage("Hai ricevuto " + richiesteIncaricoBt.size() + " incarichi...")
+                                        .setPositiveButton("Chiudi", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                builder.setCancelable(true);
+                            }
+                        });
 
                         builder.show();
                     } else {
-                        builder.setMessage("Stai per ricevere " + arrayList.length + " incarico...")
-                        ;
+                        builder.setCancelable(true);
+                        builder.setMessage("Hai ricevuto " + richiesteIncaricoBt.size()+ " incarico...")
+                                        .setPositiveButton("Chiudi", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                builder.setCancelable(true);
+                            }
+                        });
 
                         builder.show();
                     }
