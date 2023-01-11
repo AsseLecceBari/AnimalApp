@@ -148,17 +148,16 @@ public class modificaAnimale extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_aggiungi_animale, container, false);
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);
-        main_action_bar.setTitle(R.string.aggiungi_animale);
+        main_action_bar.setTitle("Modifica Animale "+a.getNome());
         animaleDB = new AnimaleDB();
         if(main_action_bar.getMenu()!=null) {
-            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,false);
-            main_action_bar.getMenu().clear();
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,false);
             main_action_bar.setNavigationIcon(R.drawable.back);
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().popBackStack();
 
-                    getActivity().onBackPressed();
                 }
             });
         }
@@ -383,10 +382,8 @@ public class modificaAnimale extends Fragment {
         super.onDestroy();
         if(main_action_bar.getMenu()!=null) {
             main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
-            main_action_bar.setNavigationIcon(null);
-            main_action_bar.setTitle("AnimalApp");
-            main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
-
+            main_action_bar.setTitle(a.getNome());
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,true);
         }
     }
 }

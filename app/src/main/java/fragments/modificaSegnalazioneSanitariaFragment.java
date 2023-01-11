@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import DB.AnimaleDB;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -53,6 +55,7 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
 
     private MaterialCheckBox isDiagnosiPositiva, isEsame;
     private Spinner statoTrattamento;
+    private Toolbar main_action_bar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -68,6 +71,20 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
         isEsame = rootView.findViewById(R.id.isSpecifico);
         statoTrattamento = rootView.findViewById(R.id.statoTrattamento);
         visita = rootView.findViewById(R.id.visita);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Modifica Segnalazione sanitaria");
+
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,false);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().popBackStack();
+
+                }
+            });
+        }
 
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
@@ -164,5 +181,13 @@ public class modificaSegnalazioneSanitariaFragment extends Fragment {
     private void startDatabase(){
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+
+        }
     }
 }

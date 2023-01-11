@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,7 +43,7 @@ public class librettoSanitario extends Fragment {
 
     protected ArrayList<SegnalazioneSanitaria> mDataset= new ArrayList<>();
     protected SegnalazioneSanitariaAdapter mAdapter;
-
+    private Toolbar main_action_bar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_libretto_sanitario, container, false);
@@ -52,7 +53,18 @@ public class librettoSanitario extends Fragment {
         mRecyclerView = (RecyclerView) rootView.findViewById(R.id.recycleLibrettoSanitario);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         addSegnalazioneSanitaria = rootView.findViewById(R.id.aggiungiBtn);
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(animale.getNome());
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().onBackPressed();
 
+                }
+            });
+        }
         initDataset();
 
         //Inizializzo l'ascoltatore al click dell'item
@@ -133,6 +145,12 @@ public class librettoSanitario extends Fragment {
         }
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
     }
 
     private void initDataset() {

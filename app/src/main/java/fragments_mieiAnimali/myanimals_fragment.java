@@ -304,7 +304,9 @@ public class myanimals_fragment extends Fragment {
                                             Toast.makeText(getContext(),mDataset.get(positionSelectedCB.get(finalA)).getNome()+" è già in carico",Toast.LENGTH_SHORT).show();
                                         }
                                         if(finalA==positionSelectedCB.size()-1){
+                                            if(animaliPerCarico.size()>0){
                                             getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                            }
                                         }
                                     }
                                 });
@@ -322,15 +324,15 @@ public class myanimals_fragment extends Fragment {
                                             Toast.makeText(getContext(), filteredlist.get(positionSelectedCB.get(finalA)).getNome() + " è già in carico", Toast.LENGTH_SHORT).show();
                                         }
                                         if (finalA == positionSelectedCB.size() - 1) {
-                                            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                            if(animaliPerCarico.size()>0){
+                                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                            }
                                         }
                                     }
                                 });
 
                             }
                         }
-                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
-                        mAdapter.notifyDataSetChanged();
                     }
                     else{
                         showDialogBluetooth(positionSelectedCB);
@@ -362,10 +364,6 @@ public class myanimals_fragment extends Fragment {
         caricoDataset.clear();
         filteredlist.clear();
         countMyAnimals=0;
-
-
-
-
 
 
 
@@ -594,7 +592,7 @@ public class myanimals_fragment extends Fragment {
 
 
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
-        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.arrow_up_float));
+        fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_add));
         CollectionReference collection = db.collection("richiestaCarico");
         Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
         AggregateQuery countQuery = query.count();
@@ -641,7 +639,9 @@ public class myanimals_fragment extends Fragment {
                     expandFab();
 
                 } else {
-                    badgeDrawableFab.setNumber(countRichieste);
+                    if(badgeDrawableFab!=null) {
+                        badgeDrawableFab.setNumber(countRichieste);
+                    }
                     collapseFab();
 
                 }
@@ -783,7 +783,9 @@ public class myanimals_fragment extends Fragment {
                                                 Toast.makeText(getContext(),mDataset.get(positionSelectedCB.get(finalA)).getNome()+" è già in carico",Toast.LENGTH_SHORT).show();
                                             }
                                             if(finalA==positionSelectedCB.size()-1){
-                                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                                if(animaliPerCarico.size()>0){
+                                                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                                }
                                             }
                                     }
                                 });
@@ -802,7 +804,9 @@ public class myanimals_fragment extends Fragment {
                                             Toast.makeText(getContext(), filteredlist.get(positionSelectedCB.get(finalA)).getNome() + " è già in carico", Toast.LENGTH_SHORT).show();
                                         }
                                         if (finalA == positionSelectedCB.size() - 1) {
-                                            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                            if(animaliPerCarico.size()>0){
+                                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,RichiediCaricoFragment.newInstance(animaliPerCarico)).commit();
+                                            }
                                         }
                                     }
                                 });

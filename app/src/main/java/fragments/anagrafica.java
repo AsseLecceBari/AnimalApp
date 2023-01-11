@@ -33,6 +33,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -99,7 +100,7 @@ public class anagrafica extends Fragment {
     private float offset1;
     private float offset2;
     private float offset3;
-
+    private Toolbar main_action_bar;
     
     private ImageView pokeball;
     private Button generateQrBtn;
@@ -124,6 +125,18 @@ public class anagrafica extends Fragment {
         profiloAnimale= new ProfiloAnimale();
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         pokeball=rootView.findViewById(R.id.pokeball);
+
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().onBackPressed();
+
+                }
+            });
+        }
         CollectionReference pokedexReference = db.collection("pokedex");
 
         pokedexReference.whereEqualTo("idAnimale",animale.getIdAnimale()+"").whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

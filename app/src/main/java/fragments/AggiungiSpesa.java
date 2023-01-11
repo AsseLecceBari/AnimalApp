@@ -11,6 +11,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,7 +37,7 @@ public class AggiungiSpesa extends Fragment {
     private Animale animale;
     private Calendar cldr;
     private DatePickerDialog picker;
-
+    private Toolbar main_action_bar;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -52,7 +53,20 @@ public class AggiungiSpesa extends Fragment {
         cldr = Calendar.getInstance();
 
         startDatabase();
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Aggiungi spesa");
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,false);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().popBackStack();
 
+                }
+            });
+        }
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         // Al click nel campo Nascita si apre il date picker
         data.setText(new SimpleDateFormat("dd-M-yyyy").format(new Date()).toString());
         data.setInputType(InputType.TYPE_NULL);
@@ -94,5 +108,14 @@ public class AggiungiSpesa extends Fragment {
     private void startDatabase(){
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setTitle(animale.getNome());
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,true);
+        }
     }
 }

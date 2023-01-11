@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -46,6 +47,7 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
     private MaterialCheckBox isSpecifico, isDiagnosiPositiva;
     private View visita;
     private Spinner statoTrattamento;
+    private Toolbar main_action_bar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -65,7 +67,20 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
         cldr = Calendar.getInstance();
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Aggiungi segnalazione sanitaria");
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,false);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().popBackStack();
 
+                }
+            });
+        }
+        main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         startDatabase();
 
         isSpecifico.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -160,5 +175,14 @@ public class aggiungiSegnalazioneSanitaria extends Fragment {
     private void startDatabase(){
         auth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().removeGroup(R.id.imgProfiloItem);
+            main_action_bar.setTitle(animale.getNome());
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,true);
+        }
     }
 }

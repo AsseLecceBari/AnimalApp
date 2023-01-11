@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -37,6 +38,7 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
     private Calendar cldr;
     private DatePickerDialog picker;
     private View nonEsame;
+    private Toolbar main_action_bar;
 
 
     @Override
@@ -59,7 +61,19 @@ public class visualizzaSegnalazioneSanitaria extends Fragment {
         nonEsame = rootView.findViewById(R.id.nonEsame);
 
         animale = (Animale) getActivity().getIntent().getSerializableExtra("animale");
+        main_action_bar=getActivity().findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle("Visualizza segnalazione sanitaria");
+        if(main_action_bar.getMenu()!=null) {
+            main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,false);
+            main_action_bar.setNavigationIcon(R.drawable.back);
+            main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    getActivity().getSupportFragmentManager().popBackStack();
 
+                }
+            });
+        }
         startDatabase();
 
         if(s.getIsEsameSpecifico()){
