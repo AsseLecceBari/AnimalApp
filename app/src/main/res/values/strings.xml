@@ -207,6 +207,18 @@
     <string name="gestisci_richieste_di_carico">Gestisci richieste di carico</string>
     <string name="invia_richieste_di_carico">Invia richieste di carico</string>
     <string name="elimina">Elimina</string>
+    <string name="efnovi">EFNOVI:\ </string>
+    <string name="cf">CF:\ </string>
+    <string name="priv">\ privato</string>
+    <string name="pubbl">\ pubblico</string>
+    <string name="nomeduepunti">Nome:\ </string>
+    <string name="cogn">Cognome:\ </string>
+    <string name="mail">Email:\ </string>
+    <string name="tel">Telefono:\ </string>
+    <string name="indiri">Indirizzo:\ </string>
+    <string name="denom">Denominazione:\ </string>
+    <string name="partiva">Partita IVA:\ </string>
+    <string name="datanascita">Data di nascita:\ </string>
 
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>

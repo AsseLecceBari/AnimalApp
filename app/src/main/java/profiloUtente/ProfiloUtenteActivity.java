@@ -40,6 +40,7 @@ import model.Persona;
 import model.Veterinario;
 
 public class ProfiloUtenteActivity extends AppCompatActivity {
+
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
     private TextView tipoUtente, denominazione, cf, nome, cognome, data, email, telefono, indirizzo, citta, efnovi, partitaIva;
@@ -131,6 +132,14 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
             public void onClick(View view) {onBackPressed();}
         });
 
+        String NOME = getString(R.string.nomeduepunti);
+        String COGNOME = getString(R.string.cogn);
+        String EMAIL = getString(R.string.mail);
+        String TELEFONO = getString(R.string.tel);
+        String INDIRIZZO = getString(R.string.indiri);
+        String DENOMINAZIONE = getString(R.string.denom);
+        String PARTITA_IVA = getString(R.string.partiva);
+        String DATA_DI_NASCITA = getString(R.string.datanascita);
         CollectionReference animaliReference=db.collection("utenti");
         if(auth.getCurrentUser()!=null) {
             Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
@@ -149,14 +158,14 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     Persona p = document.toObject(Persona.class);
 
                                     tipoUtente.setText(p.getRuolo());
-                                    nome.setText(p.getNome());
-                                    cognome.setText(p.getCognome());
-                                    data.setText(p.getDataDiNascita());
-                                    email.setText(p.getEmail());
-                                    telefono.setText(p.getTelefono());
-                                    indirizzo.setText(p.getIndirizzo().get("via") +", " +p.getIndirizzo().get("civico")+" "+p.getIndirizzo().get("città")+"("+p.getIndirizzo().get("provincia")+")");
+                                    nome.setText(NOME +p.getNome());
+                                    cognome.setText(COGNOME +p.getCognome());
+                                    data.setText(DATA_DI_NASCITA +p.getDataDiNascita());
+                                    email.setText(EMAIL +p.getEmail());
+                                    telefono.setText(TELEFONO +p.getTelefono());
+                                    indirizzo.setText(INDIRIZZO +p.getIndirizzo().get("via") +", " +p.getIndirizzo().get("civico")+" "+p.getIndirizzo().get("città")+"("+p.getIndirizzo().get("provincia")+")");
 
-                                            indirizzo.setVisibility(View.VISIBLE);
+                                    indirizzo.setVisibility(View.VISIBLE);
                                     tipoUtente.setVisibility(View.VISIBLE);
                                     nome.setVisibility(View.VISIBLE);
                                     cognome.setVisibility(View.VISIBLE);
@@ -174,14 +183,14 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     Ente e = document.toObject(Ente.class);
 
                                     if(e.isPrivato())
-                                        tipoUtente.setText(e.getRuolo() + " privato");
+                                        tipoUtente.setText(e.getRuolo() + getString(R.string.priv));
                                     else
-                                        tipoUtente.setText(e.getRuolo() + " pubblico");
-                                    email.setText(e.getEmail());
-                                    telefono.setText(e.getTelefono());
-                                    denominazione.setText(e.getDenominazione());
-                                    partitaIva.setText(e.getPartitaIva());
-                                    indirizzo.setText(e.getIndirizzo().get("via") +", " +e.getIndirizzo().get("civico")+" "+e.getIndirizzo().get("città")+"("+e.getIndirizzo().get("provincia")+")");
+                                        tipoUtente.setText(e.getRuolo() + getString(R.string.pubbl));
+                                    email.setText(EMAIL +e.getEmail());
+                                    telefono.setText(TELEFONO +e.getTelefono());
+                                    denominazione.setText(DENOMINAZIONE +e.getDenominazione());
+                                    partitaIva.setText(PARTITA_IVA +e.getPartitaIva());
+                                    indirizzo.setText(INDIRIZZO +e.getIndirizzo().get("via") +", " +e.getIndirizzo().get("civico")+" "+e.getIndirizzo().get("città")+"("+e.getIndirizzo().get("provincia")+")");
 
 
                                     tipoUtente.setVisibility(View.VISIBLE);
@@ -202,11 +211,11 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     Associazione a = document.toObject(Associazione.class);
 
                                     tipoUtente.setText(a.getRuolo());
-                                    email.setText(a.getEmail());
-                                    telefono.setText(a.getTelefono());
-                                    cf.setText(a.getCodiceFiscaleAssociazione());
-                                    denominazione.setText((a.getDenominazione()));
-                                    indirizzo.setText(a.getIndirizzo().get("via") +", " +a.getIndirizzo().get("civico")+" "+a.getIndirizzo().get("città")+"("+a.getIndirizzo().get("provincia")+")");
+                                    email.setText(EMAIL +a.getEmail());
+                                    telefono.setText(TELEFONO +a.getTelefono());
+                                    cf.setText(getString(R.string.cf)+a.getCodiceFiscaleAssociazione());
+                                    denominazione.setText(DENOMINAZIONE +(a.getDenominazione()));
+                                    indirizzo.setText(INDIRIZZO +a.getIndirizzo().get("via") +", " +a.getIndirizzo().get("civico")+" "+a.getIndirizzo().get("città")+"("+a.getIndirizzo().get("provincia")+")");
 
 
                                     indirizzo.setVisibility(View.VISIBLE);
@@ -227,14 +236,14 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
                                     Veterinario v = document.toObject(Veterinario.class);
 
                                     tipoUtente.setText(v.getRuolo());
-                                    nome.setText(v.getNome());
-                                    cognome.setText(v.getCognome());
-                                    data.setText(v.getDataDiNascita());
-                                    email.setText(v.getEmail());
-                                    telefono.setText(v.getTelefono());
-                                    efnovi.setText(v.getNumEFNOVI());
-                                    partitaIva.setText(v.getPartitaIva());
-                                    indirizzo.setText(v.getIndirizzo().get("via") +", " +v.getIndirizzo().get("civico")+" "+v.getIndirizzo().get("città")+"("+v.getIndirizzo().get("provincia")+")");
+                                    nome.setText(NOME +v.getNome());
+                                    cognome.setText(COGNOME +v.getCognome());
+                                    data.setText(DATA_DI_NASCITA +v.getDataDiNascita());
+                                    email.setText(EMAIL +v.getEmail());
+                                    telefono.setText(TELEFONO +v.getTelefono());
+                                    efnovi.setText(getString(R.string.efnovi)+v.getNumEFNOVI());
+                                    partitaIva.setText(PARTITA_IVA +v.getPartitaIva());
+                                    indirizzo.setText(INDIRIZZO +v.getIndirizzo().get("via") +", " +v.getIndirizzo().get("civico")+" "+v.getIndirizzo().get("città")+"("+v.getIndirizzo().get("provincia")+")");
 
 
                                     indirizzo.setVisibility(View.VISIBLE);
