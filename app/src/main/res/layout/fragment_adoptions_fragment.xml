@@ -20,24 +20,6 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-
-                android:gravity="center|right"
-                android:text="@string/filtri"
-                android:textSize="23dp" />
-
-            <ImageView
-                android:id="@+id/imageView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/equalizer_filter_filtering_mixer_sorting_icon_123287__1_" />
-
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -57,18 +39,21 @@
 
                     tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
 
-                <com.google.android.material.floatingactionbutton.FloatingActionButton
+
+
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/chiudifiltri"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginTop="3dp"
                     android:layout_marginRight="15dp"
-                    android:clickable="true"
-                    android:src="@drawable/_492790975_4arrow_right_84163"
+                    android:text="@string/filtri"
                     android:visibility="visible"
+                    app:icon="@drawable/equalizer_filter_filtering_mixer_sorting_icon_123287__1_"
+                    app:iconPadding="8dp"
 
-                    tools:ignore="SpeakableTextPresentCheck" />
+                    tools:ignore="SpeakableTextPresentCheck,DuplicateClickableBoundsCheck" />
             </FrameLayout>
 
         </LinearLayout>

@@ -4,14 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +12,13 @@ import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -436,13 +435,19 @@ public class adoptions_fragment extends Fragment {
             }
         });
 
+        layoutfiltri.setVisibility(View.GONE);
         bottonechiudifiltri.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                layoutfiltri.setVisibility(View.GONE);
+                if(layoutfiltri.getVisibility() == View.GONE){
+                    layoutfiltri.setVisibility(View.VISIBLE);
+                }else{
+                    layoutfiltri.setVisibility(View.GONE);
+                }
+
                // btnopenFiltri.setVisibility(View.VISIBLE);
-                bottonechiudifiltri.setVisibility(View.GONE);
-                btnopenFiltri.setVisibility(View.VISIBLE);
+               // bottonechiudifiltri.setVisibility(View.GONE);
+               // btnopenFiltri.setVisibility(View.VISIBLE);
 
                 //layoutopenfiltri.setVisibility(View.VISIBLE);
             }
