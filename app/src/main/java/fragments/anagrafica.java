@@ -22,7 +22,6 @@ import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
@@ -61,10 +60,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 import androidmads.library.qrgenearator.QRGContents;
 import androidmads.library.qrgenearator.QRGEncoder;
+import fragments_mieiAnimali.modificaAnimale;
 import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -88,6 +87,7 @@ public class anagrafica extends Fragment {
     private Button selectImgButton;
     private ImageView qrCodeIV;
 
+    private FloatingActionButton modifica;
 
     //FAB SPEED DIAL DECLARATION
     private static final String TRANSLATION_Y = "translationY";
@@ -145,6 +145,13 @@ public class anagrafica extends Fragment {
             }
         });
 
+        modifica = rootView.findViewById(R.id.modificaAnimaliBtn);
+        modifica.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                modificaAnimale();
+            }
+        });
         ProfiloAnimale profiloAnimale=(ProfiloAnimale)  anagrafica.super.getActivity();
         main_fragment_animale=profiloAnimale.getMain_fragment_animale();
         viewPager2=main_fragment_animale.getViewPager2();
@@ -724,4 +731,8 @@ public class anagrafica extends Fragment {
         });
     }
 
+
+    public void modificaAnimale() {
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new modificaAnimale(animale)).commit();
+    }
 }

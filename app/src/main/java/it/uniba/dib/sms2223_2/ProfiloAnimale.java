@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +13,6 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
-import fragments.main_fragment;
 import fragments.main_fragment_animale;
 import model.Animale;
 import model.SegnalazioneSanitaria;
@@ -104,11 +101,6 @@ public class ProfiloAnimale extends AppCompatActivity {
                     break;
             }
         }
-    }
-
-    public void modificaAnimale(View view) {
-        Toast.makeText(this, "qui si apre il fragment modificare", Toast.LENGTH_SHORT).show();
-        // Apertura del fragment per modificare l'animale
     }
 
     public SegnalazioneSanitaria getS() {

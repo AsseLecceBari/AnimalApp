@@ -211,8 +211,7 @@
     android:layout_marginBottom="15dp"
     android:clickable="true"
     android:src="@android:drawable/ic_menu_edit"
-    tools:ignore="SpeakableTextPresentCheck"
-    android:onClick="modificaAnimale"/>
+    tools:ignore="SpeakableTextPresentCheck"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
