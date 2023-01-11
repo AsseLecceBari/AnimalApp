@@ -1,9 +1,13 @@
 package fragments;
 
+import static android.Manifest.permission.BLUETOOTH_CONNECT;
+import static android.Manifest.permission.BLUETOOTH_SCAN;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -13,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -69,6 +74,15 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
     private Toolbar main_action_bar;
 
     private AlertDialog.Builder builder;
+    private ServerSocket serverSoket;
+
+
+
+
+    private static final String[] PERMISSIONS_STORAGE = {
+
+            BLUETOOTH_CONNECT, BLUETOOTH_SCAN
+    };
 
     ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult(),
@@ -101,8 +115,8 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                         builder.show();
 
                      BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-                     ServerSocket serverSoket= new ServerSocket(mBluetoothAdapter,mHandler,firebaseAuth.getCurrentUser().getEmail());
-                     serverSoket.run();
+                     serverSoket= new ServerSocket(mBluetoothAdapter,mHandler,firebaseAuth.getCurrentUser().getEmail());
+                     serverSoket.start();
 
 
                     }
@@ -163,11 +177,28 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
             public void onClick(View view) {
 
 
+                if (android.os.Build.VERSION.SDK_INT > 30) {
+                    if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                       getActivity().requestPermissions(
+
+                                PERMISSIONS_STORAGE,
+                                1
+                        );
+                    } else {
+                        Intent abilitavisibilità = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+                        abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
+
+                        activityResultLaunch.launch(abilitavisibilità);
+                    }
+                }
+                else {
+
 
                     Intent abilitavisibilità = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
 
                     activityResultLaunch.launch(abilitavisibilità);
+                }
 
             }
         });
@@ -189,8 +220,16 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                     String readMessage = new String(mmBuffer, 0, msg.arg1);
                     //traformo il messaggio ricevuto in json e poi in arraylist
 
+                    Log.d("ciao35",readMessage);
+
                     Gson gson = new Gson();
                     richiesteIncaricoBt.add(gson.fromJson(readMessage , Animale.class));
+                    RichiestaCarico richiestaCarico=new RichiestaCarico(gson.fromJson(readMessage , Animale.class).getIdAnimale(),auth.getCurrentUser().getEmail(),"","in sospeso");
+                    db.collection("richiestaCarico").document(gson.fromJson(readMessage , Animale.class).getIdAnimale()).set(richiestaCarico);
+
+
+
+
                     mDataset.add(gson.fromJson(readMessage , Animale.class));
                     mAdapter = new GestioneRichiesteCaricoAdapter(mDataset);
                     // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
@@ -214,12 +253,14 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
                         builder.show();
                     } else {
-                        builder.setCancelable(true);
+                        builder.setCancelable(false);
                         builder.setMessage("Hai ricevuto " + richiesteIncaricoBt.size()+ " incarico...")
                                         .setPositiveButton("Chiudi", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                builder.setCancelable(true);
+                                serverSoket.cancel();
+
+
                             }
                         });
 

@@ -62,6 +62,7 @@ public class Connection extends Thread {
         // Keep listening to the InputStream until an exception occurs.
         while (true) {
             try {
+                Log.d("ciao35","connessione 2");
 
                 // Read from the InputStream.
                 numBytes = mmInStream.read(mmBuffer);

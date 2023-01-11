@@ -62,35 +62,25 @@ public class ClientSocket implements Runnable {
 
         try {
             mSocket.connect();
-            Log.d("ciao33","close");
+
         } catch (IOException e) {
 
 
             try {
                 mSocket.close();
+                Log.d("ciao35","dconnesso c");
 
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
         }
-        Log.d("ciao26","s" + " "+ mconnectionManager);
+        Log.d("ciao35","connesso c");
 
         mconnectionManager.setSocket(mSocket);
-        ArrayList<JSONObject> arrayList = new ArrayList<>();
 
-for(int i =0; i<mlistAnimali.size(); i++){
-    Animale animale = mlistAnimali.get(i);
-        String jsonInString = new Gson().toJson(animale);
-        JSONObject mJSONObject = null;
-        try {
-            mJSONObject = new JSONObject(jsonInString);
-            arrayList.add(mJSONObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    //mconnectionManager.write(animale.toString());
-    }
+
+
 
 
     }

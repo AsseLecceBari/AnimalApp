@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -32,6 +33,7 @@ import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -107,6 +109,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
 
        mParam1= (ArrayList<Animale>) getArguments().getSerializable(ARG_PARAM1);
@@ -114,6 +117,30 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
 
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+
+
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        mconnectionManager= new ConnectionManager(mHandler);
+        bluetooth.BtScanner(mRecyclerView, mParam1, mHandler, mconnectionManager);
+
     }
 
     @Override
@@ -152,11 +179,12 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
 
                         builder.setMessage("Vuoi inviare l'incarico a " + readMessage + "?")
+                                .setCancelable(false)
                                 .setTitle("Invio Incarico")
                                 .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        builder.setCancelable(true);
+
                                     }
                                 }).setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
                                     @Override
@@ -167,10 +195,16 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
                                             String jsonString = gson.toJson(mParam1.get(a));
 
 
+
                                             mconnectionManager.write(jsonString);
+                                           try {
+                                                mconnectionManager.cancel();
+                                                Log.d("ciao35","  eliminato" );
+                                            } catch (IOException e) {
+                                                Log.d("ciao35"," non eliminato" );
+                                                e.printStackTrace();
+                                            }
                                         }
-
-
 
 
                                     }
@@ -186,11 +220,17 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
 
             };
+            if(mconnectionManager== null)
+            {
 
-            mconnectionManager= new ConnectionManager(mHandler);
+                mconnectionManager= new ConnectionManager(mHandler);
+                bluetooth.BtScanner(mRecyclerView, mParam1, mHandler, mconnectionManager);
+            }
 
 
-          bluetooth.BtScanner(mRecyclerView, mParam1, mHandler, mconnectionManager);
+
+
+
 
         }
 
