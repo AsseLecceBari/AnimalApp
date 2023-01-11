@@ -206,6 +206,7 @@
     <string name="ConfermaEliminaSegnalazione">Sei sicuro di voler eliminare la segnalazione?</string>
     <string name="gestisci_richieste_di_carico">Gestisci richieste di carico</string>
     <string name="invia_richieste_di_carico">Invia richieste di carico</string>
+    <string name="elimina">Elimina</string>
 
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>

@@ -9,23 +9,25 @@
 
 
     <androidx.cardview.widget.CardView
-        android:layout_width="189dp"
-        android:layout_height="284dp"
+        android:layout_width="188dp"
+        android:layout_height="295dp"
 
         android:layout_marginLeft="10dp"
         android:layout_marginTop="15dp"
-        android:background="?attr/colorSecondaryContainer">
+        >
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="?attr/colorSecondaryContainer">
 
             <Button
                 android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Button" />
+                android:backgroundTint="@color/quantum_googred"
+                android:text="@string/elimina" />
 
             <ImageView
                 android:id="@+id/imageAnimal"
@@ -35,20 +37,14 @@
                 android:layout_height="200dp"
                 tools:srcCompat="@tools:sample/avatars" />
 
-            <TextView
-                android:id="@+id/codiceAnimaleView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="TextView"
-                app:layout_constraintStart_toEndOf="@+id/nomeAnimaleView"
-
-                />
-
-            <TextView
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/nomeAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="8dp"
                 android:text="TextView"
+                android:textSize="25dp"
                 app:layout_constraintStart_toEndOf="@+id/imageAnimal" />
 
 
