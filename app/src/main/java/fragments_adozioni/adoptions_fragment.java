@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import adapter.AdozioniAdapter;
+import fragments_segnalazioni.choiceAnimals_fragment;
 import it.uniba.dib.sms2223_2.AdozioneActivity;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
@@ -129,7 +130,7 @@ public class adoptions_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 closeSearchView();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new lista_mieiAnimali()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new choiceAnimals_fragment(1,2)).addToBackStack(null).commit();
             }
         });
 
