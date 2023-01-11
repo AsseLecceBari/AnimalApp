@@ -1,18 +1,40 @@
 package it.uniba.dib.sms2223_2;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.os.Bundle;
+import android.os.Environment;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
 
+import org.w3c.dom.Document;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Objects;
+
+import androidmads.library.qrgenearator.QRGContents;
+import androidmads.library.qrgenearator.QRGEncoder;
+import class_general.PdfService;
 import fragments.main_fragment_animale;
 import model.Animale;
 import model.SegnalazioneSanitaria;
@@ -24,7 +46,8 @@ public class ProfiloAnimale extends AppCompatActivity {
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
     private TabLayout tabLayout;
-
+    private QRGEncoder qrgEncoder;
+    private Bitmap bitmap;
     public main_fragment_animale getMain_fragment_animale() {
         return main_fragment_animale;
     }
@@ -33,7 +56,49 @@ public class ProfiloAnimale extends AppCompatActivity {
     private int posizione;
 
 
+    private ActivityResultLauncher<String> requestPermissionLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                if (isGranted) {
+                    PdfService pdfService= new PdfService();
+                    try {
+                        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
 
+                        // initializing a variable for default display.
+                        Display display = manager.getDefaultDisplay();
+
+                        // creating a variable for point which
+                        // is to be displayed in QR Code.
+
+                        Point point = new Point();
+                        display.getSize(point);
+
+                        // getting width and
+                        // height of a point
+                        int width = point.x;
+                        int height = point.y;
+
+                        // generating dimension from width and height.
+                        int dimen = width < height ? width : height;
+                        dimen = dimen * 3 / 4;
+
+                        // setting this dimensions inside our qr code
+                        // encoder to generate our qr code.
+                        qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT, dimen);
+                        // getting our qrcode in the form of bitmap.
+                        bitmap = qrgEncoder.getBitmap();
+                        // the bitmap is set inside our image
+                        // view using .setimagebitmap method.
+                        pdfService.createUserTable(animale,bitmap);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
+
+                }
+            });
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +176,58 @@ public class ProfiloAnimale extends AppCompatActivity {
         this.s = s;
     }
 
-    public void scaricaAnimale(MenuItem item) {
+    public void scaricaAnimale(MenuItem item) throws DocumentException, IOException {
+
+        if (ContextCompat.checkSelfPermission(
+                getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) ==
+                PackageManager.PERMISSION_GRANTED) {
+            PdfService pdfService = new PdfService();
+            try {
+                WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
+
+                // initializing a variable for default display.
+                Display display = manager.getDefaultDisplay();
+
+                // creating a variable for point which
+                // is to be displayed in QR Code.
+
+                Point point = new Point();
+                display.getSize(point);
+
+                // getting width and
+                // height of a point
+                int width = point.x;
+                int height = point.y;
+
+                // generating dimension from width and height.
+                int dimen = width < height ? width : height;
+                dimen = dimen * 3 / 4;
+
+                // setting this dimensions inside our qr code
+                // encoder to generate our qr code.
+                qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT, dimen);
+                // getting our qrcode in the form of bitmap.
+                bitmap = qrgEncoder.getBitmap();
+                // the bitmap is set inside our image
+                // view using .setimagebitmap method.
+                pdfService.createUserTable(animale,bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            }
+
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+
+        } else {
+            // You can directly ask for the permission.
+            // The registered ActivityResultCallback gets the result of this request.
+            requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
         Toast.makeText(getApplicationContext(), "scaricato", Toast.LENGTH_SHORT).show();
-    }
+}
+
+
 
     public void condividiAnimale(MenuItem item) {
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
@@ -122,4 +236,5 @@ public class ProfiloAnimale extends AppCompatActivity {
         sharingIntent.putExtra(Intent.EXTRA_TEXT, shareBody);
         startActivity(Intent.createChooser(sharingIntent, "Condividi via..."));
     }
+
 }
