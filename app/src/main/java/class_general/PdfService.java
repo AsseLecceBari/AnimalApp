@@ -52,9 +52,9 @@ public  class PdfService {
     com.itextpdf.text.Font BODY_FONT= new com.itextpdf.text.Font(com.itextpdf.text.Font.FontFamily.TIMES_ROMAN, 16f, com.itextpdf.text.Font.BOLD);
     private PdfWriter pdf;
 
-    private File createFile() throws IOException {
+    private File createFile(Animale animale) throws IOException {
         //Prepare file
-        String title = "DatiAnimale.pdf";
+        String title = "Dati anagrafici di "+animale.getNome()+".pdf";
         File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         File file = new File(String.valueOf(path), title);
         if (!file.exists()){ file.createNewFile();}
@@ -78,7 +78,7 @@ public  class PdfService {
 
     public void createUserTable(Animale data,Bitmap bitmap) throws IOException, DocumentException {
         //Define the document
-        File file = createFile();
+        File file = createFile(data);
         com.itextpdf.text.Document document = createDocument();
         FirebaseStorage storage;
         StorageReference storageRef;
