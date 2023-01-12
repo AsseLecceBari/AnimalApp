@@ -226,13 +226,9 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                     richiesteIncaricoBt.add(gson.fromJson(readMessage , Animale.class));
                     RichiestaCarico richiestaCarico=new RichiestaCarico(gson.fromJson(readMessage , Animale.class).getIdAnimale(),auth.getCurrentUser().getEmail(),"","in sospeso");
                     db.collection("richiestaCarico").document(gson.fromJson(readMessage , Animale.class).getIdAnimale()).set(richiestaCarico);
-
-
-
-
                     mDataset.add(gson.fromJson(readMessage , Animale.class));
                     mAdapter = new GestioneRichiesteCaricoAdapter(mDataset);
-                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                    //Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                     mRecyclerView.setItemViewCacheSize(mDataset.size());
                     mRecyclerView.setAdapter(mAdapter);
 

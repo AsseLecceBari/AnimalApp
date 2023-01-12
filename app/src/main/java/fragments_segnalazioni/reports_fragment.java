@@ -222,6 +222,7 @@ public class reports_fragment extends Fragment {
                     mDataset.clear();
                     filteredlist.clear();
                     initDataset();
+                    attivaSlider.setVisibility(View.VISIBLE);
                     attivaSlider.setChecked(false);
                     sliderReport.setValue(15.0F);
                     Log.d("prova222", String.valueOf(a));
@@ -238,6 +239,8 @@ public class reports_fragment extends Fragment {
                     mDataset.clear();
                     filteredlist.clear();
                     initDatasetTueSegnalazioni();
+                    attivaSlider.setVisibility(View.GONE);
+                    sliderLayout.setVisibility(View.GONE);
                     attivaSlider.setChecked(false);
                     sliderReport.setValue(15.0F);
                     Log.d("prova222", String.valueOf(a));
