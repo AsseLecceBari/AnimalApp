@@ -99,7 +99,7 @@ import model.Utente;
 
 public class smarrimento_fragments extends Fragment {
 
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
     private FirebaseAuth auth;
 
 
@@ -173,7 +173,7 @@ public class smarrimento_fragments extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        StrictMode.setThreadPolicy(policy);
+
 
       View rootView=inflater.inflate(R.layout.fragment_smarrimento_fragments, container, false);
 

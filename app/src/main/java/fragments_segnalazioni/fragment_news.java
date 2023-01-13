@@ -70,7 +70,7 @@ import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
 
 public class fragment_news extends Fragment {
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
 
 
     private FirebaseAuth auth;
@@ -215,7 +215,7 @@ public class fragment_news extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        StrictMode.setThreadPolicy(policy);
+
         View rootView=inflater.inflate(R.layout.fragment_news, container, false);
 
         db=FirebaseFirestore.getInstance();
@@ -335,6 +335,7 @@ public class fragment_news extends Fragment {
                             //da attivare una volta salvata la foto
                             //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
 
+                            getActivity().getSupportFragmentManager().popBackStack();
                             getActivity().getSupportFragmentManager().popBackStack();
 
                         }

@@ -69,7 +69,7 @@ import it.uniba.dib.sms2223_2.R;
 import model.Segnalazione;
 
 public class fragment_zona_pericolosa extends Fragment {
-    StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+
 
 
     private FirebaseAuth auth;
@@ -214,7 +214,7 @@ public class fragment_zona_pericolosa extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        StrictMode.setThreadPolicy(policy);
+
         View rootView= inflater.inflate(R.layout.fragment_zona_pericolosa, container, false);
 
 

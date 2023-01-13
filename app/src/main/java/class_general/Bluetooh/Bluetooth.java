@@ -82,11 +82,7 @@ public class Bluetooth  {
             Intent enableBt = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
            if (android.os.Build.VERSION.SDK_INT > 30) {
                if (ContextCompat.checkSelfPermission(mactivity.getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                   mactivity.requestPermissions(
-
-                           PERMISSIONS_STORAGE,
-                           1
-                   );
+                   mactivity.requestPermissions(PERMISSIONS_STORAGE,1);
                } else {
                    listAnimali= animaliPerCarico;
 
