@@ -71,14 +71,8 @@ public class ProfiloUtenteActivity extends AppCompatActivity {
         indirizzo = findViewById(R.id.indirizzo);
         efnovi = findViewById(R.id.numeroEFNOVI);
         partitaIva = findViewById(R.id.partitaIva);
-        modificaProfilo = findViewById(R.id.modificaProfilo);
+        //modificaProfilo = findViewById(R.id.modificaProfilo);
 
-        modificaProfilo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getApplicationContext(), "Modifica il tuo profilo", Toast.LENGTH_SHORT).show();
-            }
-        });
 
     }
 

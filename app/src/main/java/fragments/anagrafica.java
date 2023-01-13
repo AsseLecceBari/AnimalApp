@@ -348,25 +348,19 @@ public class anagrafica extends Fragment {
 
         // setto il generatore
         WindowManager manager = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE);
-
         // initializing a variable for default display.
         Display display = manager.getDefaultDisplay();
-
         // creating a variable for point which
         // is to be displayed in QR Code.
-
         Point point = new Point();
         display.getSize(point);
-
         // getting width and
         // height of a point
         int width = point.x;
         int height = point.y;
-
         // generating dimension from width and height.
         int dimen = width < height ? width : height;
         dimen = dimen * 3 / 4;
-
         // setting this dimensions inside our qr code
         // encoder to generate our qr code.
         qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT, dimen);
