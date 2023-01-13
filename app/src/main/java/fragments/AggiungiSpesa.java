@@ -98,7 +98,7 @@ public class AggiungiSpesa extends Fragment {
                     public void onComplete(@NonNull Task<Void> task) {
                     }
                 });
-                getActivity().onBackPressed();
+                getActivity().getSupportFragmentManager().popBackStack();
             }
         });
 
