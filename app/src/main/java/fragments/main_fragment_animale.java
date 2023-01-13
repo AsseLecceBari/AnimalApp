@@ -82,30 +82,39 @@ public class main_fragment_animale extends Fragment {
     private void caricamentoTab()
     {
 
-        viewPager2=getView().findViewById(R.id.viewPager2);
+
 
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
-        try {
-            activity  = getActivity();
             if(!getProprietario()) {
+                tabLayout= getView().findViewById(R.id.tabLayout);
+                viewPager2=getView().findViewById(R.id.viewPager2);
+
+                //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
+                activity  = getActivity();
                 vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(),false);
                 tabLayout= getView().findViewById(R.id.tabLayout2);
                 tabLayout.setVisibility(View.GONE);
                 tabLayout= getView().findViewById(R.id.tabLayout);
                 tabLayout.getTabAt(1).setText("Proprietario");
 
+
+                viewPager2.setAdapter(vpAdapter);
+
             }
             else {
-                vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(), true);
+                tabLayout= getView().findViewById(R.id.tabLayout);
+                viewPager2=getView().findViewById(R.id.viewPager2);
+
+                //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
+                activity  = getActivity();
+                vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(),true);
                 tabLayout= getView().findViewById(R.id.tabLayout2);
                 tabLayout.setVisibility(View.GONE);
                 tabLayout = getView().findViewById(R.id.tabLayout);
+                viewPager2.setAdapter(vpAdapter);
             }
-            viewPager2.setAdapter(vpAdapter);
 
-        }catch (Exception e){
-            return;
-        }
+
         tabLayout.getTabAt(posizione).select();
         viewPager2.setCurrentItem(posizione);
 

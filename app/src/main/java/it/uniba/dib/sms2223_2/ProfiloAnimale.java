@@ -1,6 +1,7 @@
 package it.uniba.dib.sms2223_2;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -61,42 +63,15 @@ public class ProfiloAnimale extends AppCompatActivity {
                 if (isGranted) {
                     PdfService pdfService= new PdfService();
                     try {
-                        WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
-                        // initializing a variable for default display.
-                        Display display = manager.getDefaultDisplay();
-
-                        // creating a variable for point which
-                        // is to be displayed in QR Code.
-
-                        Point point = new Point();
-                        display.getSize(point);
-
-                        // getting width and
-                        // height of a point
-                        int width = point.x;
-                        int height = point.y;
-
-                        // generating dimension from width and height.
-                        int dimen = width < height ? width : height;
-                        dimen = dimen * 3 / 4;
-
-                        // setting this dimensions inside our qr code
-                        // encoder to generate our qr code.
-                        qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT, dimen);
+                        qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT, 100);
                         // getting our qrcode in the form of bitmap.
                         bitmap = qrgEncoder.getBitmap();
-                        // the bitmap is set inside our image
-                        // view using .setimagebitmap method.
-                        pdfService.createUserTable(animale,bitmap);
+                        pdfService.createUserTable(animale,bitmap,getApplicationContext());
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (DocumentException e) {
                         e.printStackTrace();
                     }
-                } else {
-                    //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
-
                 }
             });
 
@@ -183,50 +158,45 @@ public class ProfiloAnimale extends AppCompatActivity {
                 PackageManager.PERMISSION_GRANTED) {
             PdfService pdfService = new PdfService();
             try {
-                WindowManager manager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
-                // initializing a variable for default display.
-                Display display = manager.getDefaultDisplay();
-
-                // creating a variable for point which
-                // is to be displayed in QR Code.
-
-                Point point = new Point();
-                display.getSize(point);
-
-                // getting width and
-                // height of a point
-                int width = point.x;
-                int height = point.y;
-
-                // generating dimension from width and height.
-                int dimen = width < height ? width : height;
-                dimen = dimen * 3 / 4;
-
-                // setting this dimensions inside our qr code
-                // encoder to generate our qr code.
-                qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT, dimen);
-                // getting our qrcode in the form of bitmap.
+                qrgEncoder = new QRGEncoder(animale.getIdAnimale(), null, QRGContents.Type.TEXT,100);
                 bitmap = qrgEncoder.getBitmap();
-                // the bitmap is set inside our image
-                // view using .setimagebitmap method.
-                pdfService.createUserTable(animale,bitmap);
+                pdfService.createUserTable(animale,bitmap,getApplicationContext());
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (DocumentException e) {
                 e.printStackTrace();
             }
 
-        } else if (shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                showAlertDialog();
         } else {
             // You can directly ask for the permission.
             // The registered ActivityResultCallback gets the result of this request.
             requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
-        Toast.makeText(getApplicationContext(), "scaricato", Toast.LENGTH_SHORT).show();
+
 }
 
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+        alertDialogBuilder.setMessage(R.string.consiglio_accettare_permessi);
+        alertDialogBuilder.setPositiveButton(R.string.ho_capito,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton(R.string.magari_piu_tardi, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
 
 
     public void condividiAnimale(MenuItem item) {

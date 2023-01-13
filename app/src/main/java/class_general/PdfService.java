@@ -3,11 +3,13 @@ package class_general;
 import static com.google.common.io.Resources.getResource;
 
 import android.animation.FloatArrayEvaluator;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -76,7 +78,7 @@ public  class PdfService {
         (document).open();
     }
 
-    public void createUserTable(Animale data,Bitmap bitmap) throws IOException, DocumentException {
+    public void createUserTable(Animale data, Bitmap bitmap, Context context) throws IOException, DocumentException {
         //Define the document
         File file = createFile(data);
         com.itextpdf.text.Document document = createDocument();
@@ -167,6 +169,7 @@ public  class PdfService {
 
 
               pdf.close();
+              Toast.makeText(context, "scaricato", Toast.LENGTH_SHORT).show();
           }
 
       });

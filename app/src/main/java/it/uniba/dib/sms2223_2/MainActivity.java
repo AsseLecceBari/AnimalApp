@@ -157,65 +157,29 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                /*
-                Log.e("dioaiutaci","CIAO");
-                try {
-
-                    myanimals_fragment= (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                    myanimals_fragment.filter(query);
-                    Log.e("query","animals");
-                }catch (Exception e){
-
-                }
-                try {
-
-                    adoptions_fragment= (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                    adoptions_fragment.filter(query);
-                    Log.e("query","adoptions");
-                }catch (Exception e){
-
-                }
-                try {
-
-                    reports_fragment= (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
-                    reports_fragment.filter(query);
-                    Log.e("query","reports");
-                }catch (Exception e){
-
-                }
-
-                 */
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-
                 try {
                     getMainFragmentReference();
                     viewPager2 = main_fragment.getViewPager2();
                     adapter = (VPAdapter) viewPager2.getAdapter();
                 }catch (Exception e){
-
                 }
                 try {
-
-                    Log.e("DOVESEI","SONOQUI");
-resetSelectionCheckBox();
+                    resetSelectionCheckBox();
                     myanimals_fragment = (fragments_mieiAnimali.myanimals_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     myanimals_fragment.filter(newText);
                     Log.e("query", "animals");
-                } catch (Exception e) {
-
-                }
+                } catch (Exception e) {}
                 try {
                     resetSelectionCheckBox();
                     adoptions_fragment = (fragments_adozioni.adoptions_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());
                     adoptions_fragment.filter(newText);
                     Log.e("query", "adoptions");
-                } catch (Exception e) {
-
-                }
+                } catch (Exception e) {}
                 try {
                     resetSelectionCheckBox();
                     reports_fragment = (fragments_segnalazioni.reports_fragment) adapter.getFragmentArrayList().get(viewPager2.getCurrentItem());

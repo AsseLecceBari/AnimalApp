@@ -100,9 +100,6 @@ public class aggiungiAnimaleFragment extends Fragment {
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
                     mGetContent.launch("image/*");
-                } else {
-                    //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
-
                 }
             });
 
