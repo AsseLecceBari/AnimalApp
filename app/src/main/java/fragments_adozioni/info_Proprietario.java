@@ -63,7 +63,6 @@ public class info_Proprietario extends Fragment {
         super.onCreate(savedInstanceState);
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
         adozione=(Adozione) getActivity().getIntent().getSerializableExtra("adozione");
-        proprietario=(Persona) getActivity().getIntent().getSerializableExtra("proprietario");
 
     }
 
@@ -101,7 +100,7 @@ public class info_Proprietario extends Fragment {
         String DATA_DI_NASCITA = getString(R.string.datanascita);
         CollectionReference animaliReference=db.collection("utenti");
         if(auth.getCurrentUser()!=null) {
-            Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+            Query query = animaliReference.whereEqualTo("email", animale.getEmailProprietario());
             query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
                 @SuppressLint("SetTextI18n")
                 @Override
