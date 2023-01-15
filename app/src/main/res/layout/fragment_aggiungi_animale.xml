@@ -74,13 +74,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
-
+<!--
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegGenereAnimale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/genere"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
+                -->
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/etRegGenereAnimale"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:completionThreshold="1"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="@string/genere" />
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -89,12 +98,22 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp">
 
+            <com.google.android.material.textfield.MaterialAutoCompleteTextView
+                android:id="@+id/etRegSpecieAnimale"
+                android:layout_width="match_parent"
+                android:layout_height="55dp"
+                android:completionThreshold="1"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
+                android:hint="@string/specie" />
+<!--
+
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etRegSpecieAnimale"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/specie"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "/>
+                -->
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout

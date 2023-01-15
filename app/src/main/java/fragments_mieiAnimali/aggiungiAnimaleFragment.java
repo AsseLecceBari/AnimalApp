@@ -10,12 +10,17 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -46,6 +51,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.Random;
@@ -61,8 +67,10 @@ public class aggiungiAnimaleFragment extends Fragment {
     private TextInputLayout dataLayout;
     private TextInputEditText data;
     private  TextInputEditText etRegNomeAnimale;
-    private  TextInputEditText etRegGenereAnimale;
-    private  TextInputEditText etRegSpecieAnimale;
+    private  AutoCompleteTextView etRegGenereAnimale;
+    private AutoCompleteTextView etRegSpecieAnimale;
+    //private  TextInputEditText etRegGenereAnimale;
+   // private  TextInputEditText etRegSpecieAnimale;
     private   TextInputLayout iLSessoAnimale;
     private Spinner etRegSessoAnimale;
     private Button selectImgButton;
@@ -126,10 +134,132 @@ public class aggiungiAnimaleFragment extends Fragment {
 
     public aggiungiAnimaleFragment() {
     }
+    private static final String[] genereAnimali = new String[] {
+            "Cane","Gatto","Criceto","Topo","Gerbillo","Cincillà","Degu","Scoiattolo","Porcellino d'India",
+            "Coniglio","Cavallo","Asino","Donnola","Furetto","Ermellino","Lama","Alpaca","Maiale",
+            "Mucca","Capra nana","Capra","Pecora","Cocorita", "Cacatua", "Ara","Gallina","Canarino",
+            "Colomba","Gallo","Anatra", "Diamantino mandarino","Tartaruga","Lucertola","Iguana",
+            "Serpente", "Camaleonte","Tritone","Salamandra","Grillo","Tarantola","Scorpione"};
+    private static final String[] specieCani = new String[] {
+            "Meticcio",
+            "Labrador Retriever",
+            "Setter inglese",
+            "Cocker",
+            "Maltese",
+            "Pinscher",
+            "Pastore Tedesco",
+            "Chihuahua",
+            "Jack russel terrier",
+            "Golden retriever",
+            "Border collie",
+            "Lagotto",
+            "Bulldog",
+            "Yorkshire terrier",
+            "Beagle",
+            "Pastore maremmano",
+            "Corso",
+            "Boxer",
+            "Bassotto Tedesco Normale",
+            "Pitbull",
+            "Rottweiler",
+            "Meticcio segugio",
+            "Pointer inglese",
+            "Bassotto tedesco nano",
+            "Shih-tzu",
+            "Pastore australiano",
+            "Segugio maremmano",
+            "Carlino",
+            "Volpino italiano",
+            "Meticcio",
+            "Volpino di pomerania",
+            "Bovaro del bernese",
+            "Bracco tedesco",
+            "Siberian husky",
+            "Meticcio maremmano",
+            "Bulldog inglese",
+            "Fox terrier",
+            "Dobermann",
+            "Meticcio volpino",
+            "Alaskan malamute",
+            "Cane lupo cecoslovacco",
+            "Shiba",
+            "Bullmastiff",
+            "Meticcio-bracco",
+            "Akita inu",
+            "Pechinese",
+            "Meticcio setter",
+            "Bracco italiano",
+            "Chow Chow",
+            "Alano tedesco",
+            "Barboni nano nero",
+            "Barboni toy",
+            "Setter irlandese",
+            "Pastore belga",
+            "Setter gordon",
+            "Shar pei",
+            "Spinone",
+            "Zwerg pinscher nano",
+            "Meticcio spinone",
+            "Terranova",
+            "Barbone miniatura",
+            "Boston terrier",
+            "Galgo espanol",
+            "Grande bovaro svizzero",
+            "Staffordshire terrier amer",
+            "Schnauzer normale",
+            "Spitz",
+            "Zwerg Schnauzer nano"};
+    private static final String[] specieGatti = new String[] {
+            "Persiano",
+            "Maine coon",
+            "Exotic shorthair",
+            "Abissino",
+            "Siamese",
+            "Ragdoll",
+            "Sphynx",
+            "Birmano",
+            "American shorthair",
+            "Orientale"};
+    private static final String[] specieDefault = new String[] {
+            "Specie in arrivo"};
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+    private boolean checkSpecieItemExist(String text){
+        boolean flagExist = false;
+        int i;
+        for(i=0;i<specieCani.length;i++) {
+            if (text.equals(specieCani[i])) {
+                flagExist = true;
+                break;
+            }
+        }
+        for(i=0;i<specieGatti.length;i++){
+                if(text.equals(specieGatti[i])){
+                    flagExist=true;
+                    break;
+                }
+        }
+        for(i=0;i<specieDefault.length;i++){
+            if(text.equals(specieDefault[i])){
+                flagExist=true;
+                break;
+            }
+        }
+        return flagExist;
+    }
+    private boolean checkGenereItemExist(String text){
+        boolean flagExist = false;
+        int i;
+        for(i=0;i<genereAnimali.length;i++) {
+            if (text.equals(genereAnimali[i])) {
+                flagExist = true;
+                break;
+            }
+        }
+        return flagExist;
     }
     @SuppressLint("MissingInflatedId")
     @Override
@@ -146,11 +276,47 @@ public class aggiungiAnimaleFragment extends Fragment {
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     getActivity().onBackPressed();
                 }
             });
         }
+        ArrayAdapter<String> adapterGeneri = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_dropdown_item_1line, genereAnimali);
+        etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
+
+        etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
+        etRegGenereAnimale.setAdapter(adapterGeneri);
+        etRegGenereAnimale.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                etRegSpecieAnimale.setFocusable(true);
+                etRegSpecieAnimale.setClickable(true);
+                etRegSpecieAnimale.setFocusableInTouchMode(true);
+                ArrayAdapter<String> adapterSpecie;
+                TextView textView= (TextView) view;
+                switch ((String) textView.getText()){
+                    case "Cane":
+                        etRegSpecieAnimale.setText("");
+                      adapterSpecie = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_dropdown_item_1line, specieCani);
+                        etRegSpecieAnimale.setAdapter(adapterSpecie);
+                        break;
+                    case "Gatto":
+                        etRegSpecieAnimale.setText("");
+                      adapterSpecie = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_dropdown_item_1line, specieGatti);
+                        etRegSpecieAnimale.setAdapter(adapterSpecie);
+                        break;
+                    default:
+                        etRegSpecieAnimale.setText("Specie in arrivo");
+                        adapterSpecie = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_dropdown_item_1line, specieDefault);
+                        etRegSpecieAnimale.setAdapter(adapterSpecie);
+                        etRegSpecieAnimale.setFocusable(false);
+                        break;
+                }
+            }
+        });
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
@@ -180,8 +346,8 @@ public class aggiungiAnimaleFragment extends Fragment {
         });
 
         etRegNomeAnimale=rootView.findViewById(R.id.etRegNomeAnimale);
-        etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
-        etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
+       // etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
+       // etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
         etRegSessoAnimale=rootView.findViewById(R.id.etRegSessoAnimale);
         iLSessoAnimale=rootView.findViewById(R.id.inputSessoAnimale);
         registraAnimaleBtn=rootView.findViewById(R.id.registraAnimaleBtn);
@@ -197,6 +363,7 @@ public class aggiungiAnimaleFragment extends Fragment {
         registraAnimaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.e("genere",etRegGenereAnimale.getText().toString());
                 String nome= etRegNomeAnimale.getText().toString();
                 String genere=etRegGenereAnimale.getText().toString();
                 String specie=etRegSpecieAnimale.getText().toString();
@@ -237,7 +404,14 @@ public class aggiungiAnimaleFragment extends Fragment {
                     data.setError(getString(R.string.dateBornRequired));
                     flag=1;
                 }
-
+                if(!checkGenereItemExist(etRegGenereAnimale.getText().toString())){
+                    etRegGenereAnimale.setError("Selezionare un genere dalla lista");
+                    flag=1;
+                }
+                if(!checkSpecieItemExist(etRegSpecieAnimale.getText().toString())){
+                    etRegSpecieAnimale.setError("Selezionare una specie dalla lista");
+                    flag=1;
+                }
                 // se tutto va bene registro
                 if(flag == 1) {
 
