@@ -178,7 +178,7 @@ public class ritrovamento extends Fragment {
             @Override
             public void onClick(View view) {
                 //vai a segnalazioni con filtro smarrimento
-               getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new reports_fragment()).commit();
+               getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new reports_fragment()).commit();
             }
         });
 

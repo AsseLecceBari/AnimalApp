@@ -133,13 +133,6 @@ public class MainActivity extends AppCompatActivity {
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
             pokedex=menu.findItem(R.id.pokedex);
             searchFilterListener();
-            pokedex.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    startActivity(new Intent(getApplicationContext(),Pokedex.class));
-                    return false;
-                }
-            });
         }catch (Exception e){
 
         }
@@ -317,6 +310,7 @@ public void getFragmentTagReference(){
     }
 
 
-
-
+    public void openPokedex(MenuItem item) {
+                startActivity(new Intent(getApplicationContext(),Pokedex.class));
+    }
 }

@@ -130,7 +130,7 @@ public class adoptions_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 closeSearchView();
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new choiceAnimals_fragment(1,2)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView, new choiceAnimals_fragment(1,2)).addToBackStack(null).commit();
             }
         });
 

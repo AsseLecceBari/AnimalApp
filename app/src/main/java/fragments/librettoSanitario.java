@@ -74,7 +74,7 @@ public class librettoSanitario extends Fragment {
                         SegnalazioneSanitaria s = mDataset.get(position);
                         ProfiloAnimale p = (ProfiloAnimale) getActivity();
                         p.setS(s);
-                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new visualizzaSegnalazioneSanitaria()).commit();
+                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new visualizzaSegnalazioneSanitaria()).commit();
                     }
 
                     @Override public void onLongItemClick(View view, int position) {
@@ -85,7 +85,7 @@ public class librettoSanitario extends Fragment {
         addSegnalazioneSanitaria.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiSegnalazioneSanitaria()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiSegnalazioneSanitaria()).commit();
             }
         });
 

@@ -169,7 +169,7 @@ public class reports_fragment extends Fragment {
         aggiungiSegnalazione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
             }
         });
         filtri();
@@ -393,25 +393,25 @@ public class reports_fragment extends Fragment {
         closeSearchView();
         switch (s.getTipo()) {
             case "Smarrimento":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s,a)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView, new vistaSegnalazione().newInstance(s,a)).addToBackStack(null).commit();
                 break;
             case "Animale Ferito":
                 //da cambiare con vistaAnimaleFerito
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s,a)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView, new fragment_vista_animaleInPericolo().newInstance(s,a)).addToBackStack(null).commit();
                 break;
             case "Zona Pericolosa":
                 //da cambiare con vistaRitrovamento
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s,a)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView, new fragment_vista_zonaPericolosa().newInstance(s,a)).addToBackStack(null).commit();
                 break;
             case "News":
                 //da cambiare con vistaRitrovamento
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s,a)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView, new fragment_vista_news().newInstance(s,a)).addToBackStack(null).commit();
                 break;
             case "Raccolta Fondi":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView, new fragment_vista_raccoltaFondi(s)).addToBackStack(null).commit();
                 break;
             case "Ritrovamento":
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new fragment_vista_ritrovamento().newInstance(s,a)).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView, new fragment_vista_ritrovamento().newInstance(s,a)).addToBackStack(null).commit();
                 break;
 
 

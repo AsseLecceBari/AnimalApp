@@ -87,7 +87,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new choiceAnimals_fragment()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new choiceAnimals_fragment()).addToBackStack(null).commit();
 
 
 
@@ -97,7 +97,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         animaleFerito.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new animale_in_pericolo_fragments()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new animale_in_pericolo_fragments()).addToBackStack(null).commit();
 
             }
         });
@@ -105,14 +105,14 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         pericolo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new fragment_zona_pericolosa()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new fragment_zona_pericolosa()).addToBackStack(null).commit();
 
             }
         });
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new fragment_news()).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new fragment_news()).addToBackStack(null).commit();
 
 
             }
@@ -122,7 +122,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
         raccoltaFondi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getParentFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new choiceAnimals_fragment(1)).addToBackStack(null).commit();
+                getParentFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new choiceAnimals_fragment(1)).addToBackStack(null).commit();
                 }
         });
 
@@ -136,7 +136,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
                  */
 
-                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new ritrovamento()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new ritrovamento()).addToBackStack(null).commit();
 
             }
         });

@@ -264,7 +264,7 @@ public class myanimals_fragment extends Fragment {
                         PackageManager.PERMISSION_GRANTED) {
 
                     //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
-                    getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiCarico()).commit();
+                    getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiCarico()).commit();
                 } else if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
                     showAlertDialog();
                 } else {
@@ -629,7 +629,7 @@ public class myanimals_fragment extends Fragment {
         fabAction3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new gestioneRichiesteCaricoFragment()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new gestioneRichiesteCaricoFragment()).commit();
             }
         });
 

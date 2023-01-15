@@ -27,6 +27,7 @@
         <item
             android:id="@+id/pokedex"
             android:title="Pokedex"
+            android:onClick="openPokedex"
 
 
             />

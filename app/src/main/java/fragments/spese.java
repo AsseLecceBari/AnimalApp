@@ -75,7 +75,7 @@ public class spese extends Fragment {
         addSpesa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new AggiungiSpesa()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new AggiungiSpesa()).commit();
             }
         });
 
