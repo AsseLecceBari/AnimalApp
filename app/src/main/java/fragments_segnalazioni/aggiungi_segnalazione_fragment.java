@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 
 public class aggiungi_segnalazione_fragment extends Fragment {
@@ -159,7 +160,8 @@ public class aggiungi_segnalazione_fragment extends Fragment {
             main_action_bar.setNavigationIcon(null);
             main_action_bar.setTitle("AnimalApp");
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
-
+            MainActivity mainActivity= (MainActivity) getActivity();
+            mainActivity.searchFilterListener();
         }
     }
 }

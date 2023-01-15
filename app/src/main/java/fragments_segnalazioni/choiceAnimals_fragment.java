@@ -30,6 +30,7 @@ import java.util.Random;
 import adapter.AnimalAdapter;
 import fragments.RecyclerItemClickListener;
 import fragments_adozioni.aggiungi_annuncio_Adozione;
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
@@ -221,5 +222,12 @@ public class choiceAnimals_fragment extends Fragment {
         }
 
     }
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if(flag==2) {
+            MainActivity mainActivity= (MainActivity) getActivity();
+            mainActivity.searchFilterListener();
+        }
+    }
 }

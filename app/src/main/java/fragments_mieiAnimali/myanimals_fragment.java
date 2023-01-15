@@ -118,8 +118,8 @@ public class myanimals_fragment extends Fragment {
     private float offset1;
     private float offset2;
     private float offset3;
-    Bluetooth bluetooth;
-    ArrayList <Animale> animaliPerCarico= new ArrayList<>();
+    private Bluetooth bluetooth;
+    private  ArrayList <Animale> animaliPerCarico= new ArrayList<>();
 
 
 

@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
+import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
 import model.Carico;
@@ -225,7 +226,8 @@ public class aggiungiCarico extends Fragment {
             main_action_bar.setNavigationIcon(null);
             main_action_bar.setTitle("AnimalApp");
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
-
+            MainActivity mainActivity= (MainActivity) getActivity();
+            mainActivity.searchFilterListener();
         }
     }
 }

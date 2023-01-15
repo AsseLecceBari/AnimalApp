@@ -109,8 +109,6 @@ public class MainActivity extends AppCompatActivity {
 
         super.onResume();
         getFragmentTagReference();
-
-
     }
 
 
@@ -133,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
             searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
             pokedex=menu.findItem(R.id.pokedex);
             searchFilterListener();
+
         }catch (Exception e){
 
         }
@@ -144,8 +143,10 @@ public class MainActivity extends AppCompatActivity {
         return main_fragment;
     }
 
-    private void searchFilterListener() {
-
+    public void searchFilterListener() {
+        searchItem= main_action_bar.getMenu().findItem(R.id.action_search);
+        searchView= (SearchView) searchItem.getActionView();
+        searchView.setQueryHint("Scrivi qui cosa vuoi cercare");
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
