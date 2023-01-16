@@ -301,6 +301,7 @@ public class fragment_zona_pericolosa extends Fragment {
                 int i=0;
 
                 String tipo="Zona Pericolosa";
+                String email;
 
                 Random rand=new Random();
                 String descrizione=descrzioneZonaPericolosa.getText().toString();
@@ -328,7 +329,12 @@ public class fragment_zona_pericolosa extends Fragment {
                 }
 
                 if(i==0) {
-                    s1 = new Segnalazione(auth.getCurrentUser().getEmail(), titolo, tipo, "", idSegnalazione, descrizione, lat, lng, data, urlFoto, " ");
+                    if (auth.getCurrentUser()== null){
+                        email="Utente Guest";
+                    }else{
+                        email=auth.getCurrentUser().getEmail();
+                    }
+                    s1 = new Segnalazione(email, titolo, tipo, "", idSegnalazione, descrizione, lat, lng, data, urlFoto, " ");
                     db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

@@ -159,9 +159,15 @@ public class ritrovamento extends Fragment {
                 //TODO fare i controlli sui campi
                 SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy");
                 String urlFoto="/imagesAnimaliInPericolo/"+idSegnalazione;
+                String email;
+                if (auth.getCurrentUser()== null){
+                    email="Utente Guest";
+                }else{
+                    email=auth.getCurrentUser().getEmail();
+                }
 
                 String data= dateFor.format(new Date());
-                s= new Segnalazione(auth.getCurrentUser().getEmail(),"Ho trovato un animale!","Ritrovamento",idSegnalazione+"",descrizione.getText().toString()+"",lat, lng, data,urlFoto);
+                s= new Segnalazione(email,"Ho trovato un animale!","Ritrovamento",idSegnalazione+"",descrizione.getText().toString()+"",lat, lng, data,urlFoto);
                 db.collection("segnalazioni").document(s.getIdSegnalazione()).set(s).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
