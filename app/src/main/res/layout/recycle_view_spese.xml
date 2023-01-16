@@ -32,106 +32,114 @@
 
             <TextView
                 android:id="@+id/dataView"
-                android:layout_width="205dp"
-                android:layout_height="23dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="52dp"
                 android:text="TextView"
                 android:textColor="?attr/colorOnPrimaryContainer"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.724"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.073" />
 
             <TextView
                 android:id="@+id/motivoConsultazioneView"
-                android:layout_width="220dp"
-                android:layout_height="48dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="36dp"
                 android:text="TextView"
                 android:textColor="?attr/colorOnPrimaryContainer"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/dataView" />
+                app:layout_constraintHorizontal_bias="0.725"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/dataView"
+                app:layout_constraintVertical_bias="0.065" />
 
             <TextView
                 android:id="@+id/data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="40dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/data"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintEnd_toStartOf="@+id/dataView"
-                app:layout_constraintHorizontal_bias="0.258"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.072" />
 
             <TextView
                 android:id="@+id/motivoConsultazione"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginStart="40dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/descrizione"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintEnd_toStartOf="@+id/motivoConsultazioneView"
-                app:layout_constraintHorizontal_bias="0.51"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/data" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.297" />
 
             <TextView
                 android:id="@+id/spesaTotaleView"
-                android:layout_width="205dp"
-                android:layout_height="23dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_marginTop="20dp"
-                android:layout_marginEnd="48dp"
                 android:text="TextView"
                 android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.725"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/categoriaView"
-                app:layout_constraintVertical_bias="0.475" />
+                app:layout_constraintVertical_bias="0.411" />
 
             <TextView
                 android:id="@+id/categoriaView"
-                android:layout_width="205dp"
-                android:layout_height="23dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="end"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="48dp"
+                android:layout_marginTop="24dp"
                 android:text="TextView"
                 android:textColor="?attr/colorOnPrimaryContainer"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazioneView" />
+                app:layout_constraintHorizontal_bias="0.725"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazioneView"
+                app:layout_constraintVertical_bias="0.181" />
 
             <TextView
                 android:id="@+id/spesaTotale"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/spesa_totale"
                 android:textColor="?attr/colorOnPrimaryContainer"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/spesaTotaleView"
-                app:layout_constraintHorizontal_bias="0.521"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/categoria"
-                app:layout_constraintVertical_bias="0.632" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.86" />
 
             <TextView
                 android:id="@+id/categoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginStart="40dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/categoria"
                 android:textColor="?attr/colorOnPrimaryContainer"
-                app:layout_constraintEnd_toStartOf="@+id/categoriaView"
-                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/motivoConsultazione" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.585" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
