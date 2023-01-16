@@ -281,7 +281,7 @@ public class animale_in_pericolo_fragments extends Fragment {
 
                 int i=0;
 
-
+                String email;
                 String tipo="Animale Ferito";
                 Random rand=new Random();
                 String descrizione=etDescrizioneAnimaleFerito.getText().toString();
@@ -304,7 +304,12 @@ public class animale_in_pericolo_fragments extends Fragment {
                     i=1;
                 }
                 if (i==0) {
-                    s1 = new Segnalazione(auth.getCurrentUser().getEmail(), titolo, tipo, "", idSegnalazione, descrizione, lat, lng, data, urlFoto, " ");
+                    if (auth.getCurrentUser()== null){
+                        email="Utente Guest";
+                    }else{
+                        email=auth.getCurrentUser().getEmail();
+                    }
+                    s1 = new Segnalazione(email, titolo, tipo, "", idSegnalazione, descrizione, lat, lng, data, urlFoto, " ");
                     db.collection("segnalazioni").document(s1.getIdSegnalazione()).set(s1).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

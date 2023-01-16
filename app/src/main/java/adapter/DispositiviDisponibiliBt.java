@@ -23,12 +23,13 @@ import model.Animale;
 public class DispositiviDisponibiliBt extends RecyclerView.Adapter<DispositiviDisponibiliBt.ViewHolder>{
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<BluetoothDevice> localDataSet = new ArrayList<>();
+    int mvista;
 
 
 
 
-    public DispositiviDisponibiliBt() {
-
+    public DispositiviDisponibiliBt(int vista) {
+mvista= vista;
 
 
     }
@@ -68,10 +69,20 @@ public class DispositiviDisponibiliBt extends RecyclerView.Adapter<DispositiviDi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_view_dispositivononassociato, parent, false);
 
-        return new ViewHolder(v);
+        if(mvista==2) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_view_dispositivononassociato, parent, false);
+            return new ViewHolder(v);
+        }
+        else {
+            Log.d("ciao21","ciaso");
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_view_dispositivoassociato, parent, false);
+            return new ViewHolder(v);
+        }
+
+
 
     }
 

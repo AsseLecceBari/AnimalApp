@@ -271,6 +271,7 @@ public class smarrimento_fragments extends Fragment {
                     int i=0;
                      String tipo="Smarrimento";
 
+
                      Random idSegnalazione = new Random();
                      String descrizione=descrizioneEditText.getText().toString();
                     String titolo=titoloSmarrimento.getText().toString();
