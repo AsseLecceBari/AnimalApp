@@ -72,13 +72,14 @@ tools:context="fragments_segnalazioni.aggiungiRaccoltaFondi">
     </LinearLayout>
 
 </ScrollView>
-<com.google.android.material.floatingactionbutton.FloatingActionButton
-    android:id="@+id/conferma"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:src="@android:drawable/checkbox_on_background"
-    android:layout_gravity="bottom|end"
-    android:layout_marginBottom="16dp"
-    android:layout_marginEnd="16dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/conferma"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:clickable="true"
+        android:src="?android:attr/textCheckMark" />
 </FrameLayout>

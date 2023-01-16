@@ -263,7 +263,8 @@ public class fragment_vista_news extends Fragment implements OnMapReadyCallback 
                     }else{
                         composeEmail(" ",s.getEmailSegnalatore());
 
-                    }                }
+                    }
+                }
             });
         }else if(x==1){
             //per ora non serve nella vista mieSegnalazioni
