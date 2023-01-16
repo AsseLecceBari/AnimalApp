@@ -33,13 +33,14 @@
                 android:id="@+id/sessoAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="76dp"
                 android:layout_marginBottom="56dp"
                 android:width="58dp"
                 android:text="TextView"
                 android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.755"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
                 app:layout_constraintVertical_bias="1.0" />
 
@@ -72,16 +73,17 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/genereAnimaleView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="58dp"
+                android:layout_height="20dp"
                 android:layout_marginTop="7dp"
-                android:layout_marginEnd="76dp"
                 android:layout_marginBottom="20dp"
                 android:width="58dp"
                 android:text="TextView"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/specieAnimaleView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.755"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -89,13 +91,14 @@
                 android:id="@+id/specieAnimaleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="76dp"
                 android:layout_marginBottom="16dp"
                 android:width="58dp"
                 android:text="TextView"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/sessoAnimaleView"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.755"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
                 app:layout_constraintVertical_bias="0.978" />
 
@@ -118,19 +121,19 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/genereAnimalField"
-                android:layout_width="wrap_content"
+                android:layout_width="58dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:layout_marginEnd="48dp"
                 android:layout_marginBottom="20dp"
                 android:fontFamily="sans-serif-black"
                 android:text="@string/genere"
                 android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/specieAnimalField"
                 app:layout_constraintEnd_toStartOf="@+id/genereAnimaleView"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.551"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView" />
+                app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleView"
+                app:layout_constraintVertical_bias="1.0" />
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/specieAnimalField"

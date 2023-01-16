@@ -228,8 +228,104 @@
         <item>News</item>
         <item>Raccolta Fondi</item>
         <item>Ritrovamento</item>
-
     </string-array>
 
-
+    <string-array name="genereAnimali">
+         <item>Cane</item>
+         <item>Gatto</item>
+         <item>Criceto</item>
+         <item>Topo</item>
+         <item>Gerbillo</item>
+         <item>Cincillà</item>
+         <item>Degu</item>
+         <item>Scoiattolo</item>
+         <item>Porcellino d\'India</item>
+         <item>Coniglio</item>
+         <item>Cavallo</item>
+         <item>Asino</item>
+         <item>Donnola</item>
+         <item>Furetto</item>
+         <item>Ermellino</item>
+         <item>Lama</item>
+         <item>Alpaca</item>
+         <item>Maiale</item>
+         <item>Mucca</item>
+         <item>Capra nana</item>
+         <item>Capra</item>
+         <item>Pecora</item>
+         <item>Cocorita</item>
+         <item>Cacatua</item>
+         <item>Ara</item>
+         <item>Gallina</item>
+         <item>Canarino</item>
+         <item>Colomba</item>
+         <item>Gallo</item>
+         <item>Anatra</item>
+         <item>Diamantino mandarino</item>
+         <item>Tartaruga</item>
+         <item>Lucertola</item>
+         <item>Iguana</item>
+         <item>Serpente</item>
+         <item>Camaleonte</item>
+         <item>Tritone</item>
+         <item>Salamandra</item>
+         <item>Grillo</item>
+         <item>Tarantola</item>
+         <item>Scorpione</item>
+    </string-array>
+<string-array name="specieCani">
+     <item>Meticcio</item>
+     <item>Labrador Retriever</item>
+     <item>Setter inglese</item>
+     <item>Cocker</item>
+     <item>Maltese</item>
+     <item>Pinscher</item>
+     <item>Pastore Tedesco</item>
+     <item>Chihuahua</item>
+     <item>Jack russel terrier</item>
+     <item>Golden retriever</item>
+     <item>Border collie</item>
+     <item>Lagotto</item>
+     <item>Bulldog</item>
+     <item>Yorkshire terrier</item>
+     <item>Beagle</item>
+     <item>Pastore maremmano</item>
+     <item>Corso</item>
+     <item>Boxer</item>
+     <item>Bassotto Tedesco Normale</item>
+     <item>Pitbull</item>
+     <item>Rottweiler</item>
+     <item>Meticcio segugio</item>
+     <item>Pointer inglese</item>
+     <item>Bassotto tedesco nano</item>
+     <item>Shih-tzu</item>
+     <item>Pastore australiano</item>
+     <item>Segugio maremmano</item>
+     <item>Carlino</item>
+     <item>Volpino italiano</item>
+     <item>Meticcio</item>
+     <item>Volpino di pomerania</item>
+     <item>Bovaro del bernese</item>
+     <item>Bracco tedesco</item>
+     <item>Siberian husky</item>
+     <item>Meticcio maremmano</item>
+     <item>Bulldog inglese</item>
+     <item>Fox terrier</item>
+     <item>Dobermann</item>
+     <item>Meticcio volpino</item>
+     <item>Alaskan malamute</item>
+     <item>Cane lupo cecoslovacco</item>
+</string-array>
+    <string-array name="specieGatti">
+         <item>Persiano</item>
+         <item>Maine coon</item>
+         <item>Exotic shorthair</item>
+         <item>Abissino</item>
+         <item>Siamese</item>
+         <item>Ragdoll</item>
+         <item>Sphynx</item>
+         <item>Birmano</item>
+         <item>American shorthair</item>
+         <item>Orientale</item>
+    </string-array>
 </resources>

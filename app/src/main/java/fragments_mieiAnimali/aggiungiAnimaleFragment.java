@@ -51,6 +51,7 @@ import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Objects;
@@ -135,92 +136,9 @@ public class aggiungiAnimaleFragment extends Fragment {
 
     public aggiungiAnimaleFragment() {
     }
-    private static final String[] genereAnimali = new String[] {
-            "Cane","Gatto","Criceto","Topo","Gerbillo","Cincillà","Degu","Scoiattolo","Porcellino d'India",
-            "Coniglio","Cavallo","Asino","Donnola","Furetto","Ermellino","Lama","Alpaca","Maiale",
-            "Mucca","Capra nana","Capra","Pecora","Cocorita", "Cacatua", "Ara","Gallina","Canarino",
-            "Colomba","Gallo","Anatra", "Diamantino mandarino","Tartaruga","Lucertola","Iguana",
-            "Serpente", "Camaleonte","Tritone","Salamandra","Grillo","Tarantola","Scorpione"};
-    private static final String[] specieCani = new String[] {
-            "Meticcio",
-            "Labrador Retriever",
-            "Setter inglese",
-            "Cocker",
-            "Maltese",
-            "Pinscher",
-            "Pastore Tedesco",
-            "Chihuahua",
-            "Jack russel terrier",
-            "Golden retriever",
-            "Border collie",
-            "Lagotto",
-            "Bulldog",
-            "Yorkshire terrier",
-            "Beagle",
-            "Pastore maremmano",
-            "Corso",
-            "Boxer",
-            "Bassotto Tedesco Normale",
-            "Pitbull",
-            "Rottweiler",
-            "Meticcio segugio",
-            "Pointer inglese",
-            "Bassotto tedesco nano",
-            "Shih-tzu",
-            "Pastore australiano",
-            "Segugio maremmano",
-            "Carlino",
-            "Volpino italiano",
-            "Meticcio",
-            "Volpino di pomerania",
-            "Bovaro del bernese",
-            "Bracco tedesco",
-            "Siberian husky",
-            "Meticcio maremmano",
-            "Bulldog inglese",
-            "Fox terrier",
-            "Dobermann",
-            "Meticcio volpino",
-            "Alaskan malamute",
-            "Cane lupo cecoslovacco",
-            "Shiba",
-            "Bullmastiff",
-            "Meticcio-bracco",
-            "Akita inu",
-            "Pechinese",
-            "Meticcio setter",
-            "Bracco italiano",
-            "Chow Chow",
-            "Alano tedesco",
-            "Barboni nano nero",
-            "Barboni toy",
-            "Setter irlandese",
-            "Pastore belga",
-            "Setter gordon",
-            "Shar pei",
-            "Spinone",
-            "Zwerg pinscher nano",
-            "Meticcio spinone",
-            "Terranova",
-            "Barbone miniatura",
-            "Boston terrier",
-            "Galgo espanol",
-            "Grande bovaro svizzero",
-            "Staffordshire terrier amer",
-            "Schnauzer normale",
-            "Spitz",
-            "Zwerg Schnauzer nano"};
-    private static final String[] specieGatti = new String[] {
-            "Persiano",
-            "Maine coon",
-            "Exotic shorthair",
-            "Abissino",
-            "Siamese",
-            "Ragdoll",
-            "Sphynx",
-            "Birmano",
-            "American shorthair",
-            "Orientale"};
+  private String[] genereAnimali;
+    private String[] specieCani;
+    private String[] specieGatti;
     private static final String[] specieDefault = new String[] {
             "Specie in arrivo"};
 
@@ -257,7 +175,6 @@ public class aggiungiAnimaleFragment extends Fragment {
         for(i=0;i<genereAnimali.length;i++) {
             if (text.equals(genereAnimali[i])) {
                 flagExist = true;
-                break;
             }
         }
         return flagExist;
@@ -281,6 +198,9 @@ public class aggiungiAnimaleFragment extends Fragment {
                 }
             });
         }
+        genereAnimali= getResources().getStringArray(R.array.genereAnimali);
+        specieCani= getResources().getStringArray(R.array.specieCani);
+        specieGatti=getResources().getStringArray(R.array.specieGatti);
         ArrayAdapter<String> adapterGeneri = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_dropdown_item_1line, genereAnimali);
         etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
