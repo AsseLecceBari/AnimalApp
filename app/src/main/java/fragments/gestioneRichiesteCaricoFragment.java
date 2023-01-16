@@ -29,9 +29,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -76,7 +78,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
     private AlertDialog.Builder builder;
     private ServerSocket serverSoket;
-
+   private View view;
 
 
 
@@ -95,25 +97,9 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                  if (result.getResultCode() == 200) {
                      firebaseAuth= FirebaseAuth.getInstance();
 
-                     builder = new AlertDialog.Builder(getActivity());
+                     Snackbar mySnackbar = Snackbar.make(view,"In attesa di ricevere un Incarico",15000) ;
+                     mySnackbar.show();
 
-
-
-                        builder.setMessage("In attesa di ricevere un incarico...")
-                                .setTitle("Ricezione Incarico")
-                                .setPositiveButton("Annulla", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        builder.setCancelable(true);
-                                    }
-                                }).setCancelable(true);
-
-
-
-
-
-
-                        builder.show();
 
                      BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                      serverSoket= new ServerSocket(mBluetoothAdapter,mHandler,firebaseAuth.getCurrentUser().getEmail());
@@ -140,7 +126,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_gestione_richieste_carico, container, false);
+         view = inflater.inflate(R.layout.fragment_gestione_richieste_carico, container, false);
         //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycleGestioneRichiesteCarico);
         buttonBluetooh= view.findViewById(R.id.buttonBluetooth);
@@ -219,13 +205,10 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                     byte[] mmBuffer = (byte[]) msg.obj;
 
                     String readMessage = new String(mmBuffer, 0, msg.arg1);
-                    //traformo il messaggio ricevuto in json e poi in arraylist
-
-                    Log.d("ciao35",readMessage);
-
+                    //traformo il messaggio ricevuto in json e poi in arraylist e lo inserisco nel db
                     Gson gson = new Gson();
                     richiesteIncaricoBt.add(gson.fromJson(readMessage , Animale.class));
-                    RichiestaCarico richiestaCarico=new RichiestaCarico(gson.fromJson(readMessage , Animale.class).getIdAnimale(),auth.getCurrentUser().getEmail(),"","in sospeso");
+                    RichiestaCarico richiestaCarico=new RichiestaCarico(gson.fromJson(readMessage , Animale.class).getIdAnimale(),auth.getCurrentUser().getEmail(),gson.fromJson(readMessage , Animale.class).getEmailProprietario(),"in sospeso");
                     db.collection("richiestaCarico").document(gson.fromJson(readMessage , Animale.class).getIdAnimale()).set(richiestaCarico);
                     mDataset.add(gson.fromJson(readMessage , Animale.class));
                     mAdapter = new GestioneRichiesteCaricoAdapter(mDataset);
@@ -237,24 +220,31 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
 
                     if (richiesteIncaricoBt.size() > 1) {
-                        builder.setCancelable(true);
 
+                        builder = new AlertDialog.Builder(getActivity());
+                        builder.setCancelable(false);
 
                         builder.setMessage("Hai ricevuto " + richiesteIncaricoBt.size() + " incarichi...")
                                         .setPositiveButton("Chiudi", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                builder.setCancelable(true);
+                                richiesteIncaricoBt.clear();
+                                serverSoket.cancel();
                             }
                         });
 
                         builder.show();
                     } else {
+
+
+                        builder = new AlertDialog.Builder(getActivity());
+
                         builder.setCancelable(false);
                         builder.setMessage("Hai ricevuto " + richiesteIncaricoBt.size()+ " incarico...")
                                         .setPositiveButton("Chiudi", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                richiesteIncaricoBt.clear();
                                 serverSoket.cancel();
 
 

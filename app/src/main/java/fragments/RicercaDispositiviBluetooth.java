@@ -56,7 +56,8 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     private static final String ARG_PARAM1 = "listaAnimali";
     private static String Arg_Param2= "manager";
     private Handler mHandler;
-    private RecyclerView mRecyclerView;
+    private RecyclerView mRecyclerViewNonAssociati;
+    private RecyclerView mRecyclerViewAssociati;
     private ConnectionManager mconnectionManager;
     private View bottone;
 
@@ -138,8 +139,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     public void onStart() {
         super.onStart();
 
-        mconnectionManager= new ConnectionManager(mHandler);
-        bluetooth.BtScanner(mRecyclerView, mParam1, mHandler, mconnectionManager);
+
 
     }
 
@@ -184,7 +184,11 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
                                 .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-
+                                        try {
+                                            mconnectionManager.cancel();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }).setPositiveButton("Conferma", new DialogInterface.OnClickListener() {
                                     @Override
@@ -193,9 +197,6 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
                                         for(int a=0; a<mParam1.size();a++) {
                                             String jsonString = gson.toJson(mParam1.get(a));
-
-
-
                                             mconnectionManager.write(jsonString);
                                            try {
                                                 mconnectionManager.cancel();
@@ -224,7 +225,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             {
 
                 mconnectionManager= new ConnectionManager(mHandler);
-                bluetooth.BtScanner(mRecyclerView, mParam1, mHandler, mconnectionManager);
+                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati, mParam1, mHandler, mconnectionManager,getContext());
             }
 
 
@@ -274,8 +275,13 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             }
         }
 
-        mRecyclerView = rootview.findViewById(R.id.item_dispositiviNonAssociati);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mRecyclerViewNonAssociati = rootview.findViewById(R.id.item_dispositiviNonAssociati);
+        mRecyclerViewNonAssociati.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+
+        mRecyclerViewAssociati= rootview.findViewById(R.id.item_dispositiviAssociati);
+        mRecyclerViewAssociati.setLayoutManager(new LinearLayoutManager(getContext()));
 
         bluetooth= new Bluetooth(getActivity());
 

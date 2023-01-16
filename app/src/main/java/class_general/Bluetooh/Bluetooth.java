@@ -7,11 +7,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.core.content.ContextCompat;
@@ -19,7 +21,10 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.Set;
 
+import adapter.DispositiviDisponibiliBt;
 import fragments.RicercaDispositiviBluetooth;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -127,9 +132,9 @@ public class Bluetooth  {
 
 
     @SuppressLint("MissingPermission")
-    public void BtScanner(RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler mHandler, ConnectionManager mconnectionManager) {
+    public void BtScanner(RecyclerView mRecyclerView, RecyclerView mRecyclerViewAssociati, ArrayList<Animale> listAnimali, Handler mHandler, ConnectionManager mconnectionManager, Context context) {
 
-
+ricercaDispositiviAssociati(mRecyclerViewAssociati,mHandler,mconnectionManager,context);
 
 
 
@@ -152,6 +157,58 @@ public class Bluetooth  {
     public void unregistrerReceiver()
     {
 mactivity.unregisterReceiver(mReceiver);
+    }
+
+    @SuppressLint("MissingPermission")
+    public void ricercaDispositiviAssociati(RecyclerView mrecycleview, Handler mHandler, ConnectionManager mconnectionManager, Context context)
+    {
+ Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
+
+        if (pairedDevices.size() > 0) {
+
+
+            DispositiviDisponibiliBt dispositiviDisponibiliBt= new DispositiviDisponibiliBt(1);
+            // There are paired devices. Get the name and address of each paired device.
+            int cont = 0;
+
+            ArrayList<BluetoothDevice> devices = new ArrayList<>();
+
+
+            for ( BluetoothDevice device : pairedDevices) {
+                for(int i=0; i<devices.size(); i++) {
+                    if(Objects.equals(devices.get(i).getName(), device.getName()))
+                    {
+                        cont++;
+                    }
+                }
+                if(cont==0)
+                {
+                    devices.add(device);
+                }
+                dispositiviDisponibiliBt.aggiornalista(devices);
+                mrecycleview.setAdapter(dispositiviDisponibiliBt);
+                mrecycleview.addOnItemTouchListener(new class_general.RecyclerItemClickListener(context, mrecycleview , new class_general.RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Log.d("ciao32",devices.get(position).getName());
+
+
+                        ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mHandler,mconnectionManager);
+                        clientSocket.run();
+
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+                }));
+
+
+
+
+            }
+        }
     }
 
 

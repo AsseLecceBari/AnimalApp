@@ -29,7 +29,7 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
     ArrayList<Animale > mlistAnimali;
    ArrayList< BluetoothDevice> devices = new ArrayList<>();
 
-    DispositiviDisponibiliBt  dispositiviDisponibiliBt= new DispositiviDisponibiliBt();
+    DispositiviDisponibiliBt  dispositiviDisponibiliBt= new DispositiviDisponibiliBt(2);
     RecyclerView mrecycleView;
 
 
@@ -37,7 +37,7 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
     public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler Handler, ConnectionManager connectionManager) {
         mBtAdapter= adapter;
-        mlistAnimali= listAnimali;
+
         mhandler=Handler;
         mconnectionManager= connectionManager;
 
@@ -84,8 +84,9 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
                     Log.d("ciao32",devices.get(position).getName());
 
 
-                    ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mlistAnimali,mconnectionManager);
+                    ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mconnectionManager);
                     clientSocket.run();
+
                 }
 
                 @Override
