@@ -36,6 +36,7 @@ import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
@@ -58,7 +59,8 @@ import model.Segnalazione;
 
 public class ritrovamento extends Fragment {
     private TextView indirizzo, descrizione;
-    private Button gps,upImgRitrovamento, creaSegnalazione;
+    private Button gps,upImgRitrovamento;
+    private FloatingActionButton creaSegnalazione;
     private TextView vaiSmarrimento;
     private Segnalazione s;
     private FirebaseFirestore db;
