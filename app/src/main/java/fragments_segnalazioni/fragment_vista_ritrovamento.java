@@ -251,8 +251,12 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
             fabAction3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    composeEmail(auth.getCurrentUser().getEmail(),s.getEmailSegnalatore());
-                }
+                    if (auth.getCurrentUser()!=null){
+                        composeEmail(auth.getCurrentUser().getEmail(),s.getEmailSegnalatore());
+                    }else{
+                        composeEmail(" ",s.getEmailSegnalatore());
+
+                    }                }
             });
         }else if(x==1){
             //per ora non serve nella vista mieSegnalazioni
@@ -490,9 +494,12 @@ public class fragment_vista_ritrovamento extends Fragment implements OnMapReadyC
                         utente=document.toObject(Utente.class);
                     }
 
-                    String telefono=utente.getTelefono();
-                    dialPhoneNumber(telefono);
-
+                    if (utente!=null) {
+                        String telefono = utente.getTelefono();
+                        dialPhoneNumber(telefono);
+                    }else{
+                        Toast.makeText(getContext(), "Numero di telefono non presente,impossibile contattare", Toast.LENGTH_SHORT).show();
+                    }
 
 
                 } else {
