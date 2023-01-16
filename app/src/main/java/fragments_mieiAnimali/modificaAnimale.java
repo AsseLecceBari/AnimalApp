@@ -13,9 +13,13 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -65,8 +69,10 @@ public class modificaAnimale extends Fragment {
     private TextInputLayout dataLayout;
     private TextInputEditText data;
     private  TextInputEditText etRegNomeAnimale;
-    private  TextInputEditText etRegGenereAnimale;
-    private  TextInputEditText etRegSpecieAnimale;
+    private AutoCompleteTextView etRegGenereAnimale;
+    private  AutoCompleteTextView etRegSpecieAnimale;
+  //  private  TextInputEditText etRegGenereAnimale;
+  //  private  TextInputEditText etRegSpecieAnimale;
     private   TextInputLayout iLSessoAnimale;
     private Spinner etRegSessoAnimale;
     private Button selectImgButton;
@@ -98,8 +104,129 @@ public class modificaAnimale extends Fragment {
 
 
 
+    private static final String[] genereAnimali = new String[] {
+            "Cane","Gatto","Criceto","Topo","Gerbillo","Cincillà","Degu","Scoiattolo","Porcellino d'India",
+            "Coniglio","Cavallo","Asino","Donnola","Furetto","Ermellino","Lama","Alpaca","Maiale",
+            "Mucca","Capra nana","Capra","Pecora","Cocorita", "Cacatua", "Ara","Gallina","Canarino",
+            "Colomba","Gallo","Anatra", "Diamantino mandarino","Tartaruga","Lucertola","Iguana",
+            "Serpente", "Camaleonte","Tritone","Salamandra","Grillo","Tarantola","Scorpione"};
+    private static final String[] specieCani = new String[] {
+            "Meticcio",
+            "Labrador Retriever",
+            "Setter inglese",
+            "Cocker",
+            "Maltese",
+            "Pinscher",
+            "Pastore Tedesco",
+            "Chihuahua",
+            "Jack russel terrier",
+            "Golden retriever",
+            "Border collie",
+            "Lagotto",
+            "Bulldog",
+            "Yorkshire terrier",
+            "Beagle",
+            "Pastore maremmano",
+            "Corso",
+            "Boxer",
+            "Bassotto Tedesco Normale",
+            "Pitbull",
+            "Rottweiler",
+            "Meticcio segugio",
+            "Pointer inglese",
+            "Bassotto tedesco nano",
+            "Shih-tzu",
+            "Pastore australiano",
+            "Segugio maremmano",
+            "Carlino",
+            "Volpino italiano",
+            "Meticcio",
+            "Volpino di pomerania",
+            "Bovaro del bernese",
+            "Bracco tedesco",
+            "Siberian husky",
+            "Meticcio maremmano",
+            "Bulldog inglese",
+            "Fox terrier",
+            "Dobermann",
+            "Meticcio volpino",
+            "Alaskan malamute",
+            "Cane lupo cecoslovacco",
+            "Shiba",
+            "Bullmastiff",
+            "Meticcio-bracco",
+            "Akita inu",
+            "Pechinese",
+            "Meticcio setter",
+            "Bracco italiano",
+            "Chow Chow",
+            "Alano tedesco",
+            "Barboni nano nero",
+            "Barboni toy",
+            "Setter irlandese",
+            "Pastore belga",
+            "Setter gordon",
+            "Shar pei",
+            "Spinone",
+            "Zwerg pinscher nano",
+            "Meticcio spinone",
+            "Terranova",
+            "Barbone miniatura",
+            "Boston terrier",
+            "Galgo espanol",
+            "Grande bovaro svizzero",
+            "Staffordshire terrier amer",
+            "Schnauzer normale",
+            "Spitz",
+            "Zwerg Schnauzer nano"};
+    private static final String[] specieGatti = new String[] {
+            "Persiano",
+            "Maine coon",
+            "Exotic shorthair",
+            "Abissino",
+            "Siamese",
+            "Ragdoll",
+            "Sphynx",
+            "Birmano",
+            "American shorthair",
+            "Orientale"};
+    private static final String[] specieDefault = new String[] {
+            "Specie in arrivo"};
 
-
+    private boolean checkSpecieItemExist(String text){
+        boolean flagExist = false;
+        int i;
+        for(i=0;i<specieCani.length;i++) {
+            if (text.equals(specieCani[i])) {
+                flagExist = true;
+                break;
+            }
+        }
+        for(i=0;i<specieGatti.length;i++){
+            if(text.equals(specieGatti[i])){
+                flagExist=true;
+                break;
+            }
+        }
+        for(i=0;i<specieDefault.length;i++){
+            if(text.equals(specieDefault[i])){
+                flagExist=true;
+                break;
+            }
+        }
+        return flagExist;
+    }
+    private boolean checkGenereItemExist(String text){
+        boolean flagExist = false;
+        int i;
+        for(i=0;i<genereAnimali.length;i++) {
+            if (text.equals(genereAnimali[i])) {
+                flagExist = true;
+                break;
+            }
+        }
+        return flagExist;
+    }
 
     private ActivityResultLauncher<String> requestPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -164,7 +291,43 @@ public class modificaAnimale extends Fragment {
         main_action_bar.inflateMenu(R.menu.menu_bar_img_profilo);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
+        ArrayAdapter<String> adapterGeneri = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_dropdown_item_1line, genereAnimali);
+        etRegGenereAnimale=rootView.findViewById(R.id.etRegGenereAnimale);
 
+        etRegSpecieAnimale=rootView.findViewById(R.id.etRegSpecieAnimale);
+        etRegGenereAnimale.setAdapter(adapterGeneri);
+        etRegGenereAnimale.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                etRegSpecieAnimale.setFocusable(true);
+                etRegSpecieAnimale.setClickable(true);
+                etRegSpecieAnimale.setFocusableInTouchMode(true);
+                ArrayAdapter<String> adapterSpecie;
+                TextView textView= (TextView) view;
+                switch ((String) textView.getText()){
+                    case "Cane":
+                        etRegSpecieAnimale.setText("");
+                        adapterSpecie = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_dropdown_item_1line, specieCani);
+                        etRegSpecieAnimale.setAdapter(adapterSpecie);
+                        break;
+                    case "Gatto":
+                        etRegSpecieAnimale.setText("");
+                        adapterSpecie = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_dropdown_item_1line, specieGatti);
+                        etRegSpecieAnimale.setAdapter(adapterSpecie);
+                        break;
+                    default:
+                        etRegSpecieAnimale.setText("Specie in arrivo");
+                        adapterSpecie = new ArrayAdapter<String>(getContext(),
+                                android.R.layout.simple_dropdown_item_1line, specieDefault);
+                        etRegSpecieAnimale.setAdapter(adapterSpecie);
+                        etRegSpecieAnimale.setFocusable(false);
+                        break;
+                }
+            }
+        });
         // se è vet vede microchip,  se è professionista vede box
         microChip = rootView.findViewById(R.id.microChip);
         box = rootView.findViewById(R.id.etbox);
@@ -271,7 +434,14 @@ public class modificaAnimale extends Fragment {
                     data.setError(getString(R.string.dateBornRequired));
                     flag=1;
                 }
-
+                if(!checkGenereItemExist(etRegGenereAnimale.getText().toString())){
+                    etRegGenereAnimale.setError("Selezionare un genere dalla lista");
+                    flag=1;
+                }
+                if(!checkSpecieItemExist(etRegSpecieAnimale.getText().toString())){
+                    etRegSpecieAnimale.setError("Selezionare una specie dalla lista");
+                    flag=1;
+                }
                 // se tutto va bene registro
                 if(flag == 1) {
 
