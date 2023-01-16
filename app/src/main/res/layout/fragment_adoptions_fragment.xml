@@ -176,7 +176,6 @@
     </LinearLayout>
 
 
-
     <FrameLayout
         android:id="@+id/listaAnimali"
         android:layout_width="match_parent"
@@ -188,6 +187,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/recycle_view_adozioni">
 
         </androidx.recyclerview.widget.RecyclerView>
@@ -197,6 +197,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/recycle_view_le_mie_adozioni">
 
         </androidx.recyclerview.widget.RecyclerView>
