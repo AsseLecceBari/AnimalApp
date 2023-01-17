@@ -7,11 +7,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.Objects;
+
 public class UtentiDB {
     public Task<QuerySnapshot> getUtenti(FirebaseAuth auth, FirebaseFirestore db) {
 
         CollectionReference utentiReference=db.collection("utenti");
-        Query query = utentiReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+        Query query = utentiReference.whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
         return  query.get();
     }
 }

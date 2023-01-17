@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.model.LatLng;
@@ -79,7 +80,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TextInputEditText cognome;
     private Spinner etRegRuolo;
     private MaterialCheckBox etRegIsPrivato;
-
+    private Toolbar main_action_bar;
     private TextView tvLoginHere, etichettaLocalita;
     private Button btnRegister;
 
@@ -113,6 +114,21 @@ public class RegisterActivity extends AppCompatActivity {
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        main_action_bar=findViewById(R.id.main_action_bar);
+        main_action_bar.setTitle(getResources().getString(R.string.registrazione));
+        main_action_bar.setNavigationIcon(R.drawable.back);
+        main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

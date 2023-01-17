@@ -111,7 +111,7 @@
 
                     <RadioButton
                         android:id="@+id/radioannunciPreferiti"
-                        android:layout_width="wrap_content"
+                        android:layout_width="120dp"
                         android:layout_height="wrap_content"
 
                         android:layout_marginLeft="18dp"

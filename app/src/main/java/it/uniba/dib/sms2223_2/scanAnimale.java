@@ -73,7 +73,6 @@ public class scanAnimale extends Fragment {
             main_action_bar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     getActivity().onBackPressed();
                 }
             });
@@ -195,7 +194,6 @@ public class scanAnimale extends Fragment {
             main_action_bar.setNavigationIcon(null);
             main_action_bar.setTitle("AnimalApp");
             main_action_bar.getMenu().setGroupVisible(R.id.groupItemMain,true);
-
         }
     }
 }
