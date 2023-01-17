@@ -93,15 +93,14 @@ public  class PdfService {
       storageRef.child(data.getFotoProfilo()).getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
           @Override
           public void onComplete(@NonNull Task<Uri> task) {
-              StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-              StrictMode.setThreadPolicy(policy);
-
+/*
               URL url= null;
               try {
                   url = new URL(task.getResult().toString());
               } catch (MalformedURLException e) {
                   e.printStackTrace();
               }
+
               Bitmap image = null;
               try {
                   image = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -109,29 +108,29 @@ public  class PdfService {
                   e.printStackTrace();
               }
 
-              ByteArrayOutputStream stream = new ByteArrayOutputStream();
+               */
+
+             // ByteArrayOutputStream stream = new ByteArrayOutputStream();
               ByteArrayOutputStream streamQr = new ByteArrayOutputStream();
-              image.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
+              //image.compress(Bitmap.CompressFormat.JPEG, 100 , stream);
               bitmap.compress(Bitmap.CompressFormat.JPEG, 100 , streamQr);
-              Image myImg = null;
+             // Image myImg = null;
               Image myImgQr = null;
               try {
-                  myImg = Image.getInstance(stream.toByteArray());
+               //   myImg = Image.getInstance(stream.toByteArray());
                   myImgQr = Image.getInstance(streamQr.toByteArray());
               } catch (BadElementException e) {
                   e.printStackTrace();
               } catch (IOException e) {
                   e.printStackTrace();
               }
-              myImg.scaleToFit(300,300);
-              myImg.setAlignment(Image.MIDDLE);
+             // myImg.scaleToFit(300,300);
+           //   myImg.setAlignment(Image.MIDDLE);
             //  myImg.setRotationDegrees(-90);
 
-              try {
-                  document.add(myImg);
-              } catch (DocumentException e) {
-                  e.printStackTrace();
-              }
+
+               //   document.add(myImg);
+
               try {
                   document.add(new Paragraph(  "Nome "+":"+data.getNome()));
               } catch (DocumentException e) {
