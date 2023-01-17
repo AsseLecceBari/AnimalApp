@@ -69,14 +69,12 @@ public class reports_fragment extends Fragment {
     private ReportAdapter mAdapter;
     private ArrayList<Segnalazione> mDataset= new ArrayList<>();
 
-
     private ArrayList<Segnalazione> filteredlist=new ArrayList<>();
     private ArrayList<Utente> utenteList=new ArrayList<>();
 
     private Slider sliderReport;
 
     private ImageView imageSliderRep;
-
 
     private View layoutfiltri1,layoutopenfiltri1,sliderLayout;
 
@@ -172,6 +170,13 @@ public class reports_fragment extends Fragment {
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
             }
         });
+        //controllo se l'utente e loggato altrimenti non permetto la pressione dei radio pref e tuesegnalazioni
+        if (auth.getCurrentUser()==null){
+            //radioTueSegnalazioni.setClickable(false);
+            btnopenFiltri1.setVisibility(View.GONE);
+        }else{
+            btnopenFiltri1.setVisibility(View.VISIBLE);
+        }
         filtri();
 
 
@@ -208,11 +213,7 @@ public class reports_fragment extends Fragment {
 
         radioTutti.setChecked(true);
 
-        //controllo se l'utente e loggato altrimenti non permetto la pressione dei radio pref e tuesegnalazioni
-        if (auth.getCurrentUser()==null){
-            radioTueSegnalazioni.setClickable(false);
 
-        }
 
         radioTutti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -225,12 +226,9 @@ public class reports_fragment extends Fragment {
                     attivaSlider.setVisibility(View.VISIBLE);
                     attivaSlider.setChecked(false);
                     sliderReport.setValue(15.0F);
-                    Log.d("prova222", String.valueOf(a));
                 }
             }
         });
-
-
         radioTueSegnalazioni.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -243,34 +241,32 @@ public class reports_fragment extends Fragment {
                     sliderLayout.setVisibility(View.GONE);
                     attivaSlider.setChecked(false);
                     sliderReport.setValue(15.0F);
-                    Log.d("prova222", String.valueOf(a));
-
                 }
             }
         });
 
 
 
-        attivaSlider.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b){
-                    if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-                            && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            attivaSlider.setVisibility(View.VISIBLE);
+            attivaSlider.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (b) {
+                        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                                && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                            getCurrentLocation();
+                            sliderLayout.setVisibility(View.VISIBLE);
+                        } else {
+                            showAlertDialog();
 
-                        getCurrentLocation();
-                        sliderLayout.setVisibility(View.VISIBLE);
-                    }else{
-                        showAlertDialog();
+                        }
+                    } else {
+                        stopLocationUpdates();
+                        sliderLayout.setVisibility(View.GONE);
 
                     }
-                }else{
-                    stopLocationUpdates();
-                    sliderLayout.setVisibility(View.GONE);
-
                 }
-            }
-        });
+            });
 
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,13 +274,11 @@ public class reports_fragment extends Fragment {
                 attivaSlider.setChecked(false);
                 mDataset.clear();
                 filteredlist.clear();
-
                 if (radioTutti.isChecked()){
                     initDataset();
                 }else{
                     radioTutti.setChecked(true);
                 }
-
                 sliderReport.setValue(15.0F);
             }
         });
@@ -294,36 +288,26 @@ public class reports_fragment extends Fragment {
         sliderReport.addOnSliderTouchListener(new Slider.OnSliderTouchListener() {
             @Override
             public void onStartTrackingTouch(@NonNull Slider slider) {
-                // getCurrentLocation();
+
 
 
 
             }
-
-
             @SuppressLint("MissingPermission")
             @Override
             public void onStopTrackingTouch(@NonNull Slider slider) {
-
                 filterCoordinates(lat,lng,slider.getValue());
-
             }
         });
-
-
-        //on change value listener
-        sliderReport.addOnChangeListener(new Slider.OnChangeListener() {
+            sliderReport.addOnChangeListener(new Slider.OnChangeListener() {
             @SuppressLint("MissingPermission")
             @Override
             public void onValueChange(@NonNull Slider slider, float value, boolean fromUser) {
-
                 sliderReport.setLabelFormatter(new LabelFormatter() {
                     @NonNull
                     @Override
                     public String getFormattedValue(float value1) {
-
                         return value + "km";
-
                     }
                 });
             }
@@ -426,27 +410,22 @@ public class reports_fragment extends Fragment {
 
 
     private void initDataset() {
-
-        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         db=FirebaseFirestore.getInstance();
         auth=FirebaseAuth.getInstance();
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
-
-        //tolto perche con questo non mostrava le segnalazioni se non sei loggato
         if(auth.getCurrentUser()!=null) {
-
-            segnalazioniRef.whereNotEqualTo("emailSegnalatore", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            segnalazioniRef.whereNotEqualTo("emailSegnalatore",
+                    auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Salvare animale in un array con elementi oggetto animale
+                            //Salvare segnalazioni in un array con elementi oggetto segnalazioni
                             mDataset.add(document.toObject(Segnalazione.class));
                             //Passo i dati presi dal database all'adapter
-
                         }
                         mAdapter = new ReportAdapter(mDataset);
-                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                        // Setto il reportAdapter(mAdapter) come l'adapter per la recycle view
                         mRecyclerView.setAdapter(mAdapter);
                     } else {
                         Log.d("ERROR", "Error getting documents: ", task.getException());
@@ -460,13 +439,9 @@ public class reports_fragment extends Fragment {
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Salvare animale in un array con elementi oggetto animale
                             mDataset.add(document.toObject(Segnalazione.class));
-                            //Passo i dati presi dal database all'adapter
-
                         }
                         mAdapter = new ReportAdapter(mDataset);
-                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                         mRecyclerView.setAdapter(mAdapter);
                     } else {
                         Log.d("ERROR", "Error getting documents: ", task.getException());
@@ -479,28 +454,22 @@ public class reports_fragment extends Fragment {
 
 
     private void initDatasetTueSegnalazioni() {
-
-        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+        //Prendere gli oggetti(documenti)Segnalazioni da fireBase per aggiungerli al dataset
         db=FirebaseFirestore.getInstance();
-
-        //auth=FirebaseAuth.getInstance();
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
-
-        //tolto perche con questo non mostrava le segnalazioni se non sei loggato
         if(auth.getCurrentUser()!=null) {
-
-            segnalazioniRef.whereEqualTo("emailSegnalatore", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            segnalazioniRef.whereEqualTo("emailSegnalatore",
+                    auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Salvare animale in un array con elementi oggetto animale
+                            //Salvare Segnalazione in un array con elementi oggetto Segnalazioni
                             mDataset.add(document.toObject(Segnalazione.class));
                             //Passo i dati presi dal database all'adapter
-
                         }
                         mAdapter = new ReportAdapter(mDataset);
-                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                        // Setto il ReportAdapter(mAdapter) come l'adapter per la recycle view
                         mRecyclerView.setAdapter(mAdapter);
                     } else {
                         Log.d("ERROR", "Error getting documents: ", task.getException());
@@ -513,39 +482,23 @@ public class reports_fragment extends Fragment {
 
     //per usare coordinate di registrazione
     private void trovaUtente(double raggio) {
-
-
-        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         db=FirebaseFirestore.getInstance();
-
-        // auth=FirebaseAuth.getInstance();
         CollectionReference segnalazioniRef=db.collection("utenti");
 
-        //tolto perche con questo non mostrava le segnalazioni se non sei loggato
         if(auth.getCurrentUser()!=null) {
-
             segnalazioniRef.whereEqualTo("email", auth.getCurrentUser().getEmail()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
-
-
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            //Salvare animale in un array con elementi oggetto animale
-
-                            //Passo i dati presi dal database all'adapter
-                            utente=document.toObject(Utente.class);
+                          utente=document.toObject(Utente.class);
                         }
 
                         double latitudine= Double.parseDouble(utente.getIndirizzo().get("latitudine"));
                         double longitudine= Double.parseDouble(utente.getIndirizzo().get("longitudine"));
-                        //TODO inserire le coordinate della registrazione dell'utente
+
                         filterCoordinates(latitudine ,longitudine,raggio);
-                        Log.d("ciaooooo2232", "trova utente ");
-
-
-
-                    } else {
+                      } else {
                         Log.d("ERROR", "Error getting documents: ", task.getException());
                     }
                 }
@@ -559,15 +512,12 @@ public class reports_fragment extends Fragment {
 
     //filtro per lo slider
     public void filterCoordinates(double myLat,double myLng,double raggio) {
-
         // creating a new array list to filter our data.
         filteredlist = new ArrayList<>();
-
         // running a for loop to compare elements.
         for (Segnalazione item : mDataset) {
             // checking if the entered string matched with any item of our recycler view.
-
-            //dove latitudine e longitudine è la mia posizione + i km scelti
+            //dove myLat e myLng sono latitudine e longitudine prese tramite getCurrentLocation
             if (distance(myLat,myLng, item.getLatitudine(), item.getLongitudine())<= raggio) {
                 // if the item is matched we are
                 // adding it to our filtered list.
@@ -575,17 +525,13 @@ public class reports_fragment extends Fragment {
             }
         }
         if (filteredlist.isEmpty()) {
-
             // if no item is added in filtered list we are
-
             mAdapter.filterList(filteredlist);
-
         } else {
             // at last we are passing that filtered
             // list to our adapter class.
             mAdapter.filterList(filteredlist);
         }
-
     }
 
 
@@ -627,51 +573,36 @@ public class reports_fragment extends Fragment {
             @Override
             public void onClick(View view) {
                 layoutfiltri1.setVisibility(View.VISIBLE);
-
                 btnopenFiltri1.setVisibility(View.GONE);
                 bottonechiudifiltri1.setVisibility(View.VISIBLE);
                 resetButton.setVisibility(View.VISIBLE);
-
-
-            }
+                 }
         });
 
         bottonechiudifiltri1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 layoutfiltri1.setVisibility(View.GONE);
-
                 bottonechiudifiltri1.setVisibility(View.GONE);
                 btnopenFiltri1.setVisibility(View.VISIBLE);
                 resetButton.setVisibility(View.GONE);
-
-
             }
         });
-
-
     }
 
 
 
     /** calculates the distance between two locations in Kilometer, with the HAVERSINE FORmULa*/
     private double distance(double lat1, double lng1, double lat2, double lng2) {
-
         double earthRadius = 6378;//raggio della terra
-
         double dLat = Math.toRadians(lat2-lat1);
         double dLng = Math.toRadians(lng2-lng1);
-
         double sindLat = Math.sin(dLat / 2);
         double sindLng = Math.sin(dLng / 2);
-
         double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
                 * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
-
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-
         double dist = earthRadius * c;
-
         return dist; // output distance, in KILOMETER
     }
 
@@ -679,7 +610,6 @@ public class reports_fragment extends Fragment {
 
     @SuppressLint("MissingPermission")
     private  void getCurrentLocation(){
-
         if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             Log.d("ciaooooo2232", "getCurrentLocation: ");
@@ -687,63 +617,37 @@ public class reports_fragment extends Fragment {
             locationRequest.setInterval(10000);
             locationRequest.setFastestInterval(5000);
             locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
             putOnGPS(locationRequest);
-
             locationCallback=new LocationCallback(){
 
                 @Override
                 public void onLocationResult(LocationResult locationResult) {
-                    //Toast.makeText(getContext(), "location result is= ", Toast.LENGTH_SHORT).show();
                     if(locationResult==null){
-                        //  Toast.makeText(getContext(),"Current location is null", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
                     for (Location location:locationResult.getLocations()){
                         if(locationResult!=null){
-
-                            // Toast.makeText(getContext()," "+ locationResult, Toast.LENGTH_SHORT).show();
                             return;
                         }
                     }
-
                 }
             };
-
-
             fusedLocationClient.requestLocationUpdates(locationRequest,locationCallback,null);
             Task<Location> task= fusedLocationClient.getLastLocation();
             task.addOnSuccessListener(new OnSuccessListener<Location>() {
                 @Override
                 public void onSuccess(Location location) {
-
                     if(location !=null){
                         lat=location.getLatitude();
                         lng=location.getLongitude();
-
                     }
                 }
             });
-
-
-        }else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)&&shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            // In an educational UI, explain to the user why your app requires this
-            // permission for a specific feature to behave as expected, and what
-            // features are disabled if it's declined. In this UI, include a
-            // "cancel" or "no thanks" button that lets the user continue
-            // using your app without granting the permission.
-            showAlertDialog(); // errore
+        }else if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)
+                &&shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_COARSE_LOCATION)) {
+            showAlertDialog();
         } else {
-            // You can directly ask for the permission.
-            // The registered ActivityResultCallback gets the result of this request.
-            /*locationPermissionRequest.launch(new String[] {
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-            });*/
-           // locationPermissionRequest.launch(Manifest.permission.ACCESS_FINE_LOCATION);
-
-            locationPermissionRequest.launch(new String[] {
+                     locationPermissionRequest.launch(new String[] {
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION
             });
@@ -762,9 +666,6 @@ public class reports_fragment extends Fragment {
         task.addOnSuccessListener(getActivity(), new OnSuccessListener<LocationSettingsResponse>() {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // All location settings are satisfied. The client can initialize
-                // location requests here.
-                // ...
             }
         });
 
@@ -772,16 +673,11 @@ public class reports_fragment extends Fragment {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if (e instanceof ResolvableApiException) {
-                    // Location settings are not satisfied, but this can be fixed
-                    // by showing the user a dialog.
                     try {
-                        // Show the dialog by calling startResolutionForResult(),
-                        // and check the result in onActivityResult().
                         ResolvableApiException resolvable = (ResolvableApiException) e;
                         resolvable.startResolutionForResult(getActivity(),
                                 REQUEST_CHECK_SETTINGS);
                     } catch (IntentSender.SendIntentException sendEx) {
-                        // Ignore the error.
                     }
                 }
             }
@@ -802,31 +698,25 @@ public class reports_fragment extends Fragment {
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
         alertDialogBuilder.setCancelable(false);
-
-        alertDialogBuilder.setMessage("Se vuoi utilizzare la ricerca tramite la tua posizione attuale dovresti accettare i permessi, altrimenti premendo No grazie utilizzeremo la posizione fornita in fase di registrazione");
+        alertDialogBuilder.setMessage("Se vuoi utilizzare la ricerca tramite la tua posizione attuale dovresti accettare i permessi," +
+                " altrimenti premendo No grazie utilizzeremo la posizione fornita in fase di registrazione");
         alertDialogBuilder.setPositiveButton("Accetto",
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface arg0, int arg1) {
-
                         locationPermissionRequest.launch(new String[] {
                                 Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION
                         });
-
-
                     }
                 });
 
         alertDialogBuilder.setNegativeButton("No grazie", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-               // trovaUtente(15);
                 deniedPermissionDialog();
-
             }
         });
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }
@@ -858,8 +748,8 @@ public class reports_fragment extends Fragment {
 
     public void deniedPermissionDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-
-        alertDialogBuilder.setMessage("A questo punto sarà utitlizzata la posizione che hai fornito in fase di registrazione per farti visualizzare le segnalazioni in un raggio di 15KM");
+        alertDialogBuilder.setMessage("A questo punto sarà utitlizzata la posizione che hai fornito in fase di registrazione " +
+                "per farti visualizzare le segnalazioni in un raggio di 15KM");
         alertDialogBuilder.setPositiveButton("Ho capito",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -867,9 +757,6 @@ public class reports_fragment extends Fragment {
                         trovaUtente(15);
                     }
                 });
-
-
-
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
     }

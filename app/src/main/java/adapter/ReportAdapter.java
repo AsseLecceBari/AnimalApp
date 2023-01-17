@@ -63,8 +63,6 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ViewHolder
             dataReport =  view.findViewById(R.id.dataPub);
             tipoReport=  view.findViewById(R.id.tipoReport);
             titoloReport=  view.findViewById(R.id.titoloReport);
-
-
             imageReport= view.findViewById(R.id.imageReport);
         }
 
