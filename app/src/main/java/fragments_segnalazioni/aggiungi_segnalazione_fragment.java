@@ -83,8 +83,7 @@ public class aggiungi_segnalazione_fragment extends Fragment {
 
 
 
-        //todo: quando si segna uno smarrimento in una determinata area si notifica ai residenti della zona iscritti l'accaduto
-        smarrimento.setOnClickListener(new View.OnClickListener() {
+            smarrimento.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

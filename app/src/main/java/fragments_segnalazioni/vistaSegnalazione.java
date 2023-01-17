@@ -439,7 +439,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         animatorSet.playTogether(createCollapseAnimator(fabAction1, offset1),
                 createCollapseAnimator(fabAction2, offset2),createCollapseAnimator(fabAction3, offset3),createCollapseAnimator(fabAction4, offset2));
         animatorSet.start();
-        // animateFab();
+
     }
 
     private void expandFab() {
@@ -448,7 +448,7 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
         animatorSet.playTogether(createExpandAnimator(fabAction1, offset1),
                 createExpandAnimator(fabAction2, offset2),createExpandAnimator(fabAction3, offset3),createExpandAnimator(fabAction4, offset2));
         animatorSet.start();
-        //animateFab();
+
     }
 
 
@@ -465,47 +465,25 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                 .setDuration(getResources().getInteger(android.R.integer.config_mediumAnimTime));
     }
 
-    //SERVE PER IMPOSTARE L'ANIMAZIONE AL FAB GENERALE
-   /*private void animateFab() {
-        Drawable drawable = fab.getDrawable();
-        if (drawable instanceof Animatable) {
-            ((Animatable) drawable).start();
-        }
-    }*/
+
 
     //per trovare il numero di telefono del segnalatore
     private void trovaNumeroDiTelefono(Segnalazione s) {
-
-
-        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         db= FirebaseFirestore.getInstance();
-
-        // auth=FirebaseAuth.getInstance();
         CollectionReference segnalazioniRef=db.collection("utenti");
-
-
         segnalazioniRef.whereEqualTo("email",s.getEmailSegnalatore()).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-
-
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        //Salvare animale in un array con elementi oggetto animale
-
-                        //Passo i dati presi dal database all'adapter
-                        utente=document.toObject(Utente.class);
+                     utente=document.toObject(Utente.class);
                     }
-
                     if (utente!=null) {
                         String telefono = utente.getTelefono();
                         dialPhoneNumber(telefono);
                     }else{
                         Toast.makeText(getContext(), "Numero di telefono non presente,impossibile contattare", Toast.LENGTH_SHORT).show();
                     }
-
-
-
                 } else {
                     Log.d("ERROR", "Error getting documents: ", task.getException());
                 }
@@ -542,13 +520,11 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
     }
 
     public void deleteReports(Segnalazione s){
-        Log.d("provaelimina","sono dentro");
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setMessage(R.string.ConfermaEliminaSegnalazione)
                 .setTitle("Elimina Segnalazione").setPositiveButton("SI", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.d("provaelimina","sono dentro");
                         db=FirebaseFirestore.getInstance();
                         CollectionReference segnalazioniRef=db.collection("segnalazioni");
                         segnalazioniRef.document(s.getIdSegnalazione()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -571,35 +547,16 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                         builder.setCancelable(true);
                     }
                 });
-
         AlertDialog alertDialog = builder.create();
         alertDialog.show();
-
-
-
     }
 
     public void updateSegnalazione(Segnalazione s){
         db=FirebaseFirestore.getInstance();
         CollectionReference segnalazioniRef=db.collection("segnalazioni");
-
         String titolo,descrizione;
-
-       /* titolo = updateTitoloText.getText().toString();
-        if (titolo.equals("")){
-            titolo=s.getTitolo();
-        }
-
-
-        descrizione = updateDescrizioneText.getText().toString();
-        if (descrizione.equals("")){
-             descrizione=s.getDescrizione();
-          }*/
-
-
         titolo = updateTitoloText.getText().toString();
         descrizione = updateDescrizioneText.getText().toString();
-
         segnalazioniRef.document(s.getIdSegnalazione()).update("titolo",titolo,"descrizione",descrizione).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -631,14 +588,8 @@ public class vistaSegnalazione extends Fragment implements OnMapReadyCallback {
                         descrizioneReport.setText(s1.getDescrizione());
                         titoloReport.setText(s1.getTitolo());
                         aggiornaSegnalazione(s);
-
-
-
-                    }
+                                            }
                 });
-
-
-
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override

@@ -167,7 +167,9 @@ public class reports_fragment extends Fragment {
         aggiungiSegnalazione.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right)
+                        .replace(R.id.fragmentContainerView,new aggiungi_segnalazione_fragment()).addToBackStack(null).commit();
             }
         });
         //controllo se l'utente e loggato altrimenti non permetto la pressione dei radio pref e tuesegnalazioni

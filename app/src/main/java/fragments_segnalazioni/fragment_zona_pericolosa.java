@@ -99,7 +99,8 @@ public class fragment_zona_pericolosa extends Fragment {
 
 
     //intent per poter ricevere il risultato dalla fotocamera e settare l'immagine
-    ActivityResultLauncher<Intent> photoResult1= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+    ActivityResultLauncher<Intent> photoResult1= registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
         @Override
         public void onActivityResult(ActivityResult result) {
             if(result.getResultCode() == Activity.RESULT_OK){
@@ -121,13 +122,11 @@ public class fragment_zona_pericolosa extends Fragment {
             return false;
         }
     }
+
     public void uploadImage() {
         storage= FirebaseStorage.getInstance();
         storageRef=storage.getReference();
-        StorageMetadata metadata = new StorageMetadata.Builder().setContentType("image/jpeg").build();
         try{
-
-            File file = new File(path);
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byte[] data = baos.toByteArray();
@@ -138,7 +137,6 @@ public class fragment_zona_pericolosa extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                         Log.e("storage", storageTask + "");
-
                     }
                 });
             }else{
@@ -173,7 +171,7 @@ public class fragment_zona_pericolosa extends Fragment {
                     //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
                     photoResult1.launch(photoIntent);
                 } else {
-                    //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
+
 
                 }
             });
@@ -252,23 +250,13 @@ public class fragment_zona_pericolosa extends Fragment {
         });
 
         //Autocomplete Indirizzo
-
         if (!Places.isInitialized()) {
             Places.initialize(getActivity().getApplicationContext(), "AIzaSyDlX6obgKqLyk_7MU5HD6hKzZeWQo0xEaA", Locale.ITALY);
         }
-
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getChildFragmentManager().findFragmentById(R.id.autoCompleteZona);
-
-
-
-        // Start the autocomplete intent.
-
-
         // Specify the types of place data to return.
-
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -279,15 +267,7 @@ public class fragment_zona_pericolosa extends Fragment {
                 LatLng latlng=place.getLatLng();
                 lat=latlng.latitude;
                 lng=latlng.longitude;
-              /*
-
-                Log.i("place21", "coordinate: " + place.getLatLng() );
-                Log.i("place21", "coordinate: " + lat );
-                Log.i("place21", "coordinate: " + lng );*/
-
             }
-
-
             @Override
             public void onError(@NonNull Status status) {
                 // TODO: Handle the error.
@@ -299,10 +279,8 @@ public class fragment_zona_pericolosa extends Fragment {
             @Override
             public void onClick(View view) {
                 int i=0;
-
                 String tipo="Zona Pericolosa";
                 String email;
-
                 Random rand=new Random();
                 String descrizione=descrzioneZonaPericolosa.getText().toString();
                 String titolo=titoloZonaPericolosa.getText().toString();
@@ -310,9 +288,6 @@ public class fragment_zona_pericolosa extends Fragment {
 
                 SimpleDateFormat dateFor = new SimpleDateFormat("dd-M-yyyy");
                 String data= dateFor.format(new Date());
-
-
-
                 String urlFoto="/imagesZonaPericolosa/"+idSegnalazione;
 
                 if (TextUtils.isEmpty(descrizione)){
@@ -340,7 +315,6 @@ public class fragment_zona_pericolosa extends Fragment {
                         public void onComplete(@NonNull Task<Void> task) {
                             Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
                             //da attivare una volta salvata la foto
-                            //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView,new reports_fragment()).addToBackStack(null).commit();
                             getActivity().getSupportFragmentManager().popBackStack();
                             getActivity().getSupportFragmentManager().popBackStack();
 
