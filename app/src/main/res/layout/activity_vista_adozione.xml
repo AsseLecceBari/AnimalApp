@@ -11,34 +11,17 @@
     <include layout="@layout/main_action_bar" />
 
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabLayout2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/myanimals" />
-
-        <com.google.android.material.tabs.TabItem
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/adoptions" />
 
 
-    </com.google.android.material.tabs.TabLayout>
-
-
-    <androidx.constraintlayout.widget.Barrier
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragmentContainerView"
+        android:name="fragments.main_fragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:barrierDirection="top" />
+        android:layout="@layout/fragment_main_fragment"
+        tools:layout="@layout/fragment_main_adozioni" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager2"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="SpeakableTextPresentCheck" />
+
+
 
 </LinearLayout>

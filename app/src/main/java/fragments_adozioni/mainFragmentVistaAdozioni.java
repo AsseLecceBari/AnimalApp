@@ -46,7 +46,8 @@ public class mainFragmentVistaAdozioni extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        caricamentoTab();
+
+        Log.d("ciao127","ciao");
     }
 
     @Override
@@ -58,43 +59,57 @@ public class mainFragmentVistaAdozioni extends Fragment {
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
         View root=inflater.inflate(R.layout.fragment_main_adozioni, container, false);
         tabLayout= root.findViewById(R.id.tabLayout2);
+
+        if(!getProprietario()) {
+
+            vpAdapter = new VPAdapterAdozioni(getChildFragmentManager(), getLifecycle(),false);
+            Log.d("ciao127","ciao3");
+
+        }
+        else {
+
+            vpAdapter = new VPAdapterAdozioni(getChildFragmentManager(), getLifecycle(), true);
+            tabLayout.setVisibility(View.GONE);
+
+        }
+        viewPager2=root.findViewById(R.id.viewPagerAdozioni);
+        caricamentoTab();
         return root;
 
 
 
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d("ciao127", String.valueOf(this));
+
+    }
+
     private void caricamentoTab()
     {
+        Log.d("ciao127","ciao2");
 
-        viewPager2=getView().findViewById(R.id.viewPagerAdozioni);
+
 
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
-        try {
+
             activity  = getActivity();
-            if(!getProprietario()) {
 
-                vpAdapter = new VPAdapterAdozioni(getChildFragmentManager(), getLifecycle(),false);
-
-            }
-            else {
-
-                vpAdapter = new VPAdapterAdozioni(getChildFragmentManager(), getLifecycle(), true);
-                tabLayout.setVisibility(View.GONE);
-
-            }
             viewPager2.setAdapter(vpAdapter);
 
-        }catch (Exception e){
-            return;
-        }
+
         tabLayout.getTabAt(posizione).select();
         viewPager2.setCurrentItem(posizione);
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager2.setCurrentItem(tab.getPosition());
                 posizione = tab.getPosition();
+                Log.d("ciao127", String.valueOf(posizione));
             }
 
             @Override
@@ -116,7 +131,7 @@ public class mainFragmentVistaAdozioni extends Fragment {
     }
 
     public boolean getProprietario(){
-        FirebaseAuth auth= FirebaseAuth.getInstance();
+        FirebaseAuth auth;
         auth=FirebaseAuth.getInstance();
         if(auth.getCurrentUser()!= null) {
             return Objects.equals(auth.getCurrentUser().getEmail(), animale.getEmailProprietario());

@@ -72,15 +72,15 @@
         android:id="@+id/layoutfiltri"
 
         android:layout_width="match_parent"
-        android:layout_height="108dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="gone">
+        android:visibility="visible">
 
 
         <LinearLayout
 
             android:layout_width="match_parent"
-            android:layout_height="106dp"
+            android:layout_height="37dp"
 
             android:orientation="vertical">
 
@@ -154,23 +154,15 @@
 
             </LinearLayout>
 
-            <SeekBar
-                android:id="@+id/barrachilometri"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-
-                android:progress="30"
-                android:progressTint="?attr/actionModeSplitBackground"
-                android:thumbTint="?attr/actionModeSplitBackground" />
-
         </LinearLayout>
 
         <View
             android:id="@+id/divider2"
             android:layout_width="match_parent"
-            android:layout_height="8dp"
+            android:layout_height="2dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
             android:background="?android:attr/listDivider" />
 
     </LinearLayout>
@@ -186,6 +178,9 @@
             android:id="@+id/recycleadoption"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="15dp"
             android:visibility="visible"
             app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
             tools:listitem="@layout/recycle_view_adozioni">

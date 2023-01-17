@@ -68,12 +68,11 @@ public class adoptions_fragment extends Fragment {
     private View layoutopenfiltri;
     private View btnopenFiltri;
     private View bottonechiudifiltri;
-    private View eliminaAnnuncio;
-    private View layoutPreferiti;
+
     private View listaAnimali;
     private TextView numeroAnnPreferiti;
     private int tipoannunci=2;
-    private View barrachilometri;
+
     private ArrayList <Adozione> adozione= new ArrayList<>();
     private ArrayList<Persona> proprietari = new ArrayList<>();
     private ArrayList<Animale> filteredlist =new ArrayList<>();
@@ -125,6 +124,9 @@ public class adoptions_fragment extends Fragment {
         if(auth.getCurrentUser() == null){
             aggiungiAdozione.setVisibility(View.GONE);
         }
+        else {
+            aggiungiAdozione.setVisibility(View.VISIBLE);
+        }
 
         aggiungiAdozione.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -163,7 +165,7 @@ public class adoptions_fragment extends Fragment {
         listaAnimali= rootView.findViewById(R.id.listaAnimali);
 
 
-        barrachilometri=rootView.findViewById(R.id.barrachilometri);
+
         numeroAnnPreferiti=rootView.findViewById(R.id.numeroannpref);
 
 
@@ -383,137 +385,129 @@ public class adoptions_fragment extends Fragment {
 
 
     public void filtri() {
+        auth = FirebaseAuth.getInstance();
 
-       if (tipoannunci== 1) {
+        if(auth.getCurrentUser()!= null) {
 
-           rdbimieiAnnunci.setChecked(true);
-       }
-       else if(tipoannunci==2) {
+            layoutopenfiltri.setVisibility(View.VISIBLE);
 
+            if (tipoannunci == 1) {
 
-           rdbannuncigenerale.setChecked(true);
-       } else if(tipoannunci==3) {
-
-
-           rdbannuncipreferiti.setChecked(true);
-       }
+                rdbimieiAnnunci.setChecked(true);
+            } else if (tipoannunci == 2) {
 
 
+                rdbannuncigenerale.setChecked(true);
+            } else if (tipoannunci == 3) {
 
-       // rdbannuncigenerale.setChecked(true);
-        layoutopenfiltri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layoutfiltri.setVisibility(View.VISIBLE);
-               // layoutopenfiltri.setVisibility(View.GONE);
-                //btnopenFiltri.setVisibility(View.GONE);
-               // layoutopenfiltri.setVisibility(View.GONE);
-               // btnopenFiltri.setVisibility(View.GONE);
-                bottonechiudifiltri.setVisibility(View.VISIBLE);
 
-                //bottonechiudifiltri.setVisibility(View.VISIBLE);
-
+                rdbannuncipreferiti.setChecked(true);
             }
-        });
 
-        btnopenFiltri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layoutfiltri.setVisibility(View.VISIBLE);
-                // layoutopenfiltri.setVisibility(View.GONE);
-                //btnopenFiltri.setVisibility(View.GONE);
-                // layoutopenfiltri.setVisibility(View.GONE);
-                btnopenFiltri.setVisibility(View.GONE);
-                bottonechiudifiltri.setVisibility(View.VISIBLE);
 
-                //bottonechiudifiltri.setVisibility(View.VISIBLE);
-
-            }
-        });
-
-        layoutfiltri.setVisibility(View.GONE);
-        bottonechiudifiltri.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(layoutfiltri.getVisibility() == View.GONE){
+            // rdbannuncigenerale.setChecked(true);
+            layoutopenfiltri.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
                     layoutfiltri.setVisibility(View.VISIBLE);
-                }else{
-                    layoutfiltri.setVisibility(View.GONE);
-                }
 
+                    bottonechiudifiltri.setVisibility(View.VISIBLE);
 
-            }
-        });
-
-
-        rdbannuncigenerale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!b){
-                    mRecyclerView.setAdapter(null);
+                    //bottonechiudifiltri.setVisibility(View.VISIBLE);
 
                 }
-                else{
-                    Log.d("ciao11","2");
-                    barrachilometri.setEnabled(true);
+            });
 
-                    tipoannunci=2;
-                    mDataset.clear();
-                    mAdapter= null;
-                    mRecyclerView.setAdapter(null);
-                    initDataAnnunci(tipoannunci);
-                }
-            }
-        });
+            btnopenFiltri.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    layoutfiltri.setVisibility(View.VISIBLE);
 
+                    btnopenFiltri.setVisibility(View.GONE);
+                    bottonechiudifiltri.setVisibility(View.VISIBLE);
 
-        rdbimieiAnnunci.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!b){
-                    recyclemieadozioni.setAdapter(null);
 
                 }
-                else{
-                    tipoannunci=1;
-                    Log.d("ciao11","1");
+            });
 
-                   // barrachilometri.setClickable(false);
-                    barrachilometri.setEnabled(false);
+            layoutfiltri.setVisibility(View.GONE);
+            bottonechiudifiltri.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (layoutfiltri.getVisibility() == View.GONE) {
+                        layoutfiltri.setVisibility(View.VISIBLE);
+                    } else {
+                        layoutfiltri.setVisibility(View.GONE);
+                    }
 
-
-
-                    mDataset.clear();
-                    mAdapter=null;
-                    mRecyclerView.setAdapter(null);
-                    initDataAnnunci(tipoannunci);
-                }
-            }
-        });
-
-        rdbannuncipreferiti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(!b){
-                    mRecyclerView.setAdapter(null);
 
                 }
-                else{
-                    Log.d("ciao11","3");
-                    tipoannunci=3;
-                    mDataset.clear();
-                    mAdapter=null;
-                    mRecyclerView.setAdapter(null);
-                    initDataAnnunci(tipoannunci);
+            });
+
+
+            rdbannuncigenerale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (!b) {
+                        mRecyclerView.setAdapter(null);
+
+                    } else {
+
+
+                        tipoannunci = 2;
+                        mDataset.clear();
+                        mAdapter = null;
+                        mRecyclerView.setAdapter(null);
+                        initDataAnnunci(tipoannunci);
+                    }
                 }
-            }
-        });
+            });
+
+
+            rdbimieiAnnunci.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (!b) {
+                        recyclemieadozioni.setAdapter(null);
+
+                    } else {
+                        tipoannunci = 1;
+
+
+                        mDataset.clear();
+                        mAdapter = null;
+                        mRecyclerView.setAdapter(null);
+                        initDataAnnunci(tipoannunci);
+                    }
+                }
+            });
+
+            rdbannuncipreferiti.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (!b) {
+                        mRecyclerView.setAdapter(null);
+
+                    } else {
+                        Log.d("ciao11", "3");
+                        tipoannunci = 3;
+                        mDataset.clear();
+                        mAdapter = null;
+                        mRecyclerView.setAdapter(null);
+                        initDataAnnunci(tipoannunci);
+                    }
+                }
+            });
+        }
+        else{
+            layoutopenfiltri.setVisibility(View.GONE);
+        }
 
 
 

@@ -26,8 +26,11 @@ public class AdozioneActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
-
+    }
 
     @Override
     protected void onStart() {
@@ -59,7 +62,7 @@ public class AdozioneActivity extends AppCompatActivity {
         }
         if(main_fragment_animale!=null){
             tabLayout= findViewById(R.id.tabLayout);
-            //posizione=main_fragment_animale.getPosition();
+            posizione=main_fragment_animale.getPosition();
             switch (posizione) {
                 case (0):
                     super.onBackPressed();

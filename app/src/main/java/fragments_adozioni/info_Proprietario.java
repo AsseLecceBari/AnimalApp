@@ -250,18 +250,21 @@ public class info_Proprietario extends Fragment {
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_add));
         CollectionReference collection = db.collection("richiestaCarico");
-        Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
-        AggregateQuery countQuery = query.count();
-        countQuery.get(AggregateSource.SERVER).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                task.addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
-                        AggregateQuerySnapshot snapshot = task.getResult();
-                    }
-                });
-            }
-        });
+        if(auth.getCurrentUser()!= null) {
+            Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato", "in sospeso");
+
+            AggregateQuery countQuery = query.count();
+            countQuery.get(AggregateSource.SERVER).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    task.addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
+                            AggregateQuerySnapshot snapshot = task.getResult();
+                        }
+                    });
+                }
+            });
+        }
         fabAction1 = rootView.findViewById(R.id.aggiungiAnimaliBtn);
         fabAction1.setVisibility(View.VISIBLE);
         fabAction1.setImageDrawable(getResources().getDrawable(android.R.drawable.sym_action_email));

@@ -348,7 +348,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
                 Snackbar mySnackbar = Snackbar.make(view,"Ricerca Dispositivi",1000) ;
                 mySnackbar.show();
 
-                bluetooth.AbilitazioneBT(mParam1);
+               // bluetooth.AbilitazioneBT(mParam1);
 
                 bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mHandler,mconnectionManager,getContext());
             }

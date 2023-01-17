@@ -43,18 +43,18 @@ import model.Preferenze;
 public class info_adozione extends Fragment {
     private Animale animale;
     private Adozione adozione;
-    private Persona proprietario;
+
     private ImageView immagineAnimale ;
     private TextView descrizioneAnimale;
     private TextView dettagliAnimale;
     private View btnaggiungiPreferiti;
     private View btineliminaPreferiti;
-    private SharedPreferences share;
+
     private FirebaseAuth auth;
     private FirebaseFirestore firebaseStore;
     private Preferenze preferenze;
 
-    private static String Email  ;
+
     private Set<String> set = new HashSet<>() ;
 
 
@@ -65,7 +65,7 @@ public class info_adozione extends Fragment {
         super.onCreate(savedInstanceState);
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
         adozione=(Adozione) getActivity().getIntent().getSerializableExtra("adozione");
-        proprietario=(Persona) getActivity().getIntent().getSerializableExtra("proprietario");
+
 
     }
 
@@ -113,7 +113,7 @@ public class info_adozione extends Fragment {
             }
         });
 
-        dettagliAnimale.setText(getString(R.string.dettagli)+"\n\n\n"+getString(R.string.nome)+"       "+getString(R.string.data_di_nascita)+"       "+getString(R.string.specie)+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
+        dettagliAnimale.setText("\n"+getString(R.string.nome)+"       "+getString(R.string.data_di_nascita)+"       "+getString(R.string.specie)+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
         descrizioneAnimale.setText(adozione.getDescrizione());
     }
 
@@ -146,6 +146,7 @@ public class info_adozione extends Fragment {
 
 
                     writeData(preferenze);
+                    Toast.makeText(getActivity(), R.string.AggiuntoListaPreferiti, Toast.LENGTH_LONG).show();
                 }
                 else
                 {
@@ -160,6 +161,7 @@ public class info_adozione extends Fragment {
 
                     btineliminaPreferiti.setVisibility(View.VISIBLE);
                     writeData(preferenze);
+                    Toast.makeText(getActivity(), R.string.AggiuntoListaPreferiti, Toast.LENGTH_LONG).show();
                 }
 
 
@@ -242,7 +244,7 @@ if (auth.getCurrentUser()!= null) {
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()) {
 
-                    Toast.makeText(getActivity(), R.string.AggiuntoListaPreferiti, Toast.LENGTH_LONG).show();
+
                 }
             }
         });
@@ -279,6 +281,7 @@ if (auth.getCurrentUser()!= null) {
                 btineliminaPreferiti.setVisibility(View.GONE);
                 btnaggiungiPreferiti.setVisibility(View.VISIBLE);
                 writeData(preferenze);
+                Toast.makeText(getActivity(), R.string.animale_eliminato_preferiti, Toast.LENGTH_LONG).show();
 
             }
         });

@@ -219,6 +219,7 @@
     <string name="denom">Denominazione:\ </string>
     <string name="partiva">Partita IVA:\ </string>
     <string name="datanascita">Data di nascita:\ </string>
+    <string name="animale_eliminato_preferiti">Animale eliminato dalla Lista Preferiti</string>
 
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>

@@ -59,6 +59,14 @@
             android:background="?android:attr/listDivider" />
 
         <TextView
+            android:id="@+id/textView5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Dettagli"
+            android:textStyle="bold"
+            android:layout_marginLeft="35dp"/>
+
+        <TextView
             android:id="@+id/dettagliAnimale"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,6 +85,14 @@
             android:layout_marginRight="30dp"
 
             android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="35dp"
+            android:text="Descrizione"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/DescrizioneAnimale"
