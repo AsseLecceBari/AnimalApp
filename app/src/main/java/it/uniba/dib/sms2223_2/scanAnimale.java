@@ -31,7 +31,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.zxing.Result;
 
-import DB.AnimaleDB;
 import model.Animale;
 
 public class scanAnimale extends Fragment {
@@ -99,9 +98,7 @@ public class scanAnimale extends Fragment {
     }
 
     private void passaggioProprieta(String emailProprietario) {
-        // todo richiedere permessi -----------------------------------------------------------------------------------
         // dialog conferma (se è emailProprietario esiste)
-
         FirebaseFirestore rootRef = FirebaseFirestore.getInstance();
         DocumentReference docIdRef = rootRef.collection("utenti").document(emailProprietario);
         docIdRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -114,8 +111,8 @@ public class scanAnimale extends Fragment {
                         a.setEmailProprietario(emailProprietario);
 
                         new AlertDialog.Builder(getActivity())
-                                .setTitle("Cedi animale")
-                                .setMessage("Sei DAVVERO sicuro di voler cedere la proprità?")
+                                .setTitle(R.string.cedi)
+                                .setMessage(R.string.sicuro)
                                 .setIcon(android.R.drawable.ic_dialog_alert)
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -156,7 +153,7 @@ public class scanAnimale extends Fragment {
                 Animale a = documentSnapshot.toObject(Animale.class);
                 if(a!= null){
                     // todo intent per visuallizare
-                    Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class); // todo non deve andare nella vista profilo ufficiale ma in una versione lite con il pulsante aggiungi al pokedex
+                    Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
                     i.putExtra("animale", a);
                     startActivity(i);
                 }else{
