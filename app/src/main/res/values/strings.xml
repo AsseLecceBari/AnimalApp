@@ -222,7 +222,9 @@
     <string name="animale_eliminato_preferiti">Animale eliminato dalla Lista Preferiti</string>
     <string name="altri">Altri</string>
     <string name="tutti">Tutti</string>
-
+    <string name="animaleAggiuntoalPokedex">Animale Aggiunto al pokedex</string>
+    <string name="sicuro">Sei veramente sicuro?</string>
+    <string name="cedi">Cedi animale</string>
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>
         <item>Smarrimento</item>

@@ -192,11 +192,12 @@ public class anagrafica extends Fragment {
                                 pokedexReference.document().set(pokedex).addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        Toast.makeText(getActivity(),"Animale Aaggiunto al pokedex",Toast.LENGTH_LONG).show();
+                                        Toast.makeText(getActivity(), R.string.animaleAggiuntoalPokedex,Toast.LENGTH_LONG).show();
                                     }
                                 });
 
-                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,pokedexListFragment.newInstance(animale)).commit();
+                                getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                                        .replace(R.id.fragmentContainerView,pokedexListFragment.newInstance(animale)).commit();
                             }
 
                             @Override
