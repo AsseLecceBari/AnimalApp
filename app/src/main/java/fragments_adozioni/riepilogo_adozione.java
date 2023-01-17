@@ -78,7 +78,7 @@ public class riepilogo_adozione extends Fragment {
             }
         });
 
-        dettagliAnimale.setText(getString(R.string.dettagli)+"\n\n\n"+getString(R.string.nome)+"       sis "+getString(R.string.data_di_nascita)+"       "+"\n"+animale.getNome()+"            "+animale.getDataDiNascita() );
+        dettagliAnimale.setText(getString(R.string.dettagli)+"\n\n\n"+getString(R.string.nome)+"        "+getString(R.string.data_di_nascita)+"       "+"\n"+animale.getNome()+"            "+animale.getDataDiNascita() );
         descrizioneAnnuncio.setText(adozione.getDescrizione());
     }
 

@@ -125,7 +125,7 @@ public class aggiungiCarico extends Fragment {
     private void esisteAnimale(String idAnimale) {
         // mi riempio la field dati
         CollectionReference docRef = db.collection("animali");
-        Query query = docRef.whereEqualTo("idAnimale", idAnimale);// todo --> DA ERRORE: .whereNotEqualTo("emailProprietario", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+        Query query = docRef.whereEqualTo("idAnimale", idAnimale);
 
         query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
             @Override
@@ -145,15 +145,12 @@ public class aggiungiCarico extends Fragment {
 
                         mCodeScanner.startPreview();
                     }
-                }else{ // mi va in non successo se metto nella query quella condizione
+                }else{
                     dati.setText(R.string.impossibile_aggiungere_non_successo);
                     aggiungi.setVisibility(View.GONE);
                     dati.setAllCaps(false);
                     dati.setTextColor(Color.RED);
                     carico = null;
-
-                    //Toast.makeText(getActivity().getApplicationContext(), auth.getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
-
                     mCodeScanner.startPreview();
                 }
             }
