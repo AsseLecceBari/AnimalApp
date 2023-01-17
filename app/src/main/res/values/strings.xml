@@ -220,6 +220,8 @@
     <string name="partiva">Partita IVA:\ </string>
     <string name="datanascita">Data di nascita:\ </string>
     <string name="animale_eliminato_preferiti">Animale eliminato dalla Lista Preferiti</string>
+    <string name="sicuro">Sei DAVVERO sicuro di voler cedere la proprità?</string>
+    <string name="cedi">Cedi animale</string>
 
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>

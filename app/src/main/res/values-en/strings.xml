@@ -165,4 +165,14 @@
     <string name="ConfermaEliminaSegnalazione">Are you sure you want to delete the alert?</string>
     <string name="gestisci_richieste_di_carico">Manage care requests</string>
     <string name="invia_richieste_di_carico">Send care requests</string>
+    <string name="nomeduepunti">Name:</string>
+    <string name="cogn">Surname:</string>
+    <string name="tel">Cellphone:</string>
+    <string name="indiri">Address:</string>
+    <string name="denom">Denomination:</string>
+    <string name="partiva">IVA:</string>
+    <string name="datanascita">Birthdate</string>
+    <string name="animale_eliminato_preferiti">Deleted from preferred list</string>
+    <string name="sicuro">Are you really sure?</string>
+    <string name="cedi">Give animal</string>
 </resources>

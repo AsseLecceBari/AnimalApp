@@ -138,26 +138,7 @@ public class anagrafica extends Fragment {
                 }
             });
         }
-        CollectionReference pokedexReference = db.collection("pokedex");
 
-        pokedexReference.whereEqualTo("idAnimale",animale.getIdAnimale()+"").whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-               if(task.getResult().size()>0){
-                   for (QueryDocumentSnapshot document : task.getResult()) {
-                       countPokedex++;
-                       Log.e("countPokedex",countPokedex+"");
-                   }
-
-
-               }
-                if( countPokedex==0 && !(animale.getEmailProprietario().equals(auth.getCurrentUser().getEmail())) ){
-                    pokeball.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
 
         modifica = rootView.findViewById(R.id.modificaAnimaliBtn);
         modifica.setOnClickListener(new View.OnClickListener() {
@@ -212,7 +193,6 @@ public class anagrafica extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         Toast.makeText(getActivity(),"Animale Aaggiunto al pokedex",Toast.LENGTH_LONG).show();
-                                        pokeball.setVisibility(View.GONE);
                                     }
                                 });
 
@@ -376,6 +356,29 @@ public class anagrafica extends Fragment {
         visibilitaModificaMicrochip();
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        CollectionReference pokedexReference = db.collection("pokedex");
+        pokedexReference.whereEqualTo("idAnimale",animale.getIdAnimale()+"").whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                if(task.getResult().size()>0){
+                    for (QueryDocumentSnapshot document : task.getResult()) {
+                        countPokedex++;
+                    }
+
+
+                }
+                if( countPokedex==0 && !(animale.getEmailProprietario().equals(auth.getCurrentUser().getEmail())) ){
+                    pokeball.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
     }
 
     private void vediBox() {

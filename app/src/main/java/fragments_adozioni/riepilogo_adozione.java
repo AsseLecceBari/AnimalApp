@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -79,7 +78,7 @@ public class riepilogo_adozione extends Fragment {
             }
         });
 
-        dettagliAnimale.setText(getString(R.string.dettagli)+"\n\n\n"+getString(R.string.nome)+"       "+getString(R.string.data_di_nascita)+"       "+getString(R.string.specie)+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
+        dettagliAnimale.setText(getString(R.string.dettagli)+"\n\n\n"+getString(R.string.nome)+"       sis "+getString(R.string.data_di_nascita)+"       "+"\n"+animale.getNome()+"            "+animale.getDataDiNascita() );
         descrizioneAnnuncio.setText(adozione.getDescrizione());
     }
 
@@ -120,9 +119,7 @@ public class riepilogo_adozione extends Fragment {
     }
 
     private void cedi() {
-        // todo scannerrizzo il qrCode cambio la proprieta dell'animale
-        Toast.makeText(getContext(), "qui si apre lo scanner del'acquirente", Toast.LENGTH_SHORT).show();
-        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale(1, animale, adozione.getIdAdozione())).commit();
-
+        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                .replace(R.id.fragmentContainerView,new scanAnimale(1, animale, adozione.getIdAdozione())).commit();
     }
 }

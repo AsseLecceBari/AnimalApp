@@ -14,7 +14,7 @@ import fragments.spese;
 import fragments_adozioni.info_Proprietario;
 
 public class VPAdapterAnimale extends FragmentStateAdapter {
-    private  final static ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
+    private  ArrayList<Fragment> fragmentArrayList= new ArrayList<>();
 
     public VPAdapterAnimale(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, @NonNull boolean proprietario) {
         super(fragmentManager, lifecycle);
