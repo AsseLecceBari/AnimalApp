@@ -114,7 +114,7 @@ public class adoptions_fragment extends Fragment {
         super.onResume();
         filtri();
         try {
-            listnerAdozioni();
+            listnerAdoptions();
         }catch(Exception e){
 
         }
@@ -181,7 +181,7 @@ public class adoptions_fragment extends Fragment {
 
 
 
-    public void initDataAnnunci(int tip){
+    public void initDataAnnunci(int tipe){
         //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
         db = FirebaseFirestore.getInstance();
         auth = FirebaseAuth.getInstance();
@@ -191,7 +191,7 @@ public class adoptions_fragment extends Fragment {
         CollectionReference utenteref= db.collection("utenti");
 
 
-        //if(auth.getCurrentUser()!=null) {
+
         adozioniRef.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -199,9 +199,6 @@ public class adoptions_fragment extends Fragment {
                     for (QueryDocumentSnapshot document1 : task.getResult()) {
 
                         adozione.add(document1.toObject(Adozione.class));
-
-
-
 
                         Adozione temporanea= document1.toObject(Adozione.class);
 
@@ -216,30 +213,18 @@ public class adoptions_fragment extends Fragment {
 
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 Animale t;
-                                                switch (tip) {
+                                                switch (tipe) {
                                                     case 1:
                                                         if(auth.getCurrentUser()!=null) {
                                                             t = document.toObject(Animale.class);
                                                             if (Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
-
-
                                                                 mDataset.add(document.toObject(Animale.class));
-
-
                                                                 mAdapter = new AdozioniAdapter(mDataset, 1);
-                                                                // mAdapter.eliminaAnnuncio();
-
                                                                 // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                                                 mRecyclerView.setAdapter(mAdapter);
                                                                 if (mAdapter != null) {
                                                                     onItemClick();
-
-
                                                                 }
-
-
-
-
                                                             }
                                                             return;
                                                         }
@@ -560,8 +545,6 @@ public class adoptions_fragment extends Fragment {
 
         CollectionReference preferenzeRef = db.collection("preferenze");
 
-
-
 if(auth.getCurrentUser()!= null) {
     Query query = preferenzeRef.whereEqualTo("emailUtente", auth.getCurrentUser().getEmail());
 
@@ -572,13 +555,10 @@ if(auth.getCurrentUser()!= null) {
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     preferenze = document.toObject(Preferenze.class);
 
-
                 }
 
-
                 if (preferenze != null) {
-                    checkPreferenze(preferenze);
-
+                    checkPreferenze(preferenze);// verifico che l'annuncio esiste ancora
 
                 } else {
                     rdbannuncipreferiti.setEnabled(false);
@@ -715,7 +695,7 @@ if(auth.getCurrentUser()!= null) {
 
     }
 
-public void listnerAdozioni()
+public void listnerAdoptions()
 {
     auth= FirebaseAuth.getInstance();
     final Query docRef = db.collection("adozioni");
@@ -724,28 +704,18 @@ public void listnerAdozioni()
         public void onEvent(@Nullable QuerySnapshot snapshot,
                             @Nullable FirebaseFirestoreException e) {
             if (e != null) {
-                Log.d("ciao12","ciaot");
 
                 return;
             }
-
-
-
             assert snapshot != null;
             for (DocumentChange dc : snapshot.getDocumentChanges()) {
-
-
                 switch (dc.getType()) {
                     case ADDED:
 
                         break;
                     case MODIFIED:
-
-                      //  initDataPreferiti();
                         break;
                     case REMOVED:
-
-
                             for(int a=0; a<adozione.size();a++)
                             {
                                 if(Objects.equals(adozione.get(a).getIdAdozione(), dc.getDocument().getId()))
@@ -753,16 +723,15 @@ public void listnerAdozioni()
                                     adozione.remove(a);
                                 }
                             }
-
                             initDataPreferiti();
-
-
-
-
-
-
                         break;
+
+
                 }
+
+
+
+
             }
 
         }
@@ -807,7 +776,7 @@ public void listnerAdozioni()
             {
                 if(Objects.equals(preferenze.getAdozioni().get(a), adozione.get(b).getIdAdozione()))
                 {
-                    cont++;
+                    cont++; // se ci sono ancora aumento il contatore
                 }
 
 

@@ -19,22 +19,22 @@ import java.util.UUID;
 
 import model.Animale;
 
-public class ClientSocket implements Runnable {
+public class ClientSocket extends Thread {
     private final BluetoothSocket mSocket;
     private final BluetoothDevice mDevice;
 
     private BluetoothAdapter mBtAdapter;
-    private Handler mhandler;
+
     private ConnectionManager mconnectionManager;
 
 
     @SuppressLint("MissingPermission")
-    public ClientSocket(BluetoothDevice device, BluetoothAdapter adapter, Handler handler, ConnectionManager connectionManager) {
+    public ClientSocket(BluetoothDevice device, BluetoothAdapter adapter,  ConnectionManager connectionManager) {
 
         mBtAdapter= adapter;
         BluetoothSocket tmp = null;
         this.mDevice = device;
-        mhandler= handler;
+
 
         mconnectionManager=connectionManager;
 
@@ -66,22 +66,14 @@ public class ClientSocket implements Runnable {
 
         } catch (IOException e) {
 
-
             try {
                 mSocket.close();
-                Log.d("ciao35","dconnesso c");
-
-
-
-
 
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
 
         }
-        Log.d("ciao35","connesso c");
-
         mconnectionManager.setSocket(mSocket);
 
 

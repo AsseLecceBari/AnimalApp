@@ -110,7 +110,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
                     } else if (result.getResultCode() == -1) {
 
-                      bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mHandler,mconnectionManager,getContext());
+                      bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mconnectionManager,getContext());
 
 
                     }
@@ -202,9 +202,6 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
         }
         else {
 
-
-
-
             mHandler = new Handler(Looper.getMainLooper()) {
 
                 @Override
@@ -267,7 +264,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             {
 
                 mconnectionManager= new ConnectionManager(mHandler);
-                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati, mHandler, mconnectionManager,getContext());
+                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati, mconnectionManager,getContext());
 
             }
             setRestartScanner();
@@ -350,7 +347,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
                // bluetooth.AbilitazioneBT(mParam1);
 
-                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mHandler,mconnectionManager,getContext());
+                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mconnectionManager,getContext());
             }
         });
     }

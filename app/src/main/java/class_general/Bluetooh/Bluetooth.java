@@ -80,9 +80,6 @@ public class Bluetooth  {
     @SuppressLint({"NewApi", "SuspiciousIndentation"})
     public void AbilitazioneBT(ArrayList<Animale> animaliPerCarico) {
 
-
-
-
      if (!mBtAdapter.isEnabled()) {
             Intent enableBt = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
            if (android.os.Build.VERSION.SDK_INT > 30) {
@@ -100,8 +97,6 @@ public class Bluetooth  {
                //con api minori di 30 non chiede il permesso BLUETOOTH_CONNECT ma richiede BLUETOOTH, che non viene chiesto a runTime
                mactivityResultLaunch.launch(enableBt);
            }
-
-
         }
      else
          listAnimali= animaliPerCarico;
@@ -116,7 +111,7 @@ public class Bluetooth  {
     public boolean VerificaBtSupportato()
     {
         if (mBtAdapter == null) {
-            Log.d("ciao ", "non Supportato");
+
            return false;
         }
 
@@ -132,9 +127,9 @@ public class Bluetooth  {
 
 
     @SuppressLint("MissingPermission")
-    public void BtScanner(RecyclerView mRecyclerView, RecyclerView mRecyclerViewAssociati,  Handler mHandler, ConnectionManager mconnectionManager, Context context) {
+    public void BtScanner(RecyclerView mRecyclerView, RecyclerView mRecyclerViewAssociati, ConnectionManager mconnectionManager, Context context) {
 
-           ricercaDispositiviAssociati(mRecyclerViewAssociati,mHandler,mconnectionManager,context);
+           ricercaDispositiviAssociati(mRecyclerViewAssociati,mconnectionManager,context);
 
 
 
@@ -144,7 +139,7 @@ public class Bluetooth  {
             mBtAdapter.startDiscovery();
 
 
-            mReceiver = new SingBroadcastReceiver(mBtAdapter, mRecyclerView, mHandler,mconnectionManager);
+            mReceiver = new SingBroadcastReceiver(mBtAdapter, mRecyclerView, mconnectionManager);
             IntentFilter ifilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             mactivity.registerReceiver(mReceiver, ifilter);
 
@@ -160,7 +155,7 @@ mactivity.unregisterReceiver(mReceiver);
     }
 
     @SuppressLint("MissingPermission")
-    public void ricercaDispositiviAssociati(RecyclerView mrecycleview, Handler mHandler, ConnectionManager mconnectionManager, Context context)
+    public void ricercaDispositiviAssociati(RecyclerView mrecycleview, ConnectionManager mconnectionManager, Context context)
     {
  Set<BluetoothDevice> pairedDevices = mBtAdapter.getBondedDevices();
 
@@ -190,11 +185,11 @@ mactivity.unregisterReceiver(mReceiver);
                 mrecycleview.addOnItemTouchListener(new class_general.RecyclerItemClickListener(context, mrecycleview , new class_general.RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Log.d("ciao32",devices.get(position).getName());
 
 
-                        ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mHandler,mconnectionManager);
-                        clientSocket.run();
+
+                        ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mconnectionManager);
+                        clientSocket.start();
 
                     }
 

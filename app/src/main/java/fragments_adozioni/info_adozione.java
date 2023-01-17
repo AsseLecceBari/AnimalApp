@@ -242,10 +242,7 @@ if (auth.getCurrentUser()!= null) {
         firebaseStore.collection("preferenze").document(auth.getCurrentUser().getEmail()).set(preferenze).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()) {
 
-
-                }
             }
         });
 

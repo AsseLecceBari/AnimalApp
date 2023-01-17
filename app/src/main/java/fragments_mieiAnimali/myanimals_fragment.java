@@ -832,12 +832,9 @@ public class myanimals_fragment extends Fragment {
                         }
                         Bluetooth bluetooth = new Bluetooth(getActivity(), activityResultLaunch);
 
-                        if(bluetooth.VerificaBtSupportato()) {
+                        bluetooth.AbilitazioneBT(animaliPerCarico);
 
 
-                            bluetooth.AbilitazioneBT(animaliPerCarico);
-                            mAdapter.notifyDataSetChanged();
-                        }
                         mAdapter.notifyDataSetChanged();
 
 

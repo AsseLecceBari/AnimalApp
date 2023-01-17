@@ -77,7 +77,7 @@ public class Connection extends Thread {
                         MessageConstants.MESSAGE_READ, numBytes, -1,
                         mmBuffer);
                 readMsg.sendToTarget();
-                //mhandler.sendMessage(readMsg);
+
 
 
             } catch (IOException e) {
@@ -92,20 +92,10 @@ public class Connection extends Thread {
 
         try {
             mmOutStream.write(bytes);
-           /* Message writtenMsg = mhandler.obtainMessage(
-                    MessageConstants.MESSAGE_WRITE, -1, -1, mmBuffer);
-            writtenMsg.sendToTarget();*/
+
         } catch (IOException e) {
             Log.e(TAG, "Error occurred when sending data", e);
 
-            // Send a failure message back to the activity.
-               /* Message writeErrorMsg =
-                        handler.obtainMessage(MessageConstants.MESSAGE_TOAST);
-                Bundle bundle = new Bundle();
-                bundle.putString("toast",
-                        "Couldn't send data to the other device");
-                writeErrorMsg.setData(bundle);
-                handler.sendMessage(writeErrorMsg);*/
         }
     }
 

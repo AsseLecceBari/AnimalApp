@@ -25,7 +25,7 @@ import model.Animale;
 public  class SingBroadcastReceiver extends BroadcastReceiver {
 
     BluetoothAdapter mBtAdapter;
-    Handler mhandler;
+
     ConnectionManager mconnectionManager;
     ArrayList<Animale > mlistAnimali;
    ArrayList< BluetoothDevice> devices = new ArrayList<>();
@@ -36,10 +36,10 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
 
 
-    public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView,  Handler Handler, ConnectionManager connectionManager) {
+    public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView,  ConnectionManager connectionManager) {
         mBtAdapter= adapter;
 
-        mhandler=Handler;
+
         mconnectionManager= connectionManager;
         devices.clear();
 
@@ -89,8 +89,8 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
                     Log.d("ciao32",devices.get(position).getName());
 
 
-                    ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mconnectionManager);
-                    clientSocket.run();
+                    ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mconnectionManager);
+                    clientSocket.start();
                     Toast.makeText(context,"Connessione a "+devices.get(position).getName(),Toast.LENGTH_LONG).show();
 
 
