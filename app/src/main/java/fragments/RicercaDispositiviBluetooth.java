@@ -2,6 +2,7 @@ package fragments;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 import static android.Manifest.permission.BLUETOOTH_CONNECT;
+import static android.Manifest.permission.BLUETOOTH_SCAN;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -83,6 +84,10 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
         // ... (Add other message types here as needed.)
     }
+    private static final String[] PERMISSIONS_STORAGE = {
+
+            BLUETOOTH_CONNECT, BLUETOOTH_SCAN
+    };
 
 
 
@@ -92,7 +97,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             Manifest.permission.ACCESS_COARSE_LOCATION,
             Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
             Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_CONNECT,
+
 
     };
 
@@ -183,6 +188,10 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
 
 
+
+
+
+
         if (ContextCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
@@ -195,7 +204,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
                 getActivity().requestPermissions(
 
                         PERMISSIONS_LOCATION,
-                        5
+                        7
                 );
             }
 
@@ -275,6 +284,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
 
         }
+
 
     }
 

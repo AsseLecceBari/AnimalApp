@@ -48,12 +48,12 @@
                         android:layout_height="wrap_content"
 
                         android:layout_marginLeft="18dp"
-                        android:text="All"
+                        android:text="@string/tutti"
                         tools:ignore="TouchTargetSizeCheck" />
 
                     <RadioButton
                         android:id="@+id/radioannunciPreferiti"
-                        android:layout_width="120dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
 
                         android:layout_marginLeft="18dp"

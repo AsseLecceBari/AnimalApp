@@ -40,6 +40,7 @@ import adapter.AdozioniAdapter;
 import fragments_segnalazioni.choiceAnimals_fragment;
 import it.uniba.dib.sms2223_2.AdozioneActivity;
 import it.uniba.dib.sms2223_2.MainActivity;
+import it.uniba.dib.sms2223_2.ProfiloAnimale;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
 import model.Animale;
@@ -593,7 +594,7 @@ if(auth.getCurrentUser()!= null) {
                     Persona b= proprietari.get(posizione_proprietario);
 
 
-                    Intent intent = new Intent(getContext(), AdozioneActivity.class);
+                   Intent intent = new Intent(getContext(), AdozioneActivity.class);
                     intent.putExtra("animale", animale);
                     intent.putExtra("adozione",ad );
                     intent.putExtra("proprietario",b);

@@ -183,13 +183,12 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                             getActivity().requestPermissions(
 
                                     PERMISSIONS_STORAGE,
-                                    Request_code_bt
+                                    8
                             );
                         }
                     }else {
                         Intent abilitavisibilità = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                         abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
-
                         activityResultLaunch.launch(abilitavisibilità);
                     }
                 }
@@ -198,7 +197,6 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
                     Intent abilitavisibilità = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                     abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
-
                     activityResultLaunch.launch(abilitavisibilità);
                 }
 

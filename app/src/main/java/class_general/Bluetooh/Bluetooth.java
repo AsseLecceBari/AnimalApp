@@ -11,11 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -62,14 +64,7 @@ public class Bluetooth  {
             BLUETOOTH_CONNECT, BLUETOOTH_SCAN
     };
 
-    private static final String[] PERMISSIONS_LOCATION = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
-            Manifest.permission.BLUETOOTH_SCAN,
-            Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_PRIVILEGED
-    };
+
 
 
 
@@ -80,31 +75,40 @@ public class Bluetooth  {
     @SuppressLint({"NewApi", "SuspiciousIndentation"})
     public void AbilitazioneBT(ArrayList<Animale> animaliPerCarico) {
 
-     if (!mBtAdapter.isEnabled()) {
+        listAnimali= animaliPerCarico;
+        if (!mBtAdapter.isEnabled()) {
             Intent enableBt = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-           if (android.os.Build.VERSION.SDK_INT > 30) {
-               if (ContextCompat.checkSelfPermission(mactivity.getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                   mactivity.requestPermissions(PERMISSIONS_STORAGE,5);
-               } else {
-                   listAnimali= animaliPerCarico;
+            if (android.os.Build.VERSION.SDK_INT > 30) {
+                if (ContextCompat.checkSelfPermission(mactivity.getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    mactivity.requestPermissions(PERMISSIONS_STORAGE, 5);
+                } else {
 
-                   mactivityResultLaunch.launch(enableBt);
-                   Log.d("ciao23", String.valueOf(REQUEST_ENABLE_BT));
-               }
-           }else {
-               listAnimali= animaliPerCarico;
 
-               //con api minori di 30 non chiede il permesso BLUETOOTH_CONNECT ma richiede BLUETOOTH, che non viene chiesto a runTime
-               mactivityResultLaunch.launch(enableBt);
-           }
+                    mactivityResultLaunch.launch(enableBt);
+                    Log.d("ciao23", String.valueOf(REQUEST_ENABLE_BT));
+                }
+            } else {
+
+
+                //con api minori di 30 non chiede il permesso BLUETOOTH_CONNECT ma richiede BLUETOOTH, che non viene chiesto a runTime
+                mactivityResultLaunch.launch(enableBt);
+            }
+        } else {
+            if (android.os.Build.VERSION.SDK_INT > 30) {
+                if (ContextCompat.checkSelfPermission(mactivity.getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                    mactivity.requestPermissions(PERMISSIONS_STORAGE, 5);
+                }
+                else{
+                    mactivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
+                }
+            }
+            else {
+
+
+                mactivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
+            }
+
         }
-     else
-         listAnimali= animaliPerCarico;
-
-
-
-        mactivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
-
     }
 
 
@@ -151,7 +155,17 @@ public class Bluetooth  {
 
     public void unregistrerReceiver()
     {
-mactivity.unregisterReceiver(mReceiver);
+        if(mReceiver!= null) {
+            mactivity.unregisterReceiver(mReceiver);
+        }
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.S)
+    public void startFragmentScanner()
+    {
+        mactivity.getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView, RicercaDispositiviBluetooth.newInstance(listAnimali)).commit();
+
     }
 
     @SuppressLint("MissingPermission")

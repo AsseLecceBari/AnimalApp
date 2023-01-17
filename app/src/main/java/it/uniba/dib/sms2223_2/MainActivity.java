@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -17,6 +18,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -31,7 +33,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import adapter.AnimalAdapter;
 import adapter.VPAdapter;
+import class_general.Bluetooh.Bluetooth;
 import class_general.Bluetooh.ServerSocket;
+import fragments.RicercaDispositiviBluetooth;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.aggiungiCarico;
@@ -45,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
         return main_action_bar;
     }
     private int Request_code_bt=5;
+    private int Request_location=7;
+    private int Request_ricezione_incarichibt=8;
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
     private int posizione;
@@ -73,6 +79,25 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @SuppressLint("NewApi")
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.d("ciao", String.valueOf(result.getResultCode()));
+
+                    if (result.getResultCode() == 0) {
+                        Toast.makeText(getApplicationContext(),"Invio Annullato",Toast.LENGTH_SHORT).show();
+
+                    } else if (result.getResultCode() == -1) {
+
+
+
+
+                    }
+                }
+            });
 
 
 
@@ -339,6 +364,7 @@ public void getFragmentTagReference(){
                 startActivity(new Intent(getApplicationContext(),Pokedex.class));
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.S)
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -350,13 +376,30 @@ public void getFragmentTagReference(){
                   Toast.makeText(this,"Continua Operazione senza BT",Toast.LENGTH_LONG).show();
               }
               else{
+                  Bluetooth bluetooth = new Bluetooth(this);
+                  bluetooth.startFragmentScanner();
 
-
-
-                  
 
               }
 
+        }
+
+
+        if(requestCode== Request_location)
+        {
+            if(grantResults[0]!= PackageManager.PERMISSION_GRANTED)
+            {
+               onBackPressed();
+            }
+        }
+        if(requestCode== Request_ricezione_incarichibt)
+        {
+            if(grantResults[0]== PackageManager.PERMISSION_GRANTED)
+            {
+
+                Toast.makeText(this,"Clicca nuovamente per ricevere incarichi con BT ",Toast.LENGTH_LONG).show();
+
+            }
         }
     }
 }
