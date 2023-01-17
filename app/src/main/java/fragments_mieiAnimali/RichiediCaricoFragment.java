@@ -5,6 +5,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import adapter.AnimalAdapter;
 import it.uniba.dib.sms2223_2.MainActivity;
 import it.uniba.dib.sms2223_2.R;
 import model.Animale;
@@ -50,6 +53,10 @@ public class RichiediCaricoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private ArrayList<Animale> mParam1;
     private ArrayList<Veterinario> mDataset=new ArrayList<>();
+    private RecyclerView mRecyclerView;
+
+
+    private AnimalAdapter mAdapter;
 
     public RichiediCaricoFragment() {
         // Required empty public constructor
@@ -78,10 +85,16 @@ public class RichiediCaricoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_richiedi_carico, container, false);
-        lvRichiestaCarichi = (ListView) view.findViewById(R.id.lvRichiestaCarichi);
-        btnInviaRichiesta=view.findViewById(R.id.btnInviaRichiesta);
-        ArrayAdapter<Animale> arrayAdapter = new ArrayAdapter<Animale>(getContext(),android.R.layout.simple_expandable_list_item_1,mParam1);
-        lvRichiestaCarichi.setAdapter(arrayAdapter);
+       // lvRichiestaCarichi = (ListView) view.findViewById(R.id.lvRichiestaCarichi);
+       btnInviaRichiesta=view.findViewById(R.id.btnInviaRichiesta);
+        //Prendo il riferimento al RecycleView in myAnimals_fragment.xml
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.recycleMyAnimals);
+        //Dico alla recycle View di usare un linear layout,mettendo quindi le varie card degli animali,una sotto l'altra
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+     //   ArrayAdapter<Animale> arrayAdapter = new ArrayAdapter<Animale>(getContext(),android.R.layout.simple_list_item_1,mParam1);
+        //Passo i dati presi dal database all'adapter
+        mAdapter = new AnimalAdapter(mParam1);
+        mRecyclerView.setAdapter(mAdapter);
         auth=FirebaseAuth.getInstance();
         db=FirebaseFirestore.getInstance();
         main_action_bar=getActivity().findViewById(R.id.main_action_bar);

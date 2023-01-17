@@ -6,18 +6,22 @@
     tools:context="fragments_mieiAnimali.RichiediCaricoFragment">
 
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="600dp">
 
-        <ListView
-            android:id="@+id/lvRichiestaCarichi"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycleMyAnimals"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mostraInCarico"
+            app:layout_constraintVertical_bias="0.0"
+            tools:listitem="@layout/recycle_view_animals"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            android:orientation="vertical"
+            />
 
-        </ListView>
-
-    </FrameLayout>
 
     <FrameLayout
         android:layout_width="400dp"
