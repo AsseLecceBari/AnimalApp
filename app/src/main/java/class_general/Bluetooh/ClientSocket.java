@@ -1,11 +1,17 @@
 package class_general.Bluetooh;
 
+import static java.security.AccessController.getContext;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.content.DialogInterface;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -64,6 +70,10 @@ public class ClientSocket implements Runnable {
             try {
                 mSocket.close();
                 Log.d("ciao35","dconnesso c");
+
+
+
+
 
             } catch (IOException ex) {
                 ex.printStackTrace();

@@ -1,6 +1,8 @@
 package it.uniba.dib.sms2223_2;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,9 +10,13 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -19,11 +25,13 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 
 import adapter.AnimalAdapter;
 import adapter.VPAdapter;
+import class_general.Bluetooh.ServerSocket;
 import fragments.main_fragment;
 import fragments_adozioni.adoptions_fragment;
 import fragments_mieiAnimali.aggiungiCarico;
@@ -36,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
     public Toolbar getMain_action_bar() {
         return main_action_bar;
     }
-
+    private int Request_code_bt=5;
     private Toolbar main_action_bar;
     private FirebaseAuth auth;
     private int posizione;
@@ -62,6 +70,18 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(),Pokedex.class));
         finish();
     }
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void showAlertDialog() {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getApplicationContext());
@@ -317,5 +337,26 @@ public void getFragmentTagReference(){
 
     public void openPokedex(MenuItem item) {
                 startActivity(new Intent(getApplicationContext(),Pokedex.class));
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == Request_code_bt) {
+            Log.d("ciao45", String.valueOf(PackageManager.PERMISSION_GRANTED));
+              if(grantResults[0]!= PackageManager.PERMISSION_GRANTED)
+              {
+                  Toast.makeText(this,"Continua Operazione senza BT",Toast.LENGTH_LONG).show();
+              }
+              else{
+
+
+
+                  
+
+              }
+
+        }
     }
 }

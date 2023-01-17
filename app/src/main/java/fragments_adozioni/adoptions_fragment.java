@@ -441,11 +441,7 @@ public class adoptions_fragment extends Fragment {
                     layoutfiltri.setVisibility(View.GONE);
                 }
 
-               // btnopenFiltri.setVisibility(View.VISIBLE);
-               // bottonechiudifiltri.setVisibility(View.GONE);
-               // btnopenFiltri.setVisibility(View.VISIBLE);
 
-                //layoutopenfiltri.setVisibility(View.VISIBLE);
             }
         });
 
@@ -563,13 +559,13 @@ public class adoptions_fragment extends Fragment {
     }
 
     public void initDataPreferiti() {
-        //Prendere gli oggetti(documenti)animali da fireBase e aggiungerli al dataset
+
         db = FirebaseFirestore.getInstance();
 
         auth= FirebaseAuth.getInstance();
 
         CollectionReference preferenzeRef = db.collection("preferenze");
-        CollectionReference adozioniref= db.collection("adozioni");
+
 
 
 if(auth.getCurrentUser()!= null) {

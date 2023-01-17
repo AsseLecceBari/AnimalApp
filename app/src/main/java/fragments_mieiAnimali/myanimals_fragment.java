@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -137,24 +139,8 @@ public class myanimals_fragment extends Fragment {
 
                     } else if (result.getResultCode() == -1) {
 
-
-                        String a =animaliPerCarico.toString();
-                        try {
-                            JSONObject json = new JSONObject(a);
-                            ConnectionManager connectionManager = null;
-                            getActivity().getSupportFragmentManager().beginTransaction()
-                                    .replace(R.id.fragmentContainerView,   RicercaDispositiviBluetooth.newInstance(animaliPerCarico)).addToBackStack(null).commit();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-
-
-
-
-
-
-                    } else if (result.getResultCode() == 120) {
+                        getActivity().getSupportFragmentManager().beginTransaction()
+                                .replace(R.id.fragmentContainerView,   RicercaDispositiviBluetooth.newInstance(animaliPerCarico)).addToBackStack(null).commit();
 
 
                     }
@@ -627,6 +613,7 @@ public class myanimals_fragment extends Fragment {
         fabAction3.setVisibility(View.VISIBLE);
 
         fabAction3.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.S)
             @Override
             public void onClick(View view) {
                 getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new gestioneRichiesteCaricoFragment()).commit();
@@ -845,9 +832,14 @@ public class myanimals_fragment extends Fragment {
                         }
                         Bluetooth bluetooth = new Bluetooth(getActivity(), activityResultLaunch);
 
+                        if(bluetooth.VerificaBtSupportato()) {
 
-                          bluetooth.AbilitazioneBT(animaliPerCarico);
+
+                            bluetooth.AbilitazioneBT(animaliPerCarico);
+                            mAdapter.notifyDataSetChanged();
+                        }
                         mAdapter.notifyDataSetChanged();
+
 
 
                     }

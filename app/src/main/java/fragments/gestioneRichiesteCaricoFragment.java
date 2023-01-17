@@ -3,11 +3,13 @@ package fragments;
 import static android.Manifest.permission.BLUETOOTH_CONNECT;
 import static android.Manifest.permission.BLUETOOTH_SCAN;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResult;
@@ -15,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
@@ -60,7 +63,10 @@ import model.Animale;
 import model.RichiestaCarico;
 
 
+@RequiresApi(api = Build.VERSION_CODES.S)
 public class gestioneRichiesteCaricoFragment extends Fragment {
+
+    private final int Request_code_bt=5;
     private FirebaseAuth auth;
     private FirebaseFirestore db;
     private AnimaleDB animaleDB;
@@ -84,7 +90,7 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
     private static final String[] PERMISSIONS_STORAGE = {
 
-            BLUETOOTH_CONNECT, BLUETOOTH_SCAN
+            BLUETOOTH_CONNECT
     };
 
     ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
@@ -165,13 +171,22 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
 
 
                 if (android.os.Build.VERSION.SDK_INT > 30) {
-                    if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                       getActivity().requestPermissions(
 
-                                PERMISSIONS_STORAGE,
-                                1
-                        );
-                    } else {
+
+                    if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
+                        if (shouldShowRequestPermissionRationale(BLUETOOTH_CONNECT)) {
+                            showDialogPermission();
+
+
+                        } else {
+
+                            getActivity().requestPermissions(
+
+                                    PERMISSIONS_STORAGE,
+                                    Request_code_bt
+                            );
+                        }
+                    }else {
                         Intent abilitavisibilità = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
                         abilitavisibilità.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 200);
 
@@ -293,6 +308,26 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
             });
         }
     }
+
+
+    public void showDialogPermission()
+    {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Attenzione")
+                .setMessage("Per utilizzare questa funzionalità è molto importante accettare i permessi per utilittare il BT!!")
+                .setPositiveButton("Chiudi", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().requestPermissions(
+                                PERMISSIONS_STORAGE,
+                                Request_code_bt
+                        );
+                    }
+                })
+                .setCancelable(false)
+
+                .create().show();
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -305,4 +340,6 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
             mainActivity.searchFilterListener();
         }
     }
+
+
 }

@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class ConnectionManager implements Serializable {
-    BluetoothSocket msocket;
+
     Connection connectedThread;
     Handler mHandler;
     public ConnectionManager( Handler handler)
@@ -35,4 +35,6 @@ public class ConnectionManager implements Serializable {
     public void cancel() throws IOException {
         connectedThread.cancel();
     }
+
+
 }

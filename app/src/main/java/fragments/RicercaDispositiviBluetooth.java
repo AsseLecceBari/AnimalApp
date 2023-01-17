@@ -1,15 +1,22 @@
 package fragments;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.BLUETOOTH_CONNECT;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -27,7 +34,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -59,7 +68,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     private RecyclerView mRecyclerViewNonAssociati;
     private RecyclerView mRecyclerViewAssociati;
     private ConnectionManager mconnectionManager;
-    private View bottone;
+    private View restartScanner;
 
 
    private  Bluetooth bluetooth;
@@ -84,8 +93,29 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
             Manifest.permission.BLUETOOTH_SCAN,
             Manifest.permission.BLUETOOTH_CONNECT,
-            Manifest.permission.BLUETOOTH_PRIVILEGED
+
     };
+
+
+    ActivityResultLauncher<Intent> activityResultLaunch = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @SuppressLint("NewApi")
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    Log.d("ciao", String.valueOf(result.getResultCode()));
+
+                    if (result.getResultCode() == 0) {
+                        Toast.makeText(getContext(),"Abilita BT per ricercare i dispositivi",Toast.LENGTH_SHORT).show();
+
+                    } else if (result.getResultCode() == -1) {
+
+                      bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mHandler,mconnectionManager,getContext());
+
+
+                    }
+                }
+            });
 
 
 
@@ -150,12 +180,24 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
 
 
-        if (ContextCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            getActivity().requestPermissions(
 
-                    PERMISSIONS_LOCATION,
-                    1);
-            Log.d("ciao32","ciao9");
+
+
+        if (ContextCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+
+            if (shouldShowRequestPermissionRationale(ACCESS_FINE_LOCATION)) {
+                showDialogPermissionBtPosition();
+
+
+            } else {
+
+                getActivity().requestPermissions(
+
+                        PERMISSIONS_LOCATION,
+                        5
+                );
+            }
 
         }
         else {
@@ -225,8 +267,10 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
             {
 
                 mconnectionManager= new ConnectionManager(mHandler);
-                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati, mParam1, mHandler, mconnectionManager,getContext());
+                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati, mHandler, mconnectionManager,getContext());
+
             }
+            setRestartScanner();
 
 
 
@@ -277,16 +321,58 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
         mRecyclerViewNonAssociati = rootview.findViewById(R.id.item_dispositiviNonAssociati);
         mRecyclerViewNonAssociati.setLayoutManager(new LinearLayoutManager(getContext()));
+        restartScanner= rootview.findViewById(R.id.restartScanner);
 
 
 
         mRecyclerViewAssociati= rootview.findViewById(R.id.item_dispositiviAssociati);
         mRecyclerViewAssociati.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        bluetooth= new Bluetooth(getActivity());
+        bluetooth= new Bluetooth(getActivity(),activityResultLaunch);
 
         setStyle(DialogFragment.STYLE_NORMAL, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         return rootview;
+    }
+
+
+    public void setRestartScanner()
+    {
+        restartScanner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mRecyclerViewAssociati.setAdapter(null);
+                mRecyclerViewNonAssociati.setAdapter(null);
+
+
+
+                Snackbar mySnackbar = Snackbar.make(view,"Ricerca Dispositivi",1000) ;
+                mySnackbar.show();
+
+                bluetooth.AbilitazioneBT(mParam1);
+
+                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mHandler,mconnectionManager,getContext());
+            }
+        });
+    }
+
+
+    public void showDialogPermissionBtPosition()
+    {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Attenzione")
+                .setMessage("Per utilizzare questa funzionalità è molto importante accettare i permessi, inoltre ricordiamo che questi dati non verranno salvati grazie !!")
+                .setPositiveButton("Chiudi", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        getActivity().requestPermissions(
+                                PERMISSIONS_LOCATION,
+                                5
+                        );
+                    }
+                })
+                .setCancelable(false)
+
+                .create().show();
     }
 
 }

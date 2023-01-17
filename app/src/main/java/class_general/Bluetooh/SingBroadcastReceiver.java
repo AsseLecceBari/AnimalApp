@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,17 +30,19 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
     ArrayList<Animale > mlistAnimali;
    ArrayList< BluetoothDevice> devices = new ArrayList<>();
 
-    DispositiviDisponibiliBt  dispositiviDisponibiliBt= new DispositiviDisponibiliBt(2);
+    DispositiviDisponibiliBt  dispositiviDisponibiliBt= new DispositiviDisponibiliBt();
     RecyclerView mrecycleView;
 
 
 
 
-    public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView, ArrayList<Animale> listAnimali, Handler Handler, ConnectionManager connectionManager) {
+    public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView,  Handler Handler, ConnectionManager connectionManager) {
         mBtAdapter= adapter;
 
         mhandler=Handler;
         mconnectionManager= connectionManager;
+        devices.clear();
+
 
 
 
@@ -67,7 +70,9 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
             }
             if(cont==0)
             {
-                devices.add(device);
+                if(device.getName()!=null) {
+                    devices.add(device);
+                }
             }
 
 
@@ -86,6 +91,8 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
                     ClientSocket clientSocket= new ClientSocket(devices.get(position),mBtAdapter, mhandler,mconnectionManager);
                     clientSocket.run();
+                    Toast.makeText(context,"Connessione a "+devices.get(position).getName(),Toast.LENGTH_LONG).show();
+
 
                 }
 

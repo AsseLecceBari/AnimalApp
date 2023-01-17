@@ -87,7 +87,7 @@ public class Bluetooth  {
             Intent enableBt = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
            if (android.os.Build.VERSION.SDK_INT > 30) {
                if (ContextCompat.checkSelfPermission(mactivity.getApplicationContext(), BLUETOOTH_CONNECT) != PackageManager.PERMISSION_GRANTED) {
-                   mactivity.requestPermissions(PERMISSIONS_STORAGE,1);
+                   mactivity.requestPermissions(PERMISSIONS_STORAGE,5);
                } else {
                    listAnimali= animaliPerCarico;
 
@@ -132,9 +132,9 @@ public class Bluetooth  {
 
 
     @SuppressLint("MissingPermission")
-    public void BtScanner(RecyclerView mRecyclerView, RecyclerView mRecyclerViewAssociati, ArrayList<Animale> listAnimali, Handler mHandler, ConnectionManager mconnectionManager, Context context) {
+    public void BtScanner(RecyclerView mRecyclerView, RecyclerView mRecyclerViewAssociati,  Handler mHandler, ConnectionManager mconnectionManager, Context context) {
 
-ricercaDispositiviAssociati(mRecyclerViewAssociati,mHandler,mconnectionManager,context);
+           ricercaDispositiviAssociati(mRecyclerViewAssociati,mHandler,mconnectionManager,context);
 
 
 
@@ -144,7 +144,7 @@ ricercaDispositiviAssociati(mRecyclerViewAssociati,mHandler,mconnectionManager,c
             mBtAdapter.startDiscovery();
 
 
-            mReceiver = new SingBroadcastReceiver(mBtAdapter, mRecyclerView, listAnimali, mHandler,mconnectionManager);
+            mReceiver = new SingBroadcastReceiver(mBtAdapter, mRecyclerView, mHandler,mconnectionManager);
             IntentFilter ifilter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
             mactivity.registerReceiver(mReceiver, ifilter);
 
@@ -167,7 +167,7 @@ mactivity.unregisterReceiver(mReceiver);
         if (pairedDevices.size() > 0) {
 
 
-            DispositiviDisponibiliBt dispositiviDisponibiliBt= new DispositiviDisponibiliBt(1);
+            DispositiviDisponibiliBt dispositiviDisponibiliBt= new DispositiviDisponibiliBt();
             // There are paired devices. Get the name and address of each paired device.
             int cont = 0;
 

@@ -32,6 +32,7 @@ import java.util.Objects;
 import java.util.Random;
 
 import adapter.AggiungiAdozioneAdapter;
+import adapter.AnimalAdapter;
 import fragments_mieiAnimali.aggiungiAnimaleFragment;
 import it.uniba.dib.sms2223_2.R;
 import model.Adozione;
@@ -193,7 +194,7 @@ public class lista_mieiAnimali extends Fragment {
                                         {
                                             mDataset.add(document.toObject(Animale.class));
                                             Log.d("ciao", String.valueOf(mDataset.size()));
-                                            mAdapter = new AggiungiAdozioneAdapter(mDataset);
+                                            //mAdapter = new AnimalAdapter(mDataset);
                                             // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
                                             mRecyclerView.setAdapter(mAdapter);
                                             if(mAdapter!= null)
@@ -230,31 +231,7 @@ public class lista_mieiAnimali extends Fragment {
 
 
                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainerView, new aggiungi_annuncio_Adozione().newInstance(adozione,mDataset.get(position))).addToBackStack(null).commit();
-                //checkbox= view.findViewById(R.id.checkBoxAggiungiadozioni);
 
-               /* if(!checkbox.isChecked()){
-
-
-                    Random idAdozione=new Random();
-                    String id= String.valueOf(idAdozione.nextInt());
-                    SimpleDateFormat dataFor= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss ");
-                    String data= dataFor.format(new Date());
-                    animaliAdozione.add(new Adozione(mDataset.get(position).getIdAnimale(),id,mDataset.get(position).getEmailProprietario(),data));
-                    checkbox.setVisibility(View.VISIBLE);
-                    checkbox.setChecked(true);
-                }
-                else if(checkbox.isChecked()) {
-
-                    checkbox.setVisibility(View.GONE);
-                    checkbox.setChecked(false);
-                    //se abbiamo gia aggiunto l'animale nell'array lo elimina
-                    for (int a = 0; a < animaliAdozione.size(); a++) {
-                        if (Objects.equals(animaliAdozione.get(a).getIdAnimale(), mDataset.get(position).getIdAnimale())){
-                            animaliAdozione.remove(a);
-
-                        }
-                    }
-                }*/
             }
 
             @Override

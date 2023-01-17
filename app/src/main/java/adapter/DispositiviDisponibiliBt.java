@@ -2,7 +2,6 @@ package adapter;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-
 import java.util.ArrayList;
 import java.util.Objects;
 
 import it.uniba.dib.sms2223_2.R;
-import model.Animale;
 
 public class DispositiviDisponibiliBt extends RecyclerView.Adapter<DispositiviDisponibiliBt.ViewHolder>{
     //Array con tutti i dati sugli animali da inserire nella view
@@ -28,8 +23,9 @@ public class DispositiviDisponibiliBt extends RecyclerView.Adapter<DispositiviDi
 
 
 
-    public DispositiviDisponibiliBt(int vista) {
-mvista= vista;
+    public DispositiviDisponibiliBt() {
+        localDataSet.clear();
+
 
 
     }
@@ -70,17 +66,12 @@ mvista= vista;
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        if(mvista==2) {
+
             View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_view_dispositivononassociato, parent, false);
+                    .inflate(R.layout.item_view_dispositivobt, parent, false);
             return new ViewHolder(v);
-        }
-        else {
-            Log.d("ciao21","ciaso");
-            View v = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_view_dispositivoassociato, parent, false);
-            return new ViewHolder(v);
-        }
+
+
 
 
 
