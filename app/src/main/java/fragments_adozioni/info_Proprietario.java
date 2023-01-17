@@ -99,138 +99,138 @@ public class info_Proprietario extends Fragment {
         String PARTITA_IVA = getString(R.string.partiva);
         String DATA_DI_NASCITA = getString(R.string.datanascita);
         CollectionReference animaliReference=db.collection("utenti");
-        if(auth.getCurrentUser()!=null) {
-            Query query = animaliReference.whereEqualTo("email", animale.getEmailProprietario());
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                    if (task.isSuccessful()) {
-                        String ruolo = null;
+        Query query = animaliReference.whereEqualTo("email", animale.getEmailProprietario());
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                        for(QueryDocumentSnapshot document : task.getResult()){
-                            ruolo = document.get("ruolo").toString();
-                            switch(ruolo){
-                                case "proprietario":
-                                    Persona p = document.toObject(Persona.class);
-                                    email1 = p.getEmail();
-                                    telefono1 =  p.getTelefono();
-                                    tipoUtente.setText(p.getRuolo());
-                                    nome.setText(NOME +p.getNome());
-                                    cognome.setText(COGNOME +p.getCognome());
-                                    data.setText(DATA_DI_NASCITA +p.getDataDiNascita());
-                                    email.setText(EMAIL +p.getEmail());
-                                    telefono.setText(TELEFONO +p.getTelefono());
-                                    indirizzo.setText(INDIRIZZO +p.getIndirizzo().get("via") +", " +p.getIndirizzo().get("civico")+" "+p.getIndirizzo().get("città")+"("+p.getIndirizzo().get("provincia")+")");
+                if (task.isSuccessful()) {
+                    String ruolo = null;
 
-                                    indirizzo.setVisibility(View.VISIBLE);
-                                    tipoUtente.setVisibility(View.VISIBLE);
-                                    nome.setVisibility(View.VISIBLE);
-                                    cognome.setVisibility(View.VISIBLE);
-                                    data.setVisibility(View.VISIBLE);
-                                    email.setVisibility(View.VISIBLE);
-                                    telefono.setVisibility(View.VISIBLE);
+                    for(QueryDocumentSnapshot document : task.getResult()){
+                        ruolo = document.get("ruolo").toString();
+                        switch(ruolo){
+                            case "proprietario":
+                                Persona p = document.toObject(Persona.class);
+                                email1 = p.getEmail();
+                                telefono1 =  p.getTelefono();
+                                tipoUtente.setText(p.getRuolo());
+                                nome.setText(NOME +p.getNome());
+                                cognome.setText(COGNOME +p.getCognome());
+                                data.setText(DATA_DI_NASCITA +p.getDataDiNascita());
+                                email.setText(EMAIL +p.getEmail());
+                                telefono.setText(TELEFONO +p.getTelefono());
+                                indirizzo.setText(INDIRIZZO +p.getIndirizzo().get("via") +", " +p.getIndirizzo().get("civico")+" "+p.getIndirizzo().get("città")+"("+p.getIndirizzo().get("provincia")+")");
 
-                                    denominazione.setVisibility(View.GONE);
-                                    cf.setVisibility(View.GONE);
-                                    efnovi.setVisibility(View.GONE);
-                                    partitaIva.setVisibility(View.GONE);
-                                    break;
+                                indirizzo.setVisibility(View.VISIBLE);
+                                tipoUtente.setVisibility(View.VISIBLE);
+                                nome.setVisibility(View.VISIBLE);
+                                cognome.setVisibility(View.VISIBLE);
+                                data.setVisibility(View.VISIBLE);
+                                email.setVisibility(View.VISIBLE);
+                                telefono.setVisibility(View.VISIBLE);
 
-                                case "ente":
-                                    Ente e = document.toObject(Ente.class);
-                                    email1 = e.getEmail();
-                                    telefono1 =  e.getTelefono();
-                                    if(e.isPrivato())
-                                        tipoUtente.setText(e.getRuolo() + getString(R.string.priv));
-                                    else
-                                        tipoUtente.setText(e.getRuolo() + getString(R.string.pubbl));
-                                    email.setText(EMAIL +e.getEmail());
-                                    telefono.setText(TELEFONO +e.getTelefono());
-                                    denominazione.setText(DENOMINAZIONE +e.getDenominazione());
-                                    partitaIva.setText(PARTITA_IVA +e.getPartitaIva());
-                                    indirizzo.setText(INDIRIZZO +e.getIndirizzo().get("via") +", " +e.getIndirizzo().get("civico")+" "+e.getIndirizzo().get("città")+"("+e.getIndirizzo().get("provincia")+")");
+                                denominazione.setVisibility(View.GONE);
+                                cf.setVisibility(View.GONE);
+                                efnovi.setVisibility(View.GONE);
+                                partitaIva.setVisibility(View.GONE);
+                                break;
 
-
-                                    tipoUtente.setVisibility(View.VISIBLE);
-                                    indirizzo.setVisibility(View.VISIBLE);
-                                    email.setVisibility(View.VISIBLE);
-                                    telefono.setVisibility(View.VISIBLE);
-                                    denominazione.setVisibility(View.VISIBLE);
-                                    partitaIva.setVisibility(View.VISIBLE);
-
-                                    cf.setVisibility(View.GONE);
-                                    efnovi.setVisibility(View.GONE);
-                                    nome.setVisibility(View.GONE);
-                                    cognome.setVisibility(View.GONE);
-                                    data.setVisibility(View.GONE);
-                                    break;
-
-                                case "associazione":
-                                    Associazione a = document.toObject(Associazione.class);
-
-                                    email1 = a.getEmail();
-                                    telefono1 =  a.getTelefono();
-                                    tipoUtente.setText(a.getRuolo());
-                                    email.setText(EMAIL +a.getEmail());
-                                    telefono.setText(TELEFONO +a.getTelefono());
-                                    cf.setText(getString(R.string.cf)+a.getCodiceFiscaleAssociazione());
-                                    denominazione.setText(DENOMINAZIONE +(a.getDenominazione()));
-                                    indirizzo.setText(INDIRIZZO +a.getIndirizzo().get("via") +", " +a.getIndirizzo().get("civico")+" "+a.getIndirizzo().get("città")+"("+a.getIndirizzo().get("provincia")+")");
+                            case "ente":
+                                Ente e = document.toObject(Ente.class);
+                                email1 = e.getEmail();
+                                telefono1 =  e.getTelefono();
+                                if(e.isPrivato())
+                                    tipoUtente.setText(e.getRuolo() + getString(R.string.priv));
+                                else
+                                    tipoUtente.setText(e.getRuolo() + getString(R.string.pubbl));
+                                email.setText(EMAIL +e.getEmail());
+                                telefono.setText(TELEFONO +e.getTelefono());
+                                denominazione.setText(DENOMINAZIONE +e.getDenominazione());
+                                partitaIva.setText(PARTITA_IVA +e.getPartitaIva());
+                                indirizzo.setText(INDIRIZZO +e.getIndirizzo().get("via") +", " +e.getIndirizzo().get("civico")+" "+e.getIndirizzo().get("città")+"("+e.getIndirizzo().get("provincia")+")");
 
 
-                                    indirizzo.setVisibility(View.VISIBLE);
-                                    tipoUtente.setVisibility(View.VISIBLE);
-                                    email.setVisibility(View.VISIBLE);
-                                    telefono.setVisibility(View.VISIBLE);
-                                    denominazione.setVisibility(View.VISIBLE);
-                                    cf.setVisibility(View.VISIBLE);
+                                tipoUtente.setVisibility(View.VISIBLE);
+                                indirizzo.setVisibility(View.VISIBLE);
+                                email.setVisibility(View.VISIBLE);
+                                telefono.setVisibility(View.VISIBLE);
+                                denominazione.setVisibility(View.VISIBLE);
+                                partitaIva.setVisibility(View.VISIBLE);
 
-                                    nome.setVisibility(View.GONE);
-                                    cognome.setVisibility(View.GONE);
-                                    data.setVisibility(View.GONE);
-                                    efnovi.setVisibility(View.GONE);
-                                    partitaIva.setVisibility(View.GONE);
-                                    break;
+                                cf.setVisibility(View.GONE);
+                                efnovi.setVisibility(View.GONE);
+                                nome.setVisibility(View.GONE);
+                                cognome.setVisibility(View.GONE);
+                                data.setVisibility(View.GONE);
+                                break;
 
-                                case "veterinario":
-                                    Veterinario v = document.toObject(Veterinario.class);
+                            case "associazione":
+                                Associazione a = document.toObject(Associazione.class);
 
-                                    email1 = v.getEmail();
-                                    telefono1 =  v.getTelefono();
-                                    tipoUtente.setText(v.getRuolo());
-                                    nome.setText(NOME +v.getNome());
-                                    cognome.setText(COGNOME +v.getCognome());
-                                    data.setText(DATA_DI_NASCITA +v.getDataDiNascita());
-                                    email.setText(EMAIL +v.getEmail());
-                                    telefono.setText(TELEFONO +v.getTelefono());
-                                    efnovi.setText(getString(R.string.efnovi)+v.getNumEFNOVI());
-                                    partitaIva.setText(PARTITA_IVA +v.getPartitaIva());
-                                    indirizzo.setText(INDIRIZZO +v.getIndirizzo().get("via") +", " +v.getIndirizzo().get("civico")+" "+v.getIndirizzo().get("città")+"("+v.getIndirizzo().get("provincia")+")");
+                                email1 = a.getEmail();
+                                telefono1 =  a.getTelefono();
+                                tipoUtente.setText(a.getRuolo());
+                                email.setText(EMAIL +a.getEmail());
+                                telefono.setText(TELEFONO +a.getTelefono());
+                                cf.setText(getString(R.string.cf)+a.getCodiceFiscaleAssociazione());
+                                denominazione.setText(DENOMINAZIONE +(a.getDenominazione()));
+                                indirizzo.setText(INDIRIZZO +a.getIndirizzo().get("via") +", " +a.getIndirizzo().get("civico")+" "+a.getIndirizzo().get("città")+"("+a.getIndirizzo().get("provincia")+")");
 
 
-                                    indirizzo.setVisibility(View.VISIBLE);
-                                    tipoUtente.setVisibility(View.VISIBLE);
-                                    nome.setVisibility(View.VISIBLE);
-                                    cognome.setVisibility(View.VISIBLE);
-                                    data.setVisibility(View.VISIBLE);
-                                    email.setVisibility(View.VISIBLE);
-                                    telefono.setVisibility(View.VISIBLE);
-                                    efnovi.setVisibility(View.VISIBLE);
-                                    partitaIva.setVisibility(View.VISIBLE);
+                                indirizzo.setVisibility(View.VISIBLE);
+                                tipoUtente.setVisibility(View.VISIBLE);
+                                email.setVisibility(View.VISIBLE);
+                                telefono.setVisibility(View.VISIBLE);
+                                denominazione.setVisibility(View.VISIBLE);
+                                cf.setVisibility(View.VISIBLE);
 
-                                    denominazione.setVisibility(View.GONE);
-                                    cf.setVisibility(View.GONE);
-                                    break;
-                            }
-                            tipoUtente.setAllCaps(true);
+                                nome.setVisibility(View.GONE);
+                                cognome.setVisibility(View.GONE);
+                                data.setVisibility(View.GONE);
+                                efnovi.setVisibility(View.GONE);
+                                partitaIva.setVisibility(View.GONE);
+                                break;
+
+                            case "veterinario":
+                                Veterinario v = document.toObject(Veterinario.class);
+
+                                email1 = v.getEmail();
+                                telefono1 =  v.getTelefono();
+                                tipoUtente.setText(v.getRuolo());
+                                nome.setText(NOME +v.getNome());
+                                cognome.setText(COGNOME +v.getCognome());
+                                data.setText(DATA_DI_NASCITA +v.getDataDiNascita());
+                                email.setText(EMAIL +v.getEmail());
+                                telefono.setText(TELEFONO +v.getTelefono());
+                                efnovi.setText(getString(R.string.efnovi)+v.getNumEFNOVI());
+                                partitaIva.setText(PARTITA_IVA +v.getPartitaIva());
+                                indirizzo.setText(INDIRIZZO +v.getIndirizzo().get("via") +", " +v.getIndirizzo().get("civico")+" "+v.getIndirizzo().get("città")+"("+v.getIndirizzo().get("provincia")+")");
+
+
+                                indirizzo.setVisibility(View.VISIBLE);
+                                tipoUtente.setVisibility(View.VISIBLE);
+                                nome.setVisibility(View.VISIBLE);
+                                cognome.setVisibility(View.VISIBLE);
+                                data.setVisibility(View.VISIBLE);
+                                email.setVisibility(View.VISIBLE);
+                                telefono.setVisibility(View.VISIBLE);
+                                efnovi.setVisibility(View.VISIBLE);
+                                partitaIva.setVisibility(View.VISIBLE);
+
+                                denominazione.setVisibility(View.GONE);
+                                cf.setVisibility(View.GONE);
+                                break;
                         }
+                        tipoUtente.setAllCaps(true);
                     }
-
                 }
-            });
-        }
+
+            }
+        });
+
 
 
         // fab per contattare
