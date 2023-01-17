@@ -65,9 +65,7 @@ public class adoptions_fragment extends Fragment {
     private RadioButton rdbannuncigenerale;
     private RadioButton rdbannuncipreferiti;
     private View layoutfiltri;
-    private View layoutopenfiltri;
-    private View btnopenFiltri;
-    private View bottonechiudifiltri;
+
 
     private View listaAnimali;
     private TextView numeroAnnPreferiti;
@@ -159,9 +157,7 @@ public class adoptions_fragment extends Fragment {
         rdbannuncigenerale = rootView.findViewById(R.id.radioannunciesterni);
         rdbannuncipreferiti = rootView.findViewById(R.id.radioannunciPreferiti);
         layoutfiltri = rootView.findViewById(R.id.layoutfiltri);
-        layoutopenfiltri = rootView.findViewById(R.id.layoutaprifiltri);
-        btnopenFiltri = rootView.findViewById(R.id.btnaprifiltri);
-        bottonechiudifiltri = rootView.findViewById(R.id.chiudifiltri);
+
         listaAnimali= rootView.findViewById(R.id.listaAnimali);
 
 
@@ -374,7 +370,7 @@ public class adoptions_fragment extends Fragment {
 
         if(auth.getCurrentUser()!= null) {
 
-            layoutopenfiltri.setVisibility(View.VISIBLE);
+            layoutfiltri.setVisibility(View.VISIBLE);
 
             if (tipoannunci == 1) {
 
@@ -390,44 +386,9 @@ public class adoptions_fragment extends Fragment {
             }
 
 
-            // rdbannuncigenerale.setChecked(true);
-            layoutopenfiltri.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    layoutfiltri.setVisibility(View.VISIBLE);
-
-                    bottonechiudifiltri.setVisibility(View.VISIBLE);
-
-                    //bottonechiudifiltri.setVisibility(View.VISIBLE);
-
-                }
-            });
-
-            btnopenFiltri.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    layoutfiltri.setVisibility(View.VISIBLE);
-
-                    btnopenFiltri.setVisibility(View.GONE);
-                    bottonechiudifiltri.setVisibility(View.VISIBLE);
 
 
-                }
-            });
 
-            layoutfiltri.setVisibility(View.GONE);
-            bottonechiudifiltri.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (layoutfiltri.getVisibility() == View.GONE) {
-                        layoutfiltri.setVisibility(View.VISIBLE);
-                    } else {
-                        layoutfiltri.setVisibility(View.GONE);
-                    }
-
-
-                }
-            });
 
 
             rdbannuncigenerale.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -491,7 +452,7 @@ public class adoptions_fragment extends Fragment {
             });
         }
         else{
-            layoutopenfiltri.setVisibility(View.GONE);
+            layoutfiltri.setVisibility(View.GONE);
         }
 
 

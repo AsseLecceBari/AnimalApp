@@ -329,12 +329,12 @@ public class fab {
 
     public void setFabModificaVisibile()
     {
-        fabActionAnnullaModifica.setVisibility(View.VISIBLE);
+
         fabActionSalvaModifiche.setVisibility(View.VISIBLE);
     }
     public void setFabModificaInVisibile()
     {
-        fabActionAnnullaModifica.setVisibility(View.GONE);
+
         fabActionSalvaModifiche.setVisibility(View.GONE);
     }
 

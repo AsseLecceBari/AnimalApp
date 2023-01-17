@@ -113,7 +113,7 @@ public class info_adozione extends Fragment {
             }
         });
 
-        dettagliAnimale.setText("\n"+getString(R.string.nome)+"       "+getString(R.string.data_di_nascita)+"       "+getString(R.string.specie)+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
+        dettagliAnimale.setText("\n"+getString(R.string.nome)+"             "+getString(R.string.data_di_nascita)+"             "+getString(R.string.specie)+"\n"+animale.getNome()+"            "+animale.getDataDiNascita()+"            "+animale.getSpecie() );
         descrizioneAnimale.setText(adozione.getDescrizione());
     }
 
