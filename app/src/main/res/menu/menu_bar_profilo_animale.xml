@@ -5,7 +5,7 @@
 
         <item
 
-            android:icon="@drawable/baseline_ios_share_black_24"
+            android:icon="@drawable/share"
             android:iconTint="#FFFFFF"
             android:onClick="condividiAnimale"
 
@@ -14,7 +14,7 @@
             app:showAsAction="ifRoom" />
 
         <item
-            android:icon="@drawable/baseline_file_download_black_24"
+            android:icon="@drawable/download"
             android:iconTint="#FFFFFF"
             android:onClick="scaricaAnimale"
             android:title="@string/download_dati"
