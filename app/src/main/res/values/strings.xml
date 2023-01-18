@@ -197,7 +197,7 @@
     <string name="modalita_invio_carico">Modalità invio incarico</string>
     <string name="continua_senza_bluetooth">Continua senza bluetooth</string>
     <string name="invia_con_bluetooth">Invia con Bluetooth</string>
-    <string name="puo_essere_preso_in_carico_premere_pulsante_verde">\nPuò essere preso in carico! \nPREMI IL PULSANTE  VERDE PER AGGIUNGERE</string>
+    <string name="puo_essere_preso_in_carico_premere_pulsante_verde">\nPuò essere preso in carico! \nPREMI IL PULSANTE PER AGGIUNGERE</string>
     <string name="attualmente_gia_in_carico">Attualmente gia\' in carico!</string>
     <string name="impossibile_aggiungere_tocca_il_qr_Code">Impossibile aggiungere!\n\nTocca il QR SCANNER per riprovare!</string>
     <string name="aggiungi_segnalazione">Aggiungi segnalazione</string>
