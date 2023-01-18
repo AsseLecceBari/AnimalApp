@@ -13,7 +13,7 @@ public class UtentiDB {
     public Task<QuerySnapshot> getUtenti(FirebaseAuth auth, FirebaseFirestore db) {
 
         CollectionReference utentiReference=db.collection("utenti");
-        Query query = utentiReference.whereEqualTo("email", Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+        Query query = utentiReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
         return  query.get();
     }
 }

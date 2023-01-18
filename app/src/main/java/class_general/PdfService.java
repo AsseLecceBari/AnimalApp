@@ -165,8 +165,6 @@ public  class PdfService {
               }
               document.addTitle(data.getNome());
               document.close();
-
-
               pdf.close();
               Toast.makeText(context, "scaricato", Toast.LENGTH_SHORT).show();
           }
