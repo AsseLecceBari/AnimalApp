@@ -364,64 +364,70 @@ public class myanimals_fragment extends Fragment {
                             mDataset.add(document.toObject(Animale.class));
                             countMyAnimals++;}}
                     //Se siamo loggati con il veterinario aggiungiamo nel dataset anche gli animali in carico
-                    utentiDB.getUtenti(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for(QueryDocumentSnapshot document : task.getResult()){
-                                    if((document.get("ruolo").toString().equals("veterinario"))|| document.get("ruolo").toString().equals("ente")||document.get("ruolo").toString().equals("associazione")){
-                                        // Nascondo la checkbox che mi mostra gli in carico
-                                        mostraSoloIncarico.setVisibility(View.VISIBLE);
-                                        ruolo=RUOLOVETERINARIO;
-                                        break;
+                    if(auth.getCurrentUser()!=null) {
+                        utentiDB.getUtenti(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        if ((document.get("ruolo").toString().equals("veterinario")) || document.get("ruolo").toString().equals("ente") || document.get("ruolo").toString().equals("associazione")) {
+                                            // Nascondo la checkbox che mi mostra gli in carico
+                                            mostraSoloIncarico.setVisibility(View.VISIBLE);
+                                            ruolo = RUOLOVETERINARIO;
+                                            break;
+                                        }
                                     }
                                 }
-                            }
-                            Log.e("DOVESONO","GETRUOLO");
-                            if(ruolo.equals(RUOLOVETERINARIO)){
-                                fab(getView());
-                                CollectionReference animaliReference = db.collection("animali");
-                                caricoDB.getVetCarichi(auth,db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                            //Salvare animale in un array con elementi oggetto animale
-                                            caricoDataset.add(document.toObject(Carico.class));
-                                            Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale",document.toObject(Carico.class).getIdAnimale());
-                                            queryAnimaliInCarico.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                    if (task.isSuccessful()) {
-                                                        for (QueryDocumentSnapshot document : task.getResult()) {
-                                                            //Salvare animale in un array con elementi oggetto animale
-                                                            mDataset.add(document.toObject(Animale.class));}}}});}
-                                        //Passo i dati presi dal database all'adapter
-                                        mAdapter = new AnimalAdapter(mDataset);
-                                        // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                        mRecyclerView.setItemViewCacheSize(mDataset.size());
-                                        mRecyclerView.setAdapter(mAdapter);
-                                        //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
-                                    }});
-                            }
-                            else{
-                                fab.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        closeSearchView();
-                                        getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right,android.R.anim.slide_in_left,android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView,new aggiungiAnimaleFragment()).commit();
-                                    }
-                                });
+                                Log.e("DOVESONO", "GETRUOLO");
+                                if (ruolo.equals(RUOLOVETERINARIO)) {
+                                    fab(getView());
+                                    CollectionReference animaliReference = db.collection("animali");
+                                    caricoDB.getVetCarichi(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                //Salvare animale in un array con elementi oggetto animale
+                                                caricoDataset.add(document.toObject(Carico.class));
+                                                Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale", document.toObject(Carico.class).getIdAnimale());
+                                                queryAnimaliInCarico.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if (task.isSuccessful()) {
+                                                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                                                //Salvare animale in un array con elementi oggetto animale
+                                                                mDataset.add(document.toObject(Animale.class));
+                                                            }
+                                                        }
+                                                    }
+                                                });
+                                            }
+                                            //Passo i dati presi dal database all'adapter
+                                            mAdapter = new AnimalAdapter(mDataset);
+                                            // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                            mRecyclerView.setItemViewCacheSize(mDataset.size());
+                                            mRecyclerView.setAdapter(mAdapter);
+                                            //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                                        }
+                                    });
+                                } else {
+                                    fab.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            closeSearchView();
+                                            getActivity().getSupportFragmentManager().beginTransaction().setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right, android.R.anim.slide_in_left, android.R.anim.slide_out_right).addToBackStack(null).replace(R.id.fragmentContainerView, new aggiungiAnimaleFragment()).commit();
+                                        }
+                                    });
 
-                                //Passo i dati presi dal database all'adapter
-                                mAdapter = new AnimalAdapter(mDataset);
-                                // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
-                                mRecyclerView.setItemViewCacheSize(mDataset.size());
-                                mRecyclerView.setAdapter(mAdapter);
-                                //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                                    //Passo i dati presi dal database all'adapter
+                                    mAdapter = new AnimalAdapter(mDataset);
+                                    // Setto l'AnimalAdaper(mAdapter) come l'adapter per la recycle view
+                                    mRecyclerView.setItemViewCacheSize(mDataset.size());
+                                    mRecyclerView.setAdapter(mAdapter);
+                                    //LA FUNZIONE GET DI FIREBASE è ASINCRONA QUINDI HO SETTATO QUI L'ADAPTER VIEW PERCHè SE NO FINIVA PRIMA LA BUILD DEL PROGRAMMA E POI LA FUNZIONE GET
+                                }
                             }
-                        }
-                    });
-
+                        });
+                    }
 
                 }
             });
