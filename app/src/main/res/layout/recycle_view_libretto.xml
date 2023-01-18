@@ -26,9 +26,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="140dp"
-            android:background="?attr/colorPrimaryContainer"
             android:clickable="true"
-
+            android:background="?attr/colorSecondaryContainer"
             android:foreground="?android:attr/selectableItemBackground">
 
             <TextView
