@@ -316,7 +316,6 @@ public class anagrafica extends Fragment {
             fab.setVisibility(View.GONE);
             fabAction1.setVisibility(View.GONE);
             fabAction2.setVisibility(View.GONE);
-          //pokeball.setVisibility(View.GONE);
         }else{
             cambiaImg.setVisibility(View.GONE);
             modificaAnimaliBtn.setVisibility(View.GONE);

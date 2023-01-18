@@ -1,5 +1,8 @@
 package fragments_adozioni;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,6 +12,10 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -34,6 +41,7 @@ public class riepilogo_adozione extends Fragment {
     private TextInputEditText aggiungiDescrizioneAnnuncio;
     private Button cediProprieta;
     private View vista;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
 
     Animale animale;
     Adozione adozione;
@@ -54,6 +62,16 @@ public class riepilogo_adozione extends Fragment {
         animale= (Animale) getActivity().getIntent().getSerializableExtra("animale");
         adozione=(Adozione) getActivity().getIntent().getSerializableExtra("adozione");
 
+        requestPermissionLauncher =
+                registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
+                    if (isGranted) {
+                        getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
+                                .replace(R.id.fragmentContainerView,new scanAnimale(1, animale, adozione.getIdAdozione())).commit();
+                    } else {
+                        //Dire all'utente di andare nelle impostazioni e dare i permessi dello storage all'app
+
+                    }
+                });
     }
 
     @Override
@@ -119,7 +137,42 @@ public class riepilogo_adozione extends Fragment {
     }
 
     private void cedi() {
+        if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CAMERA) ==
+                PackageManager.PERMISSION_GRANTED) {
+
+            //startActivityForResult(photoIntent, PHOTO_REQUEST_CODE);
+            getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null).replace(R.id.fragmentContainerView,new scanAnimale()).commit();
+        } else if (shouldShowRequestPermissionRationale(Manifest.permission.CAMERA)) {
+            showAlertDialog();
+        } else {
+            // You can directly ask for the permission.
+            // The registered ActivityResultCallback gets the result of this request.
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+
         getActivity().getSupportFragmentManager().beginTransaction().addToBackStack(null)
                 .replace(R.id.fragmentContainerView,new scanAnimale(1, animale, adozione.getIdAdozione())).commit();
     }
+
+    public void showAlertDialog() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+        alertDialogBuilder.setMessage(getString(R.string.consiglio_accettare_permessi));
+        alertDialogBuilder.setPositiveButton(getString(R.string.ho_capito),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        requestPermissionLauncher.launch(Manifest.permission.CAMERA);
+                    }
+                });
+
+        alertDialogBuilder.setNegativeButton(getString(R.string.magari_piu_tardi), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+            }
+        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
+    }
+
 }
