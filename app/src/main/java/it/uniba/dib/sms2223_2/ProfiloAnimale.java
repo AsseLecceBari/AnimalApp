@@ -98,7 +98,10 @@ public class ProfiloAnimale extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        main_fragment_animale= (main_fragment_animale) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        try {
+            main_fragment_animale= (main_fragment_animale) getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView);
+        }catch (Exception e){}
+
         // Imposto l'actionBar di questa activity
 
     }
