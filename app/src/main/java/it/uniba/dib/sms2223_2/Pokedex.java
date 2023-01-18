@@ -3,6 +3,7 @@ package it.uniba.dib.sms2223_2;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,30 +64,31 @@ public class Pokedex extends AppCompatActivity {
         CollectionReference pokedexReference = db.collection("pokedex");
 
         CollectionReference animaliReference = db.collection("animali");
-        pokedexReference.whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+        if(auth.getCurrentUser()!=null) {
+            pokedexReference.whereEqualTo("emailProprietarioPokedex", auth.getCurrentUser().getEmail() + "").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale",document.toObject(model.Pokedex.class).getIdAnimale());
-                        Log.e("pokedex",document.toObject(model.Pokedex.class).getIdAnimale());
+                        Query queryAnimaliInCarico = animaliReference.whereEqualTo("idAnimale", document.toObject(model.Pokedex.class).getIdAnimale());
+                        Log.e("pokedex", document.toObject(model.Pokedex.class).getIdAnimale());
                         queryAnimaliInCarico.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     mDataset.add(document.toObject(Animale.class));
-                                    Log.e("pokedex",document.toObject(Animale.class).getIdAnimale());
+                                    Log.e("pokedex", document.toObject(Animale.class).getIdAnimale());
                                 }
-                                mAdapter= new PokedexAdapter(mDataset);
-                                mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(),3));
+                                mAdapter = new PokedexAdapter(mDataset);
+                                mRecyclerView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
                                 mRecyclerView.setAdapter(mAdapter);
                             }
 
                         });
                     }
 
-            }
-        });
-
+                }
+            });
+        }
 
         mRecyclerView.addOnItemTouchListener(
                 new RecyclerItemClickListener(getApplicationContext(), mRecyclerView ,new RecyclerItemClickListener.OnItemClickListener() {
