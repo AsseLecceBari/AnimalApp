@@ -525,7 +525,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
                             Veterinario v =new Veterinario(email, telefono, ruolo, indirizzo, nome.getText().toString(), cognome.getText().toString(), data.getText().toString(), efnovi, partitaIva);
                             db.collection("utenti").document(email+"").set(v);
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            onBackPressed();
                         }else{
                             Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -561,7 +561,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
                             Associazione a =new Associazione(email, telefono,  ruolo,indirizzo, codiceFiscaleAssociazione, denominazione);
                             db.collection("utenti").document(email+"").set(a);
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            onBackPressed();
                         }else{
                             Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
@@ -597,7 +597,7 @@ public class RegisterActivity extends AppCompatActivity {
                             Toast.makeText(RegisterActivity.this, getString(R.string.RegistrationDone), Toast.LENGTH_SHORT).show();
                             Ente e =new Ente(email, telefono,  ruolo,indirizzo, partitaIva, denominazione, etRegIsPrivato.isChecked());
                             db.collection("utenti").document(email+"").set(e);
-                            startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                           onBackPressed();
                         }else{
                             Toast.makeText(RegisterActivity.this, getString(R.string.registrationError) + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }

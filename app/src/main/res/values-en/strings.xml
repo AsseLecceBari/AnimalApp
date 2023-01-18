@@ -9,7 +9,7 @@
     <string name="logoutSuccess">Logout successful</string>
     <string name="selectUserType">Select user role</string>
     <string name="registrationError">"Registration error: "</string>
-    <string name="RegistrationDone">Already registered user</string>
+    <string name="RegistrationDone">User registered successfully</string>
     <string name="partitaIvaRequired">Required VAT number</string>
     <string name="denominazioneRequired">Required denomination</string>
     <string name="emailRequired">Required email</string>
