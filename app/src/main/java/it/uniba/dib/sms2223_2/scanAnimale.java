@@ -111,12 +111,12 @@ public class scanAnimale extends Fragment {
                         a.setEmailProprietario(emailProprietario);
 
                         new AlertDialog.Builder(getActivity())
-                             //   .setTitle(R.string.cedi)
-                              //  .setMessage(R.string.sicuro)
-                               // .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setTitle(R.string.cedi)
+                                .setMessage(R.string.sicuro)
+                                .setIcon(android.R.drawable.ic_dialog_alert)
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
-                                        Toast.makeText(getActivity().getApplicationContext(), idAdozione+"L'animale ora ha un nuovo proprietario!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity().getApplicationContext(), "L'animale ora ha un nuovo proprietario!", Toast.LENGTH_SHORT).show();
                                         db.collection("animali").document(a.getIdAnimale()).set(a);
 
                                         // elimino l'annuncio di adozione
