@@ -239,7 +239,6 @@ public class adoptions_fragment extends Fragment {
                                                                         {
                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
                                                                                 proprietari.add( document3.toObject(Persona.class));
-                                                                                Log.d("ciao12367", String.valueOf(proprietari.size()));
                                                                                 mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
                                                                                 mRecyclerView.setAdapter(mAdapter);
                                                                                 if (mAdapter != null) {
