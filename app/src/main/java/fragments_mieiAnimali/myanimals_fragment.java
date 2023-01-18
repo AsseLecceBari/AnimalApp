@@ -488,12 +488,14 @@ public class myanimals_fragment extends Fragment {
             @Override public void onLongItemClick(View view, int position) {
                 //AnimalAdapter.ViewHolder holder = (AnimalAdapter.ViewHolder) mRecyclerView.getChildViewHolder(view);
                 //checkBoxAnimal= (MaterialCheckBox) holder.getCheckBox();
-                if (flagCheckBox == false) {
-                    mAdapter.setFlagCheckBox(true);
-                    flagCheckBox = true;
-                    mAdapter.notifyDataSetChanged();
-                    richiediCarico.setVisibility(View.VISIBLE);
-                    removeRecycleListener(mRecyclerView);
+                if(!mostraSoloIncarico.isChecked()) {
+                    if (flagCheckBox == false) {
+                        mAdapter.setFlagCheckBox(true);
+                        flagCheckBox = true;
+                        mAdapter.notifyDataSetChanged();
+                        richiediCarico.setVisibility(View.VISIBLE);
+                        removeRecycleListener(mRecyclerView);
+                    }
                 }
             }
         });
