@@ -119,6 +119,9 @@ public class anagrafica extends Fragment {
 
     private Dialog dialog;
     private  int countPokedex = 0;
+
+
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
         db=FirebaseFirestore.getInstance();
@@ -235,50 +238,6 @@ public class anagrafica extends Fragment {
 
         fab(rootView);
 
-        if(animale!= null){
-            nome.setText(getString(R.string.nome)+": "+animale.getNome());
-            genere.setText(getString(R.string.genere)+": "+animale.getGenere());
-            specie.setText(getString(R.string.specie)+": "+animale.getSpecie());
-            nascita.setText(getString(R.string.nascita)+": "+animale.getDataDiNascita());
-            sesso.setText(getString(R.string.sesso)+": "+animale.getSesso());
-
-            if(animale.getIsAssistito()){
-                assistito.setText(R.string.eassistito);
-            }else{
-                assistito.setText(R.string.noneassistito);
-            }
-
-            try{
-                if(!animale.getMicroChip().equals(""))
-                    microchip_.setText(getString(R.string.microchip)+": "+animale.getMicroChip());
-                if(!animale.getBox().equals(""))
-                    box.setText(getString(R.string.box)+": "+animale.getBox());
-                if(!animale.getDataRitrovamento().equals(""))
-                    dataRitrovamento.setText(getString(R.string.data_ritrovamento)+": "+animale.getDataRitrovamento());
-            }catch (Exception e){
-                Toast.makeText(getActivity().getApplicationContext(), "Animale da cancellare", Toast.LENGTH_SHORT).show();
-            }
-
-
-
-            // box deve essere visibile solo ai professionisti
-            vediBox();
-
-            // setto l'immagine dell'animale
-            FirebaseStorage storage;
-            StorageReference storageRef;
-            storage= FirebaseStorage.getInstance();
-            storageRef=storage.getReference();
-
-            storageRef.child(animale.getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                @Override
-                public void onSuccess(Uri uri) {
-                    Glide.with(imgAnimaleReg.getContext())
-                            .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(imgAnimaleReg);
-                }
-            });
-        }
 
         // tasto cambia immagine
         mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -361,6 +320,53 @@ public class anagrafica extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        // set text
+        if(animale!= null){
+            nome.setText(getString(R.string.nome)+": "+animale.getNome());
+            genere.setText(getString(R.string.genere)+": "+animale.getGenere());
+            specie.setText(getString(R.string.specie)+": "+animale.getSpecie());
+            nascita.setText(getString(R.string.nascita)+": "+animale.getDataDiNascita());
+            sesso.setText(getString(R.string.sesso)+": "+animale.getSesso());
+
+            if(animale.getIsAssistito()){
+                assistito.setText(R.string.eassistito);
+            }else{
+                assistito.setText(R.string.noneassistito);
+            }
+
+            try{
+                if(!animale.getMicroChip().equals(""))
+                    microchip_.setText(getString(R.string.microchip)+": "+animale.getMicroChip());
+                if(!animale.getBox().equals(""))
+                    box.setText(getString(R.string.box)+": "+animale.getBox());
+                if(!animale.getDataRitrovamento().equals(""))
+                    dataRitrovamento.setText(getString(R.string.data_ritrovamento)+": "+animale.getDataRitrovamento());
+            }catch (Exception e){
+                Toast.makeText(getActivity().getApplicationContext(), "Animale da cancellare", Toast.LENGTH_SHORT).show();
+            }
+
+
+
+            // box deve essere visibile solo ai professionisti
+            vediBox();
+
+            // setto l'immagine dell'animale
+            FirebaseStorage storage;
+            StorageReference storageRef;
+            storage= FirebaseStorage.getInstance();
+            storageRef=storage.getReference();
+
+            storageRef.child(animale.getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(imgAnimaleReg.getContext())
+                            .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imgAnimaleReg);
+                }
+            });
+        }
+
         CollectionReference pokedexReference = db.collection("pokedex");
         pokedexReference.whereEqualTo("idAnimale",animale.getIdAnimale()+"").whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override

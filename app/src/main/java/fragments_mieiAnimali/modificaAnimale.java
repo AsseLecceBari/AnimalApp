@@ -1,7 +1,5 @@
 package fragments_mieiAnimali;
 
-import static it.uniba.dib.sms2223_2.R.string.inserire_una_immagine_del_profilo;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
@@ -426,10 +424,6 @@ public class modificaAnimale extends Fragment {
                     iLSessoAnimale.setError(getString(R.string.sesso_obbligatorio));
                     flag = 1;
                 }
-                if(TextUtils.isEmpty(fotoProfilo)){
-                    Toast.makeText(getContext(), inserire_una_immagine_del_profilo,Toast.LENGTH_LONG).show();
-                    flag = 1;
-                }
                 if (TextUtils.isEmpty(dataDiNascita)){
                     data.setError(getString(R.string.dateBornRequired));
                     flag=1;
@@ -450,11 +444,12 @@ public class modificaAnimale extends Fragment {
 
                     registraAnimaleBtn.setVisibility(View.INVISIBLE);
                     Toast.makeText(getContext(), "Caricamento..", Toast.LENGTH_LONG).show();
-                    a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, fotoProfilo, idAnimale, assistito,sesso, box.getText().toString(),dataRitrovamento.getText().toString(),microChip.getText().toString());
+                    a = new Animale(nome, genere, specie, emailProprietario, dataDiNascita, a.getFotoProfilo(), a.getIdAnimale(), assistito,sesso, box.getText().toString(),dataRitrovamento.getText().toString(),microChip.getText().toString());
                     utils= new Utils();
                     animaleDB.registraAnimale(a,db).addOnCompleteListener(new OnCompleteListener() {
                         @Override
                         public void onComplete(@NonNull Task task) {
+
                         }
                     });
                     StorageTask<UploadTask.TaskSnapshot> storageTask= animaleDB.uploadImageAnimale(storage,storageRef,file);
