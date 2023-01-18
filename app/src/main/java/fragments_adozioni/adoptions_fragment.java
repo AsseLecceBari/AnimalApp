@@ -205,9 +205,6 @@ public class adoptions_fragment extends Fragment {
                                     @Override
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if (task.isSuccessful()) {
-
-
-
                                             for (QueryDocumentSnapshot document : task.getResult()) {
                                                 Animale t;
                                                 switch (tipe) {
@@ -228,7 +225,7 @@ public class adoptions_fragment extends Fragment {
                                                     case 2:
                                                         if(auth.getCurrentUser()!=null) {
                                                             t = document.toObject(Animale.class);
-                                                            Log.d("ciao4", t.getNome());
+
                                                             if (!Objects.equals(auth.getCurrentUser().getEmail(), t.getEmailProprietario())) {
                                                                 mDataset.add(document.toObject(Animale.class));
 
@@ -242,31 +239,17 @@ public class adoptions_fragment extends Fragment {
                                                                         {
                                                                             for (QueryDocumentSnapshot document3 : task.getResult()) {
                                                                                 proprietari.add( document3.toObject(Persona.class));
+                                                                                Log.d("ciao12367", String.valueOf(proprietari.size()));
                                                                                 mAdapter = new AdozioniAdapter(mDataset, 2,proprietari);
                                                                                 mRecyclerView.setAdapter(mAdapter);
                                                                                 if (mAdapter != null) {
                                                                                     onItemClick();
                                                                                 }
-
                                                                             }
-
                                                                         }
-
                                                                     }
                                                                 });
-
-
-
-
-
-
-
-
-
                                                             }
-
-
-
                                                             return;
                                                         }
                                                     case 3:
@@ -405,6 +388,7 @@ public class adoptions_fragment extends Fragment {
 
                         tipoannunci = 2;
                         mDataset.clear();
+                        proprietari.clear();
                         mAdapter = null;
                         mRecyclerView.setAdapter(null);
                         initDataAnnunci(tipoannunci);
@@ -445,6 +429,7 @@ public class adoptions_fragment extends Fragment {
                         Log.d("ciao11", "3");
                         tipoannunci = 3;
                         mDataset.clear();
+                        proprietari.clear();
                         mAdapter = null;
                         mRecyclerView.setAdapter(null);
                         initDataAnnunci(tipoannunci);
@@ -590,8 +575,13 @@ if(auth.getCurrentUser()!= null) {
                             Log.d("ciao18",proprietari.get(posizione_proprietario).getEmail());
                         }
                     }
+                    Log.d("ciao123", String.valueOf(proprietari.size()));
+                    Persona b = null;
+                    if(proprietari.size()>0) {
 
-                    Persona b= proprietari.get(posizione_proprietario);
+                        b = proprietari.get(posizione_proprietario);
+                    }
+
 
 
                    Intent intent = new Intent(getContext(), AdozioneActivity.class);
