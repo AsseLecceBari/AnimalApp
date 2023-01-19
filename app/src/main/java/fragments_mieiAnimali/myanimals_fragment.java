@@ -26,6 +26,7 @@ import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
@@ -339,8 +340,11 @@ public class myanimals_fragment extends Fragment {
         return rootView;
     }
 
-
-
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        fab(getView());
+    }
 
     @Override
     public void onResume() {
@@ -380,7 +384,7 @@ public class myanimals_fragment extends Fragment {
                                 }
                                 Log.e("DOVESONO", "GETRUOLO");
                                 if (ruolo.equals(RUOLOVETERINARIO)) {
-                                    fab(getView());
+
                                     CollectionReference animaliReference = db.collection("animali");
                                     caricoDB.getVetCarichi(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -586,8 +590,6 @@ public class myanimals_fragment extends Fragment {
          * FAB INIZIALIZZAZIONI
          * ViewGroup serve per prendere il riferimento al layout dei FAB
          */
-
-
 
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_add));
