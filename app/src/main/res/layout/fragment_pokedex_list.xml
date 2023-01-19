@@ -145,23 +145,22 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/sessoAnimaleViewPoke"
-                    android:layout_width="120dp"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="25dp"
                     android:width="58dp"
                     android:textColor="@android:color/background_light"
                     android:textSize="30sp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.708"
+                    app:layout_constraintHorizontal_bias="0.765"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/specieAnimaleViewPoke"
-                    app:layout_constraintVertical_bias="0.111" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.823" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/genereAnimalFieldPoke"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-black"
                     android:text="@string/genere"
@@ -169,11 +168,11 @@
                     android:textSize="30sp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/genereAnimaleViewPoke"
-                    app:layout_constraintHorizontal_bias="0.505"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.153"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleViewPoke"
-                    app:layout_constraintVertical_bias="0.071" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.276" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/nomeAnimaleViewPoke"
@@ -195,15 +194,16 @@
                     android:id="@+id/genereAnimaleViewPoke"
                     android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
                     android:width="58dp"
                     android:textColor="@android:color/background_light"
                     android:textSize="30sp"
                     android:visibility="visible"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.707"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/nomeAnimaleViewPoke" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.276" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/specieAnimaleViewPoke"
@@ -217,42 +217,40 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.707"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/genereAnimaleViewPoke"
-                    app:layout_constraintVertical_bias="0.069" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.546" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/specieAnimalFieldPoke"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:fontFamily="sans-serif-black"
                     android:text="@string/specie"
                     android:textColor="@android:color/background_light"
                     android:textSize="30sp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/specieAnimaleViewPoke"
-                    app:layout_constraintHorizontal_bias="0.478"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.155"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/genereAnimalFieldPoke"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.546" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/sessoAnimalFieldPoke"
-                    android:layout_width="wrap_content"
+                    android:layout_width="120dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
                     android:fontFamily="sans-serif-black"
                     android:text="@string/sesso"
                     android:textColor="@android:color/background_light"
                     android:textSize="30sp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/sessoAnimaleViewPoke"
-                    app:layout_constraintHorizontal_bias="0.433"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.151"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/specieAnimalFieldPoke"
-                    app:layout_constraintVertical_bias="0.0" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.823" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
