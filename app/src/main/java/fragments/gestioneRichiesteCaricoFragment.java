@@ -99,12 +99,11 @@ public class gestioneRichiesteCaricoFragment extends Fragment {
                 @SuppressLint({"NewApi", "SuspiciousIndentation"})
                 @Override
                 public void onActivityResult(ActivityResult result) {
-                    Log.d("ciao33", String.valueOf(result.getResultCode()));
+
                  if (result.getResultCode() == 200) {
                      firebaseAuth= FirebaseAuth.getInstance();
 
-                     Snackbar mySnackbar = Snackbar.make(view,"In attesa di ricevere un Incarico",15000) ;
-                     mySnackbar.show();
+                     Toast.makeText(getContext(), R.string.in_attesa_di_ricevere_incarico,Toast.LENGTH_LONG).show();
 
 
                      BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();

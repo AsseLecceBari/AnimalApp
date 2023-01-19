@@ -27,10 +27,10 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
     BluetoothAdapter mBtAdapter;
 
     ConnectionManager mconnectionManager;
-    ArrayList<Animale > mlistAnimali;
+
    ArrayList< BluetoothDevice> devices = new ArrayList<>();
 
-    DispositiviDisponibiliBt  dispositiviDisponibiliBt= new DispositiviDisponibiliBt();
+    DispositiviDisponibiliBt  dispositiviDisponibiliBt;
     RecyclerView mrecycleView;
 
 
@@ -39,17 +39,11 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
     public  SingBroadcastReceiver(BluetoothAdapter adapter, RecyclerView mRecyclerView,  ConnectionManager connectionManager) {
         mBtAdapter= adapter;
 
-
         mconnectionManager= connectionManager;
         devices.clear();
-
-
-
-
+        Log.d("ciao32", String.valueOf(devices.size()));
 
         mrecycleView= mRecyclerView;
-
-
 
     }
 
@@ -74,13 +68,9 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
                     devices.add(device);
                 }
             }
-
-
-      dispositiviDisponibiliBt.aggiornalista(devices);
+            dispositiviDisponibiliBt= new DispositiviDisponibiliBt();
+            dispositiviDisponibiliBt.aggiornalista(devices);
             mrecycleView.setAdapter(dispositiviDisponibiliBt);
-
-
-
 
 
             mrecycleView.addOnItemTouchListener(new class_general.RecyclerItemClickListener(context, mrecycleView , new class_general.RecyclerItemClickListener.OnItemClickListener() {
@@ -104,6 +94,9 @@ public  class SingBroadcastReceiver extends BroadcastReceiver {
 
 
         }
+
+
     }
+
 
 }

@@ -2,6 +2,7 @@ package adapter;
 
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +19,7 @@ import it.uniba.dib.sms2223_2.R;
 public class DispositiviDisponibiliBt extends RecyclerView.Adapter<DispositiviDisponibiliBt.ViewHolder>{
     //Array con tutti i dati sugli animali da inserire nella view
     private ArrayList<BluetoothDevice> localDataSet = new ArrayList<>();
-    int mvista;
+
 
 
 
@@ -85,24 +86,14 @@ public class DispositiviDisponibiliBt extends RecyclerView.Adapter<DispositiviDi
 
     }
 
-@SuppressLint("MissingPermission")
-public void aggiornalista(BluetoothDevice device)
-{
-    int cont =0;
-    for(int i=0; i<localDataSet.size(); i++) {
-        if(Objects.equals(localDataSet.get(i).getName(), device.getName()))
-        {
-           cont++;
-        }
-    }
-    if(cont==0)
-    {
-        localDataSet.add(device);
-    }
-}
+
+    @SuppressLint("MissingPermission")
+
     public void aggiornalista(ArrayList<BluetoothDevice> device)
     {
+
         localDataSet= device;
+
     }
 
 

@@ -89,7 +89,6 @@ public class mainFragmentVistaAdozioni extends Fragment {
 
     private void caricamentoTab()
     {
-        Log.d("ciao127","ciao2");
 
 
 

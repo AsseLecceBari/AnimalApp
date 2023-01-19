@@ -139,7 +139,11 @@ public class Bluetooth  {
 
             if (mBtAdapter.isDiscovering()) {
                 mBtAdapter.cancelDiscovery();
+
             }
+
+
+
             mBtAdapter.startDiscovery();
 
 
@@ -218,6 +222,11 @@ public class Bluetooth  {
 
             }
         }
+    }
+
+    public void restartScanner()
+    {
+
     }
 
 

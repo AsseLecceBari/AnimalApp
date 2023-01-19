@@ -225,6 +225,10 @@
     <string name="animaleAggiuntoalPokedex">Animale Aggiunto al pokedex</string>
     <string name="sicuro">Sei veramente sicuro?</string>
     <string name="cedi">Cedi animale</string>
+    <string name="dispositivi_disponibili">Dispositivi Disponibili</string>
+    <string name="dispositivi_associati">Dispositivi associati</string>
+    <string name="ricercaDispositivi">Ricerca Dispositivi</string>
+    <string name="in_attesa_di_ricevere_incarico">In attesa di ricevere Incarico</string>
     <string-array name="TipoSegnalazione">
         <item>Tutti</item>
         <item>Smarrimento</item>

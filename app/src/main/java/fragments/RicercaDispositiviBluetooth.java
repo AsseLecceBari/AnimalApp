@@ -64,13 +64,13 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     // TODO: Rename and change types of parameters
     private ArrayList<Animale> mParam1;
     private static final String ARG_PARAM1 = "listaAnimali";
-    private static String Arg_Param2= "manager";
+
     private Handler mHandler;
     private RecyclerView mRecyclerViewNonAssociati;
     private RecyclerView mRecyclerViewAssociati;
     private ConnectionManager mconnectionManager;
-    private View restartScanner;
 
+   private View rootview;
 
    private  Bluetooth bluetooth;
 
@@ -183,15 +183,6 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
         super.onResume();
 
 
-
-
-
-
-
-
-
-
-
         if (ContextCompat.checkSelfPermission(getContext(), ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
 
@@ -265,9 +256,6 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
                     }
 
-
-
-
             };
             if(mconnectionManager== null)
             {
@@ -276,7 +264,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
                 bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati, mconnectionManager,getContext());
 
             }
-            setRestartScanner();
+
 
 
 
@@ -306,7 +294,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-         View rootview= inflater.inflate(R.layout.fragment_ricerca_dispositivi_bluetooth, container, false);
+        rootview= inflater.inflate(R.layout.fragment_ricerca_dispositivi_bluetooth, container, false);
         main_action_bar= getActivity().findViewById(R.id.main_action_bar);
         if(main_action_bar!= null)
         {
@@ -328,7 +316,9 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
 
         mRecyclerViewNonAssociati = rootview.findViewById(R.id.item_dispositiviNonAssociati);
         mRecyclerViewNonAssociati.setLayoutManager(new LinearLayoutManager(getContext()));
-        restartScanner= rootview.findViewById(R.id.restartScanner);
+
+
+
 
 
 
@@ -342,25 +332,7 @@ public class RicercaDispositiviBluetooth extends DialogFragment {
     }
 
 
-    public void setRestartScanner()
-    {
-        restartScanner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mRecyclerViewAssociati.setAdapter(null);
-                mRecyclerViewNonAssociati.setAdapter(null);
 
-
-
-                Snackbar mySnackbar = Snackbar.make(view,"Ricerca Dispositivi",1000) ;
-                mySnackbar.show();
-
-               // bluetooth.AbilitazioneBT(mParam1);
-
-                bluetooth.BtScanner(mRecyclerViewNonAssociati,mRecyclerViewAssociati,mconnectionManager,getContext());
-            }
-        });
-    }
 
 
     public void showDialogPermissionBtPosition()
