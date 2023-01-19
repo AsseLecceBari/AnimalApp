@@ -293,7 +293,7 @@ public class anagrafica extends Fragment {
             // se non sono in visualizzazione ospite
             ProfiloAnimale pa = (ProfiloAnimale) getActivity();
             if(pa.getIntent().getBooleanExtra("isOspite",false) == false){
-                fab(rootView);
+                fab(rootView); // fab del carico
                 // la modifica del microchip è permessa solo ai vet che hanno il carico
                 visibilitaModificaMicrochip();
             }
@@ -380,7 +380,7 @@ public class anagrafica extends Fragment {
                 }
             });
         }
-if(auth.getCurrentUser()!=null){
+    if(auth.getCurrentUser()!=null){
         CollectionReference pokedexReference = db.collection("pokedex");
         pokedexReference.whereEqualTo("idAnimale",animale.getIdAnimale()+"").whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -706,6 +706,7 @@ if(auth.getCurrentUser()!=null){
 
         //Initializing the views of the dialog.
         final EditText microchip = dialog.findViewById(R.id.microchip);
+        microchip.setText(animale.getMicroChip());
         Button submitButton = dialog.findViewById(R.id.submit_button);
 
 

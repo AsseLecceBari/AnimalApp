@@ -373,6 +373,10 @@ public class modificaAnimale extends Fragment {
         data.setText(a.getDataDiNascita());
         isAssistito.setChecked(a.getIsAssistito());
         dataRitrovamento.setText(a.getDataRitrovamento());
+        microChip.setText(a.getMicroChip());
+        box.setText(a.getBox());
+        ascoltatorePulsanteData(data);
+        ascoltatorePulsanteData(dataRitrovamento);
 
 
         // setto l'immagine
@@ -471,6 +475,38 @@ public class modificaAnimale extends Fragment {
         return rootView;
     }
 
+
+    private void mostraInBaseAlProfilo() {
+        // se è veterianario vedo il pulsante
+        CollectionReference animaliReference=db.collection("utenti");
+        if(auth.getCurrentUser()!=null) {
+            Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                    if (task.isSuccessful()) {
+                        String ruolo = null;
+
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
+                            if(!ruolo.equals("proprietario") && !ruolo.equals("veterinario")){
+                                box.setVisibility(View.VISIBLE);
+                            }
+
+                            if(ruolo.equals("veterinario")){
+                                microChip.setVisibility(View.VISIBLE);
+                            }
+                            break;
+                        }
+                    }
+
+                }
+            });
+        }
+    }
+
     private void ascoltatorePulsanteData(TextInputEditText data) {
         // Al click nel campo Nascita si apre il date picker
         data.setInputType(InputType.TYPE_NULL);
@@ -512,37 +548,6 @@ public class modificaAnimale extends Fragment {
                 });
     }
 
-    private void mostraInBaseAlProfilo() {
-        // se è veterianario vedo il pulsante
-        CollectionReference animaliReference=db.collection("utenti");
-        if(auth.getCurrentUser()!=null) {
-            Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                @SuppressLint("SetTextI18n")
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-                    if (task.isSuccessful()) {
-                        String ruolo = null;
-
-                        for(QueryDocumentSnapshot document : task.getResult()){
-                            ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
-                            if(!ruolo.equals("proprietario") && !ruolo.equals("veterinario")){
-                                box.setVisibility(View.VISIBLE);
-                            }
-
-                            if(ruolo.equals("veterinario")){
-                                microChip.setVisibility(View.VISIBLE);
-                            }
-                            break;
-                        }
-                    }
-
-                }
-            });
-        }
-    }
-
 
     @Override
     public void onDestroy() {
@@ -553,4 +558,7 @@ public class modificaAnimale extends Fragment {
             main_action_bar.getMenu().setGroupVisible(R.id.profiloAnimaleGroup,true);
         }
     }
+
+
+
 }
