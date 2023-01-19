@@ -122,6 +122,10 @@ public class anagrafica extends Fragment {
 
 
 
+
+    public anagrafica(){
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_anagrafica, container, false);
         db=FirebaseFirestore.getInstance();
@@ -236,7 +240,6 @@ public class anagrafica extends Fragment {
         box = rootView.findViewById(R.id.box);
         dataRitrovamento = rootView.findViewById(R.id.dataRitrovamento);
 
-        fab(rootView);
 
 
         // tasto cambia immagine
@@ -260,6 +263,7 @@ public class anagrafica extends Fragment {
                     }
                 });
 
+
         selectImgButton = rootView.findViewById(R.id.selectImgButton);
         selectImgButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -268,20 +272,31 @@ public class anagrafica extends Fragment {
             }
         });
 
+        fab =  rootView.findViewById(R.id.fab);
+        fabAction1 = rootView.findViewById(R.id.fab_annulla_modifica);
+        fabAction2 = rootView.findViewById(R.id.fab_fine_modifica);
+        fabAction3 = rootView.findViewById(R.id.fab_mail);
+        fabAction3.setVisibility(View.GONE);
+
+
+        fab.setVisibility(View.GONE);
+        fabAction2.setVisibility(View.GONE);
+        fabAction3.setVisibility(View.GONE);
+        fabAction1.setVisibility(View.GONE);
 
         if(isProprietario()){
             cambiaImg.setVisibility(View.VISIBLE);
             modificaAnimaliBtn.setVisibility(View.VISIBLE);
-            fab.setVisibility(View.GONE);
-            fabAction1.setVisibility(View.GONE);
-            fabAction2.setVisibility(View.GONE);
         }else{
             cambiaImg.setVisibility(View.GONE);
             modificaAnimaliBtn.setVisibility(View.GONE);
-            fab.setVisibility(View.VISIBLE);
-            fabAction1.setVisibility(View.VISIBLE);
-            fabAction2.setVisibility(View.VISIBLE);
-            fabAction3.setVisibility(View.VISIBLE);
+            // se non sono in visualizzazione ospite
+            ProfiloAnimale pa = (ProfiloAnimale) getActivity();
+            if(pa.getIntent().getBooleanExtra("isOspite",false) == false){
+                fab(rootView);
+                // la modifica del microchip è permessa solo ai vet che hanno il carico
+                visibilitaModificaMicrochip();
+            }
         }
 
 
@@ -308,11 +323,10 @@ public class anagrafica extends Fragment {
         // the bitmap is set inside our image
         // view using .setimagebitmap method.
         qrCodeIV.setImageBitmap(bitmap);
-        if(qrgEncoder.getBitmap() != null)
+        if(qrgEncoder.getBitmap() != null && isProprietario())
             qrCodeIV.setVisibility(View.VISIBLE);
 
-        // la modifica del microchip è permessa solo ai vet che hanno il carico
-        visibilitaModificaMicrochip();
+
 
         return rootView;
     }
@@ -435,8 +449,6 @@ if(auth.getCurrentUser()!=null){
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             if (task.getResult().size() == 0) {
-                                // nascondo
-                                fabAction2.setVisibility(View.GONE);
                             } else {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     // Carico  trovato
@@ -486,10 +498,10 @@ if(auth.getCurrentUser()!=null){
          * ViewGroup serve per prendere il riferimento al layout dei FAB
          */
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
-        fab =  rootView.findViewById(R.id.fab);
-        fabAction1 = rootView.findViewById(R.id.fab_annulla_modifica);
 
+        fab.setVisibility(View.VISIBLE);
 
+        fabAction1.setVisibility(View.VISIBLE);
         fabAction1.setImageResource(R.drawable.back);
         fabAction1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -502,7 +514,6 @@ if(auth.getCurrentUser()!=null){
 
 
 
-        fabAction2 = rootView.findViewById(R.id.fab_fine_modifica);
         fabAction2.setImageResource(android.R.drawable.ic_menu_edit);
         fabAction2.setVisibility(View.VISIBLE);
         fabAction2.setOnClickListener(new View.OnClickListener() {
@@ -513,7 +524,6 @@ if(auth.getCurrentUser()!=null){
         });
 
 
-        fabAction3 = rootView.findViewById(R.id.fab_mail);
         fabAction3.setVisibility(View.GONE);/*
         fabAction3.setImageResource(android.R.drawable.sym_action_email);
         fabAction3.setOnClickListener(new View.OnClickListener() {

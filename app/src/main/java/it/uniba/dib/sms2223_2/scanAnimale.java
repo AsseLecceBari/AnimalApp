@@ -154,6 +154,7 @@ public class scanAnimale extends Fragment {
                 if(a!= null){
                     // todo intent per visuallizare
                     Intent i = new Intent(getActivity().getApplicationContext(), ProfiloAnimale.class);
+                    i.putExtra("isOspite",true);
                     i.putExtra("animale", a);
                     startActivity(i);
                 }else{

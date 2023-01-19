@@ -230,6 +230,5 @@
     </RelativeLayout>
 
 
-    <include layout="@layout/fab"
-        android:id="@+id/fab"/>
+    <include layout="@layout/fab"/>
 </FrameLayout>
