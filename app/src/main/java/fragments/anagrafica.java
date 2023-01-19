@@ -366,7 +366,7 @@ public class anagrafica extends Fragment {
                 }
             });
         }
-
+if(auth.getCurrentUser()!=null){
         CollectionReference pokedexReference = db.collection("pokedex");
         pokedexReference.whereEqualTo("idAnimale",animale.getIdAnimale()+"").whereEqualTo("emailProprietarioPokedex",auth.getCurrentUser().getEmail()+"").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -386,7 +386,7 @@ public class anagrafica extends Fragment {
             }
         });
     }
-
+}
     private void vediBox() {
         //se non sei il proprietario dell'animale non vedi il box, altrimenti lo vedi se sei un professionista
 
@@ -425,56 +425,58 @@ public class anagrafica extends Fragment {
 
     private void visibilitaModificaMicrochip() {
         if(isProprietario()){
-        }else{
-            // se non è proprietario, SE è colui che ce lha attualmente in carico  && è veterinario allora visualizza il pulsante per aggiungere la segnalazione sanitaria
-            CollectionReference docRef = db.collection("carichi");
-            Query query = docRef.whereEqualTo("inCorso", true).whereEqualTo("idProfessionista", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).whereEqualTo("idAnimale", animale.getIdAnimale());
-            query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    if (task.isSuccessful()) {
-                        if(task.getResult().size() == 0){
-                            // nascondo
-                            fabAction2.setVisibility(View.GONE);
-                        }else{
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                // Carico  trovato
-                                Carico c = document.toObject(Carico.class);
+        }else {
+            if (auth.getCurrentUser() != null) {
+                // se non è proprietario, SE è colui che ce lha attualmente in carico  && è veterinario allora visualizza il pulsante per aggiungere la segnalazione sanitaria
+                CollectionReference docRef = db.collection("carichi");
+                Query query = docRef.whereEqualTo("inCorso", true).whereEqualTo("idProfessionista", Objects.requireNonNull(auth.getCurrentUser()).getEmail()).whereEqualTo("idAnimale", animale.getIdAnimale());
+                query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().size() == 0) {
+                                // nascondo
+                                fabAction2.setVisibility(View.GONE);
+                            } else {
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    // Carico  trovato
+                                    Carico c = document.toObject(Carico.class);
 
-                                // se è veterianario vedo il pulsante
-                                CollectionReference animaliReference=db.collection("utenti");
-                                if(auth.getCurrentUser()!=null) {
-                                    Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
-                                    query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>(){
-                                        @SuppressLint("SetTextI18n")
-                                        @Override
-                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    // se è veterianario vedo il pulsante
+                                    CollectionReference animaliReference = db.collection("utenti");
+                                    if (auth.getCurrentUser() != null) {
+                                        Query query = animaliReference.whereEqualTo("email", auth.getCurrentUser().getEmail());
+                                        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @SuppressLint("SetTextI18n")
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                            if (task.isSuccessful()) {
-                                                String ruolo = null;
+                                                if (task.isSuccessful()) {
+                                                    String ruolo = null;
 
-                                                for(QueryDocumentSnapshot document : task.getResult()){
-                                                    ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
-                                                    if(ruolo.equals("veterinario")){
-                                                        fabAction2.setVisibility(View.VISIBLE);
+                                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                                        ruolo = Objects.requireNonNull(document.get("ruolo")).toString();
+                                                        if (ruolo.equals("veterinario")) {
+                                                            fabAction2.setVisibility(View.VISIBLE);
 
-                                                    }else{
-                                                        fabAction2.setVisibility(View.GONE);
+                                                        } else {
+                                                            fabAction2.setVisibility(View.GONE);
+                                                        }
+                                                        break;
                                                     }
-                                                    break;
                                                 }
+
                                             }
+                                        });
+                                    }
 
-                                        }
-                                    });
+                                    break;
                                 }
-
-                                break;
                             }
                         }
                     }
-                }
-            });
+                });
+            }else{fabAction2.setVisibility(View.GONE);}
         }
     }
 
@@ -587,7 +589,10 @@ public class anagrafica extends Fragment {
     }
 
     private boolean isProprietario() {
-        return animale.getEmailProprietario().equals(Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+     if(auth.getCurrentUser()!=null) {
+         return animale.getEmailProprietario().equals(Objects.requireNonNull(auth.getCurrentUser()).getEmail());
+     }else{
+         return false;}
 
     }
 

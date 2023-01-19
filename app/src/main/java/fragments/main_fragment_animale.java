@@ -39,7 +39,7 @@ public class main_fragment_animale extends Fragment {
     FragmentActivity activity;
     private int posizione = 0;
    private Animale animale;
-
+    private FirebaseAuth auth;
 
 
     @SuppressLint("MissingInflatedId")
@@ -69,21 +69,24 @@ public class main_fragment_animale extends Fragment {
     }
 
     public boolean getProprietario(){
-        FirebaseAuth auth= FirebaseAuth.getInstance();
-        if(Objects.equals(auth.getCurrentUser().getEmail(), animale.getEmailProprietario())){
-            Log.d("ciao",auth.getCurrentUser().getEmail());
-            Log.d("ciao", animale.getEmailProprietario());
-            return  true;
-        }
-        else
+         auth= FirebaseAuth.getInstance();
+        if(auth.getCurrentUser()!=null) {
+            if (Objects.equals(auth.getCurrentUser().getEmail(), animale.getEmailProprietario())) {
+                Log.d("ciao", auth.getCurrentUser().getEmail());
+                Log.d("ciao", animale.getEmailProprietario());
+                return true;
+            } else
+                return false;
+        }else{
             return false;
+        }
     }
 
     private void caricamentoTab()
     {
 
 
-
+        auth= FirebaseAuth.getInstance();
         //Se l'adapter è stato già creato,viene catturato l'errore e non ne viene creato uno nuovo
             if(!getProprietario()) {
                 tabLayout= getView().findViewById(R.id.tabLayout);
@@ -94,12 +97,13 @@ public class main_fragment_animale extends Fragment {
                 vpAdapter = new VPAdapterAnimale(getChildFragmentManager(), getLifecycle(),false);
                 tabLayout= getView().findViewById(R.id.tabLayout2);
                 tabLayout.setVisibility(View.GONE);
+
                 tabLayout= getView().findViewById(R.id.tabLayout);
+                if(auth.getCurrentUser()==null){
+                    tabLayout.removeTabAt(2);
+                }
                 tabLayout.getTabAt(1).setText("Proprietario");
-
-
                 viewPager2.setAdapter(vpAdapter);
-
             }
             else {
                 tabLayout= getView().findViewById(R.id.tabLayout);
