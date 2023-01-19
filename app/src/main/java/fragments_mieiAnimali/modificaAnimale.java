@@ -378,16 +378,18 @@ public class modificaAnimale extends Fragment {
         // setto l'immagine
         storage= FirebaseStorage.getInstance();
         storageRef=storage.getReference();
-        storageRef.child(a.getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(getContext())
-                        .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(imgAnimaleReg);
-                imgAnimaleReg.setVisibility(View.VISIBLE);
+        if(a.getFotoProfilo()!=null) {
+            storageRef.child(a.getFotoProfilo()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Glide.with(getActivity().getApplicationContext())
+                            .load(uri).diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(imgAnimaleReg);
+                    imgAnimaleReg.setVisibility(View.VISIBLE);
 
-            }
-        });
+                }
+            });
+        }
 
         registraAnimaleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
