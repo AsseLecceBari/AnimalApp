@@ -340,11 +340,9 @@ public class myanimals_fragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        fab(getView());
-    }
+
+
+
 
     @Override
     public void onResume() {
@@ -378,13 +376,14 @@ public class myanimals_fragment extends Fragment {
                                             // Nascondo la checkbox che mi mostra gli in carico
                                             mostraSoloIncarico.setVisibility(View.VISIBLE);
                                             ruolo = RUOLOVETERINARIO;
+
                                             break;
                                         }
                                     }
                                 }
                                 Log.e("DOVESONO", "GETRUOLO");
                                 if (ruolo.equals(RUOLOVETERINARIO)) {
-
+                                    fab(getView());
                                     CollectionReference animaliReference = db.collection("animali");
                                     caricoDB.getVetCarichi(auth, db).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
@@ -594,21 +593,21 @@ public class myanimals_fragment extends Fragment {
         final ViewGroup fabContainer =  rootView.findViewById(R.id.fab_container);
         fab.setImageDrawable(getResources().getDrawable(android.R.drawable.ic_menu_add));
         CollectionReference collection = db.collection("richiestaCarico");
-        Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
-        AggregateQuery countQuery = query.count();
-        countQuery.get(AggregateSource.SERVER).addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                task.addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
-                        AggregateQuerySnapshot snapshot = task.getResult();
-                        countRichieste= (int) snapshot.getCount();
-                        setBadgeRichiesteFab(fab);
-                        setBadgeRichiesteFabRichieste(fabAction3);
-                    }
-                });
-            }
-        });
+            Query query = collection.whereEqualTo("idVeterinario", auth.getCurrentUser().getEmail()).whereEqualTo("stato","in sospeso");
+            AggregateQuery countQuery = query.count();
+            countQuery.get(AggregateSource.SERVER).addOnCompleteListener(task -> {
+                if (task.isSuccessful()) {
+                    task.addOnCompleteListener(new OnCompleteListener<AggregateQuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AggregateQuerySnapshot> task) {
+                            AggregateQuerySnapshot snapshot = task.getResult();
+                            countRichieste= (int) snapshot.getCount();
+                            setBadgeRichiesteFab(fab);
+                            setBadgeRichiesteFabRichieste(fabAction3);
+                        }
+                    });
+                }
+            });
         fabAction1 = rootView.findViewById(R.id.aggiungiAnimaliBtn);
         fabAction1.setVisibility(View.VISIBLE);
 
